@@ -32,7 +32,6 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 @interface HorizontalSingleAppearance : NSObject
 
 #pragma mark - 滑块设置
-
 /**
  *  滑块的大小
  *  @warning width值只在 sliderType 为 HorizontalSingleSliderTypeCustom 有效
@@ -42,12 +41,23 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 @property (nonatomic) CGFloat   sliderHeight;
 
 @property (nonatomic, strong) UIColor * sliderColor;
+
 @property (nonatomic, assign) HorizontalSingleSliderType sliderType;
 
 #pragma mark - 主视图设置
 @property (nonatomic, strong) UIColor * backgroundColor;
 @property (nonatomic, strong) UIImage * backgroundImage;
 
+/**
+ *  内容视图与视图之间的边界值
+ */
+@property (nonatomic, assign) UIEdgeInsets edgeInsetForContentView;
+
 #pragma mark - 选择按钮状态
 
+
+/**
+ *  选择按钮之间的间距
+ */
+@property (nonatomic, assign) CGFloat spaceForButtons;
 @end

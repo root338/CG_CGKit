@@ -109,9 +109,12 @@
 {
     [super layoutSubviews];
     
-    self.contentView.frame = self.bounds;
+    UIEdgeInsets margin = self.appearance.edgeInsetForContentView;
+    CGSize viewSize = self.bounds.size;
     
-    CGFloat width = CGRectGetWidth(self.contentView.bounds);
+    self.contentView.frame = CGRectMake(margin.left, margin.top, viewSize.width - (margin.left + margin.right), viewSize.height - (margin.top + margin.bottom));
+    
+    CGFloat width = (CGRectGetWidth(self.contentView.bounds) - (self.appearance.spaceForButtons * (self.titles.count - 1)));
     CGFloat height = CGRectGetHeight(self.contentView.bounds);
     
     CGFloat buttonWidth = self.titles.count ? width / self.titles.count : 0;
@@ -122,7 +125,7 @@
     for (UIView *subview in self.contentView.subviews) {
         
         subview.frame = CGRectMake(originX, originY, buttonWidth, buttonHeight);
-        originX += buttonWidth;
+        originX += buttonWidth + self.appearance.spaceForButtons;
     }
     
     [self updateSliderViewLocationIsAnmation:NO];
