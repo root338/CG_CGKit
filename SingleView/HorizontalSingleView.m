@@ -7,6 +7,7 @@
 //
 
 #import "HorizontalSingleView.h"
+#import "UIButton+AreaCalculate.h"
 
 @interface HorizontalSingleView ()
 {
@@ -130,9 +131,27 @@
 - (void)updateSliderViewLocationIsAnmation:(BOOL)isAnmation
 {
 
-    CGRect selectedButtonFrame = self.selectedButton.frame;
     CGRect frame = self.sliderView.frame;
-    frame = CGRectMake(selectedButtonFrame.origin.x, self.bounds.size.height - self.appearance.sliderHeight, self.selectedButton.bounds.size.width, self.appearance.sliderHeight);
+    CGFloat sliderWidth = 0;
+    
+    //设置滑块的宽度
+    switch (self.appearance.sliderType) {
+        case HorizontalSingleSliderTypeTitle:
+            sliderWidth = [self.selectedButton calculateButtonCurrentTitleSize].width;
+            break;
+        case HorizontalSingleSliderTypeCustom:
+            sliderWidth = self.appearance.sliderSize.width;
+            break;
+        default:
+            sliderWidth = self.selectedButton.bounds.size.width;
+            break;
+    }
+    
+    //设置滑块的 X 坐标，相对于选择按钮中心坐标减去滑块二分之一的宽度
+    CGPoint selectButtonPoint = [self.contentView convertPoint:self.selectedButton.center fromView:self];
+    CGFloat sliderOriginX = selectButtonPoint.x - sliderWidth / 2;
+    
+    frame = CGRectMake(sliderOriginX, self.bounds.size.height - self.appearance.sliderSize.height, sliderWidth, self.appearance.sliderSize.height);
     
     if (isAnmation) {
         [UIView animateWithDuration:.3 animations:^{

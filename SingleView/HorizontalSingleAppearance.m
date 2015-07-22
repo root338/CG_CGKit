@@ -9,5 +9,20 @@
 #import "HorizontalSingleAppearance.h"
 
 @implementation HorizontalSingleAppearance
+@dynamic sliderHeight;
+
+- (void)setSliderHeight:(CGFloat)sliderHeight
+{
+    CGSize sliderSize = self.sliderSize;
+    
+    sliderSize.height = sliderHeight;
+    
+    self.sliderSize = sliderSize;
+}
+
+- (CGFloat)sliderHeight
+{
+    return self.sliderSize.height;
+}
 
 @end
