@@ -43,4 +43,5 @@ typedef NS_OPTIONS(NSInteger, DDrawLineType) {
  */
 - (UIBezierPath *)createBoxType:(DDrawLineType)type edge:(UIEdgeInsets)edgeInsets;
 
+//- (void)drawRect:(CGRect)rect;
 @end

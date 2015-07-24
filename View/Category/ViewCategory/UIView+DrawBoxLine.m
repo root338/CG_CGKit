@@ -55,6 +55,11 @@
     return bezierPath;
 }
 
+//- (void)drawRect:(CGRect)rect
+//{
+//    
+//}
+
 #pragma mark - property
 
 - (void)setLineColor:(UIColor *)paramLineColor
