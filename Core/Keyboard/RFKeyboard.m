@@ -177,7 +177,7 @@
 
 - (void)onTouchInKeyWindow:(UIGestureRecognizer *)sender {
     // Dismiss keyboard
-    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+    //[[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
 
 @end

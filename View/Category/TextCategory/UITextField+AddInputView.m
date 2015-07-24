@@ -10,4 +10,9 @@
 
 @implementation UITextField (AddInputView)
 
+- (void)addInputView
+{
+    
+}
+
 @end

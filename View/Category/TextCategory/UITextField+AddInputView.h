@@ -10,4 +10,8 @@
 
 @interface UITextField (AddInputView)
 
+
+
+- (void)addInputView;
+
 @end

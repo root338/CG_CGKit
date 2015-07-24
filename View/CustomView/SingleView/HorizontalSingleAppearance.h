@@ -38,10 +38,19 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
  */
 @property (nonatomic, assign) CGSize    sliderSize;
 
+/**
+ *  快捷设置滑块高度的值
+ */
 @property (nonatomic) CGFloat   sliderHeight;
 
+/**
+ *  滑块的颜色
+ */
 @property (nonatomic, strong) UIColor * sliderColor;
 
+/**
+ *  滑块宽度设置类型
+ */
 @property (nonatomic, assign) HorizontalSingleSliderType sliderType;
 
 #pragma mark - 主视图设置

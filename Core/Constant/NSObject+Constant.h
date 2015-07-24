@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - 自动适配相关值
+
 const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin;
 
 const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
