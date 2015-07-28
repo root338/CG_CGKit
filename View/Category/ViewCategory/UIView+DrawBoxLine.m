@@ -74,7 +74,7 @@
 
 - (void)setLineWidth:(NSNumber *)paramLineWidth
 {
-    objc_setAssociatedObject(self, @selector(lineWidth), paramLineWidth, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, @selector(lineWidth), paramLineWidth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSNumber *)lineWidth
