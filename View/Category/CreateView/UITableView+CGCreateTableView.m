@@ -55,12 +55,10 @@
             nibCellName = NSStringFromClass(cellClass);
         }
         if (nibCellName) {
-            NSArray *cells = [[NSBundle mainBundle] loadNibNamed:nibCellName owner:nil options:nil];
-            [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([obj isKindOfClass:cellClass]) {
-                    [tableView registerNib:obj forCellReuseIdentifier:NSStringFromClass(cellClass)];
-                }
-            }];
+            
+            UINib *nib = [UINib nibWithNibName:nibCellName bundle:[NSBundle bundleForClass:cellClass]];
+            [tableView registerNib:nib forCellReuseIdentifier:NSStringFromClass(cellClass)];
+            
         }
     }else {
         

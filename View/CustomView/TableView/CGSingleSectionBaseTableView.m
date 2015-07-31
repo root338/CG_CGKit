@@ -20,6 +20,7 @@
 
 + (instancetype)createSingleSectionBaseTableViewWithDataSource:(NSArray *)dataSource cellClass:(Class)cellClass setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock
 {
+    
     return nil;
 }
 

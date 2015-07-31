@@ -34,6 +34,9 @@ typedef void(^SetupSingleSectionTableViewCell) (CGSingleSectionBaseTableViewCell
  */
 @property (strong, nonatomic) NSArray *dataSource;
 
+/** 使用自动布局计算cell */
+@property (assign, nonatomic) BOOL isAutoLayoutCalculateCell;
+
 /**
  *  设置cell的回调
  *  @warning 需要使用者自己实现

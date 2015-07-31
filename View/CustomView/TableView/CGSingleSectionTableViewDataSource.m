@@ -7,6 +7,7 @@
 //
 
 #import "CGSingleSectionTableViewDataSource.h"
+#import "CGSingleSectionBaseTableViewCell.h"
 
 @implementation CGSingleSectionTableViewDataSource
 
@@ -44,6 +45,12 @@
     CGSingleSectionBaseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier];
     if (self.setupSingleSectionTableViewCellBlock) {
         self.setupSingleSectionTableViewCellBlock(cell, self.dataSource[indexPath.row]);
+    }
+    
+    
+    if (self.isAutoLayoutCalculateCell) {
+        [cell setNeedsUpdateConstraints];
+        [cell updateConstraintsIfNeeded];
     }
     
     return cell;
