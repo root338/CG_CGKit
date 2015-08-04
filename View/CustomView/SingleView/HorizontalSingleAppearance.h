@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UIView+DrawBoxLine.h"
 
 /**
  *  滑块宽度样式
@@ -56,6 +57,11 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 #pragma mark - 主视图设置
 @property (nonatomic, strong) UIColor * backgroundColor;
 @property (nonatomic, strong) UIImage * backgroundImage;
+
+@property (assign, nonatomic) DDrawLineType lineType;
+@property (strong, nonatomic) UIColor *lineColor;
+@property (assign, nonatomic) CGFloat lineWidth;
+@property (assign, nonatomic) UIEdgeInsets lineEdgeInsets;
 
 /**
  *  内容视图与视图之间的边界值

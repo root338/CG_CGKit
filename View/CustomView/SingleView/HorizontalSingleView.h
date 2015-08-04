@@ -40,6 +40,8 @@
  */
 @property (nonatomic, strong) HorizontalSingleAppearance *appearance;
 
+
+
 /**
  *  创建选择控件
  *  @warning 与 selecteViewClass 类，相互独立不同时生效

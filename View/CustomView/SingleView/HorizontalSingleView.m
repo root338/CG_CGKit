@@ -21,13 +21,20 @@
 
 @implementation HorizontalSingleView
 
-/*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
+    if (self.appearance.lineType != DDrawLineTypeNone) {
+        
+        self.lineColor = self.appearance.lineColor;
+        self.lineWidth = @(self.appearance.lineWidth);
+        
+        UIBezierPath *bezierPath = [self createBoxType:self.appearance.lineType edge:self.appearance.lineEdgeInsets];
+        [bezierPath stroke];
+    }
 }
-*/
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -100,6 +107,10 @@
     
     //更新视图时，选择默认选择控件
     [self.selectedButton setSelected:YES];
+    
+    if (self.appearance.backgroundColor) {
+        self.backgroundColor = self.appearance.backgroundColor;
+    }
     
     //更新视图
     [self setNeedsLayout];
