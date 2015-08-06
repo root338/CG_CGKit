@@ -130,7 +130,14 @@
                     
                     [subview mas_makeConstraints:^(MASConstraintMaker *make) {
                         
-                        make.trailing.equalTo(self.mas_trailing).offset(-marginSpace.right);
+                        if (type == CGLayoutTypeHorizontalLastGreaterThanOrEqualTo) {
+                            
+                            make.trailing.lessThanOrEqualTo(self.mas_trailing).offset(-marginSpace.right);
+                        }else {
+                            
+                            make.trailing.equalTo(self.mas_trailing).offset(-marginSpace.right);
+                        }
+                        
                         make.leading.equalTo(previousView.mas_trailing).offset(subviewSpace);
                     }];
                 }else {

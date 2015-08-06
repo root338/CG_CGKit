@@ -74,6 +74,10 @@ typedef NS_ENUM(NSInteger, CGLayoutType){
      *  水平下
      */
     CGLayoutTypeHorizontal,
+    /**
+     *  最后视图距离父视图是 >= 的距离
+     */
+    CGLayoutTypeHorizontalLastGreaterThanOrEqualTo,
 };
 
 /**
