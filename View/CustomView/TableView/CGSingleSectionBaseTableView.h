@@ -14,6 +14,8 @@
  */
 @interface CGSingleSectionBaseTableView : UITableView
 
+@property (strong, nonatomic) CGSingleSectionTableViewDataSource *dataSourceAtSingleSection;
+
 + (instancetype)createSingleSectionBaseTableViewWithDataSource:(NSArray *)dataSource cellClass:(Class)cellClass setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock;
 
 @end

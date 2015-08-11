@@ -7,6 +7,7 @@
 //
 
 #import "CGSingleSectionBaseTableView.h"
+#import "UITableView+CGCreateTableView.h"
 
 @implementation CGSingleSectionBaseTableView
 
@@ -21,7 +22,10 @@
 + (instancetype)createSingleSectionBaseTableViewWithDataSource:(NSArray *)dataSource cellClass:(Class)cellClass setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock
 {
     
-    return nil;
+    CGSingleSectionBaseTableView *tableView = [CGSingleSectionBaseTableView createTableViewStyle:UITableViewStylePlain];
+    CGSingleSectionTableViewDataSource *_dataSource = [CGSingleSectionTableViewDataSource createSingleSectionTableViewDelegateWithData:dataSource cellIdentifierForClass:cellClass setupCellBlock:setupCellBlock];
+    tableView.dataSourceAtSingleSection = _dataSource;
+    return tableView;
 }
 
 @end

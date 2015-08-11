@@ -16,7 +16,15 @@
  *  @param cell 以CGSingleSectionBaseTableViewCell类型的cell为所有cell的基类
  *  @param data cell中的内容数据
  */
-typedef void(^SetupSingleSectionTableViewCell) (CGSingleSectionBaseTableViewCell *cell, id data);
+typedef void (^SetupSingleSectionTableViewCell) (CGSingleSectionBaseTableViewCell *cell, id data);
+
+/**
+ *  声明编辑表格的回调
+ *
+ *  @param editingStyle 编辑的类型
+ *  @param indexPath    编辑的位置
+ */
+typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath *indexPath);
 
 /**
  *  设置实现tableView
@@ -42,6 +50,9 @@ typedef void(^SetupSingleSectionTableViewCell) (CGSingleSectionBaseTableViewCell
  *  @warning 需要使用者自己实现
  */
 @property (copy, nonatomic) SetupSingleSectionTableViewCell setupSingleSectionTableViewCellBlock;
+
+/** 编辑表格回调 */
+@property (copy, nonatomic) EditTableViewCallback editTableViewCallback;
 
 /**
  *  初始化一个CGSingleSectionTableViewDataSource类实例

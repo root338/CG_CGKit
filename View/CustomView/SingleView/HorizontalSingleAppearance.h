@@ -55,12 +55,26 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 @property (nonatomic, assign) HorizontalSingleSliderType sliderType;
 
 #pragma mark - 主视图设置
+
+/** 单选视图背景 */
 @property (nonatomic, strong) UIColor * backgroundColor;
+
+/** 单选视图背景图片 */
 @property (nonatomic, strong) UIImage * backgroundImage;
 
+/** 单选视图背景图片的加载样式 */
+@property (assign, nonatomic) UIViewContentMode *backgroundImageMode;
+
+/** 单选视图边线框的样式 */
 @property (assign, nonatomic) DDrawLineType lineType;
+
+/** 单选视图边线框的颜色 */
 @property (strong, nonatomic) UIColor *lineColor;
+
+/** 单选视图边线框的宽度 */
 @property (assign, nonatomic) CGFloat lineWidth;
+
+/** 单选视图边线框的边间距 */
 @property (assign, nonatomic) UIEdgeInsets lineEdgeInsets;
 
 /**
@@ -69,7 +83,6 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 @property (nonatomic, assign) UIEdgeInsets edgeInsetForContentView;
 
 #pragma mark - 选择按钮状态
-
 
 /**
  *  选择按钮之间的间距

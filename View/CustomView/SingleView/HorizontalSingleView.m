@@ -100,6 +100,7 @@
         if (button) {
             
             button.tag = idx;
+            
             [button addTarget:self action:@selector(handleContentViewForButtonAction:) forControlEvents:UIControlEventTouchUpInside];
             
             [self.contentView addSubview:button];
@@ -141,11 +142,16 @@
     }
     
     [self updateSliderViewLocationIsAnmation:NO];
+    
+    [super layoutSubviews];
 }
 
 - (void)updateSliderViewLocationIsAnmation:(BOOL)isAnmation
 {
 
+    if (!self.selectedButton) {
+        return;
+    }
     CGRect frame = self.sliderView.frame;
     CGFloat sliderWidth = 0;
     

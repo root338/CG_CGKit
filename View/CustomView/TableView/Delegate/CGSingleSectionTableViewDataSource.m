@@ -55,4 +55,11 @@
     
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.editTableViewCallback) {
+        self.editTableViewCallback(tableView, editingStyle, indexPath);
+    }
+}
 @end
