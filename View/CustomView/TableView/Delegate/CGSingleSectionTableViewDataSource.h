@@ -45,6 +45,8 @@ typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEd
 /** 使用自动布局计算cell */
 @property (assign, nonatomic) BOOL isAutoLayoutCalculateCell;
 
+/** 是否开启删除功能 */
+@property (assign, nonatomic) BOOL isEditForDelete;
 #pragma mark - 操作回调block
 /**
  *  设置cell的回调
