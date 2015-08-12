@@ -73,6 +73,15 @@
 //- (void)setupMarginToSuperViewAtEdgeInset:(UIEdgeInsets)edgeInset type:(CGLayoutForSuperViewType)type layoutRelation:(NSLayoutRelation)layoutRelation;
 
 #pragma mark - 设置视图与指定视图之间的约束
+
+/**
+ *  设置视图与指定视图之间的约束
+ *  @warning 两视图之间必须拥有共同的父视图，attribute为接受消息视图的属性（如：attribute为 NSLayoutAttributeTop，那就相对于指定视图的NSLayoutAttributeBottom之间的约束）
+ *
+ *  @param view      指定视图
+ *  @param attribute 设置的约束
+ *  @param space     相对距离
+ */
 - (void)marginToView:(UIView *)view layoutAttribute:(NSLayoutAttribute)attribute space:(CGFloat)space;
 
 #pragma mark - 设置视图自身的约束

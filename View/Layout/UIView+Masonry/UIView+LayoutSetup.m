@@ -159,7 +159,7 @@
 
 - (void)setupMarginToSuperViewAtEdgeInset:(UIEdgeInsets)edgeInset type:(CGLayoutForSuperViewType)type
 {
-    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
         
         if (type & CGLayoutForSuperViewTypeTop) {
             
@@ -190,7 +190,7 @@
 
 - (void)marginToView:(UIView *)view layoutAttribute:(NSLayoutAttribute)attribute space:(CGFloat)space
 {
-    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
         
         switch (attribute) {
             case NSLayoutAttributeTop:
@@ -225,14 +225,14 @@
 
 - (void)setupSizeAtHeight:(CGFloat)height
 {
-    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(height));
     }];
 }
 
 - (void)setupSizeAtWidth:(CGFloat)width
 {
-    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(width));
     }];
 }
