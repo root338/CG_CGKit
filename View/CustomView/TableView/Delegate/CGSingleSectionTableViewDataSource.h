@@ -45,6 +45,7 @@ typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEd
 /** 使用自动布局计算cell */
 @property (assign, nonatomic) BOOL isAutoLayoutCalculateCell;
 
+#pragma mark - 操作回调block
 /**
  *  设置cell的回调
  *  @warning 需要使用者自己实现
@@ -54,6 +55,7 @@ typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEd
 /** 编辑表格回调 */
 @property (copy, nonatomic) EditTableViewCallback editTableViewCallback;
 
+#pragma mark - 创建对象
 /**
  *  初始化一个CGSingleSectionTableViewDataSource类实例
  *

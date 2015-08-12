@@ -156,4 +156,84 @@
         
     }];
 }
+
+- (void)setupMarginToSuperViewAtEdgeInset:(UIEdgeInsets)edgeInset type:(CGLayoutForSuperViewType)type
+{
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        
+        if (type & CGLayoutForSuperViewTypeTop) {
+            
+            make.top.equalTo(self.superview).offset(edgeInset.top);
+        }
+        
+        if (type & CGLayoutForSuperViewTypeLeft) {
+            
+            make.leading.equalTo(self.superview).offset(edgeInset.left);
+        }
+        
+        if (type & CGLayoutForSuperViewTypeBottom) {
+            
+            make.bottom.equalTo(self.superview).offset(-edgeInset.bottom);
+        }
+        
+        if (type & CGLayoutForSuperViewTypeRight) {
+            
+            make.trailing.equalTo(self.superview).offset(-edgeInset.right);
+        }
+    }];
+}
+
+- (void)setupMarginToSuperViewAtEdgeInset:(UIEdgeInsets)edgeInset type:(CGLayoutForSuperViewType)type layoutRelation:(NSLayoutRelation)layoutRelation
+{
+    
+}
+
+- (void)marginToView:(UIView *)view layoutAttribute:(NSLayoutAttribute)attribute space:(CGFloat)space
+{
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        
+        switch (attribute) {
+            case NSLayoutAttributeTop:
+                make.top.equalTo(view.mas_bottom).offset(space);
+                break;
+            case NSLayoutAttributeLeading:
+                make.leading.equalTo(view.mas_trailing).offset(space);
+                break;
+            case NSLayoutAttributeBottom:
+                make.bottom.equalTo(view.mas_top).offset(-space);
+                break;
+            case NSLayoutAttributeTrailing:
+                make.trailing.equalTo(view.mas_leading).offset(-space);
+                break;
+            case NSLayoutAttributeWidth:
+                make.width.equalTo(view.mas_width);
+                break;
+            case NSLayoutAttributeHeight:
+                make.height.equalTo(view.mas_height);
+                break;
+            default:
+                break;
+        }
+    }];
+}
+
+- (void)setupSize:(CGSize)size
+{
+    [self setupSizeAtWidth:size.width];
+    [self setupSizeAtHeight:size.height];
+}
+
+- (void)setupSizeAtHeight:(CGFloat)height
+{
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(height));
+    }];
+}
+
+- (void)setupSizeAtWidth:(CGFloat)width
+{
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(width));
+    }];
+}
 @end

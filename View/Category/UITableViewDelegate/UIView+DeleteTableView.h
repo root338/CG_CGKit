@@ -12,8 +12,4 @@
 
 @property (strong, nonatomic) NSMutableArray *dataSource_loadData;
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath;
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath;
-
 @end

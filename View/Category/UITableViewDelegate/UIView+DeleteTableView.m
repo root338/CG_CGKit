@@ -11,10 +11,7 @@
 
 @implementation UIView (DeleteTableView)
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
+
 
 #pragma mark - 设置属性
 - (void)setDataSource_loadData:(NSMutableArray *)paramDataSource_loadData

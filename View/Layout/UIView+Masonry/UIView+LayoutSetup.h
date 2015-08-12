@@ -7,78 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-/**
- *  视图布局的状态
- */
-typedef NS_OPTIONS(NSInteger, CGViewLayoutType){
-    /**
-     *  不进行任何设置
-     */
-    CGViewLayoutTypeNone                = 0,
-    /**
-     *  等宽
-     */
-    CGViewLayoutTypeEqualWidth          = 1 << 0,
-    /**
-     *  等高
-     */
-    CGViewLayoutTypeEqualHeight         = 1 << 1,
-    
-    /**
-     *  顶部相等
-     */
-    CGViewLayoutTypeEqualTop            = 1 << 2,
-    
-    /**
-     *  左边相等
-     */
-    CGViewLayoutTypeEqualLeading        = 1 << 3,
-    
-    /**
-     *  底部相等
-     */
-    CGViewLayoutTypeEqualBottom         = 1 << 4,
-    
-    /**
-     *  右边相等
-     */
-    CGViewLayoutTypeEqualTrailing       = 1 << 5,
-    
-    /**
-     *  水平等高
-     */
-    CGViewLayoutTypeLevelEqualHeight    = CGViewLayoutTypeEqualTop | CGViewLayoutTypeEqualBottom,
-    
-
-    
-    /**
-     *  大小相等
-     */
-    CGViewLayoutTypeEqualSize           = CGViewLayoutTypeEqualWidth | CGViewLayoutTypeEqualHeight,
-};
-
-/**
- *  子视图布局类型，包含与父视图之间的布局
- */
-typedef NS_ENUM(NSInteger, CGLayoutType){
-    /**
-     *  空
-     */
-    CGLayoutTypeNone,
-    /**
-     *  垂直下
-     */
-    CGLayoutTypeVertical,
-    /**
-     *  水平下
-     */
-    CGLayoutTypeHorizontal,
-    /**
-     *  最后视图距离父视图是 >= 的距离
-     */
-    CGLayoutTypeHorizontalLastGreaterThanOrEqualTo,
-};
+#import "UIView+LayoutSetupHeader.h"
 
 /**
  *  对视图内部所有子视图进行相同设置
@@ -86,6 +15,7 @@ typedef NS_ENUM(NSInteger, CGLayoutType){
  */
 @interface UIView (LayoutSetup)
 
+#pragma mark - 设置内部子视图约束
 /**
  *  设置视图内部视图的布局类型
  *
@@ -123,4 +53,36 @@ typedef NS_ENUM(NSInteger, CGLayoutType){
  *  @param subviewSpace 间距值
  */
 - (void)setupMarginSpace:(UIEdgeInsets)marginSpace type:(CGLayoutType)type subviewSpace:(CGFloat)subviewSpace;
+
+#pragma mark - 设置视图与其父视图之间的约束
+/**
+ *  设置视图与父视图的约束关系
+ *
+ *  @param edgeInset 边距
+ *  @param type      约束类型
+ */
+- (void)setupMarginToSuperViewAtEdgeInset:(UIEdgeInsets)edgeInset type:(CGLayoutForSuperViewType)type;
+
+/**
+ *  设置视图与父视图的约束关系
+ *
+ *  @param edgeInset      边距
+ *  @param type           约束类型
+ *  @param layoutRelation 边距的样式
+ */
+//- (void)setupMarginToSuperViewAtEdgeInset:(UIEdgeInsets)edgeInset type:(CGLayoutForSuperViewType)type layoutRelation:(NSLayoutRelation)layoutRelation;
+
+#pragma mark - 设置视图与指定视图之间的约束
+- (void)marginToView:(UIView *)view layoutAttribute:(NSLayoutAttribute)attribute space:(CGFloat)space;
+
+#pragma mark - 设置视图自身的约束
+
+/** 设置视图固定大小 */
+- (void)setupSize:(CGSize)size;
+
+/** 设置视图固定宽度 */
+- (void)setupSizeAtWidth:(CGFloat)width;
+
+/** 设置视图固定高度 */
+- (void)setupSizeAtHeight:(CGFloat)height;
 @end
