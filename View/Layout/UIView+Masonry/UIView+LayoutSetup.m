@@ -211,6 +211,12 @@
             case NSLayoutAttributeHeight:
                 make.height.equalTo(view.mas_height);
                 break;
+            case NSLayoutAttributeCenterY:
+                make.centerY.equalTo(view.mas_centerY);
+                break;
+            case NSLayoutAttributeCenterX:
+                make.centerX.equalTo(view.mas_centerX);
+                break;
             default:
                 break;
         }

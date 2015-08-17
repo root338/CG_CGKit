@@ -11,3 +11,8 @@
 const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 
 const UIViewAutoresizing UIViewAutoresizingFlexibleSize = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
+UIEdgeInsets UIEdgeInsetsMakeAllEqualValue(CGFloat value)
+{
+    return UIEdgeInsetsMake(value, value, value, value);
+}

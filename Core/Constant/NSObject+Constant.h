@@ -13,3 +13,8 @@
 const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin;
 
 const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
+
+/**
+ *  当UIEdgeInsets的四边间距相等使用
+ */
+UIEdgeInsets UIEdgeInsetsMakeAllEqualValue(CGFloat value);

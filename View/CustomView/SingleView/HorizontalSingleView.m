@@ -78,7 +78,7 @@
     }
     
     self.sliderView.backgroundColor = self.appearance.sliderColor;
-    
+    self.sliderView.layer.cornerRadius = self.appearance.sliderCornerRadius;
     
     //选择内容控件内部设置
     /////////

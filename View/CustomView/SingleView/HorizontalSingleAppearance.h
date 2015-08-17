@@ -49,6 +49,9 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
  */
 @property (nonatomic, strong) UIColor * sliderColor;
 
+/** 滑块圆角设置 */
+@property (assign, nonatomic) CGFloat sliderCornerRadius;
+
 /**
  *  滑块宽度设置类型
  */

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSObject+Constant.h"
 
 /** 坐标区域计算 */
 @interface UIView (CG_CGAreaCalculate)
