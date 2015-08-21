@@ -12,8 +12,8 @@
 
 + (NSDictionary *)getAppInfo
 {
-    NSString *appInfoPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
-    NSDictionary *appInfo = [NSDictionary dictionaryWithContentsOfFile:appInfoPath];
+//    NSString *appInfoPath = [[NSBundle mainBundle] infoDictionary];
+    NSDictionary *appInfo = [[NSBundle mainBundle] infoDictionary];//[NSDictionary dictionaryWithContentsOfFile:appInfoPath];
     return appInfo;
 }
 
