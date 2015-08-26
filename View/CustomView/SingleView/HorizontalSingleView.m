@@ -58,6 +58,11 @@
     return button;
 }
 
+- (UIButton *)buttonAtIndex:(NSInteger)index
+{
+    return [self contentViewAtIndex:index];
+}
+
 #pragma mark - 页面设置
 /**
  *  更新视图

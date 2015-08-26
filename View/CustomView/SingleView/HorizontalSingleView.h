@@ -59,6 +59,15 @@
  */
 @property (nonatomic, assign) Class selecteViewClass;
 
+/**
+ *  获取指定索引的按钮
+ *
+ *  @param index 索引号
+ *
+ *  @return 指定索引的按钮
+ */
+- (UIButton *)buttonAtIndex:(NSInteger)index;
+
 #pragma mark - 位置变化
 /**
  *  更新滑块的坐标
