@@ -29,4 +29,22 @@
     
     return button;
 }
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space
+{
+    UIImage *image = [[UIImage imageNamed:normalImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:image space:space];
+}
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage space:(CGFloat)space
+{
+    UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font];
+    !normalImage ?: [button setImage:normalImage forState:UIControlStateNormal];
+    
+    if (space) {
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, space);
+    }
+    
+    return button;
+}
 @end
