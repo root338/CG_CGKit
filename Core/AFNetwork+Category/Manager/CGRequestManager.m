@@ -92,7 +92,6 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:nil];
     
     
-    
     AFHTTPRequestOperation *operation = [self.requestOperationManager HTTPRequestOperationWithRequest:request success:successBlock failure:failureBlock];
     
     return operation;
