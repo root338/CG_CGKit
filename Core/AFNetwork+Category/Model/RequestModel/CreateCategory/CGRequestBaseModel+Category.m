@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 ym. All rights reserved.
 //
 
-#import "CGRequestBaseModel+CreateRequestBaseModel.h"
+#import "CGRequestBaseModel+Category.h"
 
 @implementation CGRequestBaseModel (CreateRequestBaseModel)
 

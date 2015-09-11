@@ -10,15 +10,18 @@
 #import "CGRequestDefineHeader.h"
 
 /** 网络请求的模型基类 */
-@interface CGRequestBaseModel : NSObject
+@interface CGRequestBaseModel : NSObject<NSCopying>
 
-#pragma mark - 请求类
+#pragma mark - 请求连接
 /** 基链接 */
 @property (strong, nonatomic) NSString *baseURL;
 
 #pragma mark - 发送方式
 /** 请求HTTP的方式 */
 @property (assign, nonatomic) CGHTTPRequestType HTTPRequestType;
+
+/** POST请求下body封装的数据形式 */
+@property (assign, nonatomic) CGHTTPRequestBodyType HTTPRequestBodyType;
 
 #pragma mark - 请求数据
 /** 添加的HTTP头信息 */
@@ -33,6 +36,5 @@
 
 /** 加载的提示文字 */
 @property (strong, nonatomic) NSString *loadingPromptString;
-
 
 @end

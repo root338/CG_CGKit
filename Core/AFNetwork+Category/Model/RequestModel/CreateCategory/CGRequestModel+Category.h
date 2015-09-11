@@ -23,3 +23,16 @@
 + (instancetype)createRequestModelWithPathURL:(NSString *)pathURL parameters:(NSDictionary *)parameters resolveResponseClass:(Class)resolveResponseClass;
 
 @end
+
+@interface CGRequestModel (NewUpdateRequestModel)
+
+/**
+ *  合并基类请求类型
+ *
+ *  @param requestBaseModel 基类请求类型
+ *
+ *  @return 返回合并后新的请求模型
+ */
+- (CGRequestModel *)requestWithUpdateBaseModel:(CGRequestBaseModel *)baseRequestModel;
+
+@end

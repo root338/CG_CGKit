@@ -10,4 +10,23 @@
 
 @implementation CGRequestModel
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    
+    CGRequestModel *requestModel = [super copyWithZone:zone];
+    
+    requestModel.pathURL = [self.pathURL copy];
+    
+    requestModel.parameters = [self.parameters copy];
+    
+    requestModel.resolveResponseClass = self.resolveResponseClass;
+    requestModel.isAutoResolveResponse = self.isAutoResolveResponse;
+    
+    requestModel.isApplyHTTPRequestType = self.isApplyHTTPRequestType;
+    requestModel.isApplyHTTPRequestBodyType = self.isApplyHTTPRequestBodyType;
+    requestModel.isApplyShowPromptView = self.isApplyShowPromptView;
+    
+    return requestModel;
+}
+
 @end

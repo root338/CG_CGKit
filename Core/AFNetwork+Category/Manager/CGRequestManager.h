@@ -37,7 +37,6 @@ typedef void (^CompletionForRequestResult) (AFHTTPRequestOperation *operation);
 
 
 #pragma mark - 网络请求数据
-@property (strong, nonatomic) CGRequestBaseModel *requestBaseModel;
 
 
 #pragma mark - 请求数据接口

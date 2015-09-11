@@ -10,13 +10,85 @@
 
 @interface CGAlertView : UIAlertView
 
+#pragma mark - 可选择提示，根据用户选择执行回调
+/**
+ *  创建UIAlertView并自动弹出，设置（标题，内容）
+ *  @see                  默认按钮设置为确定、取消，根据选择回调
+ *
+ *  @param title          标题
+ *  @param message        内容
+ *  @param resultCallback 回调方法（回调是否点击了取消按钮）
+ *
+ *  @return 返回创建好的UIAlertView
+ */
 + (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message resultCallback:(void (^)(BOOL isCancel))resultCallback;
 
+/**
+ *  创建UIAlertView并自动弹出，设置（标题，内容，取消按钮，其他按钮）
+ *  @see 根据用户选择回调
+ *
+ *  @param title            标题
+ *  @param message          内容
+ *  @param cancelTitle      取消按钮名
+ *  @param otherButtonTitle 其他按钮名
+ *  @param resultCallback   点击后的回调方法（回调是否点击了取消按钮）
+ *
+ *  @return 返回创建好的UIAlertView
+ */
 + (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (^)(BOOL isCancel))resultCallback;
 
+#pragma mark - 仅提示，有标题和内容
+/**
+ *  创建UIAlertView并自动弹出，设置（内容）
+ *  @see           默认按钮仅有确定按钮，标题为“通知”，仅提示没有回调
+ *
+ *  @param message 内容
+ *
+ *  @return 返回创建好的UIAlertView
+ */
 + (instancetype)showAlertViewWithNoteMessage:(NSString *)message;
 
+/**
+ *  创建UIAlertView并自动弹出，设置（内容，内容）
+ *  @see 默认按钮仅有确定按钮，仅提示没有回调
+ *
+ *  @param title   标题
+ *  @param message 内容
+ *
+ *  @return 返回创建好的UIAlertView
+ */
 + (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message;
 
+/**
+ *  创建UIAlertView并自动弹出，设置（内容，取消按钮名称）
+ *  @see 默认标题为“通知”，仅提示没有回调
+ *
+ *  @param message     内容
+ *  @param cancelTitle 取消按钮的名称
+ *
+ *  @return 返回创建好的UIAlertView
+ */
 + (instancetype)showAlertViewWithNoteMessage:(NSString *)message cancelTitle:(NSString *)cancelTitle;
+
+#pragma mark - 仅提示，无标题
+/**
+ *  创建UIAlertView并自动弹出，设置（内容）
+ *  @see           默认按钮仅有确定按钮，无标题，仅提示没有回调
+ *
+ *  @param message 内容
+ *
+ *  @return 返回创建好的UIAlertView
+ */
++ (instancetype)showAlertViewWithOnlyMessage:(NSString *)message;
+
+/**
+ *  创建UIAlertView并自动弹出，设置（内容，取消按钮名称）
+ *  @see 无标题，仅提示没有回调
+ *
+ *  @param message     内容
+ *  @param cancelTitle 取消按钮
+ *
+ *  @return 返回创建好的UIAlertView
+ */
++ (instancetype)showAlertViewWithOnlyMessage:(NSString *)message cancelTitle:(NSString *)cancelTitle;
 @end

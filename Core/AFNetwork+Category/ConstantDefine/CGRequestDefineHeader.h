@@ -23,4 +23,32 @@ typedef NS_ENUM(NSInteger, CGHTTPRequestType){
     CGHTTPRequestTypePOST,
 };
 
+/**
+ *  发送的数据形式
+ */
+typedef NS_ENUM(NSInteger, CGHTTPRequestBodyType){
+    /**
+     *  json串的形式
+     */
+    CGHTTPRequestBodyTypeJSON,
+    /**
+     *  键值对的形式
+     */
+    CGHTTPRequestBodyTypeKey_Value,
+};
+
+/**
+ *  解析类型说明
+ */
+typedef NS_ENUM(NSInteger, CGResolveResponseType){
+    /**
+     *  不解析
+     */
+    CGResolveResponseTypeDone,
+    /**
+     *  自动解析
+     */
+    CGResolveResponseTypeDefine,
+};
+
 #endif
