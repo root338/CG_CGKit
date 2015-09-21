@@ -10,9 +10,9 @@
 
 @implementation UILabel (CGCreateCustomLabel)
 
-+ (UILabel *)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
++ (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
 {
-    UILabel *label = [[UILabel alloc] init];
+    UILabel *label = [[self alloc] init];
     label.text = text;
     label.font = font;
     label.textColor = textColor;
