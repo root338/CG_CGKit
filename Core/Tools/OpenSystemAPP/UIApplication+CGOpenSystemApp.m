@@ -38,13 +38,9 @@
     switch (appType) {
         case CGOpenSystemAppType_SettingApp:
         {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-            
-            url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-#else
-            
-            
-#endif
+            if ([[UIDevice currentDevice] _IOS_8_After]) {
+                url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            }
         }
             break;
             
@@ -85,4 +81,28 @@
     }
     return isOpen;
 }
+
+
+@end
+
+@implementation UIDevice (GetSystemVersion)
+
+@dynamic _IOS_7_After;
+@dynamic _IOS_8_After;
+
+- (BOOL)_IOS_7_After
+{
+    return [UIDevice currentSystemVersion] >= 7.0;
+}
+
+- (BOOL)_IOS_8_After
+{
+    return [UIDevice currentSystemVersion] >= 8.0;
+}
+
++ (CGFloat)currentSystemVersion
+{
+    return [UIDevice currentDevice].systemVersion.floatValue;
+}
+
 @end

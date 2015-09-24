@@ -16,4 +16,6 @@
 /** 验证是否可以访问相册 */
 - (BOOL)cg_verifyIsAccessAssetsLibrary;
 
+/** 验证是否可以使用相机 */
+- (BOOL)cg_verifyIsCamera NS_AVAILABLE_IOS(7_0);
 @end

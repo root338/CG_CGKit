@@ -15,18 +15,11 @@
     
     CGSize size = CGSizeZero;
     
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-    
     NSDictionary *dic = @{
                           NSFontAttributeName : self.font,
                           };
     
     size = [self.text sizeWithAttributes:dic];
-#else
-    
-    size = [self.text sizeWithFont:self.font];
-#endif
-    
     
     return size;
 }

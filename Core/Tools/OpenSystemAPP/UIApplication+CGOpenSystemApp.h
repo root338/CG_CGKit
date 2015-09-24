@@ -57,4 +57,18 @@ typedef NS_ENUM(NSInteger, CGOpenSystemAppType){
  */
 + (BOOL)callWithPhone:(NSString *)phoneStr;
 
+
+@end
+
+@interface UIDevice (GetSystemVersion)
+
+/** 当前系统为 iOS 7 以后版本 */
+@property (assign, nonatomic, readonly) BOOL _IOS_7_After;
+
+/** 当前系统为 iOS 8 以后版本  */
+@property (assign, nonatomic, readonly) BOOL _IOS_8_After;
+
+/** 当前系统版本 */
++ (CGFloat)currentSystemVersion;
+
 @end
