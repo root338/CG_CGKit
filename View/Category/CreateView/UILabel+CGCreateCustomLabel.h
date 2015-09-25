@@ -13,7 +13,6 @@
  */
 @interface UILabel (CGCreateCustomLabel)
 
-
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor;
 
 @end
