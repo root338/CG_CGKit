@@ -16,4 +16,5 @@
 
 @property (assign, nonatomic) CGRect QRCodeVideoFrame;
 
+@property (copy, nonatomic) void (^QRCodeCallback) (NSString *resultUrl);
 @end

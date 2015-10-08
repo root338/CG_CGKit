@@ -86,11 +86,18 @@
                 
                 [self.captureSession stopRunning];
                 
-                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *)[self.videoPreviewLayer transformedMetadataObjectForMetadataObject:metadataObj];
+//                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *)[self.videoPreviewLayer transformedMetadataObjectForMetadataObject:metadataObj];
                 
-                
+                [self callbackMethod:content];
             });
         }
+    }
+}
+
+-(void)callbackMethod:(NSString *)paramUrl
+{
+    if (self.QRCodeCallback) {
+        self.QRCodeCallback(paramUrl);
     }
 }
 
