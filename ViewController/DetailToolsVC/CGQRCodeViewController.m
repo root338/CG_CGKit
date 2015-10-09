@@ -10,8 +10,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CGPrintLogHeader.h"
 
-@interface CGQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate>
+#import "NSString+QRCodeURL.h"
+#import "QRCodeURLModel.h"
 
+@interface CGQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate>
+{
+    BOOL _isMark;
+}
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 
 @property (strong, nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
@@ -23,7 +28,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.QRCodeVideoFrame = self.view.bounds;
+    
+    if (CGRectEqualToRect(self.QRCodeVideoFrame, CGRectZero)) {
+        
+        CGSize viewSize = self.view.frame.size;
+        CGFloat minLenght = MIN(viewSize.width, viewSize.height);
+        
+        CGFloat lenght = minLenght - 60;
+        CGFloat originX = (viewSize.width - lenght) / 2;
+        CGFloat originY = 30;
+        
+        self.QRCodeVideoFrame = CGRectMake( originX, originY, lenght, lenght);
+    }
     
     NSError *error = nil;
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -52,15 +68,25 @@
     };
 
     self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
-    [self.videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-    [self.videoPreviewLayer setFrame:self.QRCodeVideoFrame];
+    [self.videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    [self.videoPreviewLayer setFrame:self.view.bounds];
     
-    captureMetadataOutput.rectOfInterest = self.view.layer.bounds;
+    CGFloat originX = - (self.QRCodeVideoFrame.origin.x / self.view.frame.size.width);
+    CGFloat originY = - ((self.QRCodeVideoFrame.origin.y + 44) / self.view.frame.size.height);
+    CGFloat width   = self.QRCodeVideoFrame.size.width / self.view.frame.size.width;
+    CGFloat height  = self.QRCodeVideoFrame.size.height / self.view.frame.size.height;
+    captureMetadataOutput.rectOfInterest = CGRectMake(originY, originX, height, width);
+    NSLog(@"---%@---",NSStringFromCGRect(captureMetadataOutput.rectOfInterest));
     [self.view.layer addSublayer:self.videoPreviewLayer];
     
     [self.captureSession startRunning];
     
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.QRCodeVideoFrame];
+    imageView.layer.borderColor = [UIColor brownColor].CGColor;
+    imageView.layer.borderWidth = 2;
+    imageView.backgroundColor = [UIColor clearColor];
     
+    [self.view addSubview:imageView];
 }
 
 - (void)stopReading
@@ -89,6 +115,7 @@
 //                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *)[self.videoPreviewLayer transformedMetadataObjectForMetadataObject:metadataObj];
                 
                 [self callbackMethod:content];
+                NSLog(@"////////////");
             });
         }
     }
@@ -96,6 +123,7 @@
 
 -(void)callbackMethod:(NSString *)paramUrl
 {
+    
     if (self.QRCodeCallback) {
         self.QRCodeCallback(paramUrl);
     }

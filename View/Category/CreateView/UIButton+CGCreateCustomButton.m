@@ -30,9 +30,21 @@
     return button;
 }
 
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
+{
+    UIImage *normalImage = [self loadLocalImageName:normalImageName];
+    UIImage *selectImage = [self loadLocalImageName:selectImageName];
+    
+    UIButton *button = [self buttonWithType:type];
+    !normalImage ?: [button setImage:normalImage forState:UIControlStateNormal];
+    !selectImage ?: [button setImage:selectImage forState:UIControlStateSelected];
+    
+    return button;
+}
+
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space
 {
-    UIImage *image = [[UIImage imageNamed:normalImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *image = [self loadLocalImageName:normalImageName];
     return [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:image space:space];
 }
 
@@ -46,5 +58,10 @@
     }
     
     return button;
+}
+
++ (UIImage *)loadLocalImageName:(NSString *)imageName
+{
+    return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 @end

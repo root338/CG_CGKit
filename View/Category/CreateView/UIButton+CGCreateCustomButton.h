@@ -24,6 +24,17 @@
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font;
 
 /**
+ *  创建按钮，设置按钮样式、默认图片、选中图片
+ *
+ *  @param type            按钮样式
+ *  @param normalImage     默认图片
+ *  @param selectImageName 选中图片
+ *
+ *  @return 返回创建好的按钮
+ */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
+
+/**
  *  创建按钮，设置按钮样式、标题、标题颜色、标题字体、外边框的宽度、颜色和圆角
  *
  *  @param type        样式
