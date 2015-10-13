@@ -15,4 +15,10 @@
 
 /** 验证字符串是否由纯数字组成 */
 - (BOOL)verificationIsAllNumber;
+
+@end
+
+@interface NSString (VerificationPhone)
+
+//- (BOOL)verificationIsPhone;
 @end

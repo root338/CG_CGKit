@@ -27,3 +27,9 @@
     return [predicate evaluateWithObject:self];
 }
 @end
+
+@implementation NSString (VerificationPhone)
+
+
+
+@end
