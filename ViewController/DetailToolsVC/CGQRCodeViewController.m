@@ -29,18 +29,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    if (CGRectEqualToRect(self.QRCodeVideoFrame, CGRectZero)) {
-        
-        CGSize viewSize = self.view.frame.size;
-        CGFloat minLenght = MIN(viewSize.width, viewSize.height);
-        
-        CGFloat lenght = minLenght - 60;
-        CGFloat originX = (viewSize.width - lenght) / 2;
-        CGFloat originY = 30;
-        
-        self.QRCodeVideoFrame = CGRectMake( originX, originY, lenght, lenght);
+    [self createReading];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (!self.captureSession.isRunning) {
+        [self.captureSession startRunning];
     }
-    
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if (self.captureSession.isRunning) {
+        [self.captureSession stopRunning];
+    }
+}
+
+#pragma mark - 相机设置
+- (void)createReading
+{
     NSError *error = nil;
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
@@ -58,35 +68,25 @@
     [self.captureSession addOutput:captureMetadataOutput];
     
     if ([captureMetadataOutput.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeQRCode]) {
-    
+        
         [captureMetadataOutput setMetadataObjectTypes:@[
                                                         AVMetadataObjectTypeQRCode,
                                                         ]];
     }else {
-    
+        
         CGDebugAssert(nil, @"设备不支持二维码扫描");
     };
-
+    
     self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
     [self.videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     [self.videoPreviewLayer setFrame:self.view.bounds];
     
-    CGFloat originX = - (self.QRCodeVideoFrame.origin.x / self.view.frame.size.width);
-    CGFloat originY = - ((self.QRCodeVideoFrame.origin.y + 44) / self.view.frame.size.height);
-    CGFloat width   = self.QRCodeVideoFrame.size.width / self.view.frame.size.width;
-    CGFloat height  = self.QRCodeVideoFrame.size.height / self.view.frame.size.height;
-    captureMetadataOutput.rectOfInterest = CGRectMake(originY, originX, height, width);
-    NSLog(@"---%@---",NSStringFromCGRect(captureMetadataOutput.rectOfInterest));
+    CGRect frame = [self setupRectOfInterest];
+    captureMetadataOutput.rectOfInterest = frame;
+    
     [self.view.layer addSublayer:self.videoPreviewLayer];
     
     [self.captureSession startRunning];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.QRCodeVideoFrame];
-    imageView.layer.borderColor = [UIColor brownColor].CGColor;
-    imageView.layer.borderWidth = 2;
-    imageView.backgroundColor = [UIColor clearColor];
-    
-    [self.view addSubview:imageView];
 }
 
 - (void)stopReading
@@ -94,6 +94,17 @@
     [self.captureSession stopRunning];
     self.captureSession = nil;
     [self.videoPreviewLayer removeFromSuperlayer];
+}
+
+- (CGRect)setupRectOfInterest
+{
+    CGSize size = self.view.bounds.size;
+    
+    CGFloat originX = self.QRCodeVideoFrame.origin.x / size.width;
+    CGFloat originY = self.QRCodeVideoFrame.origin.y / size.height;
+    CGFloat width   = self.QRCodeVideoFrame.size.width / size.width;
+    CGFloat height  = self.QRCodeVideoFrame.size.height / size.height;
+    return CGRectMake(originY, originX, height, width);
 }
 
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
@@ -115,7 +126,6 @@
 //                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *)[self.videoPreviewLayer transformedMetadataObjectForMetadataObject:metadataObj];
                 
                 [self callbackMethod:content];
-                NSLog(@"////////////");
             });
         }
     }
@@ -145,5 +155,18 @@
 */
 
 #pragma mark - 属性设置
+- (void)setQRCodeVideoFrame:(CGRect)QRCodeVideoFrame
+{
+    if (!CGRectContainsRect(_QRCodeVideoFrame, QRCodeVideoFrame)) {
+        
+        _QRCodeVideoFrame = QRCodeVideoFrame;
+        if (self.captureSession.outputs.count) {
+            if ([[self.captureSession.outputs firstObject] isKindOfClass:[AVCaptureMetadataOutput class]]) {
+                AVCaptureMetadataOutput *captureMetadataOutput = [self.captureSession.outputs firstObject];
+                captureMetadataOutput.rectOfInterest = [self setupRectOfInterest];
+            }
+        }
+    }
+}
 
 @end

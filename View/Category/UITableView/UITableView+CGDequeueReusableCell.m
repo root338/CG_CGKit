@@ -15,4 +15,8 @@
     return [self dequeueReusableCellWithIdentifier:NSStringFromClass(identifier)];
 }
 
+- (nullable __kindof UITableViewHeaderFooterView *)cg_dequeueReusableHeaderFooterWithClass:(nullable Class)identifier
+{
+    return [self dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass(identifier)];
+}
 @end

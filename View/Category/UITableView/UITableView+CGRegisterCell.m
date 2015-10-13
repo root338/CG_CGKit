@@ -15,6 +15,11 @@
     [self cg_registerClass:cellClassIdentifier forCellReuseClass:cellClassIdentifier];
 }
 
+- (void)cg_registerHeaderFooterViewClassWithClassIdentifier:(Class)headerFooterClassIdentifier
+{
+    [self cg_registerClass:headerFooterClassIdentifier forHeaderFooterViewReuseClass:headerFooterClassIdentifier];
+}
+
 - (void)cg_registerNib:(nullable UINib *)nib forCellReuseClass:(nullable Class)identifier
 {
     [self registerNib:nib forCellReuseIdentifier:NSStringFromClass(identifier)];

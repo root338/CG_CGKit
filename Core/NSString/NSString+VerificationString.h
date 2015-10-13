@@ -13,4 +13,6 @@
 /** 验证字符串前缀是否是 http:// 或 https:// 开头的 */
 - (BOOL)verificationIsHTTPPrefix;
 
+/** 验证字符串是否由纯数字组成 */
+- (BOOL)verificationIsAllNumber;
 @end

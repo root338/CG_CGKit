@@ -7,6 +7,7 @@
 //
 
 #import "NSString+VerificationString.h"
+#import "NSPredicate+CreatePredicate.h"
 
 @implementation NSString (VerificationString)
 
@@ -19,4 +20,10 @@
     return NO;
 }
 
+- (BOOL)verificationIsAllNumber
+{
+    
+    NSPredicate *predicate = [NSPredicate createPredicateSelfMatchesWithString:@"\\d{1,}"];
+    return [predicate evaluateWithObject:self];
+}
 @end

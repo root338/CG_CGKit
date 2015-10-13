@@ -17,4 +17,7 @@
 @property (assign, nonatomic) CGRect QRCodeVideoFrame;
 
 @property (copy, nonatomic) void (^QRCodeCallback) (NSString *resultUrl);
+
+/** 设置扫描感应框 */
+- (CGRect)setupRectOfInterest;
 @end
