@@ -43,7 +43,7 @@ typedef NS_OPTIONS(NSInteger, LineBoxType) {
 @property (assign, nonatomic) CGFloat lineWidth;
 
 /**
- *  是否使用绘制
+ *  是否使用绘制、暂时没用
  */
 @property (assign, nonatomic) BOOL isDrawLine;
 
