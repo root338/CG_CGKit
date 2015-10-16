@@ -20,4 +20,7 @@
 
 /** 设置扫描感应框 */
 - (CGRect)setupRectOfInterest;
+
+- (void)startCaptureSession;
+- (void)stopCaptureSession;
 @end

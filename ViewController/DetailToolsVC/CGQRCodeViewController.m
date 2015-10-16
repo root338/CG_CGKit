@@ -35,14 +35,24 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (!self.captureSession.isRunning) {
-        [self.captureSession startRunning];
-    }
+    [self startCaptureSession];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self stopCaptureSession];
+}
+
+- (void)startCaptureSession
+{
+    if (!self.captureSession.isRunning) {
+        [self.captureSession startRunning];
+    }
+}
+
+- (void)stopCaptureSession
+{
     if (self.captureSession.isRunning) {
         [self.captureSession stopRunning];
     }
@@ -91,7 +101,7 @@
 
 - (void)stopReading
 {
-    [self.captureSession stopRunning];
+    [self stopCaptureSession];
     self.captureSession = nil;
     [self.videoPreviewLayer removeFromSuperlayer];
 }
