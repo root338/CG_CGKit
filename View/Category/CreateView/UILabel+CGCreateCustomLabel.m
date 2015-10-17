@@ -17,6 +17,19 @@
     label.font = font;
     label.textColor = textColor;
     
+    //默认属性
+    label.backgroundColor   = [UIColor clearColor];
+    label.textAlignment     = NSTextAlignmentLeft;
+    
+    return label;
+}
+
++ (instancetype)cg_createLabelWithFrame:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment
+{
+    UILabel *label = [self cg_createLabelWithText:text font:font textColor:textColor];
+    
+    label.frame = frame;
+    label.textAlignment = textAlignment;
     return label;
 }
 

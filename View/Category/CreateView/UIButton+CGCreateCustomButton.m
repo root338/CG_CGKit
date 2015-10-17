@@ -8,6 +8,7 @@
 
 #import "UIButton+CGCreateCustomButton.h"
 
+
 @implementation UIButton (CGCreateCustomButton)
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
@@ -17,6 +18,17 @@
     [button setTitleColor:titleColor forState:UIControlStateNormal];
     button.titleLabel.font = font;
     return button;
+}
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius
+{
+    return [self cg_createButtonWithButtonType:type
+                                         title:title
+                                    titleColor:titleColor
+                                          font:font
+                                   borderWidth:0
+                                   borderColor:0
+                                        radius:radius];
 }
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor radius:(CGFloat)radius

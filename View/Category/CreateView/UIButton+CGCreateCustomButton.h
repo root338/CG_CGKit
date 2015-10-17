@@ -35,6 +35,19 @@
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
 
 /**
+ *  创建按钮，设置按钮样式、标题、标题颜色、标题字体和圆角
+ *
+ *  @param type        样式
+ *  @param title       标题
+ *  @param titleColor  标题颜色
+ *  @param font        标题字体
+ *  @param radius      圆角值
+ *
+ *  @return 返回创建好的按钮
+ */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius;
+
+/**
  *  创建按钮，设置按钮样式、标题、标题颜色、标题字体、外边框的宽度、颜色和圆角
  *
  *  @param type        样式
@@ -43,6 +56,7 @@
  *  @param font        标题字体
  *  @param borderWidth 边框宽度
  *  @param borderColor 边框颜色
+ *  @param radius      圆角值
  *
  *  @return 返回创建好的按钮
  */

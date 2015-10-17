@@ -29,7 +29,7 @@
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
-    [super setBackgroundColor:backgroundColor];
+    
     [self setBackgroundColor:backgroundColor forState:UIControlStateNormal];
 }
 
@@ -51,9 +51,11 @@
         {
             if (backgroundColor) {
                 normalColor         = backgroundColor;
+                super.backgroundColor = backgroundColor;
             }else {
                 color               = normalColor;
             }
+            
         }
             break;
         case UIControlStateHighlighted:
