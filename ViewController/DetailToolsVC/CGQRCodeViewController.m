@@ -127,17 +127,16 @@
         NSString *codeType = [metadataObj type];
         content = metadataObj.stringValue;
         
-        if ([codeType isEqualToString:AVMetadataObjectTypeQRCode]) {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([codeType isEqualToString:AVMetadataObjectTypeQRCode]) {
                 
                 [self.captureSession stopRunning];
                 
 //                AVMetadataMachineReadableCodeObject *transformed = (AVMetadataMachineReadableCodeObject *)[self.videoPreviewLayer transformedMetadataObjectForMetadataObject:metadataObj];
                 
                 [self callbackMethod:content];
-            });
-        }
+            }
+        });
     }
 }
 
