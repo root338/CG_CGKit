@@ -79,7 +79,7 @@
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space;
 
 /**
- *  创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、图片名(UIImage)和标题和图片的间距
+ *  创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、图片(UIImage)和标题和图片的间距
  *
  *  @param type        样式
  *  @param title       标题
