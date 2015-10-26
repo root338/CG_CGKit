@@ -7,7 +7,6 @@
 //
 
 #import "CGNavigationAppearance.h"
-#import "CGVerifyIOSVersionHeader.h"
 
 @implementation CGNavigationAppearance
 

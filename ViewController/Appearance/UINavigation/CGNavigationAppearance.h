@@ -26,7 +26,7 @@
 /** 标题颜色 */
 @property (strong, nonatomic) UIColor *barTintColor;
 
-/** 竖屏下的背景图片 像素128PX高*/
+/** 竖屏下的背景图片 像素128px高*/
 @property (strong, nonatomic) UIImage *backgroundImageForNavigationBar;
 
 /** 导航栏背景 */
