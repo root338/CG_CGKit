@@ -15,6 +15,14 @@
     [self cg_registerClass:cellClassIdentifier forCellReuseClass:cellClassIdentifier];
 }
 
+- (void)cg_registerNibWithClassIdentifier:(Class)cellClassIdentifier
+{
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass(cellClassIdentifier) bundle:[NSBundle bundleForClass:cellClassIdentifier]];
+    if (nib) {
+        [self cg_registerNib:nib forCellReuseClass:cellClassIdentifier];
+    }
+}
+
 - (void)cg_registerHeaderFooterViewClassWithClassIdentifier:(Class)headerFooterClassIdentifier
 {
     [self cg_registerClass:headerFooterClassIdentifier forHeaderFooterViewReuseClass:headerFooterClassIdentifier];

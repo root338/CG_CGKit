@@ -12,6 +12,10 @@
 
 /** 当注册的标识与类名相同时，注册cell的快捷方法 */
 - (void)cg_registerClassWithClassIdentifier:(nullable Class)cellClassIdentifier NS_AVAILABLE_IOS(6_0);
+
+/** 当注册的标识与类名相同时，注册cell的快捷方法 */
+- (void)cg_registerNibWithClassIdentifier:(nullable Class)cellClassIdentifier;
+
 - (void)cg_registerHeaderFooterViewClassWithClassIdentifier:(nullable Class)headerFooterClassIdentifier NS_AVAILABLE_IOS(6_0);
 
 - (void)cg_registerNib:(nullable UINib *)nib forCellReuseClass:(nullable Class)identifier NS_AVAILABLE_IOS(5_0);
