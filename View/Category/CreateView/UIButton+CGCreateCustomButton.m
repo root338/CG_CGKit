@@ -41,8 +41,9 @@
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
 {
-    UIImage *normalImage = [self loadLocalImageName:normalImageName];
-    UIImage *selectImage = [self loadLocalImageName:selectImageName];
+    
+    UIImage *normalImage = !normalImageName ? nil : [self loadLocalImageName:normalImageName];
+    UIImage *selectImage = !selectImageName ? nil : [self loadLocalImageName:selectImageName];
     
     UIButton *button = [self buttonWithType:type];
     !normalImage ?: [button setImage:normalImage forState:UIControlStateNormal];
@@ -53,7 +54,7 @@
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space
 {
-    UIImage *image = [self loadLocalImageName:normalImageName];
+    UIImage *image = !normalImageName ? nil :[self loadLocalImageName:normalImageName];
     return [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:image space:space];
 }
 
