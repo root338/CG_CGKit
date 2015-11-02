@@ -91,4 +91,8 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
  *  选择按钮之间的间距
  */
 @property (nonatomic, assign) CGFloat spaceForButtons;
+
+#pragma mark - 按钮外观设置
+/** 按钮创建的状态 */
+@property (assign, nonatomic) UIButtonType buttonType;
 @end

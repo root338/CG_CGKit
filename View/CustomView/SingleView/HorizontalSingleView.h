@@ -60,6 +60,12 @@
 @property (nonatomic, assign) Class selecteViewClass;
 
 /**
+ *  设置按钮的外观
+ *  
+ */
+@property (copy, nonatomic) void (^setupButtonAppearance) (UIButton *button);
+
+/**
  *  获取指定索引的按钮
  *
  *  @param index 索引号

@@ -101,7 +101,16 @@
             button = [self.selecteViewClass new];
             [button setTitle:obj forState:UIControlStateNormal];
             
+        }else {
+            
+            button = [UIButton buttonWithType:self.appearance.buttonType];
+            [button setTitle:obj forState:UIControlStateNormal];
         }
+        
+        if (self.setupButtonAppearance) {
+            self.setupButtonAppearance(button);
+        }
+        
         if (button) {
             
             button.tag = idx;
@@ -209,6 +218,7 @@
 }
 
 #pragma mark - 设置属性
+
 - (void)setTitles:(NSArray *)titles
 {
     if (![_titles isEqualToArray:titles]) {
