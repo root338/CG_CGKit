@@ -12,7 +12,7 @@
 
 -(void) baseInteractivePopGestureRecognizerEnable:(BOOL) enable
 {
-    NSLog(@"%@", self.navigationController);
+//    NSLog(@"%@", self.navigationController);
 //    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         if (enable) {
 //            self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
