@@ -52,6 +52,32 @@
     return button;
 }
 
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImage:(UIImage *)normalImage
+{
+    UIButton *button = [self buttonWithType:type];
+    if (normalImage) {
+        
+        [button setImage:normalImage forState:UIControlStateNormal];
+        
+        CGRect frame = button.frame;
+        if (CGRectEqualToRect(frame, CGRectZero)) {
+            frame.size = normalImage.size;
+            button.frame = frame;
+        }
+    }
+    
+    return button;
+}
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName
+{
+    UIImage *normalImage = !normalImageName ? nil : [self loadLocalImageName:normalImageName];
+    UIButton *button = [self cg_createButtonWithButtonType:type normalImage:normalImage];
+    
+    
+    return button;
+}
+
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space
 {
     UIImage *image = !normalImageName ? nil :[self loadLocalImageName:normalImageName];

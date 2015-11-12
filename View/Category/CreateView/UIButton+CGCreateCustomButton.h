@@ -35,6 +35,26 @@
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
 
 /**
+ *  创建按钮，设置按钮样式、默认图片名(并且设置按钮的大小为图片大小)
+ *
+ *  @param type            按钮样式
+ *  @param normalImageName 默认图片名
+ *
+ *  @return 返回创建好的按钮
+ */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImage;
+
+/**
+ *  创建按钮，设置按钮样式、默认图片(并且设置按钮的大小为图片大小)
+ *
+ *  @param type            按钮样式
+ *  @param normalImageName 默认图片
+ *
+ *  @return 返回创建好的按钮
+ */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImage:(UIImage *)normalImageName;
+
+/**
  *  创建按钮，设置按钮样式、标题、标题颜色、标题字体和圆角
  *
  *  @param type        样式
