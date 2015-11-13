@@ -21,6 +21,10 @@
 /** 导航栏回退按钮外观设置对象，默认为UIBarButtonItem */
 @property (strong, nonatomic) id appearanceForBackItem;
 
+//- (void)setupNavigationBar:(NSArray<Class <UIAppearanceContainer>> *)paramArr;
+//
+//- (void)setupBackItem:(NSArray<Class <UIAppearanceContainer>> *)paramArr;
+
 #pragma mark - UINavigationBar或其子类属性设置
 
 /** 标题颜色 */
