@@ -7,45 +7,42 @@
 //
 
 #import "UILabel+CGCreateCustomLabel.h"
-#import "UIView+CGSetupAppearance.h"
+
+#import "UILabel+CGSetupAppearance.h"
 
 @implementation UILabel (CGCreateCustomLabel)
 
++ (instancetype)cg_createLabel
+{
+    return [[self alloc] init];
+}
+
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
 {
-    UILabel *label = [[self alloc] init];
-    label.text = text;
-    label.font = font;
-    label.textColor = textColor;
-    
-    //默认属性
-    label.backgroundColor   = [UIColor clearColor];
-    label.textAlignment     = NSTextAlignmentLeft;
+    UILabel *label = [self cg_createLabel];
+    [label cg_setupWithText:text font:font textColor:textColor];
     
     return label;
 }
 
 + (instancetype)cg_createLabelWithFrame:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment
 {
-    UILabel *label = [self cg_createLabelWithText:text font:font textColor:textColor];
+    UILabel *label = [self cg_createLabel];
+    [label cg_setupWithFrame:frame text:text font:font textColor:textColor textAlignment:textAlignment backgroundColor:nil];
     
-    label.frame = frame;
-    label.textAlignment = textAlignment;
     return label;
 }
 
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor cornerRadius:(CGFloat)cornerRadius
 {
-    UILabel *label = [self cg_createLabelWithText:text font:font textColor:textColor];
-    [label cg_setupBorderWithCornerRadius:cornerRadius];
+    UILabel *label = [self cg_createLabelWithText:text font:font textColor:textColor borderWidth:0 borderColor:nil cornerRadius:cornerRadius];
     
     return label;
 }
 
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor
 {
-    UILabel *label = [self cg_createLabelWithText:text font:font textColor:textColor];
-    [label cg_setupBorderWithWidth:borderWidth color:borderColor];
+    UILabel *label = [self cg_createLabelWithText:text font:font textColor:textColor borderWidth:borderWidth borderColor:borderColor cornerRadius:0];
     
     return label;
 }

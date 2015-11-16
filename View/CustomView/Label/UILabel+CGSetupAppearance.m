@@ -10,40 +10,39 @@
 
 @implementation UILabel (CGSetupAppearance)
 
-- (void)setupDefaultBackgroundColor
+- (UIColor *)defaultBackgroundColor
 {
-    self.backgroundColor = [UIColor clearColor];
+    return [UIColor clearColor];
 }
 
-- (void)setupDefaultTextAlignment
+- (NSTextAlignment)defaultTextAlignment
 {
-    self.textAlignment = NSTextAlignmentLeft;
-}
-
-- (void)setupAllDefaultProperty
-{
-    //默认属性
-    [self setupDefaultBackgroundColor];
-    [self setupDefaultTextAlignment];
-}
-
-- (void)setupWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
-{
-    self.text       = text;
-    self.font       = font;
-    self.textColor  = textColor;
+    return NSTextAlignmentLeft;
 }
 
 - (void)cg_setupWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
 {
-    [self setupWithText:text font:font textColor:textColor];
-    [self setupAllDefaultProperty];
+    [self cg_setupWithText:text font:font textColor:textColor textAlignment:[self defaultTextAlignment] backgroundColor:nil];
 }
 
 - (void)cg_setupWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment
 {
-    [self setupWithText:text font:font textColor:textColor];
-    self.textAlignment = textAlignment;
-    [self setupDefaultBackgroundColor];
+    [self cg_setupWithText:text font:font textColor:textColor textAlignment:textAlignment backgroundColor:nil];
+}
+
+- (void)cg_setupWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment backgroundColor:(UIColor *)backgroundColor
+{
+    [self cg_setupWithFrame:CGRectZero text:text font:font textColor:textColor textAlignment:textAlignment backgroundColor:backgroundColor];
+}
+
+- (void)cg_setupWithFrame:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment backgroundColor:(UIColor *)backgroundColor
+{
+    self.text           = text;
+    self.font           = font;
+    self.textColor      = textColor;
+    self.textAlignment  = textAlignment;
+    
+    /** 当不设置背景色时，使用系统默认的背景色 */
+    !backgroundColor ? nil : (self.backgroundColor = backgroundColor);
 }
 @end

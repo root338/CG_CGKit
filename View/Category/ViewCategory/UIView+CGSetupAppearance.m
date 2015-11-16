@@ -12,12 +12,16 @@
 
 - (void)cg_setupBorderWithCornerRadius:(CGFloat)cornerRadius
 {
-    self.layer.cornerRadius = cornerRadius;
-    self.layer.masksToBounds = YES;
+    if (cornerRadius > 0) {
+        
+        self.layer.cornerRadius = cornerRadius;
+        self.layer.masksToBounds = YES;
+    }
 }
 
 - (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor
 {
+
     self.layer.borderColor = borderColor.CGColor;
     self.layer.borderWidth = borderWidth;
 }

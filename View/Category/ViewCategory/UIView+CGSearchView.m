@@ -22,5 +22,4 @@
         return [self.superview searchSuperViewWithClass:className];
     }
 }
-
 @end

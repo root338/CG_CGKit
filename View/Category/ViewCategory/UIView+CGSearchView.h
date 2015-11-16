@@ -11,6 +11,7 @@
 /** 搜索视图 */
 @interface UIView (CGSearchView)
 
+/** 搜索指定类型的父视图 */
 - (id)searchSuperViewWithClass:(Class)className;
 
 @end
