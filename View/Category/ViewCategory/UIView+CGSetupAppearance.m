@@ -14,6 +14,10 @@
 {
     if (cornerRadius > 0) {
         
+        if (cornerRadius == self.layer.cornerRadius) {
+            return;
+        }
+        
         self.layer.cornerRadius = cornerRadius;
         self.layer.masksToBounds = YES;
     }
