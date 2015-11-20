@@ -16,6 +16,8 @@
 /** 验证字符串是否由纯数字组成 */
 - (BOOL)verificationIsAllNumber;
 
+/** 验证字符串是否是中文字符 */
+- (BOOL)verificationIsChineseCharacter;
 @end
 
 @interface NSString (VerificationPhone)
