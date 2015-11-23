@@ -1,8 +1,8 @@
 //
-//  UIScrollView+CGSetupAppearance.m
+//  UIScrollView+CGInit.m
 //  QuickAskCommunity
 //
-//  Created by DY on 15/11/11.
+//  Created by DY on 15/11/23.
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
@@ -10,9 +10,18 @@
 
 @implementation UIScrollView (CGSetupAppearance)
 
-- (void)cg_setupScrollIndicatorWithShow:(BOOL)isShow
+- (void)cg_setupWithShowScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled
 {
-    self.showsHorizontalScrollIndicator = isShow;
-    self.showsHorizontalScrollIndicator = isShow;
+    [self cg_setupWithFrame:CGRectZero showScrollIndicator:showScrollIndicator pagingEnabled:paramPagingEnabled];
 }
+
+- (void)cg_setupWithFrame:(CGRect)frame showScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled
+{
+    
+    self.frame = frame;
+    self.showsHorizontalScrollIndicator = showScrollIndicator;
+    self.showsVerticalScrollIndicator = showScrollIndicator;
+    self.pagingEnabled = paramPagingEnabled;
+}
+
 @end

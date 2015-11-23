@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /** 延长加载的处理方法 */
 void cg_dispath_after_second(CGFloat second, dispatch_block_t block);

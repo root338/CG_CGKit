@@ -29,6 +29,8 @@ typedef NS_ENUM(NSUInteger, KCG_16_ColorValueType) {
     
     KCG_16_ColorValueType_0XE3E3E3  = 0XE3E3E3,
     
+    KCG_16_ColorValueType_0XE5E5E5  = 0xE5E5E5,
+    
     KCG_16_ColorValueType_0XEFEFEF  = 0XEFEFEF,
     
     KCG_16_ColorValueType_0XF2F2F2  = 0XF2F2F2,

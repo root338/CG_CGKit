@@ -1,6 +1,6 @@
 
 #import "RFKeyboard.h"
-
+#import "CGPrintLogHeader.h"
 
 @interface RFKeyboard () <
     UIGestureRecognizerDelegate
@@ -36,7 +36,7 @@
 
 + (CGFloat)keyboardLayoutHeightForNotification:(NSNotification *)note inView:(UIView *)view {
     if (!note.userInfo[UIKeyboardFrameEndUserInfoKey]) {
-        MLog(@"Cannot get keyboard frame info for %@", note);
+        CGLog(@"Cannot get keyboard frame info for %@", note);
         return -1;
     }
     CGRect frame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -159,7 +159,7 @@
     if (![self tryAddGestureRecognizerToKeyWindow]) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if (![self tryAddGestureRecognizerToKeyWindow]) {
-                MLog(@"RFKeyboard: Cannot find root window to add gesture recognizer.");
+                CGLog(@"RFKeyboard: Cannot find root window to add gesture recognizer.");
             }
         });
     }

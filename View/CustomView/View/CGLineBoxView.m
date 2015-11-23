@@ -7,6 +7,8 @@
 //
 
 #import "CGLineBoxView.h"
+#import "UIColor+ColorValueTransform.h"
+#import "UIView+CGSetupFrame.h"
 
 #define SINGLE_LINE_WIDTH           (1 / [UIScreen mainScreen].scale)
 #define SINGLE_LINE_ADJUST_OFFSET   ((1 / [UIScreen mainScreen].scale) / 2)
@@ -27,7 +29,7 @@
 - (void)awakeFromNib
 {
     _lineWidth = .5;
-    _lineColor = RGB_A(0xe5e5e5);
+    _lineColor = __K_CG_16_VALUE_COLOR(KCG_16_ColorValueType_0XE5E5E5);
 }
 
 // Only override drawRect: if you perform custom drawing.

@@ -9,7 +9,17 @@
 #ifndef QuickAskCommunity_CGPrintLogHeader_h
 #define QuickAskCommunity_CGPrintLogHeader_h
 
-#ifdef DEBUG //---------if
+#ifdef DEBUG
+
+#define CGPrintLogOpen 1
+
+#else
+
+#define CGPrintLogOpen
+
+#endif
+
+#ifdef CGPrintLogOpen //---------if
 
 #define CGLog(format, ...) do {                                                     \
         fprintf(stderr, "<%s : %d> %s\n",                                           \
