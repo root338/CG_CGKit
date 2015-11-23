@@ -372,23 +372,22 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
 //滑动到上一视图
 - (void)scrollToPreviousView
 {
-    if ([self isShouldUpdateContentViewWithNextIndex:NO]) {
+//    if ([self isShouldUpdateContentViewWithNextIndex:NO]) {
         self.currentIndex--;
         [self setupScrollContentView];
-    }
+//    }
 }
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetX = scrollView.contentOffset.x;
-    
-    if (offsetX <= 0) {
+    if (offsetX <= 0 && !(!self.isCycle && self.currentIndex == 0)) {
+        
         [self scrollToPreviousView];
     }
     
-    //条件((!_previousView || !_nextView) && !self.isCycle && offsetX >= scrollView.width) 当支持循环滑动且滑动偏移量不小于滑动视图宽度且上一视图和下一视图有空得情况下刷新
-    if (offsetX >= scrollView.width * 2) {
+    if (offsetX >= scrollView.width * 2 && !(!self.isCycle && self.currentIndex == _totalViews - 1)) {
         [self scrollToNextView];
     }
 }
