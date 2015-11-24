@@ -29,7 +29,7 @@
     cycleContentView.contentView            = contentView;
     
     cycleContentView.viewIndex              = index;
-    
+    cycleContentView.backgroundColor        = [UIColor orangeColor];
     return cycleContentView;
 }
 

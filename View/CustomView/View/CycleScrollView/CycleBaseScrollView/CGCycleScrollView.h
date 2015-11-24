@@ -33,6 +33,7 @@
 
 @end
 
+
 @protocol CGCycleScrollViewDelegate <NSObject>
 
 @optional
@@ -47,7 +48,10 @@
 @end
 
 /**
- 循环滑动视图的基类
+ *  循环滑动视图基类
+ *  主要功能：可以设置滑动内容是否可以循环滑动
+ *          只有在循环滑动下才可以设置是否自动滑动
+ *          可以设置是否缓存已创建的视图
  */
 @interface CGCycleScrollView : UIView
 
@@ -66,6 +70,13 @@
  是否循环滑动视图 默认为YES
  */
 @property (assign, nonatomic) BOOL isCycle;
+
+//暂时不进行设置，取消该属性定义后需要在getViewIndexForType:方法下添加相应条件，现在就以这种方式实现
+///** 当不循环滑动时当前索引大于最大索引时重置索引等于最大索引 */
+//@property (assign, nonatomic) BOOL isGreaterThanMaxIndexResetForNotCycle;
+//
+///** 当不循环滑动时当前索引小于最小索引时重置索引等于最小索引 */
+//@property (assign, nonatomic) BOOL isLessThanMinIndexResetForNotCycle;
 
 /**
  是否自动滑动，默认为NO
@@ -94,6 +105,9 @@
 
 /** 缓存的最大数 */
 @property (assign, nonatomic) NSUInteger maxCacheCountForViews;
+
+
+
 
 /**
  *  刷新视图
