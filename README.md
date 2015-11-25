@@ -17,41 +17,41 @@
             DataModel 请求的返回数据对象模型
             RequestModel  请求的发送数据对象模型
               CreateCategory  快捷创建请求的发送数据对象模型
-    Constant  设置常量
+        Constant  设置常量
     
-    AreaCalculate 区域计算相关扩展（主要为C函数）
+        AreaCalculate 区域计算相关扩展（主要为C函数）
     
-    Dispath+Category  GCD方法扩展
+        Dispath+Category  GCD方法扩展
     
-    IOSVersion  iOS版本判断
+        IOSVersion  iOS版本判断
     
-    Keyboard  keyboard 管理类
+        Keyboard  keyboard 管理类
     
-    NSArray NSArray 扩展方法
+        NSArray NSArray 扩展方法
     
-    NSDate  时间转换扩展方法
+        NSDate  时间转换扩展方法
     
-    NSError 
+        NSError 
     
-    NSObject  现在实现：1.获取app版本号；
+        NSObject  现在实现：1.获取app版本号；
     
-    NSPredicate
+        NSPredicate
     
-    NSString
+        NSString
     
-    PrintLog  日志打印宏的定义， 需要在项目配置类的Build Setting -> Preprocessor Macros 下设置CGPrintLogOpen CGPrintInfoOpen
+        PrintLog  日志打印宏的定义， 需要在项目配置类的Build Setting -> Preprocessor Macros 下设置CGPrintLogOpen CGPrintInfoOpen
     
-    Tools
-        Category
-          NStimer 计时器扩展方法
-        KeyboardNotification  快捷设置键盘通知扩展
-        LoadLaunchImage 加载启动图
-        Notification
-        OpenSystemAPP 调用系统app
-        UserDefault 
+        Tools
+            Category
+                NStimer 计时器扩展方法
+            KeyboardNotification  快捷设置键盘通知扩展
+            LoadLaunchImage 加载启动图
+            Notification
+            OpenSystemAPP 调用系统app
+            UserDefault 
         
-    UI  UI 开头非视图系统类
-        Category 扩展方法
+        UI  UI 开头非视图系统类
+            Category 扩展方法
         
     View
         Category
