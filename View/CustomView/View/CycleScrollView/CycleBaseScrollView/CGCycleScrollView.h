@@ -10,6 +10,20 @@
 
 @class CGCycleScrollView;
 
+/**
+ *  循环滑动视图的滑动方向
+ */
+typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
+    /**
+     *  水平滑动
+     */
+    CGCycleViewScrollDirectionHorizontal,
+    /**
+     *  垂直滑动
+     */
+    CGCycleViewScrollDirectionVertical,
+};
+
 @protocol CGCycleScrollViewDataSource <NSObject>
 
 /**
@@ -52,6 +66,10 @@
  *  主要功能：可以设置滑动内容是否可以循环滑动
  *          只有在循环滑动下才可以设置是否自动滑动
  *          可以设置是否缓存已创建的视图
+ *          可以设置子视图与子视图之间的间距
+ *          可以设置横滑还是竖滑
+ *
+ *  优化：1.分离类；2.单页滑动时，反弹超出间距没有显示下一页视图
  */
 @interface CGCycleScrollView : UIView
 
@@ -91,7 +109,7 @@
 @property (assign, nonatomic) NSTimeInterval delayTimeInterval;
 
 #pragma mark - 内容设置
-///当前显示视图的索引
+///当前显示视图的索引 @warning 在不分页或滑动时获取将不准确，建议使用cycleScrollView:didSelectRowAtIndex:方法获取
 @property (nonatomic, assign) NSInteger currentIndex;
 
 ///滑动视图相对父视图的四周边距
@@ -106,8 +124,21 @@
 /** 缓存的最大数 */
 @property (assign, nonatomic) NSUInteger maxCacheCountForViews;
 
+/** 设置单个内容视图之间的间距 */
+@property (assign, nonatomic) CGFloat subviewSpace;
 
+/** 是否分页 */
+@property (assign, nonatomic) BOOL pagingEnabled;
 
+/** 滑动视图的滑动方向 */
+@property (assign, nonatomic) CGCycleViewScrollDirection scrollDirection;
+
+/** 
+ *  关闭默认计时器设定(默认为NO)
+ *  开启后CGCycleScrollView不对计时器进行管理，需要使用者自行管理，
+ *  不包含滑动过程中的控制，仅控制加入离开屏幕和移除父视图的控制
+ */
+@property (assign, nonatomic) BOOL isCloseDefaultTimerSetting;
 
 /**
  *  刷新视图
@@ -121,4 +152,17 @@
  *  @param delayTimeInterval 自动滑动延长的时间
  */
 - (instancetype)initWithFrame:(CGRect)frame delayTimeInterval:(NSTimeInterval)delayTimeInterval;
+
+#pragma mark - 计时器控制
+/**
+ *  计时器在默认情况下，加入屏幕开启，离开屏幕暂停，移除父视图时停止
+ *
+ */
+
+/** 开始计时器 */
+- (void)startAutoScroll;
+/** 暂停计时器 */
+- (void)pasueAutoScroll;
+/** 暂停计时器 */
+- (void)stopAutoScroll;
 @end

@@ -9,15 +9,18 @@
 #ifndef QuickAskCommunity_CGPrintLogHeader_h
 #define QuickAskCommunity_CGPrintLogHeader_h
 
-#ifdef DEBUG
-
-#define CGPrintLogOpen 1
-
-#else
-
-#define CGPrintLogOpen
-
-#endif
+//在preprocessor Macros设置
+//#ifdef DEBUG
+//
+//#define CGPrintLogOpen 1
+//
+//#define CGPrintMorenInfoOpen 0
+//#else
+//
+//#define CGPrintLogOpen
+//#define CGPrintMorenInfoOpen
+//
+//#endif
 
 #ifdef CGPrintLogOpen //---------if
 
@@ -31,16 +34,30 @@
 
 #define CGDefaultLog() CGLog(@"")
 
+#ifdef CGPrintMorenInfoOpen
+
+#define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
+#else
+
+#define CGInfoLog(format, ...)
+#endif
+
+//断言
 #define CGDebugAssert(condition, desc, ...)     NSAssert(condition, (desc), ##__VA_ARGS__)
 #define CGDebugAssert1(condition, desc, arg1)   CGDebugAssert(condition, (desc), (arg1))
+
+
 
 #else   //-----------else
 
 #define CGLog(format, ...)
 #define CGDefaultLog()
+#define CGInfoLog(format, ...)
 
 #define CGDebugAssert(condition, desc, ...)
 #define CGDebugAssert1(condition, desc, arg1)
+
+
 
 #endif  //-----------end
 

@@ -49,7 +49,16 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
     ///计时器
     NSTimer *autoScrollTimer;
     
-    BOOL isDragger;
+    ///手指拖动滑动时暂停计时器标识
+    BOOL isDraggerPauseTimerMark;
+    
+    /**
+     *  手指拖动滑动时的标识
+     *  添加标识的原因：再循环滑动的条件下,在代理方法scrollViewWillEndDragging:withVelocity:targetContentOffset:中设置偏移量{0,0}时，由于有反弹效果索引，在代理方法scrollViewDidScroll:到偏移量小于0时就会更新导致偏移量变为滑动视图宽度+视图间距，但是滑动没有停止所以还会继续滑动，导致分页效果出现问题
+     */
+    BOOL isDraggerScrollSubviewMark;
+    
+    
 }
 
 ///加载的滑动视图
@@ -58,8 +67,6 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
 /** 被缓存的视图 */
 @property (strong, nonatomic) NSMutableDictionary *cacheViews;
 
-/** 设置单个内容视图之间的间距 @warning 暂没实现，设置不会有作用 */
-@property (assign, nonatomic) CGFloat subviewSpace;
 @end
 
 @implementation CGCycleScrollView
@@ -83,16 +90,6 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
 - (void)awakeFromNib
 {
     [self initialization];
-    
-    [self.cycleScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if (!self.cycleScrollView.dragging && !self.cycleScrollView.decelerating) {
-        NSLog(@"observe value %@", change);
-    }
-    
 }
 
 - (void)initialization
@@ -100,10 +97,6 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
     if (!self.cycleScrollView.superview) {
         [self addSubview:self.cycleScrollView];
     }
-    
-#ifdef DEBUG
-    self.subviewSpace = 16;
-#endif
 }
 
 #pragma mark - 计时器
@@ -116,44 +109,63 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
             autoScrollTimer = [NSTimer timerWithTimeInterval:self.delayTimeInterval target:self selector:@selector(handleAutoScroll:) userInfo:nil repeats:YES];
             [[NSRunLoop currentRunLoop] addTimer:autoScrollTimer forMode:NSDefaultRunLoopMode];
         }
-        
+        CGInfoLog(@"启动计时器");
         [autoScrollTimer resumeTimerAfterTimeInterval:self.delayTimeInterval];
     }
 }
 
 - (void)pasueAutoScroll
 {
-    [autoScrollTimer pauseTimer];
+    if (autoScrollTimer) {
+        
+        CGInfoLog(@"暂停计时器");
+        [autoScrollTimer pauseTimer];
+    }
 }
 
 - (void)stopAutoScroll
 {
-    [autoScrollTimer stopTimer];
-    autoScrollTimer = nil;
+    if (autoScrollTimer) {
+        
+        CGInfoLog(@"停止计时器");
+        [autoScrollTimer stopTimer];
+        autoScrollTimer = nil;
+    }
 }
 
 - (void)handleAutoScroll:(NSTimer *)paramTimer
 {
-    [self.cycleScrollView setContentOffset:CGPointMake((self.cycleScrollView.width + self.subviewSpace) * 2, 0) animated:YES];
+    CGPoint contentOffset;
+    if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+        contentOffset = CGPointMake((self.cycleScrollView.width + self.subviewSpace) * 2, 0);
+    }else {
+        contentOffset = CGPointMake(0, (self.cycleScrollView.height + self.subviewSpace) * 2);
+    }
+    [self.cycleScrollView setContentOffset:contentOffset animated:YES];
 }
 
 #pragma mark
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     [super willMoveToWindow:newWindow];
-    if (newWindow) {
-        
-        [self startAutoScroll];
-    }else {
-        
-        [self pasueAutoScroll];
+    
+    if (!self.isCloseDefaultTimerSetting) {
+        if (newWindow) {
+            
+            [self startAutoScroll];
+            
+        }else {
+            
+            [self pasueAutoScroll];
+        }
     }
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
-    if (!newSuperview) {
+    
+    if (!self.isCloseDefaultTimerSetting && !newSuperview) {
         
         [self stopAutoScroll];
     }
@@ -184,7 +196,7 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
     
     if (!_totalViews) {
         _totalViews = [self.dataSource numberCycleScrollView:self];
-        self.isCycle ?: [self updateScrollViewContentSize];
+        !self.isCycle ?: [self updateScrollViewContentSize];
     }
 }
 
@@ -217,6 +229,7 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
             if (self.maxCacheCountForViews > self.cacheViews.count) {
                 //当缓存还有空余时
                 [self.cacheViews setObject:paramCycleContentView forKey:@(paramCycleContentView.viewIndex)];
+                CGInfoLog(@"添加缓存视图：%@, 视图索引：%li", paramCycleContentView, paramCycleContentView.viewIndex);
             }else {
                 
                 __block NSInteger removeViewIndex;
@@ -248,11 +261,13 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
                     }
                 }
                 
+                CGInfoLog(@"移除缓存视图：%@, 视图索引：%li", self.cacheViews[@(removeViewIndex)], removeViewIndex);
                 //移除已缓存视图
                 [self.cacheViews removeObjectForKey:@(removeViewIndex)];
                 
                 //添加新视图
                 [self.cacheViews setObject:paramCycleContentView forKey:@(paramCycleContentView.viewIndex)];
+                CGInfoLog(@"添加缓存视图：%@, 视图索引：%li", paramCycleContentView, paramCycleContentView.viewIndex);
             }
             
         }
@@ -279,6 +294,8 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
             contentView = [_previousView mutableCopy];
         }
         //因为_nextView是最后赋值的，所以新视图不会与其相等
+        
+        CGInfoLog(@"赋值视图：%@，视图索引：%li", contentView, contentView.viewIndex);
     }
     
     return contentView;
@@ -335,18 +352,34 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
 }
 
 #pragma mark - 更新布局
+- (void)setupScrollViewConentSize:(CGSize)paramContentSize
+{
+    if (!CGSizeEqualToSize(paramContentSize, self.cycleScrollView.contentSize)) {
+        
+        self.cycleScrollView.contentSize = paramContentSize;
+    }
+}
 
 ///更新滑动视图的大小
 - (void)updateScrollViewContentSize
 {
     if (self.isCycle) {
-        //循环滑动下滑动区域始终为 maxWidth * 3
-        CGSize scrollViewContentSize = CGSizeZero;
-        scrollViewContentSize.height = self.height;
         
-        CGFloat maxWidth = self.cycleScrollView.width;
-        scrollViewContentSize.width = (maxWidth + self.subviewSpace) * 3;
-        self.cycleScrollView.contentSize = scrollViewContentSize;
+        //循环滑动下滑动区域始终为 maxWidth * 3 或 maxHeight * 3
+        CGSize scrollViewContentSize = CGSizeZero;
+        scrollViewContentSize = self.size;
+        
+        if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+            
+            CGFloat maxWidth                = self.cycleScrollView.width;
+            scrollViewContentSize.width     = (maxWidth + self.subviewSpace) * 3;
+        }else {
+            
+            CGFloat maxHeight               = self.cycleScrollView.height;
+            scrollViewContentSize.height    = (maxHeight + self.subviewSpace) * 3;
+        }
+        
+        [self setupScrollViewConentSize:scrollViewContentSize];
     }
 }
 
@@ -373,20 +406,46 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
         }
     }];
     
-    CGSize scrollViewSize       = self.cycleScrollView.size;
+    CGFloat currentViewSpace    = _previousView ? self.subviewSpace : 0;
     
-    CGRect previousViewFrame    = CGRectMake(0, 0, _previousView ? scrollViewSize.width : 0, scrollViewSize.height);
-    CGRect currentViewFrame     = CGRectMake(CGRectGetMaxX(previousViewFrame) + self.subviewSpace, 0, scrollViewSize.width, scrollViewSize.height);
-    CGRect nextViewFrame        = CGRectMake(CGRectGetMaxX(currentViewFrame) + self.subviewSpace, 0, _nextView ? scrollViewSize.width : 0, scrollViewSize.height);
+    //只要有数据_currentView就肯定不为空，为了计算scrollView.contentSize不会出现偏差
+    CGFloat nextViewSpace       = _nextView ? self.subviewSpace : 0;
+    
+    CGPoint contentOffset       = CGPointZero;
+    CGSize scrollViewSize       = self.cycleScrollView.size;
+    CGRect previousViewFrame    = CGRectMake(0, 0, _previousView ? scrollViewSize.width : 0, _previousView ? scrollViewSize.height : 0);
+    
+    CGRect currentViewFrame     = CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height);
+    CGRect nextViewFrame        = CGRectMake(0, 0, _nextView ? scrollViewSize.width : 0, _nextView ? scrollViewSize.height : 0);
+    
+    if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+        
+        currentViewFrame.origin.x   = CGRectGetMaxX(previousViewFrame) + currentViewSpace;
+        nextViewFrame.origin.x      = CGRectGetMaxX(currentViewFrame) + nextViewSpace;
+        contentOffset               = CGPointMake(CGRectGetMinX(currentViewFrame), 0);
+    }else {
+        
+        currentViewFrame.origin.y   = CGRectGetMaxY(previousViewFrame) + currentViewSpace;
+        nextViewFrame.origin.y      = CGRectGetMaxY(currentViewFrame) + nextViewSpace;
+        contentOffset               = CGPointMake(0, CGRectGetMinY(currentViewFrame));
+    }
     
     _previousView.frame         = previousViewFrame;
     _currentView.frame          = currentViewFrame;
     _nextView.frame             = nextViewFrame;
     
-    [self.cycleScrollView setContentOffset:CGPointMake(CGRectGetMinX(currentViewFrame), 0)];
+    [self.cycleScrollView setContentOffset:contentOffset];
     
+    CGInfoLog(@"设置滑动视图偏移量:%@", NSStringFromCGPoint(self.cycleScrollView.contentOffset));
     if (!self.isCycle) {
-        self.cycleScrollView.contentSize = CGSizeMake(CGRectGetMaxX(nextViewFrame), 0);
+        
+        CGSize contentSize;
+        if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+            contentSize = CGSizeMake(CGRectGetMaxX(nextViewFrame), self.cycleScrollView.height);
+        }else {
+            contentSize = CGSizeMake(self.cycleScrollView.width, CGRectGetMaxY(nextViewFrame));
+        }
+        [self setupScrollViewConentSize:contentSize];
     }
 }
 
@@ -451,72 +510,142 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    isDragger = YES;
+    isDraggerPauseTimerMark     = YES;
+    isDraggerScrollSubviewMark  = YES;
+    
     [self pasueAutoScroll];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (isDragger) {
+    if (isDraggerPauseTimerMark) {
         [self startAutoScroll];
-        isDragger = NO;
+        isDraggerPauseTimerMark = NO;
     }
+    
+    [self scrollView:scrollView isMinUpdateContentMark:YES];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    
+    isDraggerScrollSubviewMark  = NO;
     if (!decelerate) {
-        //手指离开不继续滑动时
+        //手指离开没有减速效果时
         [self startAutoScroll];
-        isDragger = NO;
+        isDraggerPauseTimerMark = NO;
     }
 }
 
 - (CGPoint)nearestTargetOffsetForOffset:(CGPoint)offset
 {
-    CGFloat pageSize = self.cycleScrollView.width + self.subviewSpace;
+    CGFloat     pageSize;
+    NSInteger   page;
+    CGFloat     targetSpace;
+    CGPoint     targetOffset;
     
-    NSInteger page = roundf(offset.x / pageSize);
-    CGFloat targetX = pageSize * page;
-    return CGPointMake(targetX, offset.y);
+    if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+        
+        pageSize = self.cycleScrollView.width + self.subviewSpace;
+        page = roundf(offset.x / pageSize);
+        targetSpace = pageSize * page;
+        targetOffset    = CGPointMake(targetSpace, offset.y);
+    }else {
+        
+        pageSize = self.cycleScrollView.height + self.subviewSpace;
+        page = roundf(offset.y / pageSize);
+        targetSpace = pageSize * page;
+        targetOffset    = CGPointMake(offset.x, targetSpace);
+    }
+    
+    CGInfoLog(@"重置滑动停止坐标：%@, page:%li, 原停止坐标：%@",NSStringFromCGPoint(targetOffset), page, NSStringFromCGPoint(offset));
+    return targetOffset;
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    CGPoint targetOffset = [self nearestTargetOffsetForOffset:*targetContentOffset];
-    targetContentOffset->x = targetOffset.x;
-    targetContentOffset->y = targetOffset.y;
+    if (self.pagingEnabled) {
+        CGPoint targetOffset = [self nearestTargetOffsetForOffset:*targetContentOffset];
+        targetContentOffset->x = targetOffset.x;
+        targetContentOffset->y = targetOffset.y;
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat offsetX = scrollView.contentOffset.x;
+    [self scrollView:scrollView isMinUpdateContentMark:isDraggerScrollSubviewMark];
+}
+
+- (void)scrollView:(UIScrollView *)scrollView isMinUpdateContentMark:(BOOL)isUpdateContentMark
+{
+    CGPoint offset = scrollView.contentOffset;
     
-    //不循环滑动情况下需要满足的条件
+    //是否刷新上一页标识
+    BOOL isUpdatePreviousMark   = NO;
+    //是否刷新下一页标识
+    BOOL isUpdateNextMark       = NO;
     
-    BOOL isMaxIndex = NO;
-    BOOL isMinIndex = NO;
-    BOOL isShouldUpdateNextView = NO;
-    
-    if (!self.isCycle) {
-        //不循环滑动时，当滑动到最大索引处时不刷新
-        isMaxIndex = self.currentIndex >= _totalViews - 1;
-        //不循环滑动时，当滑动到最小索引处时不刷新
-        isMinIndex = self.currentIndex <= 0;
-        //当当前视图x坐标为0，但滑动视图偏移量为一个视图宽度时执行刷新
-        isShouldUpdateNextView = _currentView.xOrigin == 0 && offsetX >= scrollView.width;
+    if (self.isCycle) {
+        //循环滑动下
+        
+        if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+            
+            isUpdatePreviousMark    = (offset.x <= 0);
+            isUpdateNextMark        = (offset.x >= (scrollView.width + self.subviewSpace) * 2);
+        }else {
+            
+            isUpdatePreviousMark    = (offset.y <= 0);
+            isUpdateNextMark        = (offset.y >= (scrollView.height + self.subviewSpace) * 2);
+        }
+        
+    }else {
+        
+        //不循环滑动情况下需要满足的条件
+        BOOL isMaxIndex             = NO;
+        BOOL isMinIndex             = NO;
+        BOOL isShouldUpdateNextView = NO;
+        
+        //不循环滑动时，当滑动到最大索引处时不刷新 （YES不刷新）
+        isMaxIndex              = self.currentIndex >= _totalViews - 1;
+        //不循环滑动时，当滑动到最小索引处时不刷新 （YES不刷新）
+        isMinIndex              = self.currentIndex <= 0;
+        
+        if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+            //当当前视图x坐标为0，但滑动视图偏移量为一个视图宽度时执行刷新 （YES 刷新）
+            isShouldUpdateNextView  = (_currentView.xOrigin == 0 && offset.x >= (scrollView.width + self.subviewSpace));
+            
+            isUpdatePreviousMark    = (offset.x <= 0) && !isMinIndex;
+            
+            isUpdateNextMark        = (((offset.x >= (scrollView.width * 2 + self.subviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
+        }else {
+            
+            //当当前视图y坐标为0，但滑动视图偏移量为一个视图高度时执行刷新 （YES 刷新）
+            isShouldUpdateNextView  = (_currentView.yOrigin == 0 && offset.y >= (scrollView.height + self.subviewSpace));
+            
+            isUpdatePreviousMark    = (offset.y <= 0) && !isMinIndex;
+            
+            isUpdateNextMark        = (((offset.y >= (scrollView.height * 2 + self.subviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
+        }
+        
     }
     
-    if (offsetX < 0 && !isMinIndex) {
+    {
+        //与是否循环滑动无关的条件
+        //是否可以上一页刷新
+        BOOL isShouldUpdate = ((isUpdateContentMark && self.pagingEnabled) || !self.pagingEnabled);
+        
+        isUpdatePreviousMark    = (isUpdatePreviousMark && isShouldUpdate);
+        isUpdateNextMark        = (isUpdateNextMark && isShouldUpdate);
+    }
+    
+    if (isUpdatePreviousMark) {
         
         [self scrollToPreviousView];
+        CGInfoLog(@"刷新上一页");
     }
     
-    BOOL isOffsetX  = offsetX > (scrollView.width + self.subviewSpace) * 2;
-    
-    if ((isOffsetX && !isMaxIndex) || isShouldUpdateNextView) {
+    if (isUpdateNextMark) {
         [self scrollToNextView];
+        CGInfoLog(@"刷新下一页");
     }
 }
 
@@ -539,7 +668,6 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
     if (_isCycle != isCycle) {
         
         _isCycle = isCycle;
-        [self updateScrollViewContentSize];
     }
 }
 
