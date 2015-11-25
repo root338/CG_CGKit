@@ -1,19 +1,14 @@
 //
-//  NSObject+Constant.m
+//  UIEdgeInsets+Category.m
 //  QuickAskCommunity
 //
-//  Created by DY on 15/7/21.
-//  Copyright (c) 2015年 ym. All rights reserved.
+//  Created by DY on 15/11/25.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "NSObject+Constant.h"
+#import "UIEdgeInsets+Category.h"
 
-#pragma mark - 简单自动布局常量值
-const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 
-const UIViewAutoresizing UIViewAutoresizingFlexibleSize = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-#pragma mark - UIEdgeInsets 相关设置函数
 UIEdgeInsets UIEdgeInsetsMakeAllEqualValue(CGFloat value)
 {
     return UIEdgeInsetsMake(value, value, value, value);

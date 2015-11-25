@@ -14,11 +14,11 @@
 //
 //#define CGPrintLogOpen 1
 //
-//#define CGPrintMorenInfoOpen 0
+//#define CGPrintInfoOpen 0
 //#else
 //
 //#define CGPrintLogOpen
-//#define CGPrintMorenInfoOpen
+//#define CGPrintInfoOpen
 //
 //#endif
 
@@ -34,7 +34,7 @@
 
 #define CGDefaultLog() CGLog(@"")
 
-#ifdef CGPrintMorenInfoOpen
+#ifdef CGPrintInfoOpen
 
 #define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
 #else
