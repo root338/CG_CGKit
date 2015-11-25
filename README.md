@@ -113,4 +113,5 @@
       CGTitleBaseView 所在目录 CG_CGKit -> View -> CustomView -> View
       
   必须移除文件
-    CGQRCodeViewController  NSString+QRCodeURL.h其他项目包含文件 ^_^
+  
+  	CGQRCodeViewController  NSString+QRCodeURL.h其他项目包含文件 ^_^
