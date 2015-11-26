@@ -28,4 +28,26 @@
     return [self objectAtIndex:index];
 }
 
++ (instancetype)cg_arrayWithObjects:firstObj, ... NS_REQUIRES_NIL_TERMINATION
+{
+    NSMutableArray *arr = nil;
+    
+    id eachObject;
+    va_list argumentList;
+    
+    if (firstObj) {
+        
+        arr = [NSMutableArray arrayWithObject:firstObj];
+        
+        va_start(argumentList, firstObj);
+        while ((eachObject = va_arg(argumentList, id))) {
+            
+            [arr addObject:eachObject];
+        }
+        va_end(argumentList);
+        
+        return arr;
+    }
+    return arr;
+}
 @end

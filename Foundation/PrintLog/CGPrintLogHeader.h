@@ -34,9 +34,11 @@
 
 #define CGDefaultLog() CGLog(@"")
 
+#define CGErrorLog(format, ...) do { fprintf(stderr, "\n ERROR:"); CGLog((format), ##__VA_ARGS__); }while(0)
+
 #ifdef CGPrintInfoOpen
 
-#define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
+#define CGInfoLog(format, ...) CGLog((format), ##__VA_ARGS__)
 #else
 
 #define CGInfoLog(format, ...)
@@ -53,6 +55,7 @@
 #define CGLog(format, ...)
 #define CGDefaultLog()
 #define CGInfoLog(format, ...)
+#define CGErrorLog(format, ...)
 
 #define CGDebugAssert(condition, desc, ...)
 #define CGDebugAssert1(condition, desc, arg1)

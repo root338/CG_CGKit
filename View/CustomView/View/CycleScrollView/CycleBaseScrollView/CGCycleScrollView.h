@@ -73,6 +73,10 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  */
 @interface CGCycleScrollView : UIView
 
+#pragma mark - 只读
+/** 加载的视图总数 */
+@property (assign, nonatomic, readonly) NSInteger totalViewNumber;
+
 #pragma mark - 代理
 /**
  添加数据代理

@@ -12,4 +12,5 @@
 
 - (ObjectType)cg_objectAtIndex:(NSUInteger)index;
 
++ (instancetype)cg_arrayWithObjects:(ObjectType)firstObj, ... NS_REQUIRES_NIL_TERMINATION;
 @end
