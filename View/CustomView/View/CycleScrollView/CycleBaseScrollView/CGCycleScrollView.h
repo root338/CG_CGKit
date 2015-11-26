@@ -69,7 +69,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  *          可以设置子视图与子视图之间的间距
  *          可以设置横滑还是竖滑
  *
- *  优化：1.分离类；2.单页滑动时，反弹超出间距没有显示下一页视图
+ *  优化：1.分离类；2.无法缓存重复视图；3.不分页条件下无法将最近的视图定位到中间
  */
 @interface CGCycleScrollView : UIView
 

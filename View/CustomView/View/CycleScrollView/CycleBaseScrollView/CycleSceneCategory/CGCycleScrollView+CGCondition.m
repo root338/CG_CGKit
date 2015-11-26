@@ -25,7 +25,7 @@
 - (BOOL)isShouldCreateViewWithIndex:(NSInteger)index currentIndex:(NSInteger)paramCurrentIndex type:(_CGCycleSubviewType)type
 {
     BOOL isResult = NO;
-    if (paramCurrentIndex >= 0 && paramCurrentIndex < self.totalViewNumber && (type != _CGCycleSubviewTypeCurrentIndex && index >= 0 && index < self.totalViewNumber)) {
+    if (paramCurrentIndex >= 0 && paramCurrentIndex < self.totalViewNumber && ((type != _CGCycleSubviewTypeCurrentIndex && index >= 0 && index < self.totalViewNumber) || type == _CGCycleSubviewTypeCurrentIndex)) {
         
         if (_CGCycleSubviewTypeCurrentIndex == type) {
             isResult = YES;

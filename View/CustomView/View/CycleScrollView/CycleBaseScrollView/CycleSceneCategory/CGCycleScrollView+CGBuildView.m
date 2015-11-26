@@ -102,7 +102,9 @@
     }
     
     BOOL issuccess = [self isShouldCreateViewWithIndex:viewIndex currentIndex:paramCurrentIndex type:subviewType];
-    if (!issuccess) {
+    if (!issuccess && self.isCycle) {
+        
+        //不循环滑动，在边缘时，会过滤掉
         CGErrorLog(@"设置的索引不可用");
     }
     

@@ -10,6 +10,9 @@
 
 @interface UIView (CGCopyView)
 
+/** 
+ *  复制视图 @warning 内部数据有可能无法复制，需要再赋值，最好别用，这样的问题不少，视图的子视图层次都对改变
+ */
 - (instancetype)copyView;
 
 @end

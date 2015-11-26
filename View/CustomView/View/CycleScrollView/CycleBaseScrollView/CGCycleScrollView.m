@@ -21,10 +21,8 @@
 
 #import "CGPrintLogHeader.h"
 #import "NSArray+CGArray.h"
-#import "UIView+CGCopyView.h"
 
 //功能相关扩展
-#import "CGCycleScrollView+CGCondition.h"
 #import "CGCycleScrollView+CGBuildView.h"
 
 @interface CGCycleScrollView ()<UIScrollViewDelegate>
@@ -269,6 +267,11 @@
 - (CGCycleContentView *)createCycleContentViewAtIndex:(NSInteger)index
 {
     CGCycleContentView *contentView = [self cycleContentViewAtIndex:index];
+    
+    if (contentView == _currentView || contentView == _previousView || contentView == _aideView) {
+        contentView = nil;
+    }
+    
     if (!contentView) {
         
         UIView *view = [self.dataSource cycleScrollView:self viewAtIndex:index];
@@ -279,65 +282,19 @@
         [self saveCycleContentView:contentView];
     }else {
         
-        if (contentView == _currentView || contentView == _previousView || contentView == _aideView) {
-            contentView = [contentView copyView];
-        }
-        //因为_nextView是最后赋值的，所以新视图不会与其相等
-        
-        CGInfoLog(@"复制视图：%@，视图索引：%li", contentView, contentView.viewIndex);
+        //复制视图暂没有实现
+//        
+//        CGCycleContentView *newContentView;
+//        if (contentView == _currentView || contentView == _previousView || contentView == _aideView) {
+//            
+//        }
+//        //因为_nextView是最后赋值的，所以新视图不会与其相等
+//        
+//        CGInfoLog(@"复制视图：%@，视图索引：%li  --> 复制后视图：%@", contentView, contentView.viewIndex, newContentView);
+//        contentView = newContentView;
     }
     
     return contentView;
-}
-
-/** 获取相应索引 */
-- (NSInteger)getViewIndexForType:(_CGCycleSubviewType)subviewType
-{
-    //更新当前显示索引
-    if (self.currentIndex >= _totalViews || self.currentIndex < 0) {
-        
-        NSInteger maxIndex = _totalViews - 1;
-        NSInteger minIndex = 0;
-        
-        NSInteger currentIndex;
-        
-        if (self.currentIndex >= _totalViews) {
-            
-            if (self.isCycle) {
-                
-                currentIndex = minIndex;
-            }else {
-                
-                CGLog(@"加载的视图索引大于最大索引数(%li)，你设置为(%li)，自动重置为 %li", maxIndex, self.currentIndex, maxIndex);
-                currentIndex = maxIndex;
-            }
-        }else  {
-            
-            if (self.isCycle) {
-                
-                currentIndex = maxIndex;
-            }else {
-                
-                CGLog(@"初始加载的视图索引小于最小索引数(%li)，你设置为(%li)，自动重置为 %li", minIndex, self.currentIndex, minIndex);
-                currentIndex = minIndex;
-            }
-        }
-        
-        self.currentIndex = currentIndex;
-    }
-    
-    //更新当前显示索引前后索引
-    NSInteger viewIndex = self.currentIndex + subviewType;
-    
-    if (viewIndex < 0) {
-        viewIndex = _totalViews - 1;
-    }
-    
-    if (viewIndex >= _totalViews) {
-        viewIndex = 0;
-    }
-    
-    return viewIndex;
 }
 
 - (void)addAideViewToCycleScrollViewWithType:(_CGCycleSubviewType)type
@@ -350,26 +307,25 @@
     NSInteger willCurrentIndex = 0;
     CGCycleContentView *willCurrentCycleContentView = nil;
     
-    if (type == _CGCycleSubviewTypePreviousIndex) {
-        if (_previousView) {
-            willCurrentIndex    = _previousView.viewIndex;
+    if (type == _CGCycleSubviewTypePreviousIndex || type == _CGCycleSubviewTypeNextIndex) {
+        
+        if (type == _CGCycleSubviewTypePreviousIndex) {
+            willCurrentCycleContentView = _previousView;
+        }else {
+            willCurrentCycleContentView = _nextView;
+        }
+        
+        if (willCurrentCycleContentView) {
+            
+            willCurrentIndex = willCurrentCycleContentView.viewIndex;
             NSNumber *targetIndexNumber = [self getViewIndexWithCurrentIndex:willCurrentIndex type:type];
             if (targetIndexNumber) {
+                
                 targetIndex = targetIndexNumber.integerValue;
-            }else {
-                return;
+                isShouldAdd = YES;
             }
-            willCurrentCycleContentView = _previousView;
-            isShouldAdd = [self isShouldCreatePrevioursViewWithIndex:targetIndex currentIndex:willCurrentIndex];
         }
-    }else if (type == _CGCycleSubviewTypeNextIndex) {
-        if (_nextView) {
-            willCurrentIndex    = _nextView.viewIndex;
-            targetIndex         = willCurrentIndex + 1;
-            willCurrentCycleContentView = _nextView;
-            isShouldAdd = [self isShouldCreateNextViewWithIndex:targetIndex currentIndex:willCurrentIndex];
-        }
-    }else {
+    } else {
         CGErrorLog(@"加载的子视图类型错误");
     }
     
@@ -532,26 +488,26 @@
         CGLog(@"没有任何需要加载的视图");
         return;
     }
-    NSInteger previousIndex = [self getViewIndexForType:_CGCycleSubviewTypePreviousIndex];
-    NSInteger currentIndex  = [self getViewIndexForType:_CGCycleSubviewTypeCurrentIndex];
-    NSInteger nextIndex     = [self getViewIndexForType:_CGCycleSubviewTypeNextIndex];
+    NSNumber * previousIndex = [self getViewIndexForType:_CGCycleSubviewTypePreviousIndex];
+    NSNumber * currentIndex  = [self getViewIndexForType:_CGCycleSubviewTypeCurrentIndex];
+    NSNumber * nextIndex     = [self getViewIndexForType:_CGCycleSubviewTypeNextIndex];
     
     //重置视图
     _previousView   = nil;
     _currentView    = nil;
     _nextView       = nil;
     
-    if ([self isShouldCreatePrevioursViewWithIndex:previousIndex currentIndex:currentIndex]) {
+    if (previousIndex) {
         //当不满足不循环滑动且上一视图的索引比当前视图索引不小于时执行
-        _previousView           = [self createCycleContentViewAtIndex:previousIndex];
+        _previousView           = [self createCycleContentViewAtIndex:previousIndex.integerValue];
     }
     
-    _currentView            = [self createCycleContentViewAtIndex:currentIndex];
+    _currentView            = [self createCycleContentViewAtIndex:currentIndex.integerValue];
     
     
-    if ([self isShouldCreateNextViewWithIndex:nextIndex currentIndex:currentIndex]) {
+    if (nextIndex) {
         //当不满足不循环滑动且下一视图的索引比当前视图索引不大于时执行
-        _nextView               = [self createCycleContentViewAtIndex:nextIndex];
+        _nextView               = [self createCycleContentViewAtIndex:nextIndex.integerValue];
     }
     
     [self updateCycleScrollViewLayoutSubviews];
