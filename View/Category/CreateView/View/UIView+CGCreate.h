@@ -12,4 +12,5 @@
 
 + (instancetype)cg_createView;
 
++ (instancetype)cg_createClearColorView;
 @end

@@ -18,6 +18,7 @@
     [self getViewIndexWithCurrentIndex:self.currentIndex type:subviewType autoChangeCurrentIndex:YES completion:^(BOOL isSuccess, NSInteger changedCurrentIndex, NSInteger viewIndex) {
         if (isSuccess) {
             result = @(viewIndex);
+            
             self.currentIndex = changedCurrentIndex;
         }
     }];

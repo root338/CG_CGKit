@@ -27,9 +27,8 @@
     CGCycleContentView *cycleContentView    = [self cg_createView];
     
     cycleContentView.contentView            = contentView;
-    
     cycleContentView.viewIndex              = index;
-    cycleContentView.backgroundColor        = [UIColor orangeColor];
+    
     return cycleContentView;
 }
 

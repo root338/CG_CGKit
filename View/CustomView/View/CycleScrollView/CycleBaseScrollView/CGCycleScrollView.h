@@ -45,6 +45,17 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  */
 - (UIView *)cycleScrollView:(CGCycleScrollView *)cycleScrollView viewAtIndex:(NSInteger)index;
 
+@optional
+/**
+ *  添加分页视图
+ *  @warning 需要用户设置分页视图相对于滑动视图的坐标
+ *
+ *  @param cycleScrollView 当前循环滑动视图
+ *
+ *  @return 返回需要添加的分页视图
+ */
+- (UIView *)cycleScrollViewAddPageView:(CGCycleScrollView *)cycleScrollView;
+
 @end
 
 
@@ -59,6 +70,13 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  */
 - (void)cycleScrollView:(CGCycleScrollView *)cycleScrollView didSelectRowAtIndex:(NSInteger)index;
 
+/**
+ *  当前显示索引改变时回调
+ *
+ *  @param cycleScrollView 当前循环滑动视图
+ *  @param currentIndex    当前显示索引
+ */
+- (void)cycleScrollView:(CGCycleScrollView *)cycleScrollView didChangeCurrentIndex:(NSInteger)currentIndex;
 @end
 
 /**
@@ -148,6 +166,16 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  *  刷新视图
  */
 - (void)reloadAllView;
+
+/**
+ *  刷新分页视图 
+ */
+- (void)reloadPageView;
+
+/**
+ *  清除缓存
+ */
+- (void)removeAllCacheViews;
 
 /**
  *  创建循环滑动视图

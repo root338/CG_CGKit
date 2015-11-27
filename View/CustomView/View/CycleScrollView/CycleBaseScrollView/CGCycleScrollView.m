@@ -18,6 +18,7 @@
 #import "NSTimer+ChangeTimerStatus.h"
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CG_CGAreaCalculate.h"
+#import "UIView+CGCreate.h"
 
 #import "CGPrintLogHeader.h"
 #import "NSArray+CGArray.h"
@@ -56,6 +57,8 @@
 /** 被缓存的视图 */
 @property (strong, nonatomic) NSMutableDictionary *cacheViews;
 
+/** 分页视图的容器 */
+@property (strong, nonatomic) UIView *pageContentView;
 @end
 
 @implementation CGCycleScrollView
@@ -76,13 +79,33 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initialization];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initialization];
+    }
+    return self;
+}
+
 - (void)awakeFromNib
 {
+    
     [self initialization];
 }
 
 - (void)initialization
 {
+    _isCycle = YES;
     if (!self.cycleScrollView.superview) {
         [self addSubview:self.cycleScrollView];
     }
@@ -169,6 +192,35 @@
     [self setupTotalNumberWithForced:YES];
     [self removeAllCacheViews];
     [self setupScrollContentView];
+    [self reloadPageView];
+}
+
+- (void)reloadPageView
+{
+    if ([self.dataSource respondsToSelector:@selector(cycleScrollViewAddPageView:)]) {
+        
+        UIView *pageView = [self.dataSource cycleScrollViewAddPageView:self];
+        
+        if (_pageContentView) {
+            [self.pageContentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        }
+        
+        if (!pageView) {
+            
+            if (_pageContentView.superview) {
+                [_pageContentView removeFromSuperview];
+                _pageContentView = nil;
+            }
+            //没有设置分页视图，且分页视图容器也为空时
+            return;
+        }
+        
+        [self.pageContentView addSubview:pageView];
+        self.pageContentView.frame = self.bounds;
+        if (!self.pageContentView.superview) {
+            [self addSubview:self.pageContentView];
+        }
+    }
 }
 
 - (void)removeAllCacheViews
@@ -186,6 +238,16 @@
     if (!_totalViews) {
         _totalViews = [self.dataSource numberCycleScrollView:self];
         !self.isCycle ?: [self updateScrollViewContentSize];
+    }
+}
+
+#pragma mark - 系统视图设置
+- (void)addSubview:(UIView *)view
+{
+    [super addSubview:view];
+    //将分页视图提取到最前面
+    if (_pageContentView.superview && [self.subviews lastObject] != _pageContentView) {
+        [self bringSubviewToFront:_pageContentView];
     }
 }
 
@@ -471,9 +533,11 @@
 {
     [super layoutSubviews];
     self.cycleScrollView.frame = CGRectWithMargin(self.bounds, self.marginEdgeInsetForScrollView);
+    _pageContentView.frame = self.bounds;
     
     [self updateScrollViewContentSize];
     [self updateCycleScrollViewLayoutSubviews];
+    
 }
 
 
@@ -733,6 +797,21 @@
     }
 }
 
+- (void)setCurrentIndex:(NSInteger)currentIndex
+{
+    if (currentIndex != _currentIndex) {
+        _currentIndex = currentIndex;
+        if ([self.delegate respondsToSelector:@selector(cycleScrollView:didChangeCurrentIndex:)]) {
+            [self.delegate cycleScrollView:self didChangeCurrentIndex:self.currentIndex];
+        }
+    }
+}
+
+- (NSInteger)totalViewNumber
+{
+    return _totalViews;
+}
+
 - (UIScrollView *)cycleScrollView
 {
     if (_cycleScrollView) {
@@ -744,8 +823,13 @@
     return _cycleScrollView;
 }
 
-- (NSInteger)totalViewNumber
+- (UIView *)pageContentView
 {
-    return _totalViews;
+    if (_pageContentView) {
+        return _pageContentView;
+    }
+    
+    _pageContentView = [UIView cg_createView];
+    return _pageContentView;
 }
 @end

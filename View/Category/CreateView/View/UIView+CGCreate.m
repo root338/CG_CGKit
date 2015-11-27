@@ -15,4 +15,11 @@
     return [[self alloc] init];
 }
 
++ (instancetype)cg_createClearColorView
+{
+    UIView *view = [self cg_createView];
+    view.backgroundColor = [UIColor clearColor];
+    
+    return view;
+}
 @end
