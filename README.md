@@ -9,23 +9,29 @@
     APPPurviewJudge 系统权限判断，现在实现相机相册的权限判断
     
     Foundation  对非视图类的扩展，或自定义非视图类
-        AFNetwork+Category  对AFNetwork的再封装（项目必须包含AFNetwork库）（未实现完全）
-          ConstantDefine  定义自定义类型，枚举
-          HandelData  数据解析相关类
-          Manager 请求的管理类
-          Model 解析的对象
-            DataModel 请求的返回数据对象模型
-            RequestModel  请求的发送数据对象模型
-              CreateCategory  快捷创建请求的发送数据对象模型
-        Constant  设置常量
-    
+        
         AreaCalculate 区域计算相关扩展（主要为C函数）
-    
+        
+        Block   自定义block类型的定义、实现
+        
+        Constant  设置常量
+        
         Dispath+Category  GCD方法扩展
     
         IOSVersion  iOS版本判断
     
         Keyboard  keyboard 管理类
+        
+        NeedStandByLibraryClass
+            AFNetwork+Category  对AFNetwork的再封装（项目必须包含AFNetwork库）（未实现完全）
+                ConstantDefine  定义自定义类型，枚举
+                HandelData  数据解析相关类
+                Manager 请求的管理类
+                Model 解析的对象
+                    DataModel 请求的返回数据对象模型
+                    RequestModel  请求的发送数据对象模型
+                        CreateCategory  快捷创建请求的发送数据对象模型
+            LoadImage   SDWebImage库加载图片
     
         NSArray NSArray 扩展方法
     
@@ -48,9 +54,10 @@
             LoadLaunchImage 加载启动图
             Notification
             OpenSystemAPP 调用系统app
-            UserDefault 
+            
+        UserDefault 
         
-        UI  UI 开头非视图系统类
+    UI  UI 开头非视图系统类
             Category 扩展方法
         
     View
@@ -70,6 +77,7 @@
           UITableView
           UITableViewDelegate
           ViewCategory
+          
         CustomView  自定义视图
           AlertView
           Button
@@ -84,11 +92,16 @@
           WebView
           View  其他组合视图
             CycleScrollView
+            
         header  UIView 一些头文件声明
+        
         Layout  NSLayoutConstraint的扩展方法，三方支持AutoLayout的库
           UIView+Masonry
           PureLayout
           CustomLayoutCategory
+          
+        ViewProtocol
+        
     ViewController
         Appearance  
           UINavigation  全局设置导航栏的外观
@@ -112,6 +125,9 @@
       UIView+Masonry  
       CGTitleBaseView 所在目录 CG_CGKit -> View -> CustomView -> View
       
+    必须包含 SDWebImage
+        LoadImage
+    
   必须移除文件
   
   	CGQRCodeViewController  NSString+QRCodeURL.h其他项目包含文件 ^_^
