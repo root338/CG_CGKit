@@ -11,6 +11,9 @@
 
 @interface UILabel (CGSetupAppearance)
 
+/** 设置UILabel 设置系统默认属性 */
+- (void)cg_setupDefaultLabel;
+
 /** 设置UILabel（文本，字体，字体颜色） */
 - (void)cg_setupWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor;
 

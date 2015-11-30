@@ -1,16 +1,16 @@
 //
-//  UILabel+CalculateTextSize.h
+//  CGInputTextProtocol.h
 //  QuickAskCommunity
 //
-//  Created by DY on 15/7/29.
-//  Copyright (c) 2015年 ym. All rights reserved.
+//  Created by DY on 15/11/30.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "CGInputTextProtocol.h"
+#import <Foundation/Foundation.h>
 
-@interface UILabel (CalculateTextSize)<CGInputTextProtocol>
+@protocol CGInputTextProtocol <NSObject>
 
+@optional
 - (CGSize)calculateLabelTextSize;
 
 - (CGRect)calculateMultilineLabelTextSizeWithMaxWidth:(CGFloat)maxWidth;
@@ -27,4 +27,5 @@
 
 /** 计算文本框的大小 （maxWidth：最大的宽度） */
 - (CGSize)calculateLabelSizeWithMaxWidth:(CGFloat)maxWidth;
+
 @end

@@ -9,7 +9,7 @@
 #ifndef QuickAskCommunity_CGPrintLogHeader_h
 #define QuickAskCommunity_CGPrintLogHeader_h
 
-//在preprocessor Macros设置
+////在preprocessor Macros设置
 //#ifdef DEBUG
 //
 //#define CGPrintLogOpen 1
@@ -24,25 +24,41 @@
 
 #ifdef CGPrintLogOpen //---------if
 
-#define CGLog(format, ...) do {                                                     \
-        fprintf(stderr, "\n<%s : %d> %s\n",                                           \
+//有条件的错误输出，只有当condition为真时输出日志
+#define CGConditionLog(condition, format, ...) do {                                 \
+    if (condition) {                                                                \
+        fprintf(stderr, "\n<%s : %d> %s\n",                                         \
         [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
         __LINE__, __func__);                                                        \
         (NSLog)((format), ##__VA_ARGS__);                                           \
-        fprintf(stderr, "-------\n\n");                                               \
+        fprintf(stderr, "-------\n\n");                                             \
+    }                                                                               \
 } while (0)
+
+#define CGLog(format, ...) CGConditionLog(YES, format, ##__VA_ARGS__)
 
 #define CGDefaultLog() CGLog(@"")
 
-#define CGErrorLog(format, ...) do { fprintf(stderr, "\n ERROR:"); CGLog((format), ##__VA_ARGS__); }while(0)
 
-#ifdef CGPrintInfoOpen
+#define CGErrorConditionLog(condition, format, ...) do {    \
+    if (condition) {                                        \
+        fprintf(stderr, "\nERROR:");                        \
+        CGLog((format), ##__VA_ARGS__);                     \
+    }                                                       \
+    }while(0)
 
-#define CGInfoLog(format, ...) CGLog((format), ##__VA_ARGS__)
-#else
+#define CGErrorLog(format, ...) CGErrorConditionLog(YES, format, ##__VA_ARGS__)
+
+#ifdef CGPrintInfoOpen  //-----------InfoOpen   if判断
+
+#define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
+#define CGInfoConditionLog(condition, format, ...) CGConditionLog(condition, format, ##__VA_ARGS__)
+#else                   //-------------Else     否则
 
 #define CGInfoLog(format, ...)
-#endif
+#define CGInfoConditionLog(condition, format, ...)
+
+#endif                  //-------------end      结束
 
 //断言
 #define CGDebugAssert(condition, desc, ...)     NSAssert(condition, (desc), ##__VA_ARGS__)
@@ -52,9 +68,15 @@
 
 #else   //-----------else
 
+#define CGConditionLog(condition, format, ...)
 #define CGLog(format, ...)
+
 #define CGDefaultLog()
+
+#define CGInfoConditionLog(condition, format, ...)
 #define CGInfoLog(format, ...)
+
+#define CGErrorConditionLog(condition, format, ...)
 #define CGErrorLog(format, ...)
 
 #define CGDebugAssert(condition, desc, ...)

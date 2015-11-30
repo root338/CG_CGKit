@@ -1,15 +1,15 @@
 //
-//  UILabel+CalculateTextSize.h
+//  UITextView+CGCalculateTextSize.h
 //  QuickAskCommunity
 //
-//  Created by DY on 15/7/29.
-//  Copyright (c) 2015年 ym. All rights reserved.
+//  Created by DY on 15/11/30.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "CGInputTextProtocol.h"
 
-@interface UILabel (CalculateTextSize)<CGInputTextProtocol>
+@interface UITextView (CGCalculateTextSize)<CGInputTextProtocol>
 
 - (CGSize)calculateLabelTextSize;
 
@@ -27,4 +27,5 @@
 
 /** 计算文本框的大小 （maxWidth：最大的宽度） */
 - (CGSize)calculateLabelSizeWithMaxWidth:(CGFloat)maxWidth;
+
 @end

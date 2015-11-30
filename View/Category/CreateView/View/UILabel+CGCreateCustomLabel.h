@@ -13,6 +13,9 @@
  */
 @interface UILabel (CGCreateCustomLabel)
 
+/** 创建默认样式的UILabel */
++ (instancetype)cg_createDefaultLabel;
+
 /** 创建UILabel，设置（文本，字体，字体颜色） */
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor;
 

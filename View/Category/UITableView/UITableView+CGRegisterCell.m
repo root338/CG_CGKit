@@ -15,6 +15,13 @@
     [self cg_registerClass:cellClassIdentifier forCellReuseClass:cellClassIdentifier];
 }
 
+- (void)cg_registerClassWithClassIdentifiers:(NSArray<Class> *)CellClassIdentifiers
+{
+    [CellClassIdentifiers enumerateObjectsUsingBlock:^(Class  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self cg_registerClassWithClassIdentifier:obj];
+    }];
+}
+
 - (void)cg_registerNibWithClassIdentifier:(Class)cellClassIdentifier
 {
     UINib *nib = [UINib nibWithNibName:NSStringFromClass(cellClassIdentifier) bundle:[NSBundle bundleForClass:cellClassIdentifier]];

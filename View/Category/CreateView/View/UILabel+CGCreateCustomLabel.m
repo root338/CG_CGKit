@@ -17,6 +17,15 @@
     return [[self alloc] init];
 }
 
++ (instancetype)cg_createDefaultLabel
+{
+    UILabel *label = [self cg_createLabel];
+    
+    [label cg_setupDefaultLabel];
+    
+    return label;
+}
+
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
 {
     UILabel *label = [self cg_createLabel];
