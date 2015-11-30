@@ -9,14 +9,18 @@
     APPPurviewJudge 系统权限判断，现在实现相机相册的权限判断
     
     Foundation  对非视图类的扩展，或自定义非视图类
-        AFNetwork+Category  对AFNetwork的再封装（项目必须包含AFNetwork库）（未实现完全）
-          ConstantDefine  定义自定义类型，枚举
-          HandelData  数据解析相关类
-          Manager 请求的管理类
-          Model 解析的对象
-            DataModel 请求的返回数据对象模型
-            RequestModel  请求的发送数据对象模型
-              CreateCategory  快捷创建请求的发送数据对象模型
+        
+        NeedStandByLibraryClass
+            AFNetwork+Category  对AFNetwork的再封装（项目必须包含AFNetwork库）（未实现完全）
+                ConstantDefine  定义自定义类型，枚举
+                HandelData  数据解析相关类
+                Manager 请求的管理类
+                Model 解析的对象
+                    DataModel 请求的返回数据对象模型
+                    RequestModel  请求的发送数据对象模型
+                        CreateCategory  快捷创建请求的发送数据对象模型
+            LoadImage   SDWebImage库加载图片
+        
         Constant  设置常量
     
         AreaCalculate 区域计算相关扩展（主要为C函数）
@@ -112,6 +116,9 @@
       UIView+Masonry  
       CGTitleBaseView 所在目录 CG_CGKit -> View -> CustomView -> View
       
+    必须包含 SDWebImage
+        LoadImage
+    
   必须移除文件
   
   	CGQRCodeViewController  NSString+QRCodeURL.h其他项目包含文件 ^_^
