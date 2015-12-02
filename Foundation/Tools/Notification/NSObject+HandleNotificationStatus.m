@@ -27,7 +27,7 @@
             
         id target       = targetBlock(name, idx);
         SEL selector    = selectorBlock(name, idx);
-        id objec        = targetBlock(name, idx);
+        id objec        = objectBlock(name, idx);
         
         if (target) {
             if (isRemove) {

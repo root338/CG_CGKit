@@ -13,27 +13,50 @@
 #import "UILabel+CalculateTextSize.h"
 #import "UITextView+CGCalculateTextSize.h"
 #import "UIView+CGSetupFrame.h"
+#import "CGViewConstantValue.h"
 
-@interface CGTitleTextView ()
+#import "CGPrintLogHeader.h"
+
+@interface CGTitleTextView ()<UITextViewDelegate>
 
 @property (strong, nonatomic, readwrite) CGMultilineLabel *titleLabel;
-@property (strong, nonatomic, readwrite) CGTextView  *textView;
+@property (strong, nonatomic, readwrite) CGInputTextView  *textView;
 
 @end
 
 @implementation CGTitleTextView
 
 #pragma mark - 重置布局
-- (CGSize)updateSubviewsLayout
+- (CGFloat)updateSubviewsLayout
 {
     CGFloat maxWidth        = CG_CGWidthWithSize(self.frame.size, self.marginEdgeInsets);
     CGSize titleSize        = [self.titleLabel calculateLabelSizeWithMaxWidth:maxWidth];
-    self.titleLabel.frame   = CG_CGRectWithExcludeBottom(self.bounds, self.marginEdgeInsets, titleSize.height);
     
-    CGSize textSize         = [self.textView calculateLabelSizeWithMaxWidth:maxWidth];
-    self.textView.frame     = CG_CGRectWithExcludeTopBottom(self.bounds, self.marginEdgeInsets, self.titleLabel.maxY + self.spaceSubviews, textSize.height);
+    CGRect titleLabelFrame  = CG_CGRectWithExcludeBottom(self.bounds, self.marginEdgeInsets, titleSize.height);
+    if (!CGRectEqualToRect(self.titleLabel.frame, titleLabelFrame) && !self.disableAutoSetupSubviewsFrame) {
+        
+        self.titleLabel.frame   = titleLabelFrame;
+    }
     
-    return CGSizeMake(self.width, self.textView.maxY + self.marginEdgeInsets.bottom);
+    CGSize textSize         = [self.textView sizeThatFits:CGSizeMake(self.textView.width, FLT_MAX)];
+    
+    CGFloat textMinHeight   = self.textViewMinHeight;
+    if (textSize.height < textMinHeight) {
+        textSize.height = textMinHeight;
+    }
+    
+    CGRect textViewFrame    = CG_CGRectWithExcludeTopBottom(self.bounds, self.marginEdgeInsets, self.titleLabel.maxY + self.spaceSubviews, textSize.height);
+    if (!CGRectEqualToRect(self.textView.frame, textViewFrame) && !self.disableAutoSetupSubviewsFrame) {
+        
+        self.textView.frame     = textViewFrame;
+        [self.textView scrollRangeToVisible:NSMakeRange(0, self.textView.text.length)];
+        
+        CGInfoLog(@"text view:%@, calculate frmae: %@, ", self.textView, NSStringFromCGRect(textViewFrame));
+
+    }
+    
+    CGFloat didUpdateHeight = CGRectGetMaxY(textViewFrame) + self.marginEdgeInsets.bottom;
+    return didUpdateHeight;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -42,7 +65,42 @@
     if (newSuperview) {
         self.titleLabel.superview   ?: [self addSubview:self.titleLabel];
         self.textView.superview     ?: [self addSubview:self.textView];
+        
+        [self setupNormalBackground];
     }
+}
+
+- (void)setupTextViewDelegate
+{
+    if (self.textViewEditBackgroundColor || self.textViewNormalBackgroundColor) {
+        self.textView.delegate = self;
+    }
+}
+
+- (void)setupEditingBackground
+{
+    if (self.textViewEditBackgroundColor && self.textView.backgroundColor != self.textViewEditBackgroundColor) {
+        self.textView.backgroundColor = self.textViewEditBackgroundColor;
+    }
+}
+
+- (void)setupNormalBackground
+{
+    if (self.textViewNormalBackgroundColor && self.textView.backgroundColor != self.textViewNormalBackgroundColor) {
+        self.textView.backgroundColor = self.textViewNormalBackgroundColor;
+    }
+}
+
+#pragma mark - UITextViewDelegate
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [self setupEditingBackground];
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [self setupNormalBackground];
 }
 
 #pragma mark - 创建属性
@@ -56,14 +114,32 @@
     return _titleLabel;
 }
 
-- (CGTextView *)textView
+- (CGInputTextView *)textView
 {
     if (_textView) {
         return _textView;
     }
     
-    _textView = [[CGTextView alloc] init];
+    _textView = [[CGInputTextView alloc] init];
     return _textView;
+}
+
+- (void)setTextViewEditBackgroundColor:(UIColor *)textViewEditBackgroundColor
+{
+    if (_textViewEditBackgroundColor != textViewEditBackgroundColor) {
+        
+        _textViewEditBackgroundColor = textViewEditBackgroundColor;
+        [self setupTextViewDelegate];
+    }
+}
+
+- (void)setTextViewNormalBackgroundColor:(UIColor *)textViewNormalBackgroundColor
+{
+    if (_textViewNormalBackgroundColor != textViewNormalBackgroundColor) {
+        
+        _textViewNormalBackgroundColor = textViewNormalBackgroundColor;
+        [self setupTextViewDelegate];
+    }
 }
 
 @end

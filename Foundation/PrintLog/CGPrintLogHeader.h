@@ -24,6 +24,7 @@
 
 #ifdef CGPrintLogOpen //---------if
 
+
 //有条件的错误输出，只有当condition为真时输出日志
 #define CGConditionLog(condition, format, ...) do {                                 \
     if (condition) {                                                                \
@@ -32,6 +33,13 @@
         __LINE__, __func__);                                                        \
         (NSLog)((format), ##__VA_ARGS__);                                           \
         fprintf(stderr, "-------\n\n");                                             \
+    }                                                                               \
+} while (0)
+
+#define CGTitleConditionLog(title, condition, format, ...) do {                     \
+    if (condition) {                                                                \
+        fprintf(stderr, "\n%s", title);                                             \
+        CGConditionLog(condition, format, ##__VA_ARGS__);                           \
     }                                                                               \
 } while (0)
 
@@ -81,7 +89,7 @@
 
 #define CGDebugAssert(condition, desc, ...)
 #define CGDebugAssert1(condition, desc, arg1)
-
+#define CGTitleConditionLog(title, condition, format, ...)
 
 
 #endif  //-----------end

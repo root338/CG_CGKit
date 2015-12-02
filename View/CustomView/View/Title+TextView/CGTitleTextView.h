@@ -9,7 +9,7 @@
 #import "CGBaseView.h"
 
 #import "CGMultilineLabel.h"
-#import "CGTextView.h"
+#import "CGInputTextView.h"
 
 /** UILabel + UITextView 的组合视图 */
 @interface CGTitleTextView : CGBaseView
@@ -18,8 +18,19 @@
 @property (assign, nonatomic) CGFloat       spaceSubviews;
 
 @property (strong, nonatomic, readonly) CGMultilineLabel    * titleLabel;
-@property (strong, nonatomic, readonly) CGTextView          * textView;
+@property (strong, nonatomic, readonly) CGInputTextView     * textView;
 
-/** 刷新子视图的显示区域，返回子视图最小需要的空间大小 */
-- (CGSize)updateSubviewsLayout;
+@property (strong, nonatomic) UIColor *textViewEditBackgroundColor;
+@property (strong, nonatomic) UIColor *textViewNormalBackgroundColor;
+
+@property (assign, nonatomic) CGFloat textViewMinHeight;
+
+/** 关闭自动设置子视图显示区域 */
+@property (assign, nonatomic) BOOL disableAutoSetupSubviewsFrame;
+
+/** 
+ *  刷新子视图的显示区域，返回子视图最小需要的空间大小
+ *  @warning默认会自动设置子视图显示区域，用disableAutoSetupSubviewsFrame设置来关闭自动设置
+ */
+- (CGFloat)updateSubviewsLayout;
 @end

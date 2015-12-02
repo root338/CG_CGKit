@@ -12,16 +12,23 @@
 
 - (CGSize)calculateLabelTextSize
 {
-    
-    CGSize size = CGSizeZero;
-    
-    NSDictionary *dic = @{
-                          NSFontAttributeName : self.font,
-                          };
-    
-    size = [self.text sizeWithAttributes:dic];
-    
-    return size;
+    if (self.attributedText) {
+        
+        return self.attributedText.size;
+    }
+    if (self.font) {
+        
+        CGSize size = CGSizeZero;
+        
+        NSDictionary *dic = @{
+                              NSFontAttributeName : self.font,
+                              };
+        
+        size = [self.text sizeWithAttributes:dic];
+        
+        return size;
+    }
+    return CGSizeZero;
 }
 
 - (CGRect)calculateMultilineLabelTextSizeWithMaxWidth:(CGFloat)maxWidth
@@ -31,14 +38,25 @@
 
 - (CGRect)calculateMultilineLabelTextSizeWithMaxSize:(CGSize)maxSize
 {
-    NSDictionary *dic = @{
-                          NSFontAttributeName : self.font,
-                          };
-    CGRect rect = [self.text boundingRectWithSize:maxSize
-                                          options:NSStringDrawingUsesLineFragmentOrigin
-                                       attributes:dic
+    if (self.attributedText) {
+        
+        CGRect rect = [self.attributedText boundingRectWithSize:maxSize
+                                          options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin
                                           context:nil];
-    return rect;
+        return rect;
+    }
+    if (self.font) {
+        
+        NSDictionary *dic = @{
+                              NSFontAttributeName : self.font,
+                              };
+        CGRect rect = [self.text boundingRectWithSize:maxSize
+                                              options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                           attributes:dic
+                                              context:nil];
+        return rect;
+    }
+    return CGRectZero;
 }
 
 - (CGSize)calculateLabelSizeWithTextRect:(CGRect)textRect

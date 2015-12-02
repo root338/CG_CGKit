@@ -22,9 +22,12 @@
 }
 /** 提示文本框 */
 @property (strong, nonatomic) CGMultilineLabel *placeholderLabel;
+
 @end
 
 @implementation CGTextView
+
+@synthesize placeholder = _placeholder;
 
 - (void)initialization
 {
@@ -36,14 +39,14 @@
     [super willMoveToSuperview:newSuperview];
     if (newSuperview) {
         if (!isDidChangeNote) {
-            CGInfoLog(@"添加UITextViewTextDidChangeNotification通知");
+//            CGInfoLog(@"添加UITextViewTextDidChangeNotification通知");
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTextDidChangeNotification:) name:UITextViewTextDidChangeNotification object:nil];
             isDidChangeNote = YES;
         }
     }else {
         
         if (isDidChangeNote) {
-            CGInfoLog(@"移除UITextViewTextDidChangeNotification通知");
+//            CGInfoLog(@"移除UITextViewTextDidChangeNotification通知");
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
             isDidChangeNote = NO;
         }
@@ -53,8 +56,21 @@
 - (void)handleTextDidChangeNotification:(NSNotification *)note
 {
     if ([note.name isEqualToString:UITextViewTextDidChangeNotification]) {
+        
         [self setupPlaceholder];
+        if (self.textDidChangeCallback) {
+            self.textDidChangeCallback(self.text);
+        }
     }
+}
+
+- (CGRect)calculatePlaceholderLabelFrame
+{
+    CGFloat maxWidthForPlaceholderLabel = self.width - (self.marginEdgeInsetsForPlaceholderView.left + self.marginEdgeInsetsForPlaceholderView.right);
+    
+    CGRect textAreaFrame = [self.placeholderLabel calculateMultilineLabelTextSizeWithMaxWidth:maxWidthForPlaceholderLabel];
+    CGRect frameForPlaceholderLabel = CGRectMake(self.marginEdgeInsetsForPlaceholderView.left, self.marginEdgeInsetsForPlaceholderView.top, maxWidthForPlaceholderLabel, textAreaFrame.origin.y + textAreaFrame.size.height);
+    return frameForPlaceholderLabel;
 }
 
 - (void)setupPlaceholder
@@ -83,10 +99,8 @@
             [self addSubview:_placeholderLabel];
         }
         
-        CGFloat maxWidthForPlaceholderLabel = self.width - horizontalSpace;
+        CGRect frameForPlaceholderLabel = [self calculatePlaceholderLabelFrame];
         
-        CGRect textAreaFrame = [self.placeholderLabel calculateMultilineLabelTextSizeWithMaxWidth:maxWidthForPlaceholderLabel];
-        CGRect frameForPlaceholderLabel = CGRectMake(self.marginEdgeInsetsForPlaceholderView.left, self.marginEdgeInsetsForPlaceholderView.top, maxWidthForPlaceholderLabel, textAreaFrame.origin.y + textAreaFrame.size.height);
         if (!CGRectEqualToRect(frameForPlaceholderLabel, self.placeholderLabel.frame)) {
             
             self.placeholderLabel.frame = frameForPlaceholderLabel;
@@ -97,10 +111,8 @@
                 sizeForTextView.height += self.placeholderLabel.maxY + self.marginEdgeInsetsForPlaceholderView.bottom;
                 if (!CGRectContainsRect(self.frame, CGRectMake(self.xOrigin, self.yOrigin, sizeForTextView.width, sizeForTextView.height))) {
                     
-                    
                     [self adjustsTextViewSize:sizeForTextView];
                 }
-                
             }
         }
     }else {
@@ -152,9 +164,19 @@
 - (void)setPlaceholder:(NSString *)placeholder
 {
     if (![_placeholder isEqualToString:placeholder]) {
+        
         _placeholder = placeholder;
         [self cg_performAfterZeroDelaySelector:@selector(setupPlaceholder)];
     }
+}
+
+- (NSString *)placeholder
+{
+    if (_attributedPlaceholder) {
+        return _attributedPlaceholder.string;
+    }
+    
+    return _placeholder;
 }
 
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder
@@ -163,5 +185,30 @@
         _attributedPlaceholder = attributedPlaceholder;
         [self cg_performAfterZeroDelaySelector:@selector(setupPlaceholder)];
     }
+}
+
+- (CGFloat)minHeight
+{
+    
+    CGFloat _minPlaceholderHeight   = 0;
+    CGFloat _minTextHeight          = 0;
+    
+    _minPlaceholderHeight = _placeholderLabel.maxY + self.marginEdgeInsetsForPlaceholderView.bottom;
+    
+    CGFloat marginSpace = self.marginEdgeInsetsForPlaceholderView.top + self.marginEdgeInsetsForPlaceholderView.bottom;
+    if (!self.font) {
+        self.font = [UIFont systemFontOfSize:12];
+    }
+    _minTextHeight = marginSpace + self.font.lineHeight;
+    
+    return MAX(_minPlaceholderHeight, _minTextHeight);
+}
+
+- (CGPoint)cursorPosition
+{
+    if (!self.selectedTextRange) {
+        return CGPointZero;
+    }
+    return [self caretRectForPosition:self.selectedTextRange.end].origin;
 }
 @end

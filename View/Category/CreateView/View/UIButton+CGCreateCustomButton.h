@@ -12,6 +12,13 @@
 @interface UIButton (CGCreateCustomButton)
 
 /**
+ *  创建默认按钮(UIButtonTypeSystem样式按钮)
+ *
+ *  @return 返回创建好的按钮
+ */
++ (instancetype)cg_createDefaultButton;
+
+/**
  *  创建按钮，设置按钮样式、标题、标题颜色和标题字体
  *
  *  @param type       按钮的样式

@@ -11,6 +11,11 @@
 
 @implementation UIButton (CGCreateCustomButton)
 
++ (instancetype)cg_createDefaultButton
+{
+    return [UIButton buttonWithType:UIButtonTypeSystem];
+}
+
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
 {
     UIButton *button = [self buttonWithType:type];

@@ -31,6 +31,7 @@
 
 - (CGRect)calculateMultilineLabelTextSizeWithMaxSize:(CGSize)maxSize
 {
+    
     NSDictionary *dic = @{
                           NSFontAttributeName : self.font,
                           };

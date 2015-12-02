@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 搜索视图 */
 @interface UIView (CGSearchView)
 
@@ -15,3 +16,5 @@
 - (id)searchSuperViewWithClass:(Class)className;
 
 @end
+
+NS_ASSUME_NONNULL_END

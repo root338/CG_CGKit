@@ -19,7 +19,7 @@
  *
  *  @return 返回计算后的宽度
  */
-CG_INLINE CGFloat CG_CGWidthWithSize(CGSize size, UIEdgeInsets edgeInsets);
+CGFloat CG_CGWidthWithSize(CGSize size, UIEdgeInsets edgeInsets);
 
 /**
  *  计算size中距离上下边距最大的高度
@@ -29,7 +29,7 @@ CG_INLINE CGFloat CG_CGWidthWithSize(CGSize size, UIEdgeInsets edgeInsets);
  *
  *  @return 返回计算后的高度
  */
-CG_INLINE CGFloat CG_CGHeightWithSize(CGSize size, UIEdgeInsets edgeInsets);
+CGFloat CG_CGHeightWithSize(CGSize size, UIEdgeInsets edgeInsets);
 
 /**
  *  计算区域类出去边界的区域
@@ -40,7 +40,7 @@ CG_INLINE CGFloat CG_CGHeightWithSize(CGSize size, UIEdgeInsets edgeInsets);
  *
  *  @return 返回新的坐标
  */
-CG_INLINE CGRect CGRectWithMargin(CGRect rect, UIEdgeInsets edgeInsets);
+CGRect CGRectWithMargin(CGRect rect, UIEdgeInsets edgeInsets);
 
 /**
  *  计算区域类出去边界的区域（排除上边距）
@@ -52,7 +52,7 @@ CG_INLINE CGRect CGRectWithMargin(CGRect rect, UIEdgeInsets edgeInsets);
  *
  *  @return 返回新的坐标
  */
-CG_INLINE CGRect CG_CGRectWithExcludeTop(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY);
+CGRect CG_CGRectWithExcludeTop(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY);
 
 /**
  *  计算区域类出去边界的区域（排除下边距）
@@ -64,7 +64,7 @@ CG_INLINE CGRect CG_CGRectWithExcludeTop(CGRect rect, UIEdgeInsets edgeInsets, C
  *
  *  @return 返回新的坐标
  */
-CG_INLINE CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat height);
+CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat height);
 
 /**
  *  计算区域类出去边界的区域（排除上下边距）
@@ -77,5 +77,5 @@ CG_INLINE CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets
  *
  *  @return 返回新的坐标
  */
-CG_INLINE CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY, CGFloat height);
+CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY, CGFloat height);
 @end
