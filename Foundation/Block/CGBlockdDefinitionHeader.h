@@ -12,7 +12,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#pragma mark - 又返回类型，无参数
+
+typedef id      (^cg_getTargetObject)               (void);
+
 #pragma mark - 有返回类型，有参数
+
 /** 提起目标对象中的特定字符串属性 */
 typedef id      (^cg_getSingleValueForTargetObject) (id obj);
 

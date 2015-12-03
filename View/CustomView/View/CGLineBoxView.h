@@ -21,6 +21,7 @@ typedef NS_OPTIONS(NSInteger, LineBoxType) {
 
 /**
  *  线框视图
+ *
  */
 @interface CGLineBoxView : UIView
 

@@ -17,7 +17,7 @@
 static char CGBgCustomViewKey;
 - (void)setBgCustomView:(UIView *)bgCustomView
 {
-    !self.bgCustomView ?: [self.bgCustomView removeFromSuperview];
+    !self.bgCustomView.superview ?: [self.bgCustomView removeFromSuperview];
     
     if (bgCustomView) {
         bgCustomView.frame = self.bounds;

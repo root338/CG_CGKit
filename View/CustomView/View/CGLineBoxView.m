@@ -59,13 +59,15 @@
     }
     
     if (self.rectCorner & LineBoxTypeRight) {
-        CGPathMoveToPoint(path, NULL, self.width, 0);
-        CGPathAddLineToPoint(path, NULL, self.width, self.height);
+        CGFloat originX = self.width - self.lineWidth;
+        CGPathMoveToPoint(path, NULL, originX, 0);
+        CGPathAddLineToPoint(path, NULL, originX, self.height);
     }
     
     if (self.rectCorner & LineBoxTypeBottom) {
-        CGPathMoveToPoint(path, NULL, self.width, self.height);
-        CGPathAddLineToPoint(path, NULL, 0, self.height);
+        CGFloat originY = self.height - self.lineWidth;
+        CGPathMoveToPoint(path, NULL, self.width, originY);
+        CGPathAddLineToPoint(path, NULL, 0, originY);
     }
     
     if (self.rectCorner & LineBoxTypeLeft) {

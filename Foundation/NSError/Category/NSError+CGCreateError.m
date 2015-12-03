@@ -22,4 +22,8 @@
     return error;
 }
 
++ (NSError *)cg_CreateWithErrorMessage:(NSString *)errorMessage
+{
+    return [self cg_CreateWithCode:-1 errorMessage:errorMessage];
+}
 @end
