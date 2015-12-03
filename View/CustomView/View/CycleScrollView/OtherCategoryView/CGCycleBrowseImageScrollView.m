@@ -12,7 +12,9 @@
 #import "UIView+CGSetupFrame.h"
 
 #import "UIImageView+CGCreateView.h"
+#import "UIView+CG_CGAreaCalculate.h"
 #import "UIImageView+CGSetupImageURL.h"
+
 #import "NSArray+CGArray.h"
 
 
@@ -32,6 +34,11 @@
     [browseImageView setupDataSourceWithObject:dataSource extractBlock:extractBlock];
     
     return browseImageView;
+}
+
+- (void)initialization
+{
+    self.imageViewContentMode = UIViewContentModeScaleAspectFit;
 }
 
 - (void)setupDataSourceWithObject:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock
@@ -67,7 +74,7 @@
     }else {
         [self cycleScrollView];
         [self addSubview:self.cycleScrollView];
-        self.cycleScrollView.frame = self.bounds;
+        [self setupCycleScrollViewFrame];
     }
     
     if (self.isHidePageControl) {
@@ -83,8 +90,8 @@
         
         self.pageControl.numberOfPages  = self.dataSource.count;
         self.pageControl.currentPage    = self.cycleScrollView.currentIndex;
-            
-        [self setupPageControlFrame];
+        
+        [self setupPageControlShowArea];
     }
 }
 
@@ -96,7 +103,7 @@
 
 - (UIView *)cycleScrollView:(CGCycleScrollView *)cycleScrollView viewAtIndex:(NSInteger)index
 {
-    UIImageView *imageView = [UIImageView cg_createImageViewWithContentMode:UIViewContentModeScaleAspectFit];
+    UIImageView *imageView = [UIImageView cg_createImageViewWithContentMode:self.imageViewContentMode];
     [imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
     return imageView;
 }
@@ -133,26 +140,46 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _cycleScrollView.frame = self.bounds;
-    [self setupPageControlFrame];
+    [self setupCycleScrollViewFrame];
+    [self setupPageControlShowArea];
 }
 
-- (void)setupPageControlFrame
+- (void)setupCycleScrollViewFrame
+{
+    CGRect frame = CGRectWithMargin(self.bounds, self.marginEdgeInset);
+    if (!CGRectEqualToRect(_cycleScrollView.frame, frame)) {
+        _cycleScrollView.frame = frame;
+    }
+}
+
+- (void)setupPageControlShowArea
 {
     if (!_pageControl) {
         return;
     }
+    
     if (CGRectEqualToRect(self.pageControl.frame, CGRectZero) && self.pageControl.numberOfPages) {
         [self.pageControl sizeToFit];
     }
-    CGPoint origin = CGPointMake((self.width - self.pageControl.width) / 2, 0);
-    if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionBottom) {
-        origin = CGPointMake(0, self.height - self.pageControl.height);
+    
+    if (self.setupPageControlFrame) {
+        
+        CGRect frame = self.setupPageControlFrame(self.frame, self.pageControl);
+        if (!CGRectEqualToRect(frame, self.pageControl.frame)) {
+            self.pageControl.frame = frame;
+        }
+    }else {
+        
+        CGPoint origin = CGPointMake((self.width - self.pageControl.width) / 2, 0);
+        if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionBottom) {
+            origin = CGPointMake(0, self.height - self.pageControl.height);
+        }
+        
+        if (!CGPointEqualToPoint(origin, self.pageControl.origin)) {
+            self.pageControl.origin = origin;
+        }
     }
     
-    if (!CGPointEqualToPoint(origin, self.pageControl.origin)) {
-        self.pageControl.origin = origin;
-    }
 }
 
 #pragma mark - 设置属性
@@ -178,5 +205,13 @@
     
     _pageControl = [[UIPageControl alloc] init];
     return _pageControl;
+}
+
+- (void)setMarginEdgeInset:(UIEdgeInsets)marginEdgeInset
+{
+    if (UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInset, marginEdgeInset)) {
+        _marginEdgeInset = marginEdgeInset;
+        [self setupCycleScrollViewFrame];
+    }
 }
 @end

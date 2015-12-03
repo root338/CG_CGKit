@@ -12,7 +12,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#pragma mark - 又返回类型，无参数
+#pragma mark - 有返回类型，无参数
 
 typedef id      (^cg_getTargetObject)               (void);
 
@@ -20,6 +20,9 @@ typedef id      (^cg_getTargetObject)               (void);
 
 /** 提起目标对象中的特定字符串属性 */
 typedef id      (^cg_getSingleValueForTargetObject) (id obj);
+
+/** 根据父视图设置子视图的坐标 */
+typedef CGRect  (^cg_setupViewRectToSuperview)      (CGRect superviewFrame, UIView *targetView);
 
 #pragma mark - 无返回类型，有参数
 /** 回调一个数值 */

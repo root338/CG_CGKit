@@ -6,7 +6,7 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGBaseView.h"
 #import "CGBlockdDefinitionHeader.h"
 
 /**
@@ -25,25 +25,37 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 };
 
 /** 浏览视图 */
-@interface CGCycleBrowseImageScrollView : UIView
+@interface CGCycleBrowseImageScrollView : CGBaseView
 
+#pragma mark - 循环视图
 /** 加载的数据 图片链接 */
 @property (strong, nonatomic) NSMutableArray<NSString *> *dataSource;
 
-/** 外边距 */
+/** 滑动视图相对本视图的外边距 */
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInset;
-
-/** 是否显示分页视图，默认NO */
-@property (assign, nonatomic) BOOL isHidePageControl;
-
-@property (assign, nonatomic) CGCycleBrowseImageViewPageControlPosition positionForPageControl;
-@property (strong, nonatomic, readonly) UIPageControl *pageControl;
-
 
 /** 点击回调 */
 @property (copy, nonatomic) cg_singleValueCallback clickIndexCallback;
 
+/** 当前索引改变时回调 */
 @property (copy, nonatomic) cg_singleValueCallback currentIndexDidChangeCallback;
+
+/** 图片加载的类型，默认UIViewContentModeScaleAspectFit */
+@property (assign, nonatomic) UIViewContentMode imageViewContentMode;
+
+#pragma mark - pageControl
+/** 是否显示分页视图，默认NO */
+@property (assign, nonatomic) BOOL isHidePageControl;
+
+/** 分页视图的位置 */
+@property (assign, nonatomic) CGCycleBrowseImageViewPageControlPosition positionForPageControl;
+
+/** 改变pageControl视图的显示区域，优先级大于positionForPageControl */
+@property (copy, nonatomic) cg_setupViewRectToSuperview setupPageControlFrame;
+
+/** 分页视图 */
+@property (strong, nonatomic, readonly) UIPageControl *pageControl;
+
 /**
  *  创建图片浏览视图
  *

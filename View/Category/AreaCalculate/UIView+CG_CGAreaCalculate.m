@@ -40,4 +40,8 @@ CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFlo
     return CGRectMake(edgeInsets.left, originY, CG_CGWidthWithSize(rect.size, edgeInsets), height);
 }
 
+CGRect CG_CGRectWithMake(CGPoint position, CGSize size)
+{
+    return CGRectMake(position.x, position.y, size.width, size.height);
+}
 @end

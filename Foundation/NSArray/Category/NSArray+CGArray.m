@@ -19,9 +19,7 @@
 - (id)cg_objectAtIndex:(NSUInteger)index
 {
     if ([self isTransboundaryAtIndex:index]) {
-#ifdef DEBUG
-        NSAssert(nil, @"数组越界");
-#endif
+
         return nil;
     }
     

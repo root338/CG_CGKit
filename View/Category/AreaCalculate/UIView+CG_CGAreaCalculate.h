@@ -78,4 +78,7 @@ CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat 
  *  @return 返回新的坐标
  */
 CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY, CGFloat height);
+
+
+CGRect CG_CGRectWithMake(CGPoint position, CGSize size);
 @end
