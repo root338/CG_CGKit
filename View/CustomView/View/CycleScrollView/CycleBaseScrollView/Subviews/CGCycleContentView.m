@@ -11,6 +11,7 @@
 
 #import "UIView+CGCreate.h"
 #import "UIView+CGSearchView.h"
+#import "UIView+CG_CGAreaCalculate.h"
 
 @interface CGCycleContentView ()
 {
@@ -24,10 +25,16 @@
 
 + (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index
 {
+    return [self cg_createCycleContentViewWithContentView:contentView index:index marginEdgeInsets:UIEdgeInsetsZero];
+}
+
++ (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index marginEdgeInsets:(UIEdgeInsets)marginEdgeInsets
+{
     CGCycleContentView *cycleContentView    = [self cg_createView];
     
     cycleContentView.contentView            = contentView;
     cycleContentView.viewIndex              = index;
+    cycleContentView.marginEdgeInsets       = marginEdgeInsets;
     
     return cycleContentView;
 }
@@ -35,7 +42,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.contentView.frame          = self.bounds;
+    self.contentView.frame          = CGRectWithMargin(self.bounds, self.marginEdgeInsets);
     self.cycleContentButton.frame   = self.bounds;
 }
 

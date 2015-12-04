@@ -17,6 +17,20 @@
 /** 视图索引 */
 @property (assign, nonatomic) NSInteger viewIndex;
 
+/** 外边界 */
+@property (assign, nonatomic) UIEdgeInsets marginEdgeInsets;
+
 /** 创建滑动单个视图 */
 + (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index;
+
+/**
+ *  创建单个视图
+ *
+ *  @param contentView      需要添加的视图
+ *  @param index            视图索引
+ *  @param marginEdgeInsets 添加的contentView与视图之间的边距
+ *
+ *  @return 返回创建好的视图
+ */
++ (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index marginEdgeInsets:(UIEdgeInsets)marginEdgeInsets;
 @end

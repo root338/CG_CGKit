@@ -34,6 +34,9 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 滑动视图相对本视图的外边距 */
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInset;
 
+/** 滑动视图内部视图中子视图的外边距 */
+@property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForSubview;
+
 /** 点击回调 */
 @property (copy, nonatomic) cg_singleValueCallback clickIndexCallback;
 

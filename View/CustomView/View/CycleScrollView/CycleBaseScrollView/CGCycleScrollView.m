@@ -55,7 +55,7 @@
 @property (nonatomic, strong) UIScrollView *cycleScrollView;
 
 /** 被缓存的视图 */
-@property (strong, nonatomic) NSMutableDictionary *cacheViews;
+@property (strong, nonatomic, readwrite) NSMutableDictionary *cacheViews;
 
 /** 分页视图的容器 */
 @property (strong, nonatomic) UIView *pageContentView;
@@ -331,6 +331,7 @@
     CGCycleContentView *contentView = [self cycleContentViewAtIndex:index];
     
     if (contentView == _currentView || contentView == _previousView || contentView == _aideView) {
+        //视图无法复制，那就重新创建个
         contentView = nil;
     }
     
@@ -340,7 +341,7 @@
         
         CGDebugAssert(view, @"显示的视图为nil，允许的话就注释这句代码吧-_-");
         
-        contentView = [CGCycleContentView cg_createCycleContentViewWithContentView:view index:index];
+        contentView = [CGCycleContentView cg_createCycleContentViewWithContentView:view index:index marginEdgeInsets:self.marginEdgeInsetForSubviews];
         [self saveCycleContentView:contentView];
     }else {
         
@@ -580,15 +581,28 @@
 ///滑动到下一视图
 - (void)scrollToNextView
 {
-    self.currentIndex++;
-    [self setupScrollContentView];
+    NSNumber *nextIndex = [self getViewIndexWithCurrentIndex:self.currentIndex + 1 type:_CGCycleSubviewTypeCurrentIndex];
+    
+    //下一个当前索引是否存在
+    if (nextIndex) {
+        
+        self.currentIndex = nextIndex.integerValue;
+        [self setupScrollContentView];
+    }
+    
 }
 
 //滑动到上一视图
 - (void)scrollToPreviousView
 {
-    self.currentIndex--;
-    [self setupScrollContentView];
+    NSNumber *previousIndex = [self getViewIndexWithCurrentIndex:self.currentIndex - 1 type:_CGCycleSubviewTypeCurrentIndex];
+    
+    //上一个当前索引是否存在
+    if (previousIndex) {
+        
+        self.currentIndex = previousIndex.integerValue;
+        [self setupScrollContentView];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -87,7 +87,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  *          可以设置子视图与子视图之间的间距
  *          可以设置横滑还是竖滑
  *
- *  优化：1.分离类；2.无法缓存重复视图；3.不分页条件下无法将最近的视图定位到中间
+ *  优化：1.分离类；2.没有实现缓存重复视图（同样视图同时出现，比如循环滑动1，2张图时）；3.不分页条件下无法将最近的视图定位到中间（原因是三视图循环无法定位停止坐标（现在的思路主要是在将要停止时在移动到中间，不过这样动画起来太违和了，没有实现））
  */
 @interface CGCycleScrollView : UIView
 
@@ -131,20 +131,17 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
 @property (assign, nonatomic) NSTimeInterval delayTimeInterval;
 
 #pragma mark - 内容设置
-///当前显示视图的索引 @warning 在不分页或滑动时获取将不准确，建议使用cycleScrollView:didSelectRowAtIndex:方法获取
+/**
+ *  当前显示视图的索引 
+ *  @warning 在不分页或滑动时获取将不准确，建议使用cycleScrollView:didSelectRowAtIndex:方法获取
+ */
 @property (nonatomic, assign) NSInteger currentIndex;
 
 ///滑动视图相对父视图的四周边距
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForScrollView;
 
-/** 
- *  是否缓存已创建的视图
- *  当设值为YES时，maxCacheCountForViews属性为0时，默认设置为 5
- */
-@property (assign, nonatomic) BOOL isCacheViews;
-
-/** 缓存的最大数 */
-@property (assign, nonatomic) NSUInteger maxCacheCountForViews;
+///滑动视图内部子视图内容的四周边距
+@property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForSubviews;
 
 /** 设置单个内容视图之间的间距 */
 @property (assign, nonatomic) CGFloat subviewSpace;
@@ -161,6 +158,19 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  *  不包含滑动过程中的控制，仅控制加入离开屏幕和移除父视图的控制
  */
 @property (assign, nonatomic) BOOL isCloseDefaultTimerSetting;
+
+#pragma mark - 缓存设置
+/**
+ *  是否缓存已创建的视图
+ *  当设值为YES时，maxCacheCountForViews属性为0时，默认设置为 5
+ */
+@property (assign, nonatomic) BOOL isCacheViews;
+
+/** 缓存的最大数 */
+@property (assign, nonatomic) NSUInteger maxCacheCountForViews;
+
+/** 被缓存的视图 */
+@property (strong, nonatomic, readonly) NSMutableDictionary *cacheViews;
 
 /**
  *  刷新视图

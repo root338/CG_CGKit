@@ -17,7 +17,6 @@
 
 #import "NSArray+CGArray.h"
 
-
 @interface CGCycleBrowseImageScrollView ()<CGCycleScrollViewDataSource, CGCycleScrollViewDelegate>
 
 @property (strong, nonatomic) CGCycleScrollView *cycleScrollView;
@@ -179,7 +178,6 @@
             self.pageControl.origin = origin;
         }
     }
-    
 }
 
 #pragma mark - 设置属性
@@ -212,6 +210,14 @@
     if (UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInset, marginEdgeInset)) {
         _marginEdgeInset = marginEdgeInset;
         [self setupCycleScrollViewFrame];
+    }
+}
+
+- (void)setMarginEdgeInsetForSubview:(UIEdgeInsets)marginEdgeInsetForSubview
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(marginEdgeInsetForSubview, _marginEdgeInsetForSubview)) {
+        _marginEdgeInsetForSubview = marginEdgeInsetForSubview;
+        self.cycleScrollView.marginEdgeInsetForSubviews = marginEdgeInsetForSubview;
     }
 }
 @end
