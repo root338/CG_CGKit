@@ -8,8 +8,6 @@
 
 #import "UITableView+CGCreateTableView.h"
 
-const UITableViewStyle UITableViewStyleNone = -1;
-
 @implementation UITableView (CGCreateTableView)
 
 #pragma mark - 普通创建TableView
@@ -21,14 +19,7 @@ const UITableViewStyle UITableViewStyleNone = -1;
 
 + (instancetype)createTableViewStyle:(UITableViewStyle)style rowHeight:(CGFloat)rowHeight
 {
-    UITableView *tableView = nil;
-    if (style == UITableViewStyleNone) {
-        
-        tableView = [[self alloc] initWithFrame:CGRectZero];
-    }else {
-        
-        tableView = [[self alloc] initWithFrame:CGRectZero style:style];
-    }
+    UITableView *tableView = [[self alloc] initWithFrame:CGRectZero style:style];
     
     if (rowHeight != 0) {
         tableView.rowHeight = rowHeight;

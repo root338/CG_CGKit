@@ -17,4 +17,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface UIView (CGSearchNextInputView)
+
+/** 
+ *  是否缓存当前视图的输入控件 
+ *  @warning 当视图内部视图发生变化时需要手动清理缓存视图
+ */
+@property (assign, nonatomic) BOOL isCacheInputViews;
+
+/** 缓存的输入视图 */
+@property (strong, nonatomic) NSArray<UIView *> *cacheInputViews;
+
+#pragma mark - 只能在当前视图内寻找
+/** 搜索当前视图内，下一个可输入视图 */
+- (UIView *)searchNextWithCurrentInputView:(UIView *)currentInputView;
+
+/** 搜索当前视图内，上一个可输入视图 */
+- (UIView *)searchPreviousWithCurrentInputView:(UIView *)currentInputView;
+
+@end
+
 NS_ASSUME_NONNULL_END

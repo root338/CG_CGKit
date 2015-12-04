@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-const UITableViewStyle UITableViewStyleNone;
-
 /**
  *  快速创建TableView的扩展方法
  */
