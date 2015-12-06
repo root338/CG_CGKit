@@ -29,7 +29,7 @@
 #pragma mark - 重置布局
 - (CGFloat)updateSubviewsLayout
 {
-    CGFloat maxWidth        = CG_CGWidthWithSize(self.frame.size, self.marginEdgeInsets);
+    CGFloat maxWidth        = CG_CGWidthWithMaxWidth(self.width, self.marginEdgeInsets);
     CGSize titleSize        = [self.titleLabel calculateLabelSizeWithMaxWidth:maxWidth];
     
     CGRect titleLabelFrame  = CG_CGRectWithExcludeBottom(self.bounds, self.marginEdgeInsets, titleSize.height);

@@ -14,30 +14,30 @@
 @dynamic bgCustomView;
 
 #pragma mark - 设置属性
-static char CGBgCustomViewKey;
-- (void)setBgCustomView:(UIView *)bgCustomView
+
+- (void)setBgCustomView:(UIView *)backgroundView
 {
     !self.bgCustomView.superview ?: [self.bgCustomView removeFromSuperview];
     
-    if (bgCustomView) {
-        bgCustomView.frame = self.bounds;
+    if (backgroundView) {
+        backgroundView.frame = self.bounds;
         CGPoint center = self.center;
         center.y -= self.frame.origin.y;
         center.x -= self.frame.origin.x;
-        bgCustomView.center = center;
-        [self addSubview:bgCustomView];
+        backgroundView.center = center;
+        [self addSubview:backgroundView];
         
-        bgCustomView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         [self willChangeValueForKey:@"bgCustomView"];
-        objc_setAssociatedObject(self, &CGBgCustomViewKey, bgCustomView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, @selector(bgCustomView), backgroundView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [self didChangeValueForKey:@"bgCustomView"];
     }
 }
 
 - (UIView *)bgCustomView
 {
-    return objc_getAssociatedObject(self, &CGBgCustomViewKey);
+    return objc_getAssociatedObject(self, _cmd);
 }
 
 @end

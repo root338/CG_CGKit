@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "CGViewProtocol.h"
 
+#import "UIView+CGSetupFrame.h"
+
 @interface CGBaseView : UIView<CGViewInitializationProtocol>
 
 @end

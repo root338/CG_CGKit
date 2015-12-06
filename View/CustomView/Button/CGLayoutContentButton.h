@@ -6,11 +6,10 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGBaseButton.h"
 
 /** 使用约束来限制button中title和imageView的布局 */
-@interface CGLayoutContentButton : UIButton
-
+@interface CGLayoutContentButton : CGBaseButton
 
 
 @end

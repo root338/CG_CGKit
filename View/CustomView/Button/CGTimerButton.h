@@ -6,10 +6,10 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGBaseButton.h"
 
 /** 设置按钮计时 */
-@interface CGTimerButton : UIButton
+@interface CGTimerButton : CGBaseButton
 
 /** 是否已经开始计时 */
 @property (assign, nonatomic, readonly) BOOL isStringTimer;

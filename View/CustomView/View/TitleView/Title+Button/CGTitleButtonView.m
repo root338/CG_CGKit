@@ -12,7 +12,7 @@
 
 @interface CGTitleButtonView ()
 
-@property (strong, nonatomic, readwrite) UIButton *titleButton;
+@property (strong, nonatomic, readwrite) CGBaseButton *titleButton;
 @end
 
 @implementation CGTitleButtonView
@@ -31,13 +31,13 @@
 }
 
 #pragma mark - 属性设置
-- (UIButton *)titleButton
+- (CGBaseButton *)titleButton
 {
     if (_titleButton) {
         return _titleButton;
     }
     
-    _titleButton = [UIButton cg_createDefaultButton];
+    _titleButton = [CGBaseButton cg_createDefaultButton];
     return _titleButton;
 }
 

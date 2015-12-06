@@ -1,14 +1,14 @@
 //
-//  CGBaseView.m
-//  QuickAskCommunity
+//  CGBaseButton.m
+//  TestCG_CGKit
 //
-//  Created by DY on 15/11/30.
-//  Copyright © 2015年 ym. All rights reserved.
+//  Created by apple on 15/12/5.
+//  Copyright © 2015年 apple. All rights reserved.
 //
 
-#import "CGBaseView.h"
+#import "CGBaseButton.h"
 
-@implementation CGBaseView
+@implementation CGBaseButton
 
 #pragma mark - 初始化方法
 - (instancetype)initWithFrame:(CGRect)frame

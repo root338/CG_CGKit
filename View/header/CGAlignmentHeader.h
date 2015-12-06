@@ -48,4 +48,26 @@ typedef NS_ENUM(NSInteger, CGViewVerticalAlignment){
      */
     CGViewVerticalAlignmentBottom,
 };
+
+/**
+ *  视图的位置属性
+ */
+typedef NS_ENUM(NSInteger, CGViewPositionStyle) {
+    /**
+     *  上面
+     */
+    CGViewPositionStyleTop,
+    /**
+     *  左边
+     */
+    CGViewPositionStyleLeft,
+    /**
+     *  下边
+     */
+    CGViewPositionStyleBottom,
+    /**
+     *  右边
+     */
+    CGViewPositionStyleRight,
+};
 #endif

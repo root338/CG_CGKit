@@ -15,7 +15,7 @@
  
  
  */
-@interface CGTitleBaseView : UIView
+@interface CGTitleDoubleLayoutBaseView : UIView
 
 /**
  左边视图

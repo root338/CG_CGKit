@@ -8,28 +8,50 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 /** 坐标区域计算 */
 @interface UIView (CG_CGAreaCalculate)
 
 /**
- *  计算size中距离左右边距最大的宽度
+ *  计算 maxWith - (left + right)
  *
  *  @param size       视图大小
  *  @param edgeInsets 边距值
  *
  *  @return 返回计算后的宽度
  */
-CGFloat CG_CGWidthWithSize(CGSize size, UIEdgeInsets edgeInsets);
+CGFloat CG_CGWidthWithMaxWidth(CGFloat maxWidth, UIEdgeInsets edgeInsets);
 
 /**
- *  计算size中距离上下边距最大的高度
+ *  计算 left + width + right
+ *
+ *  @param width      宽度
+ *  @param edgeInsets 边距
+ *
+ *  @return 返回计算后大小
+ */
+CGFloat CG_CGMaxWidthWithWidth(CGFloat width, UIEdgeInsets edgeInsets);
+
+/**
+ *  计算 maxHeight - (top + bottom)
  *
  *  @param size       视图大小
  *  @param edgeInsets 边距值
  *
  *  @return 返回计算后的高度
  */
-CGFloat CG_CGHeightWithSize(CGSize size, UIEdgeInsets edgeInsets);
+CGFloat CG_CGHeightWithMaxHeight(CGFloat maxHeight, UIEdgeInsets edgeInsets);
+
+/**
+ *  计算 top + height + bottom
+ *
+ *  @param size       视图大小
+ *  @param edgeInsets 边距值
+ *
+ *  @return 返回计算后的高度
+ */
+CGFloat CG_CGMaxHeightWithHeight(CGFloat height, UIEdgeInsets edgeInsets);
 
 /**
  *  计算区域类出去边界的区域
@@ -41,6 +63,16 @@ CGFloat CG_CGHeightWithSize(CGSize size, UIEdgeInsets edgeInsets);
  *  @return 返回新的坐标
  */
 CGRect CGRectWithMargin(CGRect rect, UIEdgeInsets edgeInsets);
+
+/**
+ *  计算 {width + left + right, height + top + bottom}
+ *
+ *  @param rect       指定子区域
+ *  @param edgeInsets 边距大小
+ *
+ *  @return 返回CGRect
+ */
+CGRect CG_CGMaxBoundsWithRectMargin(CGRect rect, UIEdgeInsets edgeInsets);
 
 /**
  *  计算区域类出去边界的区域（排除上边距）
@@ -79,6 +111,13 @@ CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat 
  */
 CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY, CGFloat height);
 
-
+/**
+ *  根据CGPoint，CGSize设置CGRect
+ *
+ *  @param position CGPoint，坐标
+ *  @param size     CGSize，大小
+ *
+ *  @return 返回CGRect值
+ */
 CGRect CG_CGRectWithMake(CGPoint position, CGSize size);
 @end

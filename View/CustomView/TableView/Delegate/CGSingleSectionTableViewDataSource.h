@@ -11,7 +11,7 @@
 @class CGSingleSectionBaseTableViewCell;
 
 /**
- *  声明设置cell的block
+ *  设置cell的block
  *
  *  @param cell 以CGSingleSectionBaseTableViewCell类型的cell为所有cell的基类
  *  @param data cell中的内容数据
@@ -19,7 +19,7 @@
 typedef void (^SetupSingleSectionTableViewCell) (CGSingleSectionBaseTableViewCell *cell, id data);
 
 /**
- *  声明编辑表格的回调
+ *  编辑表格的回调
  *
  *  @param editingStyle 编辑的类型
  *  @param indexPath    编辑的位置

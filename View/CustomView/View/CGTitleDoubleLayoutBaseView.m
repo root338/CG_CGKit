@@ -6,17 +6,17 @@
 //  Copyright (c) 2015年 apple. All rights reserved.
 //
 
-#import "CGTitleBaseView.h"
+#import "CGTitleDoubleLayoutBaseView.h"
 #import "Masonry.h"
 
-@interface CGTitleBaseView ()
+@interface CGTitleDoubleLayoutBaseView ()
 {
     ///标识约束有没有添加成功
     BOOL didSetupConstraints;
 }
 @end
 
-@implementation CGTitleBaseView
+@implementation CGTitleDoubleLayoutBaseView
 
 @synthesize rightViewPriority = _rightViewPriority;
 /*
