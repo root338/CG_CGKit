@@ -48,6 +48,13 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
     return [self searchType:CGSearchInputViewTypePrevious currentView:currentInputView];
 }
 
+- (UIView *)searchInputTextControl
+{
+    NSArray *inputControls = [self searchSubviewsInputViewsWithExcludeView:nil isOnlyOne:YES];
+    return inputControls.firstObject;
+}
+
+/** 执行搜索的类型，进行搜索 */
 - (UIView *)searchType:(CGSearchInputViewType)type currentView:(UIView *)currentInputView;
 {
     if (!currentInputView.superview) {
@@ -149,6 +156,11 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
 
 - (NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView
 {
+    return [self searchSubviewsInputViewsWithExcludeView:excludeView isOnlyOne:NO];
+}
+
+- (NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne
+{
     if (!([self isKindOfClass:[UIView class]])) {
         return nil;
     }
@@ -197,6 +209,10 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
                 }else {
                     //否则属于单个输入视图
                     [inputsViews addObject:targetObj];
+                }
+                
+                if (isOnlyOne) {
+                    *stop = YES;
                 }
             }
         }

@@ -9,6 +9,12 @@
 #import "CGSingleSectionBaseTableView.h"
 #import "UITableView+CGCreateTableView.h"
 
+@interface CGSingleSectionBaseTableView ()
+
+@property (strong, nonatomic, readwrite) CGSingleSectionTableViewDataSource *dataSourceAtSingleSection;
+
+@end
+
 @implementation CGSingleSectionBaseTableView
 
 /*
@@ -23,9 +29,19 @@
 {
     
     CGSingleSectionBaseTableView *tableView = [CGSingleSectionBaseTableView createTableViewStyle:UITableViewStylePlain];
-    CGSingleSectionTableViewDataSource *_dataSource = [CGSingleSectionTableViewDataSource createSingleSectionTableViewDelegateWithData:dataSource cellIdentifierForClass:cellClass setupCellBlock:setupCellBlock];
-    tableView.dataSourceAtSingleSection = _dataSource;
+    [tableView.dataSourceAtSingleSection setupDataSource:dataSource cellIdentifierForClass:cellClass setupCellBlock:setupCellBlock];
+    
     return tableView;
+}
+
+#pragma mark - 设置属性
+- (CGSingleSectionTableViewDataSource *)dataSourceAtSingleSection
+{
+    if (_dataSourceAtSingleSection) {
+        return _dataSourceAtSingleSection;
+    }
+    _dataSourceAtSingleSection = [[CGSingleSectionTableViewDataSource alloc] init];
+    return _dataSourceAtSingleSection;
 }
 
 @end

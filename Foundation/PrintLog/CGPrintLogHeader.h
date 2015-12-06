@@ -45,7 +45,7 @@
 
 #define CGLog(format, ...) CGConditionLog(YES, format, ##__VA_ARGS__)
 
-#define CGDefaultLog() CGLog(@"")
+#define CGDefaultLog() CGLog(@"");
 
 
 #define CGErrorConditionLog(condition, format, ...) do {    \

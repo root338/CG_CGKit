@@ -35,6 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** 搜索当前视图内，上一个可输入视图 */
 - (UIView *)searchPreviousWithCurrentInputView:(UIView *)currentInputView;
 
+/** 
+ *  搜索当前视图的输入控件 
+ *  @param 只返回当前搜索到得第一个输入控件
+ */
+- (UIView *)searchInputTextControl;
 @end
 
 NS_ASSUME_NONNULL_END

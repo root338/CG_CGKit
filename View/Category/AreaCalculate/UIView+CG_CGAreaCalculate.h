@@ -111,6 +111,12 @@ CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat 
  */
 CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originY, CGFloat height);
 
+/** 根据 rect edgeInsets 计算区域大小，忽略左边距 */
+CGRect CG_CGRectWithExcludeRight(CGRect rect, UIEdgeInsets edgeInsets, CGFloat width);
+
+/** 根据 rect edgeInsets 计算区域大小啊，忽略右边距 */
+CGRect CG_CGRectWithExcludeLeft(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originX, CGFloat width);
+
 /**
  *  根据CGPoint，CGSize设置CGRect
  *

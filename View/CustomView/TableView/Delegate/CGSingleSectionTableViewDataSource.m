@@ -27,17 +27,42 @@
     self = [super init];
     if (self) {
         
-        self.dataSource = dataSource;
-        self.cellIdentifier = cellIdentifier;
-        self.setupSingleSectionTableViewCellBlock = setupCellBlock;
+        [self setupDataSource:dataSource cellIdentifier:cellIdentifier setupCellBlock:setupCellBlock];
     }
     return self;
 }
 
+- (void)setupDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock
+{
+    [self setupDataSource:dataSource cellIdentifier:NSStringFromClass(cellIdentifier) setupCellBlock:setupCellBlock];
+}
+
+- (void)setupDataSource:(NSArray *)dataSource cellIdentifier:(NSString *)cellIdentifier setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock
+{
+    self.dataSource = dataSource;
+    self.cellIdentifier = cellIdentifier;
+    self.setupSingleSectionTableViewCellBlock = setupCellBlock;
+}
+
 #pragma mark - UITableViewDataSouce
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger sectionNumber = 1;
+    
+    
+    
+    return sectionNumber;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    NSInteger rowNumber = self.dataSource.count;
+    
+    if (rowNumber) {
+        
+    }
+    
+    return rowNumber;
 }
 
 - (CGSingleSectionBaseTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

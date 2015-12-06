@@ -57,6 +57,28 @@ typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEd
 /** 编辑表格回调 */
 @property (copy, nonatomic) EditTableViewCallback editTableViewCallback;
 
+/**
+ *  初始化一个CGSingleSectionTableViewDataSource类实例
+ *
+ *  @param dataSource     需要加载的元数据
+ *  @param cellIdentifier 加载cell 在TableView中的唯一标识
+ *  @param setupCellBlock 设置cell的方法
+ *
+ *  @return 返回创建好的实例
+ */
+- (void)setupDataSource:(NSArray *)dataSource cellIdentifier:(NSString *)cellIdentifier setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock;
+
+/**
+ *  初始化一个CGSingleSectionTableViewDataSource类实例
+ *
+ *  @param dataSource     需要加载的元数据
+ *  @param cellIdentifier 加载cell 在TableView中的唯一标识
+ *  @param setupCellBlock 设置cell的方法
+ *
+ *  @return 返回创建好的实例
+ */
+- (void)setupDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock;
+
 #pragma mark - 创建对象
 /**
  *  初始化一个CGSingleSectionTableViewDataSource类实例

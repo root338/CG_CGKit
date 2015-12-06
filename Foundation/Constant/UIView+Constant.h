@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - 简单自动布局常量值
-const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin;
+UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin;
 
-const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
+UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
 
 

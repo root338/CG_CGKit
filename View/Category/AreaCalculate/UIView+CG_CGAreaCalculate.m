@@ -55,6 +55,16 @@ CGRect CG_CGRectWithExcludeTopBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFlo
     return CGRectMake(edgeInsets.left, originY, CG_CGWidthWithMaxWidth(CGRectGetWidth(rect), edgeInsets), height);
 }
 
+CGRect CG_CGRectWithExcludeRight(CGRect rect, UIEdgeInsets edgeInsets, CGFloat width)
+{
+    return CGRectMake(edgeInsets.left, edgeInsets.top, width, CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets));
+}
+
+CGRect CG_CGRectWithExcludeLeft(CGRect rect, UIEdgeInsets edgeInsets, CGFloat originX, CGFloat width)
+{
+    return CGRectMake(originX, edgeInsets.top, width, CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets));
+}
+
 CGRect CG_CGRectWithMake(CGPoint position, CGSize size)
 {
     return CGRectMake(position.x, position.y, size.width, size.height);
