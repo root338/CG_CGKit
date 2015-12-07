@@ -1,12 +1,12 @@
 //
-//  CGBaseTableView+CGEditTableViewCell.h
-//  TestCG_CGKit
+//  CGBaseTableViewEditDataSourceManager.h
+//  QuickAskCommunity
 //
-//  Created by apple on 15/12/6.
-//  Copyright © 2015年 apple. All rights reserved.
+//  Created by DY on 15/12/7.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "CGBaseTableView.h"
+#import "CGBaseTableViewDataSourceManager.h"
 
 /** 是否可以编辑taleView */
 typedef BOOL (^CGCanEditTableView) (UITableView *tableView, NSIndexPath *indexPath);
@@ -15,9 +15,9 @@ typedef BOOL (^CGCanEditTableView) (UITableView *tableView, NSIndexPath *indexPa
 typedef void (^CGCommitEditingTableView) (UITableView *tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath *indexPath);
 
 /**
- *  编辑TableView。对TableView增加删除
+ *  对CGBaseTableViewDataSourceManager类功能的扩展, 可以对TableView中的cell进行增加删除
  */
-@interface CGBaseTableViewDataSourceManager (CGEditTableViewCell)
+@interface CGBaseTableViewEditDataSourceManager : CGBaseTableViewDataSourceManager
 
 /** 全局设定是否可以编辑tableView */
 @property (assign, nonatomic) BOOL isCanEditTableView;
@@ -27,4 +27,5 @@ typedef void (^CGCommitEditingTableView) (UITableView *tableView, UITableViewCel
 
 /** 编辑执行的内容 */
 @property (copy, nonatomic) CGCommitEditingTableView commitEditingTableView;
+
 @end

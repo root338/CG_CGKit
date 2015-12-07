@@ -30,7 +30,7 @@
 - (CGFloat)updateSubviewsLayout
 {
     CGFloat maxWidth        = CG_CGWidthWithMaxWidth(self.width, self.marginEdgeInsets);
-    CGSize titleSize        = [self.titleLabel calculateLabelSizeWithMaxWidth:maxWidth];
+    CGSize titleSize        = [self.titleLabel sizeThatFits:CGSizeMake(maxWidth, FLT_MAX)];
     
     CGRect titleLabelFrame  = CG_CGRectWithExcludeBottom(self.bounds, self.marginEdgeInsets, titleSize.height);
     if (!CGRectEqualToRect(self.titleLabel.frame, titleLabelFrame) && !self.disableAutoSetupSubviewsFrame) {
@@ -52,7 +52,6 @@
         [self.textView scrollRangeToVisible:NSMakeRange(0, self.textView.text.length)];
         
         CGInfoLog(@"text view:%@, calculate frmae: %@, ", self.textView, NSStringFromCGRect(textViewFrame));
-
     }
     
     CGFloat didUpdateHeight = CGRectGetMaxY(textViewFrame) + self.marginEdgeInsets.bottom;

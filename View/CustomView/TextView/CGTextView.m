@@ -12,6 +12,7 @@
 #import "UILabel+CGCreateCustomLabel.h"
 #import "UILabel+CalculateTextSize.h"
 #import "UIView+CGSetupFrame.h"
+#import "UIView+CG_CGAreaCalculate.h"
 
 #import "NSObject+CGDelaySelector.h"
 #import "CGPrintLogHeader.h"
@@ -68,8 +69,8 @@
 {
     CGFloat maxWidthForPlaceholderLabel = self.width - (self.marginEdgeInsetsForPlaceholderView.left + self.marginEdgeInsetsForPlaceholderView.right);
     
-    CGRect textAreaFrame = [self.placeholderLabel calculateMultilineLabelTextSizeWithMaxWidth:maxWidthForPlaceholderLabel];
-    CGRect frameForPlaceholderLabel = CGRectMake(self.marginEdgeInsetsForPlaceholderView.left, self.marginEdgeInsetsForPlaceholderView.top, maxWidthForPlaceholderLabel, textAreaFrame.origin.y + textAreaFrame.size.height);
+    CGSize textAreaSize = [self.placeholderLabel sizeThatFits:CGSizeMake(maxWidthForPlaceholderLabel, FLT_MAX)];
+    CGRect frameForPlaceholderLabel = CGRectMake(self.marginEdgeInsetsForPlaceholderView.left, self.marginEdgeInsetsForPlaceholderView.top, maxWidthForPlaceholderLabel, textAreaSize.height);
     return frameForPlaceholderLabel;
 }
 
@@ -204,11 +205,35 @@
     return MAX(_minPlaceholderHeight, _minTextHeight);
 }
 
-- (CGPoint)cursorPosition
+- (CGFloat)cursorPositionY
 {
     if (!self.selectedTextRange) {
-        return CGPointZero;
+        return 0;
     }
-    return [self caretRectForPosition:self.selectedTextRange.end].origin;
+    
+    NSRange cursorBeforeRange = NSMakeRange(0, self.selectedRange.location + self.selectedRange.length);
+    
+    CGRect textFrame    = CGRectZero;
+    
+    NSStringDrawingOptions options =  NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+    CGSize size = CG_CGSizeWidthMaxSize(self.bounds.size, self.textContainerInset);
+    size = CG_CGSizeWidthMaxSize(size, self.scrollIndicatorInsets);
+    
+    NSDictionary *attDic = nil;
+    if (self.attributedText.length) {
+        NSRange range = NSMakeRange(0, 1);
+        //没有获取全部，是因为在输入字符串时（输入了字符，但没有选择输入的汉字的状态），计算的结果不准确
+        attDic = [self.attributedText attributesAtIndex:0 effectiveRange:&range];
+    }else {
+        attDic = @{NSFontAttributeName : self.font};
+    }
+    
+    NSString *substring = [self.text substringWithRange:cursorBeforeRange];
+    
+    textFrame = [substring boundingRectWithSize:size options:options attributes:attDic context:nil];
+    
+    CGFloat originY = self.textContainerInset.top + CGRectGetMaxY(textFrame);
+    
+    return originY;
 }
 @end

@@ -14,22 +14,34 @@ UIKIT_STATIC_INLINE CGFloat CG_CGWidthWithMaxWidth(CGFloat maxWidth, UIEdgeInset
     return maxWidth - (edgeInsets.left + edgeInsets.right);
 }
 
-/** 计算 left + width + right */
-UIKIT_STATIC_INLINE CGFloat CG_CGMaxWidthWithWidth(CGFloat width, UIEdgeInsets edgeInsets)
-{
-    return edgeInsets.left + width + edgeInsets.right;
-}
-
 /** 计算 maxHeight - (top + bottom) */
 UIKIT_STATIC_INLINE CGFloat CG_CGHeightWithMaxHeight(CGFloat maxHeight, UIEdgeInsets edgeInsets)
 {
     return maxHeight - (edgeInsets.top + edgeInsets.bottom);
 }
 
+/** 计算 { maxWith - (left + right), maxHeight - (top + bottom) } */
+UIKIT_STATIC_INLINE CGSize CG_CGSizeWidthMaxSize(CGSize maxSize, UIEdgeInsets edgeInsets)
+{
+    return CGSizeMake(CG_CGWidthWithMaxWidth(maxSize.width, edgeInsets), CG_CGHeightWithMaxHeight(maxSize.height, edgeInsets));
+}
+
+/** 计算 left + width + right */
+UIKIT_STATIC_INLINE CGFloat CG_CGMaxWidthWithWidth(CGFloat width, UIEdgeInsets edgeInsets)
+{
+    return edgeInsets.left + width + edgeInsets.right;
+}
+
 /** 计算 top + height + bottom */
 UIKIT_STATIC_INLINE CGFloat CG_CGMaxHeightWithHeight(CGFloat height, UIEdgeInsets edgeInsets)
 {
     return edgeInsets.top + height + edgeInsets.bottom;
+}
+
+/** 计算 { left + width + right, top + height + bottom } */
+UIKIT_STATIC_INLINE CGSize CG_CGMaxSizeWidthSize(CGSize size, UIEdgeInsets edgeInsets)
+{
+    return CGSizeMake(CG_CGMaxWidthWithWidth(size.width, edgeInsets), CG_CGMaxHeightWithHeight(size.height, edgeInsets));
 }
 
 /** 计算 { { left, top }, { width - (left + right), height - (top + bottom) } } */

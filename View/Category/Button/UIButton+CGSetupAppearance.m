@@ -14,8 +14,9 @@
 - (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
 {
     [self setTitle:title forState:UIControlStateNormal];
-    [self setTitleColor:titleColor forState:UIControlStateNormal];
-    [self.titleLabel setFont:font];
+    !titleColor ?: [self setTitleColor:titleColor forState:UIControlStateNormal];
+    
+    !font ?: [self.titleLabel setFont:font];
 }
 
 - (void)cg_setupWithNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName

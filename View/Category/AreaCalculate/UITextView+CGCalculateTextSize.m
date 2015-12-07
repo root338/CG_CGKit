@@ -12,10 +12,6 @@
 
 - (CGSize)calculateLabelTextSize
 {
-    if (self.attributedText) {
-        
-        return self.attributedText.size;
-    }
     if (self.font) {
         
         CGSize size = CGSizeZero;

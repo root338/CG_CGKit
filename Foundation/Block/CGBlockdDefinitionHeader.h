@@ -33,6 +33,8 @@ typedef void    (^cg_singleCGSizeCallback)          (CGSize size);
 
 typedef void    (^cg_singleCGPointCallback)         (CGPoint point);
 
+typedef void    (^cg_singleCGFloatCallback)         (CGFloat paramFloat);
+
 /** 回调一个对象 */
 typedef void    (^cg_singleObjectCallback)          (id obj);
 

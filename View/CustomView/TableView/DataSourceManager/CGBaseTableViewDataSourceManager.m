@@ -14,7 +14,17 @@
 
 @implementation CGBaseTableViewDataSourceManager
 
+- (void)initialization
+{
+    _sectionNumber = 1;
+}
+
 #pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    CGErrorConditionLog(!self.sectionNumber, @"%@的组数为0", tableView);
+    return self.sectionNumber;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

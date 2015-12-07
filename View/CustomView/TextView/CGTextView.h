@@ -35,7 +35,16 @@
 @property (copy, nonatomic) cg_singleObjectCallback textDidChangeCallback;
 
 #pragma mark - 获取编辑内容
-@property (assign, nonatomic, readonly) CGPoint cursorPosition;
+/** 获取光标的Y坐标 */
+@property (assign, nonatomic, readonly) CGFloat cursorPositionY;
+
+/**
+ *  获取光标现存的问题
+ *  1. [self caretRectForPosition:self.selectedTextRange.end].origin; 直接使用此方法，在有多行回车情况下会出问题
+ *  2. 使用现有的方法只能计算同属性的富文本大小
+ *  3. 直接使用attributedText计算文本大小，（输入中文条件下，输入了字符，但没有选择输入的汉字的状态，输入内容为系统可选状态）这时直接计算attributedText会计算不准备，且偏差较大
+ */
+//@property (assign, nonatomic, readonly) CGPoint cursorPosition;
 
 /** 调整textView时调用 */
 - (void)adjustsTextViewSize:(CGSize)paramSize;

@@ -11,6 +11,9 @@
 
 @class CGBaseTableViewCell;
 
+/** 手动设置tableView 多少组 */
+typedef NSUInteger (^CGNumberOfSectionsInTableView) (UITableView *tableView);
+
 /** 设置tableView每组的row值 */
 typedef NSInteger (^CGTableViewNumberOfRowsInSection) (UITableView *tableView, NSInteger section);
 
@@ -25,14 +28,20 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
 
 /**
  *  tableView的数据管理类
- *  @warning 非注册没有注册cell的功能
- *  @warning 在添加以下文件时可创建一个子类来添加相应的文件，避免多余的资源浪费
- *  编辑 CGBaseTableViewDataSourceManager+CGEditTableViewCell.h文件
- *  设置组数，CGBaseTableViewDataSourceManager+CGSetupSectionNumber.h文件
- *  @warning 这时的发现：扩展在本类没有导入该头文件下，以实现的方法也会被自动调用
+ *  @warning 
+        1. 非注册没有注册cell的功能
+ *      2. 在添加以下文件时可创建一个子类来添加相应的文件，避免多余的资源浪费
+ *              编辑 CGBaseTableViewDataSourceManager+CGEditTableViewCell.h文件
+ *              设置组数，CGBaseTableViewDataSourceManager+CGSetupSectionNumber.h文件
+ *      3. 使用 2. 之时的发现：扩展在本类没有导入该头文件下，以实现的方法也会被自动调用
+ *      解决 2. 问题，不实现扩展，改为创建其子类
+                CGBaseTableViewEditDataSourceManager.h 文件 实现便捷功能
  *
  */
 @interface CGBaseTableViewDataSourceManager : CGBaseObject<UITableViewDataSource>
+
+/** 设置tableView 的 section 默认为1 */
+@property (assign, nonatomic) NSInteger sectionNumber;
 
 /** cell的唯一标识 */
 @property (strong, nonatomic) NSString *cellIdentifier;

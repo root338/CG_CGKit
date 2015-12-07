@@ -37,3 +37,13 @@ UIKIT_STATIC_INLINE UIEdgeInsets UIEdgeInsetsZeroMakeExcludeRight(CGFloat rightV
     return UIEdgeInsetsMake(0, 0, 0, rightValue);
 }
 
+/** 设置left、right值 其他为0 */
+UIKIT_STATIC_INLINE UIEdgeInsets UIEdgeInsetsZeroMakeExcludeHorizontal(CGFloat horizontalValue) {
+    return UIEdgeInsetsMake(0, horizontalValue, 0, horizontalValue);
+}
+
+
+/** 设置left、right值 其他为0 */
+UIKIT_STATIC_INLINE UIEdgeInsets UIEdgeInsetsZeroMakeExcludeVertical(CGFloat verticalValue) {
+    return UIEdgeInsetsMake(verticalValue, 0, verticalValue, 0);
+}

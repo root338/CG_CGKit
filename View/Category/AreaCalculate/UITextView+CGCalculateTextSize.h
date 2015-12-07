@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CGInputTextProtocol.h"
 
-@interface UITextView (CGCalculateTextSize)<CGInputTextProtocol>
+@interface UITextView (CGCalculateTextSize)
 
 //- (CGSize)calculateLabelTextSize;
 //
