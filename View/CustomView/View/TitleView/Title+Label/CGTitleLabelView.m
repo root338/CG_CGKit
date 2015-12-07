@@ -62,7 +62,7 @@
     if (isAutoUpdate) {
         if (sizeFotTitleLabel.height <= CG_CGHeightWithMaxHeight(self.height, self.marginEdgeInsets)) {
             
-            self.titleLabel.frame = CGRectWithMargin(self.bounds, self.marginEdgeInsets);
+            self.titleLabel.frame = CG_CGRectWithMargin(self.bounds, self.marginEdgeInsets);
         }else {
             
             self.titleLabel.frame = CGRectMake(self.marginEdgeInsets.left, self.marginEdgeInsets.top, maxWidth, sizeFotTitleLabel.height);

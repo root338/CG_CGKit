@@ -42,7 +42,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.contentView.frame          = CGRectWithMargin(self.bounds, self.marginEdgeInsets);
+    self.contentView.frame          = CG_CGRectWithMargin(self.bounds, self.marginEdgeInsets);
     self.cycleContentButton.frame   = self.bounds;
 }
 

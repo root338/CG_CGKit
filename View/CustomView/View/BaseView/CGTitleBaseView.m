@@ -35,7 +35,7 @@
         self.isAutoShouldLayoutSubviews = [self.delegate shouldLayoutSubviewsTitleView:self];
     }
     if (self.singleTitleView && self.isAutoShouldLayoutSubviews) {
-        self.singleTitleView.frame = CGRectWithMargin(self.bounds, self.marginEdgeInsets);
+        self.singleTitleView.frame = CG_CGRectWithMargin(self.bounds, self.marginEdgeInsets);
     }
 }
 

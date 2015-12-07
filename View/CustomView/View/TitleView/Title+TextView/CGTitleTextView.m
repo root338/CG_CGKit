@@ -45,7 +45,7 @@
         textSize.height = textMinHeight;
     }
     
-    CGRect textViewFrame    = CG_CGRectWithExcludeTopBottom(self.bounds, self.marginEdgeInsets, self.titleLabel.maxY + self.spaceSubviews, textSize.height);
+    CGRect textViewFrame    = CG_CGRectWithExcludeVertical(self.bounds, self.marginEdgeInsets, self.titleLabel.maxY + self.spaceSubviews, textSize.height);
     if (!CGRectEqualToRect(self.textView.frame, textViewFrame) && !self.disableAutoSetupSubviewsFrame) {
         
         self.textView.frame     = textViewFrame;

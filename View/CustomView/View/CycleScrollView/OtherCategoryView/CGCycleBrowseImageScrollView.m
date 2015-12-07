@@ -145,7 +145,7 @@
 
 - (void)setupCycleScrollViewFrame
 {
-    CGRect frame = CGRectWithMargin(self.bounds, self.marginEdgeInset);
+    CGRect frame = CG_CGRectWithMargin(self.bounds, self.marginEdgeInset);
     if (!CGRectEqualToRect(_cycleScrollView.frame, frame)) {
         _cycleScrollView.frame = frame;
     }

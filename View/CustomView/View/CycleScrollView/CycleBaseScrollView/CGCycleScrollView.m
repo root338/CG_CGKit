@@ -533,7 +533,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.cycleScrollView.frame = CGRectWithMargin(self.bounds, self.marginEdgeInsetForScrollView);
+    self.cycleScrollView.frame = CG_CGRectWithMargin(self.bounds, self.marginEdgeInsetForScrollView);
     _pageContentView.frame = self.bounds;
     
     [self updateScrollViewContentSize];
