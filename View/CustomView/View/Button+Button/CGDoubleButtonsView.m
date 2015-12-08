@@ -31,10 +31,11 @@
     
     self.leftButton.frame = CG_CGRectWithExcludeRight(self.bounds, self.marginEdgeInsets, self.leftButton.width);
     if (self.subviewsSpace > 0) {
-        self.rightButton.frame = CG_CGRectWithExcludeLeft(self.bounds, self.marginEdgeInsets, self.leftButton.maxX + self.subviewsSpace, self.rightButton.width);
+        
+        self.rightButton.frame = CG_CGRectWithExcludeHorizontal(self.bounds, self.marginEdgeInsets, self.leftButton.maxX + self.subviewsSpace, self.rightButton.width);
     }else {
         
-        self.rightButton.frame = CG_CGRectWithExcludeLeft(self.bounds, self.marginEdgeInsets, self.width - (self.leftButton.width + self.rightButton.width), self.rightButton.width);
+        self.rightButton.frame = CG_CGRectWithExcludeHorizontal(self.bounds, self.marginEdgeInsets, self.width - (self.leftButton.width + self.rightButton.width), self.rightButton.width);
     }
 }
 
