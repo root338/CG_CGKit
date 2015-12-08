@@ -26,8 +26,12 @@
 - (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor
 {
 
-    self.layer.borderColor = borderColor.CGColor;
-    self.layer.borderWidth = borderWidth;
+    if (self.layer.borderColor != borderColor.CGColor) {
+        self.layer.borderColor = borderColor.CGColor;
+    }
+    if (self.layer.borderWidth != borderWidth) {
+        self.layer.borderWidth = borderWidth;
+    }
 }
 
 - (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius

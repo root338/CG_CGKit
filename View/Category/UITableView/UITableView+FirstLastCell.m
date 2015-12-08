@@ -40,6 +40,11 @@
     return [self cg_tableViewIsExistSection:section] && [self numberOfRowsInSection:section] > row;
 }
 
+- (BOOL)cg_judgeTableViewWithIndexPath:(NSIndexPath *)indexPath
+{
+    return [self cg_tableViewWithSection:indexPath.section isExistRow:indexPath.row];
+}
+
 - (NSUInteger)cg_lastTableViewSection
 {
     return [self cg_TableViewSection:self.numberOfSections - 1];
@@ -75,6 +80,8 @@
 {
     if ([self cg_tableViewWithSection:section isExistRow:row]) {
         return [NSIndexPath indexPathForRow:row inSection:section];
+    }else {
+        CGErrorLog(@"指定的索引不存在");
     }
     return nil;
 }
