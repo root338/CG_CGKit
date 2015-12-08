@@ -7,9 +7,56 @@
 //
 
 #import "UITableView+CGReloadTableView.h"
-#import "UITableView+FirstLastCell.h"
+#import "UITableView+CGIndexPath.h"
+
+#import "NSArray+CGArray.h"
 
 @implementation UITableView (CGReloadTableView)
+
+- (NSIndexPath *)cg_createIndexPathWithSection:(NSInteger)section row:(NSInteger)row isVerityExistAtTableView:(BOOL)isVerityExistAtTableView
+{
+    NSIndexPath *indexPath = nil;
+    if (isVerityExistAtTableView) {
+        indexPath = [self cg_IndexPathForSection:section row:row];
+    }else {
+        indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    }
+    return indexPath;
+}
+
+- (NSArray<NSIndexPath *> *)cg_createIndexPathsAtRows:(NSSet<NSNumber *> *)rows section:(NSInteger)section isVerityExistAtTableView:(BOOL)isVerityExistAtTableView
+{
+    if (!rows.count) {
+        return nil;
+    }
+    
+    NSMutableArray *array = [NSMutableArray array];
+    [rows enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
+        NSIndexPath *indexPath = [self cg_createIndexPathWithSection:section
+                                                                 row:obj.integerValue
+                                            isVerityExistAtTableView:isVerityExistAtTableView];
+        !indexPath ?: [array addObject:indexPath];
+    }];
+    return array;
+}
+
+- (NSArray<NSIndexPath *> *)cg_createIndexPathsAtStartRow:(NSInteger)row section:(NSInteger)section count:(NSInteger)count isVerityExistAtTableView:(BOOL)isVerityExistAtTableView
+{
+    if (!count) {
+        return nil;
+    }
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for (NSInteger index = 0; index < count; index++) {
+        
+        NSIndexPath *indexPath = [self cg_createIndexPathWithSection:section
+                                                                 row:row
+                                            isVerityExistAtTableView:isVerityExistAtTableView];
+        !indexPath ?: [array addObject:indexPath];
+        row++;
+    }
+    return array;
+}
 
 #pragma mark - 刷新第一组索引
 - (void)cg_reloadFirstSectionWithRow:(NSInteger)row
@@ -23,24 +70,24 @@
     [self cg_reloadWithIndexPath:[self cg_IndexPathForSection:0 row:row] animation:animation];
 }
 
-- (void)cg_reloadFirstSectionWithRows:(NSArray<NSNumber *> *)rows
+- (void)cg_reloadFirstSectionWithRows:(NSSet<NSNumber *> *)rows
 {
     [self cg_reloadFirstSectionWithRows:rows animation:UITableViewRowAnimationNone];
 }
 
-- (void)cg_reloadFirstSectionWithRows:(NSArray<NSNumber *> *)rows animation:(UITableViewRowAnimation)animation
+- (void)cg_reloadFirstSectionWithRows:(NSSet<NSNumber *> *)rows animation:(UITableViewRowAnimation)animation
 {
     if (!rows.count) {
         return;
     }
-    NSMutableArray *array = [NSMutableArray array];
-    [rows enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSIndexPath *indexPath = [self cg_IndexPathForSection:0 row:obj.integerValue];
-        !indexPath ?: [array addObject:indexPath];
-    }];
+    NSArray *array = [self cg_createIndexPathsAtRows:rows
+                                             section:0
+                            isVerityExistAtTableView:YES];
     if (array.count) {
         //由于在创建的时候就判断索引是否存在，索引直接调用系统刷洗方法
-        [self reloadRowsAtIndexPaths:array withRowAnimation:animation];
+        [self cg_updateTableViewsAtIndexPath:array
+                                        type:UITableViewCellEditingStyleNone
+                                   animation:animation];
     }
 }
 
@@ -72,8 +119,29 @@
         }
     }];
     if (array.count) {
-        [self reloadRowsAtIndexPaths:array withRowAnimation:animation];
+        [self cg_updateTableViewsAtIndexPath:array
+                                        type:UITableViewCellEditingStyleNone
+                                   animation:animation];
     }
+}
+
+- (void)cg_updateTableViewsAtIndexPath:(NSArray<NSIndexPath *> *)indexPaths type:(UITableViewCellEditingStyle)style animation:(UITableViewRowAnimation)animation
+{
+    [self beginUpdates];
+    
+    switch (style) {
+        case UITableViewCellEditingStyleDelete:
+            [self deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+            break;
+        case UITableViewCellEditingStyleInsert:
+            [self insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+            break;
+        default:
+            [self reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+            break;
+    }
+    
+    [self endUpdates];
 }
 
 @end

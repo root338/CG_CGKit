@@ -40,6 +40,18 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param 只返回当前搜索到得第一个输入控件
  */
 - (UIView *)searchInputTextControl;
+
+/**
+ *  搜索指定类的视图
+ *  @warning 当搜索的视图满足指定类视图后，将不继续搜索其子视图
+ *
+ *  @param excludeView          可以排除的视图
+ *  @param isOnlyOne            是否只有一个
+ *  @param targetViewClassArray 满足的视图类
+ *
+ *  @return 返回搜索后的结果
+ */
+- (NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne targetViewClassArray:(NSArray<Class> *)targetViewClassArray;
 @end
 
 NS_ASSUME_NONNULL_END

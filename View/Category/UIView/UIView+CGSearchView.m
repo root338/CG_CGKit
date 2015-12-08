@@ -161,6 +161,11 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
 
 - (NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne
 {
+    return [self searchSubviewsInputViewsWithExcludeView:excludeView isOnlyOne:isOnlyOne targetViewClassArray:[self inputViewClasses]];
+}
+
+- (NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne targetViewClassArray:(NSArray<Class> *)targetViewClassArray
+{
     if (!([self isKindOfClass:[UIView class]])) {
         return nil;
     }
@@ -170,8 +175,7 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
         return nil;
     }
     
-    NSArray *inputViewClassArr = [self inputViewClasses];
-    if ([inputViewClassArr containsObject:self.class]) {
+    if ([targetViewClassArray containsObject:self.class]) {
         //当视图本身就属于输入视图时返回自身
         return @[self];
     }
@@ -188,7 +192,7 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
             //子视图不等于excludeView
             
             id targetObj = nil;
-            if ([inputViewClassArr containsObject:obj.class]) {
+            if ([targetViewClassArray containsObject:obj.class]) {
                 //检验视图属于输入视图的类
                 targetObj = obj;
             }else  if (obj.subviews.count) {
@@ -222,7 +226,7 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
 }
 
 /** 输入视图可能属于哪个类 */
-- (NSArray *)inputViewClasses
+- (NSArray<Class> *)inputViewClasses
 {
     return @[
              [UITextField class],

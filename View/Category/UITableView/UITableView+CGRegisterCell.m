@@ -15,9 +15,9 @@
     [self cg_registerClass:cellClassIdentifier forCellReuseClass:cellClassIdentifier];
 }
 
-- (void)cg_registerClassWithClassIdentifiers:(NSArray<Class> *)CellClassIdentifiers
+- (void)cg_registerClassWithClassIdentifiers:(NSArray<Class> *)cellClassIdentifiers
 {
-    [CellClassIdentifiers enumerateObjectsUsingBlock:^(Class  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [cellClassIdentifiers enumerateObjectsUsingBlock:^(Class  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [self cg_registerClassWithClassIdentifier:obj];
     }];
 }
@@ -28,6 +28,13 @@
     if (nib) {
         [self cg_registerNib:nib forCellReuseClass:cellClassIdentifier];
     }
+}
+
+- (void)cg_registerNibWithClassIdentifiers:(NSArray<Class> *)cellClassIdentifiers
+{
+    [cellClassIdentifiers enumerateObjectsUsingBlock:^(Class  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self cg_registerNibWithClassIdentifier:obj];
+    }];
 }
 
 - (void)cg_registerHeaderFooterViewClassWithClassIdentifier:(Class)headerFooterClassIdentifier

@@ -17,7 +17,10 @@
 - (void)cg_registerNibWithClassIdentifier:(nullable Class)cellClassIdentifier;
 
 /** 当注册的标识与类名相同时，注册cell的快捷方法，（批量注册） */
-- (void)cg_registerClassWithClassIdentifiers:(nullable NSArray <Class> *)CellClassIdentifiers;
+- (void)cg_registerClassWithClassIdentifiers:(nullable NSArray <Class> *)cellClassIdentifiers;
+
+/** 当注册的标识与类名相同时，注册cell的快捷方法，（批量注册） */
+- (void)cg_registerNibWithClassIdentifiers:(nullable NSArray<Class> *)cellClassIdentifiers;
 
 - (void)cg_registerHeaderFooterViewClassWithClassIdentifier:(nullable Class)headerFooterClassIdentifier NS_AVAILABLE_IOS(6_0);
 

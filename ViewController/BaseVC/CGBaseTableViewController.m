@@ -10,6 +10,8 @@
 
 @interface CGBaseTableViewController ()
 
+@property (nonatomic, strong, readwrite) CGBaseTableView *tableView;
+
 @end
 
 @implementation CGBaseTableViewController
@@ -24,22 +26,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - UITableViewDataSource
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    return self.sectionForTableView;
-//}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.dataSource.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSAssert(nil, @"需子类自定义实现");
-    return nil;
-}
 /*
 #pragma mark - Navigation
 
@@ -51,27 +37,15 @@
 */
 
 #pragma mark - 设置属性
-- (UITableView *)tableView
+- (CGBaseTableView *)tableView
 {
     if (_tableView) {
         return _tableView;
     }
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.tableViewStyle];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    [self.view addSubview:_tableView];
+    _tableView = [[CGBaseTableView alloc] initWithFrame:self.view.bounds style:self.tableViewStyle];
     
     return _tableView;
 }
-
-//- (NSInteger)sectionForTableView
-//{
-//    if (_sectionForTableView < 1) {
-//        _sectionForTableView = 1;
-//    }
-//    
-//    return _sectionForTableView;
-//}
 
 @end

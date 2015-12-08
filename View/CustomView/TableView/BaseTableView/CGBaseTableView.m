@@ -64,14 +64,5 @@
 }
 
 #pragma mark - 属性设置
-- (CGBaseTableViewDataSourceManager *)dataSourceManager
-{
-    if (_dataSourceManager) {
-        return _dataSourceManager;
-    }
-    
-    _dataSourceManager = [[CGBaseTableViewDataSourceManager alloc] init];
-    self.dataSource = _dataSourceManager;
-    return _dataSourceManager;
-}
+
 @end

@@ -7,21 +7,20 @@
 //
 
 #import "CGBaseViewController.h"
+#import "CGBaseTableView.h"
 
-@interface CGBaseTableViewController : CGBaseViewController<UITableViewDelegate, UITableViewDataSource>
+/**
+ *  基础UITableView视图控制器
+ *  @param 用于需要在和tableView同级情况下添加其他视图到视图控制器中
+ #  @param tableView会在get方法中自动创建，但不会自动添加到视图上
+ */
+@interface CGBaseTableViewController : CGBaseViewController
 
 #pragma mark - UI
-@property (strong, nonatomic) UITableView *tableView;
+@property (nonatomic, strong, readonly) CGBaseTableView *tableView;
 
 #pragma mark - UI 外观设置
 /** tableView 的样式 */
 @property (assign, nonatomic) UITableViewStyle tableViewStyle;
-
-#pragma mark - data
-/** 表格加载的数据 */
-@property (strong, nonatomic) NSMutableArray *dataSource;
-
-/** 表格显示的组数 默认为1 */
-//@property (assign, nonatomic) NSInteger sectionForTableView;
 
 @end

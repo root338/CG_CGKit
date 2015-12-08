@@ -10,6 +10,11 @@
 
 @implementation NSArray (CGArray)
 
+- (BOOL)cg_judgeIsZeroLengthArray
+{
+    return self.count == 0;
+}
+
 /** 是否越界 */
 - (BOOL)isTransboundaryAtIndex:(NSUInteger)index
 {

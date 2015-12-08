@@ -8,13 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "CGViewProtocol.h"
-#import "CGBaseTableViewDataSourceManager.h"
 #import "UITableView+CGRegisterCell.h"
 
 @interface CGBaseTableView : UITableView<CGViewInitializationProtocol>
-
-@property (strong, nonatomic) CGBaseTableViewDataSourceManager *dataSourceManager;
-
-//- (instancetype)initWithDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(CGSetupTableViewCell)setupCellBlock;
 
 @end
