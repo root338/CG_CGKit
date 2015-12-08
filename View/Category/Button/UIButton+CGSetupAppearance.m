@@ -7,7 +7,6 @@
 //
 
 #import "UIButton+CGSetupAppearance.h"
-#import "UIView+CGSetupAppearance.h"
 
 @implementation UIButton (CGSetupAppearance)
 

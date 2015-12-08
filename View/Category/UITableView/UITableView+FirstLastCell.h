@@ -29,6 +29,9 @@
 /** 判断指定索引是否存在 */
 - (BOOL)cg_tableViewWithSection:(NSUInteger)section isExistRow:(NSUInteger)row;
 
+/** 判断指定索引是否存在 */
+- (BOOL)cg_judgeTableViewWithIndexPath:(NSIndexPath *)indexPath;
+
 /** 获取表格最后一个组 */
 - (NSUInteger)cg_lastTableViewSection;
 
