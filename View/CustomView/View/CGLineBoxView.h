@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 #define _LINE_WIDTH_SINGLE           (1.0 / [UIScreen mainScreen].scale)
 
 typedef NS_OPTIONS(NSInteger, LineBoxType) {

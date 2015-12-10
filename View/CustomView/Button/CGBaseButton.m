@@ -20,6 +20,14 @@
 
 @implementation CGBaseButton
 
+#pragma mark - 创建UIButton
++ (instancetype)buttonWithType:(UIButtonType)buttonType
+{
+    CGBaseButton *button = [self buttonWithType:buttonType];
+    [button initialization];
+    return button;
+}
+
 #pragma mark - 初始化方法
 - (instancetype)initWithFrame:(CGRect)frame
 {
