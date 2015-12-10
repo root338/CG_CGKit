@@ -54,7 +54,7 @@
     //更新当前显示索引
     if (paramCurrentIndex >= self.totalViewNumber || paramCurrentIndex < 0) {
         
-        if (!isAutoChange) {
+        if (!isAutoChange && !self.isCycle) {
             
             CGErrorLog(@"不能自动更新指定索引，且指定当前索引不合法");
             completionBlock(NO, paramCurrentIndex, 0);
