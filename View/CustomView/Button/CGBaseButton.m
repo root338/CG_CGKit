@@ -13,9 +13,11 @@
 #import "CGPrintLogHeader.h"
 
 @interface CGBaseButton ()
-
+{
+    CGFloat _borderWidth;
+}
 @property (strong, nonatomic) NSMutableDictionary *borderColorDict;
-
+@property (strong, nonatomic) NSMutableDictionary *borderWidthDict;
 @end
 
 @implementation CGBaseButton
@@ -63,6 +65,11 @@
     return self.borderColorDict[@(state)];
 }
 
+- (CGFloat)borderWidthForState:(UIControlState)state
+{
+    return [self.borderWidthDict[@(state)] floatValue];
+}
+
 - (void)setBorderColor:(UIColor *)color forState:(UIControlState)state
 {
     
@@ -73,10 +80,18 @@
     }
 }
 
+- (void)setBorderWidth:(CGFloat)borderWidth forState:(UIControlState)state
+{
+    if (borderWidth > 0) {
+        [self.borderWidthDict setObject:@(borderWidth) forKey:@(state)];
+    }else {
+        [self.borderWidthDict removeObjectForKey:@(state)];
+    }
+}
+
 - (void)setupBorder/**ForCurrentState:(UIControlState)state*/
 {
-    
-    [self cg_setupBorderWithWidth:self.layer.borderWidth color:self.currentBorderColor];
+    [self cg_setupBorderWithWidth:self.currentBorderWidth color:self.currentBorderColor];
 }
 
 #pragma mark - 重写系统方法
@@ -84,12 +99,14 @@
 {
     [super setSelected:selected];
     [self setupBorder];
+    
 }
 
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
     [self setupBorder];
+    
 }
 
 - (void)setEnabled:(BOOL)enabled
@@ -109,6 +126,17 @@
     return _borderColorDict;
 }
 
+- (NSMutableDictionary *)borderWidthDict
+{
+    if (_borderWidthDict) {
+        return _borderWidthDict;
+    }
+    
+    _borderWidthDict = [NSMutableDictionary dictionary];
+    
+    return _borderWidthDict;
+}
+
 - (UIColor *)currentBorderColor
 {
     NSNumber *currentState = @(self.state);
@@ -116,14 +144,41 @@
     
     if (!currentBorderColor) {
         
-        if (self.borderSyncTitleColor) {
-            
-            currentBorderColor = self.currentTitleColor;
-        }else {
-            
-            currentBorderColor = self.borderColorDict[@(UIControlStateNormal)];
+        if (self.isEnableBorderColorAutoChange) {
+            if (self.borderSyncTitleColor) {
+                
+                currentBorderColor = self.currentTitleColor;
+            }else {
+                
+                currentBorderColor = self.borderColorDict[@(UIControlStateNormal)];
+            }
         }
     }
     return currentBorderColor;
 }
+
+- (CGFloat)currentBorderWidth
+{
+    
+    NSNumber *key   = @(self.state);
+    NSNumber *width = self.borderWidthDict[key];
+    if (!self.borderWidthDict.count) {
+        
+        width = @(self.layer.borderWidth);
+    }
+    return width.floatValue;
+}
+
+- (void)setCurrentStatus:(CGViewInteractionStatus)currentStatus
+{
+    if (_currentStatus != currentStatus) {
+        _currentStatus = currentStatus;
+        
+        if ([self.delegate respondsToSelector:@selector(cg_setupButton:didChangeInteractionStatus:)]) {
+            [self.delegate cg_setupButton:self didChangeInteractionStatus:currentStatus];
+        }
+    }
+}
+
+
 @end

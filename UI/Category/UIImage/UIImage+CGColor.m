@@ -24,7 +24,10 @@
 {
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
-    [tintColor setFill];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, tintColor.CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     
     if (!UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, capInset)) {

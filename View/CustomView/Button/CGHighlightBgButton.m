@@ -10,11 +10,10 @@
 
 @interface CGHighlightBgButton ()
 {
-    UIColor *normalColor;
-    UIColor *highlightColor;
-    UIColor *selectedColor;
-    UIColor *disableColor;
+    
 }
+@property (strong, nonatomic) NSMutableDictionary *backgroundColorDic;
+
 @end
 
 @implementation CGHighlightBgButton
@@ -35,72 +34,54 @@
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor forState:(UIControlState)state
 {
-    [self setupbackgroundColor:backgroundColor forState:state];
+    self.backgroundColorDic[@(state)] = backgroundColor;
+    self.state != state ?: [super setBackgroundColor:backgroundColor];
 }
 
-- (UIColor *)backgroundColorForState:(UIControlState)state
+- (nullable UIColor *)backgroundColorForState:(UIControlState)state
 {
-    return [self setupbackgroundColor:nil forState:state];
-}
-
-- (UIColor *)setupbackgroundColor:(UIColor *)backgroundColor forState:(UIControlState)state
-{
-    UIColor *color = nil;
-    switch (state) {
-        case UIControlStateNormal:
-        {
-            if (backgroundColor) {
-                normalColor         = backgroundColor;
-                super.backgroundColor = backgroundColor;
-            }else {
-                color               = normalColor;
-            }
-            
-        }
-            break;
-        case UIControlStateHighlighted:
-        {
-            if (backgroundColor) {
-                highlightColor      = backgroundColor;
-            }else {
-                color               = highlightColor ? highlightColor : normalColor;
-            }
-        }
-            break;
-        case UIControlStateDisabled:
-        {
-            if (backgroundColor) {
-                disableColor        = backgroundColor;
-            }else {
-                color               = disableColor ? disableColor : normalColor;
-            }
-        }
-            break;
-        case UIControlStateSelected:
-        {
-            if (backgroundColor) {
-                selectedColor       = backgroundColor;
-            }else {
-                color               = selectedColor ? selectedColor : normalColor;
-            }
-        }
-            break;
-        default:
-            break;
+    UIColor *color = self.backgroundColorDic[@(state)];
+    if (!color) {
+        
+        color = self.backgroundColorDic[@(UIControlStateNormal)];
     }
     return color;
+}
+
+- (void)cg_setupBackgroundColor
+{
+    [super setBackgroundColor:[self backgroundColorForState:self.state]];
 }
 
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
     
-    [super setBackgroundColor:[self backgroundColorForState:self.state]];
+    [self cg_setupBackgroundColor];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
-    [super setBackgroundColor:[self backgroundColorForState:self.state]];
+    [self cg_setupBackgroundColor];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    [self cg_setupBackgroundColor];
+}
+
+#pragma mark - 设置属性
+
+- (NSMutableDictionary *)backgroundColorDic
+{
+    if (_backgroundColorDic) {
+        return _backgroundColorDic;
+    }
+    
+    _backgroundColorDic = [NSMutableDictionary dictionary];
+    
+    return _backgroundColorDic;
 }
 @end
