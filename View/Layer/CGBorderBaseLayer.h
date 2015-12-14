@@ -9,23 +9,26 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CGViewBorderStateProtocol.h"
 
-@class CGBorderBaseLayer;
-@protocol CGBorderLayerDelegate <NSObject>
+@class CGBorderObject;
 
-@optional
-/** 已改变层边颜色 */
-- (void)cg_layerDidChangeBorderColor:(CGBorderBaseLayer *)layer;
-/** 已改变层边宽度 */
-- (void)cg_layerDidChangeBorderWidth:(CGBorderBaseLayer *)layer;
-
-@end
-
+/** 
+ *  设置视图层的边框值
+ *  其他UIView可以实现layerClass类方法来使用该层
+ */
 @interface CGBorderBaseLayer : CALayer
 
+/** 
+ *  当前层的状态 
+ *  @param 可通过设置它来改变边框的不同值
+ */
 @property (nonatomic, assign) CGViewBorderState borderState;
 
-@property (nonatomic, weak) id<CGBorderLayerDelegate> cg_delegate;
-/** 是否关闭方式代理的回调，默认NO */
-@property (nonatomic, assign) BOOL disableSendDelegateAction;
+/** 获取指定状态下的边框对象 */
+- (CGBorderObject *)borderObjectForState:(CGViewBorderState)state;
 
+/** 设置边框 （UIColor， CGFloat） */
+- (void)cg_setupBorderWithColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth state:(CGViewBorderState)state;
+
+/** 设置边框 （CGBorderObject） */
+- (void)cg_setupBorderWithBorderObject:(CGBorderObject *)borderObject state:(CGViewBorderState)state;
 @end

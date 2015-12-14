@@ -21,6 +21,30 @@
 
 @implementation CGBorderBaseLayer
 
+- (instancetype)initWithLayer:(id)layer
+{
+    self = [super initWithLayer:layer];
+    if (self) {
+        [self initialization];
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self initialization];
+    }
+    return self;
+}
+
+- (void)initialization
+{
+    [self performSelector:@selector(cg_updateBorder) withObject:nil afterDelay:0];
+}
+
+#pragma mark - 重新系统方法
 - (void)setBorderColor:(CGColorRef)borderColor
 {
     if (borderColor == self.borderColor) {
@@ -28,7 +52,7 @@
     }
     
     [self cg_updateBorderColor:[UIColor colorWithCGColor:borderColor]
-                          state:CGViewBorderStateNormal];
+                          state:self.borderState];
 }
 
 - (void)setBorderWidth:(CGFloat)borderWidth
@@ -37,10 +61,16 @@
         return;
     }
     [self cg_updateBorderWidth:borderWidth
-                         state:CGViewBorderStateNormal];
+                         state:self.borderState];
 }
 
 #pragma mark - 状态值转换、保存
+- (CGBorderObject *)borderObjectForState:(CGViewBorderState)state
+{
+    return self.borderDict[[self cg_keyWithState:state]];
+}
+
+/** 保存输入参数颜色（UIColor）、宽度（CGFloat） */
 - (void)cg_setupBorderWithColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth state:(CGViewBorderState)state
 {
     [self cg_setupBorderWithBorderObject:[CGBorderObject cg_createBorderWithColorObject:borderColor width:borderWidth] state:state];
@@ -60,12 +90,12 @@
 #pragma mark - CGViewBorderStateProtocol
 - (UIColor *)cg_setupBorderColorWithState:(CGViewBorderState)state
 {
-    return [self.borderDict[[self cg_keyWithState:state]] borderColor];
+    return [[self borderObjectForState:state] borderColor];
 }
 
 - (CGFloat)cg_setupBorderWidthWithState:(CGViewBorderState)state
 {
-    return [self.borderDict[[self cg_keyWithState:state]] borderWidth];
+    return [[self borderObjectForState:state] borderWidth];
 }
 
 - (void)cg_updateBorderColor:(UIColor *)color state:(CGViewBorderState)state
@@ -75,6 +105,11 @@
     if (self.borderDict[key]) {
         
         [self.borderDict[key] setBorderColor:color];
+    }else {
+        
+        if ([self cg_updateFaildIsCreateBorderObjectWithState:state]) {
+            [self cg_setupBorderWithColor:color borderWidth:0 state:state];
+        }
     }
 }
 
@@ -86,6 +121,10 @@
         [self.borderDict[key] setBorderWidth:width];
     }else {
         
+        if ([self cg_updateFaildIsCreateBorderObjectWithState:state]) {
+            
+            [self cg_setupBorderWithColor:nil borderWidth:width state:state];
+        }
     }
 }
 
@@ -94,22 +133,12 @@
     return YES;
 }
 
-- (void)cg_setupViewBorderWithColor:(UIColor *)color width:(CGFloat)width state:(CGViewBorderState)state
-{
-    UIColor *color = [self cg_setupBorderColorWithState:self.viewBorderState];
-    CGFloat  width = [self cg_setupBorderWidthWithState:self.viewBorderState];
-    
-    //内部设置时关闭回调
-//    self.borderLayer.disableSendDelegateAction  = YES;
-    super.borderColor    = color.CGColor;
-    super.borderWidth    = width;
-    //设置后再打开值改变时的回调
-//    self.borderLayer.disableSendDelegateAction  = NO;
-}
-
-- (void)cg_applyBorder
+- (void)cg_updateBorder
 {
     
+    CGBorderObject *borderObject = [self borderObjectForState:self.borderState];
+    super.borderColor    = borderObject.borderColor.CGColor;
+    super.borderWidth    = borderObject.borderWidth;
 }
 
 #pragma mark - 设置属性
@@ -122,6 +151,15 @@
     _borderDict = [NSMutableDictionary dictionary];
     
     return _borderDict;
+}
+
+- (void)setBorderState:(CGViewBorderState)borderState
+{
+    if (borderState != _borderState) {
+        
+        _borderState = borderState;
+        [self cg_updateBorder];
+    }
 }
 
 @end

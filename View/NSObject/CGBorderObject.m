@@ -28,7 +28,8 @@
 {
     self = [super init];
     if (self) {
-        [self initialization];
+        self.borderColor    = color;
+        self.borderWidth    = width;
     }
     return self;
 }

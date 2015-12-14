@@ -8,14 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-typedef NS_ENUM(NSInteger, CGViewBorderState) {
-
-    CGViewBorderStateNormal,
-    CGViewBorderStateHighlighted,
-    CGViewBorderStateDisabled,
-    CGViewBorderStateSelected,
-};
+#import "CGBorderStateHeader.h"
 
 /** 不同状态下的UIView边框设置协议 */
 @protocol CGViewBorderStateProtocol <NSObject>
@@ -31,12 +24,12 @@ typedef NS_ENUM(NSInteger, CGViewBorderState) {
 - (CGFloat)cg_setupBorderWidthWithState:(CGViewBorderState)state;
 
 /** 更新指定状态下的边框宽度 */
-- (void)cg_updateBorderWidth:(CGFloat)width state:(CGViewBorderState)state ;
+- (void)cg_updateBorderWidth:(CGFloat)width state:(CGViewBorderState)state;
 /** 更新指定状态下的边框颜色 */
 - (void)cg_updateBorderColor:(UIColor *)color state:(CGViewBorderState)state;
 /** 更新指定状态下的边框值失败是否创建一个新值 */
 - (BOOL)cg_updateFaildIsCreateBorderObjectWithState:(CGViewBorderState)state;
 
-/** 设置 */
-- (void)cg_setupViewBorderWithColor:(UIColor *)color width:(CGFloat)width state:(CGViewBorderState)state;
+/** 更新当前边框的属性 */
+- (void)cg_updateBorder;
 @end
