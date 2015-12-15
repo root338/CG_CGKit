@@ -28,7 +28,7 @@
 #pragma mark - 创建UIButton
 + (instancetype)buttonWithType:(UIButtonType)buttonType
 {
-    CGBaseButton *button = [self buttonWithType:buttonType];
+    CGBaseButton *button = [super buttonWithType:buttonType];
     [button initialization];
     return button;
 }
