@@ -1,31 +1,20 @@
 //
-//  CGBaseLayerView.m
-//  TestCG_CGKit
+//  UIView+CGBorderLayer.m
+//  QuickAskCommunity
 //
-//  Created by DY on 15/12/14.
-//  Copyright © 2015年 apple. All rights reserved.
+//  Created by DY on 15/12/15.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "CGBaseLayerView.h"
+#import "UIView+CGBorderLayer.h"
+#import "CGBorderObject.h"
 #import "CGBorderBaseLayer.h"
 
+#import <objc/runtime.h>
 
-@interface CGBaseLayerView ()
-{
-    
-}
+@implementation UIView (CGBorderLayer)
 
-@property (nonatomic, strong, readonly) CGBorderBaseLayer *borderLayer;
-@end
-
-@implementation CGBaseLayerView
-
-@synthesize isDisableStateOfDisableUserInteraction = _isDisableStateOfDisableUserInteraction;
-
-+ (Class)layerClass
-{
-    return [CGBorderBaseLayer class];
-}
+@dynamic isDisableStateOfDisableUserInteraction;
 
 #pragma mark - CGViewSetupBorderState
 - (CGBorderObject *)borderLayerForState:(CGViewBorderState)state
@@ -35,12 +24,12 @@
 
 - (void)setViewWithBorderColor:(UIColor *)color borderWidth:(CGFloat)borderWidth state:(CGViewBorderState)state
 {
-    [self.borderLayer cg_setupBorderWithColor:color borderWidth:borderWidth state:state];
+    [[self borderLayer] cg_setupBorderWithColor:color borderWidth:borderWidth state:state];
 }
 
 - (void)setViewWithBorderObject:(CGBorderObject *)borderObject state:(CGViewBorderState)state
 {
-    [self.borderLayer cg_setupBorderWithBorderObject:borderObject state:state];
+    [[self borderLayer] cg_setupBorderWithBorderObject:borderObject state:state];
 }
 
 - (void)changeUserInteraction
@@ -58,21 +47,23 @@
 #pragma mark - 设置属性
 - (CGViewBorderState)borderState
 {
-    return self.borderLayer.borderState;
+    return [self borderLayer].borderState;
 }
 
 - (void)setBorderState:(CGViewBorderState)borderState
 {
-    self.borderLayer.borderState = borderState;
+    [self borderLayer].borderState = borderState;
     [self changeUserInteraction];
 }
 
-- (void)setIsDisableStateOfDisableUserInteraction:(BOOL)isDisableStateOfDisableUserInteraction
+- (void)setIsDisableStateOfDisableUserInteraction:(BOOL)isDisable
 {
-    if (isDisableStateOfDisableUserInteraction != _isDisableStateOfDisableUserInteraction) {
-        _isDisableStateOfDisableUserInteraction = isDisableStateOfDisableUserInteraction;
-        [self changeUserInteraction];
-    }
+    objc_setAssociatedObject(self, @selector(isDisableStateOfDisableUserInteraction), @(isDisable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isDisableStateOfDisableUserInteraction
+{
+    return objc_getAssociatedObject(self, _cmd);
 }
 
 - (CGBorderBaseLayer *)borderLayer
@@ -83,4 +74,5 @@
     }
     return borderLayer;
 }
+
 @end
