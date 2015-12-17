@@ -8,7 +8,7 @@
 
 #import "CGBaseButton.h"
 
-#import "UIView+CGSetupAppearance.h"
+#import "CGBorderBaseLayer.h"
 
 #import "CGPrintLogHeader.h"
 
@@ -16,14 +16,19 @@
 {
     
 }
+
+@property (nonatomic, strong, readonly) CGBorderBaseLayer *borderLayer;
+
 @end
 
 @implementation CGBaseButton
 
+@synthesize isDisableStateOfDisableUserInteraction = _isDisableStateOfDisableUserInteraction;
+
 #pragma mark - 创建UIButton
 + (instancetype)buttonWithType:(UIButtonType)buttonType
 {
-    CGBaseButton *button = [self buttonWithType:buttonType];
+    CGBaseButton *button = [super buttonWithType:buttonType];
     [button initialization];
     return button;
 }
@@ -56,6 +61,70 @@
 - (void)initialization
 {
     
+}
+
+
+
++ (Class)layerClass
+{
+    return [CGBorderBaseLayer class];
+}
+
+#pragma mark - CGViewSetupBorderStateDelegate
+- (CGBorderObject *)borderLayerForState:(CGViewBorderState)state
+{
+    return [self borderLayerForState:state];
+}
+
+- (void)setViewWithBorderColor:(UIColor *)color borderWidth:(CGFloat)borderWidth state:(CGViewBorderState)state
+{
+    [self.borderLayer cg_setupBorderWithColor:color borderWidth:borderWidth state:state];
+}
+
+- (void)setViewWithBorderObject:(CGBorderObject *)borderObject state:(CGViewBorderState)state
+{
+    [self.borderLayer cg_setupBorderWithBorderObject:borderObject state:state];
+}
+
+- (void)changeUserInteraction
+{
+    BOOL enable = YES;
+    if (self.isDisableStateOfDisableUserInteraction && self.borderState == CGViewBorderStateDisabled ) {
+        enable = NO;
+    }
+    
+    if (self.userInteractionEnabled != enable) {
+        self.userInteractionEnabled = enable;
+    }
+}
+
+#pragma mark - 设置属性
+- (CGViewBorderState)borderState
+{
+    return self.borderLayer.borderState;
+}
+
+- (void)setBorderState:(CGViewBorderState)borderState
+{
+    self.borderLayer.borderState = borderState;
+    [self changeUserInteraction];
+}
+
+- (void)setIsDisableStateOfDisableUserInteraction:(BOOL)isDisableStateOfDisableUserInteraction
+{
+    if (isDisableStateOfDisableUserInteraction != _isDisableStateOfDisableUserInteraction) {
+        _isDisableStateOfDisableUserInteraction = isDisableStateOfDisableUserInteraction;
+        [self changeUserInteraction];
+    }
+}
+
+- (CGBorderBaseLayer *)borderLayer
+{
+    CGBorderBaseLayer *borderLayer = nil;
+    if ([self.layer isKindOfClass:[CGBorderBaseLayer class]]) {
+        borderLayer = (id)self.layer;
+    }
+    return borderLayer;
 }
 
 @end

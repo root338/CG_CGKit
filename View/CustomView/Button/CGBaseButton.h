@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "CGViewProtocol.h"
+#import "CGViewSetupBorderStateDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@interface CGBaseButton : UIButton<CGViewInitializationProtocol>
+@interface CGBaseButton : UIButton<CGViewInitializationProtocol, CGViewSetupBorderStateDelegate>
+
 
 
 
