@@ -34,6 +34,7 @@ UIKIT_EXTERN const CGFloat __K_Button_AutoBorderWidth;
 - (void)cg_setupBorderWithColor:(UIColor *)borderColor width:(CGFloat)width state:(UIControlState)state;
 - (void)cg_setupBorderWithObject:(CGBorderObject *)borderObject state:(UIControlState)state;
 
+
 @end
 
 NS_ASSUME_NONNULL_END
