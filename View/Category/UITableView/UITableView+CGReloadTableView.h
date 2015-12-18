@@ -35,6 +35,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray<NSIndexPath *> *)cg_createIndexPathsAtStartRow:(NSInteger)row section:(NSInteger)section count:(NSInteger)count isVerityExistAtTableView:(BOOL)isVerityExistAtTableView;
 
+#pragma mark - 刷新组
+/** 刷新组 */
+- (void)cg_reloadFirstSectionWithAnimation:(UITableViewRowAnimation)animation;
+/** 刷新组 */
+- (void)cg_reloadWithSection:(NSInteger)section animation:(UITableViewRowAnimation)animation;
+
 #pragma mark - 刷新第一组索引
 - (void)cg_reloadFirstSectionWithRow:(NSInteger)row;
 - (void)cg_reloadFirstSectionWithRow:(NSInteger)row animation:(UITableViewRowAnimation)animation;
@@ -47,9 +53,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_reloadWithIndexPath:(NSIndexPath *)indexPath animation:(UITableViewRowAnimation)animation;
 - (void)cg_reloadRowsWithIndexPaths:(nullable NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 
-
+#pragma mark - 插入cell
+/**
+ *  向指定组最后插入count个cell
+ *
+ *  @param section   插入的组索引
+ *  @param count     出入的cell个数
+ *  @param animation 执行的动画
+ */
+- (void)cg_insertTableViewsSection:(NSInteger)section count:(NSInteger)count animation:(UITableViewRowAnimation)animation;
 
 #pragma mark
 - (void)cg_updateTableViewsAtIndexPath:(NSArray<NSIndexPath *> *)indexPaths type:(UITableViewCellEditingStyle)style animation:(UITableViewRowAnimation)animation;
+
+
 @end
 NS_ASSUME_NONNULL_END
