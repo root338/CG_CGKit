@@ -9,6 +9,7 @@
 #import "UITableView+CGIndexPath.h"
 #import "UIView+CGSetupFrame.h"
 
+#import "UIView+CGSearchView.h"
 #import "CGPrintLogHeader.h"
 
 typedef NS_ENUM(NSInteger, CGTableViewOfIndexPathType) {
@@ -93,6 +94,33 @@ typedef NS_ENUM(NSInteger, CGTableViewOfIndexPathType) {
         CGErrorLog(@"指定的索引不存在");
     }
     return nil;
+}
+
+- (NSIndexPath *)cg_previousIndexPathWithCurrentView:(UIView *)currentView
+{
+    NSIndexPath *indexPath = [self cg_currentIndexPathWithCurrentView:currentView];
+    return [self cg_previousIndexPathWithCurrentIndexPath:indexPath];
+}
+
+- (NSIndexPath *)cg_nextIndexPathWithCurrentView:(UIView *)currentView
+{
+    NSIndexPath *indexPath = [self cg_currentIndexPathWithCurrentView:currentView];
+    return [self cg_nextIndexPathWithCurrentIndexPath:indexPath];
+}
+
+- (NSIndexPath *)cg_currentIndexPathWithCurrentView:(UIView *)currentView
+{
+    UITableViewCell *cell = nil;
+    if ([currentView isKindOfClass:[UITableViewCell class]]) {
+        cell = (id)currentView;
+    }else {
+        cell = [currentView searchSuperViewWithClass:[UITableViewCell class]];
+    }
+    NSIndexPath *currentIndexPath = nil;
+    if (cell) {
+        currentIndexPath = [self indexPathForCell:cell];
+    }
+    return currentIndexPath;
 }
 
 @end
