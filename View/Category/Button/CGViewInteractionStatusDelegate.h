@@ -16,6 +16,7 @@
  */
 @protocol CGViewInteractionStatusDelegate <NSObject>
 
+@optional
 /**
  *  设置按钮不同状态下的内容
  *
