@@ -35,4 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface NSNotificationCenter (CGCreateKeyboardNotification)
+
++ (void)cg_addKeyboardObserver:(id)observer selector:(SEL)selector;
++ (void)cg_removeKeyboardObserver:(id)observer;
+
+@end
+
 NS_ASSUME_NONNULL_END
