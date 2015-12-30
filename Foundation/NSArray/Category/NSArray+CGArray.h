@@ -8,11 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray<__covariant ObjectType> (CGArray)
+@interface NSArray<ObjectType> (CGArray)
+
+- (BOOL)cg_veriftyArray;
 
 - (BOOL)cg_judgeIsZeroLengthArray;
+
+- (NSArray<ObjectType> *)cg_arrayByAddingObjectsFromArray:(NSArray<ObjectType> *)otherArray;
 
 - (ObjectType)cg_objectAtIndex:(NSUInteger)index;
 
 + (instancetype)cg_arrayWithObjects:(ObjectType)firstObj, ... NS_REQUIRES_NIL_TERMINATION;
+@end
+
+@interface NSMutableArray<ObjectType> (CGMutableArray)
+
+- (BOOL)cg_addObjectsFromArray:(NSArray<ObjectType> *)otherArray;
+
 @end
