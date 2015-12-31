@@ -77,7 +77,6 @@
                     
                     *stop = YES;
                 }
-//                NSLog(@"imageName:%@,  imageSize::%@,  scale::%f,  size::%@", imagePath, NSStringFromCGSize(tmpImageSize), tmpLaunchImage.scale, NSStringFromCGSize(launchImageSize));
             }
         }
     }];
