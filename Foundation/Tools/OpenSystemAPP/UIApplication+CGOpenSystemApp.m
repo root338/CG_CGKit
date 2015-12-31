@@ -8,6 +8,7 @@
 
 #import "UIApplication+CGOpenSystemApp.h"
 
+
 @implementation UIApplication (CGOpenSystemApp)
 
 + (BOOL)openSystemAppType:(CGOpenSystemAppType)appType

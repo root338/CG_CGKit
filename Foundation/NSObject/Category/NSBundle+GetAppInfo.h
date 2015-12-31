@@ -18,4 +18,7 @@
 
 /** 获取 app 编译版本号 */
 + (NSString *)getAppInfoForVersion;
+
+/** 获取启动图片数组 */
++ (NSArray *)getLaunchImages;
 @end

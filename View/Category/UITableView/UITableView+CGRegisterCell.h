@@ -24,6 +24,8 @@
 
 - (void)cg_registerHeaderFooterViewClassWithClassIdentifier:(nullable Class)headerFooterClassIdentifier NS_AVAILABLE_IOS(6_0);
 
+- (void)cg_registerHeaderFooterViewClassWithClassIdentifiers:(nullable NSArray<Class> *)headerFooterClassIdentifiers;
+
 - (void)cg_registerNib:(nullable UINib *)nib forCellReuseClass:(nullable Class)identifier NS_AVAILABLE_IOS(5_0);
 - (void)cg_registerClass:(nullable Class)cellClass forCellReuseClass:(nullable Class)identifier NS_AVAILABLE_IOS(6_0);
 

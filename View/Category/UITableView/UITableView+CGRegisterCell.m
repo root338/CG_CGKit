@@ -42,6 +42,13 @@
     [self cg_registerClass:headerFooterClassIdentifier forHeaderFooterViewReuseClass:headerFooterClassIdentifier];
 }
 
+- (void)cg_registerHeaderFooterViewClassWithClassIdentifiers:(NSArray<Class> *)headerFooterClassIdentifiers
+{
+    [headerFooterClassIdentifiers enumerateObjectsUsingBlock:^(Class  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self cg_registerHeaderFooterViewClassWithClassIdentifier:obj];
+    }];
+}
+
 - (void)cg_registerNib:(nullable UINib *)nib forCellReuseClass:(nullable Class)identifier
 {
     [self registerNib:nib forCellReuseIdentifier:NSStringFromClass(identifier)];

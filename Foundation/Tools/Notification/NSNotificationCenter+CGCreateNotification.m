@@ -47,3 +47,23 @@
 }
 
 @end
+
+@implementation NSNotificationCenter (CGCreateKeyboardNotification)
+
++ (void)cg_addKeyboardObserver:(id)observer selector:(SEL)selector
+{
+    [NSNotificationCenter addObserver:observer selector:selector name:UIKeyboardWillShowNotification];
+    [NSNotificationCenter addObserver:observer selector:selector name:UIKeyboardDidShowNotification];
+    [NSNotificationCenter addObserver:observer selector:selector name:UIKeyboardWillHideNotification];
+    [NSNotificationCenter addObserver:observer selector:selector name:UIKeyboardDidHideNotification];
+}
+
++ (void)cg_removeKeyboardObserver:(id)observer
+{
+    [NSNotificationCenter removeObserver:observer name:UIKeyboardWillShowNotification];
+    [NSNotificationCenter removeObserver:observer name:UIKeyboardDidShowNotification];
+    [NSNotificationCenter removeObserver:observer name:UIKeyboardWillHideNotification];
+    [NSNotificationCenter removeObserver:observer name:UIKeyboardDidHideNotification];
+}
+
+@end

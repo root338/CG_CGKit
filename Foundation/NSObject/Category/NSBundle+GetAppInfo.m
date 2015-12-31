@@ -30,4 +30,10 @@
     NSString *appVersion = [appInfo objectForKey:(__bridge NSString *)kCFBundleVersionKey];
     return appVersion ? appVersion : @"";
 }
+
++ (NSArray *)getLaunchImages
+{
+    NSDictionary *appInfo = [self getAppInfo];
+    return [appInfo objectForKey:@"UILaunchImages"];
+}
 @end
