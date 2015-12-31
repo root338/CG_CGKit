@@ -78,6 +78,7 @@
 
 - (void)cg_setupBorderWithBorderObject:(CGBorderObject *)borderObject state:(CGViewBorderState)state
 {
+    
     !borderObject ?: [self.borderDict setObject:borderObject forKey:[self cg_keyWithState:state]];
 }
 

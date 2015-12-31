@@ -17,8 +17,9 @@
 
 + (instancetype)cg_createBorderWithColorObject:(UIColor *)color width:(CGFloat)width
 {
-    CGErrorConditionLog(!color,     @"设置的颜色为空");
-    CGErrorConditionLog(width <= 0, @"设置的边框应不小于0");
+
+//    CGErrorConditionLog(!color,     @"设置的颜色为空");
+//    CGErrorConditionLog(width <= 0, @"设置的边框应不小于0");
     
     CGBorderObject *borderObject = [[self alloc] initWithColor:color width:width];
     return borderObject;

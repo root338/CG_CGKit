@@ -58,6 +58,21 @@
     return array;
 }
 
+#pragma mark - 刷新组
+- (void)cg_reloadFirstSectionWithAnimation:(UITableViewRowAnimation)animation
+{
+    [self cg_reloadWithSection:0 animation:animation];
+}
+
+- (void)cg_reloadWithSection:(NSInteger)section animation:(UITableViewRowAnimation)animation
+{
+    if ([self cg_judgeTableViewIsExistSection:section]) {
+        [self reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:animation];
+    }else {
+        CGErrorLog(@"刷新的组不存在");
+    }
+}
+
 #pragma mark - 刷新第一组索引
 - (void)cg_reloadFirstSectionWithRow:(NSInteger)row
 {
@@ -125,6 +140,19 @@
     }
 }
 
+- (void)cg_insertTableViewsSection:(NSInteger)section count:(NSInteger)count animation:(UITableViewRowAnimation)animation
+{
+    if ([self cg_judgeTableViewIsExistSection:section]) {
+        
+        NSArray<NSIndexPath *> *indexPaths = [self cg_createIndexPathsAtStartRow:[self numberOfRowsInSection:section] section:section count:count isVerityExistAtTableView:NO];
+        [self cg_updateTableViewsAtIndexPath:indexPaths type:UITableViewCellEditingStyleInsert animation:animation];
+    }else {
+        CGErrorLog(@"不存在该组");
+    }
+    
+}
+
+#pragma mark - 删除、插入
 - (void)cg_updateTableViewsAtIndexPath:(NSArray<NSIndexPath *> *)indexPaths type:(UITableViewCellEditingStyle)style animation:(UITableViewRowAnimation)animation
 {
     [self beginUpdates];

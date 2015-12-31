@@ -9,21 +9,21 @@
 #import "CGBaseButton.h"
 
 #import "CGBorderBaseLayer.h"
+#import "UIView+CGBorderLayer.h"
+#import "UIView+CGSetupAppearance.h"
 
 #import "CGPrintLogHeader.h"
+
+const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
 
 @interface CGBaseButton ()
 {
     
 }
 
-@property (nonatomic, strong, readonly) CGBorderBaseLayer *borderLayer;
-
 @end
 
 @implementation CGBaseButton
-
-@synthesize isDisableStateOfDisableUserInteraction = _isDisableStateOfDisableUserInteraction;
 
 #pragma mark - 创建UIButton
 + (instancetype)buttonWithType:(UIButtonType)buttonType
@@ -63,68 +63,116 @@
     
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    if (newWindow) {
+        [self cg_borderSyncTitle];
+    }
+}
 
+- (void)cg_borderSyncTitle
+{
+    UIControlState controlState = [self cg_controlStateForState:self.state];
+    if (self.isBorderColorSyncTitle) {
+        
+        CGViewBorderState stateForBorder = [self cg_borderStateForControlState:controlState];
+        [self setViewWithBorderColor:self.currentTitleColor borderWidth:self.borderWidth state:stateForBorder];
+        self.borderState = stateForBorder;
+    }else {
+        
+        self.borderState = [self cg_borderStateForControlState:controlState];
+    }
+}
 
+#pragma mark - 重写系统状态改变方法
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    [self cg_borderSyncTitle];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    [self cg_borderSyncTitle];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    [self cg_borderSyncTitle];
+}
+
+#pragma mark - 层设置方法
 + (Class)layerClass
 {
     return [CGBorderBaseLayer class];
 }
 
-#pragma mark - CGViewSetupBorderStateDelegate
-- (CGBorderObject *)borderLayerForState:(CGViewBorderState)state
+/** 过滤复合状态，提取优先级最高的状态值 */
+- (UIControlState)cg_controlStateForState:(UIControlState)state
 {
-    return [self borderLayerForState:state];
-}
-
-- (void)setViewWithBorderColor:(UIColor *)color borderWidth:(CGFloat)borderWidth state:(CGViewBorderState)state
-{
-    [self.borderLayer cg_setupBorderWithColor:color borderWidth:borderWidth state:state];
-}
-
-- (void)setViewWithBorderObject:(CGBorderObject *)borderObject state:(CGViewBorderState)state
-{
-    [self.borderLayer cg_setupBorderWithBorderObject:borderObject state:state];
-}
-
-- (void)changeUserInteraction
-{
-    BOOL enable = YES;
-    if (self.isDisableStateOfDisableUserInteraction && self.borderState == CGViewBorderStateDisabled ) {
-        enable = NO;
+    UIControlState controlState;
+    if (state & UIControlStateHighlighted) {
+        
+        controlState = UIControlStateHighlighted;
+    }else if (state & UIControlStateDisabled) {
+        
+        controlState = UIControlStateSelected;
+    }else if (state & UIControlStateSelected) {
+        
+        controlState = UIControlStateSelected;
+    }else {
+        
+        controlState = UIControlStateNormal;
     }
     
-    if (self.userInteractionEnabled != enable) {
-        self.userInteractionEnabled = enable;
+    return controlState;
+}
+
+- (CGViewBorderState)cg_borderStateForControlState:(UIControlState)state
+{
+    UIControlState controlState = [self cg_controlStateForState:state];
+    CGViewBorderState tempState;
+    switch (controlState) {
+        
+        case UIControlStateHighlighted:
+            tempState   = CGViewBorderStateHighlighted;
+            break;
+        case UIControlStateSelected:
+            tempState   = CGViewBorderStateSelected;
+            break;
+        case UIControlStateDisabled:
+            tempState   = CGViewBorderStateDisabled;
+            break;
+        default:
+            CGErrorConditionLog(state != UIControlStateNormal, @"边框属性不支持该属性(%li)", state);
+            tempState = CGViewBorderStateNormal;
+            break;
     }
+    
+    return tempState;
 }
 
-#pragma mark - 设置属性
-- (CGViewBorderState)borderState
+- (CGBorderObject *)cg_borderObjectForState:(UIControlState)state
 {
-    return self.borderLayer.borderState;
+    return [self borderLayerForState:[self cg_borderStateForControlState:state]];
 }
 
-- (void)setBorderState:(CGViewBorderState)borderState
+- (void)cg_setupBorderWithColor:(UIColor *)borderColor state:(UIControlState)state
 {
-    self.borderLayer.borderState = borderState;
-    [self changeUserInteraction];
+    [self cg_setupBorderWithColor:borderColor width:__K_Button_AutoBorderWidth state:state];
 }
 
-- (void)setIsDisableStateOfDisableUserInteraction:(BOOL)isDisableStateOfDisableUserInteraction
+- (void)cg_setupBorderWithColor:(UIColor *)borderColor width:(CGFloat)width state:(UIControlState)state
 {
-    if (isDisableStateOfDisableUserInteraction != _isDisableStateOfDisableUserInteraction) {
-        _isDisableStateOfDisableUserInteraction = isDisableStateOfDisableUserInteraction;
-        [self changeUserInteraction];
-    }
+    [self setViewWithBorderColor:borderColor borderWidth:width state:[self cg_borderStateForControlState:state]];
 }
 
-- (CGBorderBaseLayer *)borderLayer
+- (void)cg_setupBorderWithObject:(CGBorderObject *)borderObject state:(UIControlState)state
 {
-    CGBorderBaseLayer *borderLayer = nil;
-    if ([self.layer isKindOfClass:[CGBorderBaseLayer class]]) {
-        borderLayer = (id)self.layer;
-    }
-    return borderLayer;
+    [self setViewWithBorderObject:borderObject state:[self cg_borderStateForControlState:state]];
 }
 
 @end

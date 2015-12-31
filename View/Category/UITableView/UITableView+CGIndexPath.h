@@ -41,6 +41,17 @@
 /** 获取指定值的索引 */
 - (NSIndexPath *)cg_IndexPathForSection:(NSUInteger)section row:(NSUInteger)row;
 
+/** 
+ *  获取当前视图 的上一个索引
+ *  @param currentCell 表示当前cell或其子视图
+ */
+- (NSIndexPath *)cg_previousIndexPathWithCurrentView:(UIView *)currentView;
+
+/** 获取当前视图的下一个索引 */
+- (NSIndexPath *)cg_nextIndexPathWithCurrentView:(UIView *)currentView;
+
+/** 获取当前视图的索引 */
+- (NSIndexPath *)cg_currentIndexPathWithCurrentView:(UIView *)currentView;
 @end
 
 @interface UITableView (CGVertexIndexPath)
