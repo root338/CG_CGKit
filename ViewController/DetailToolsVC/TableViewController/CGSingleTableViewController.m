@@ -28,16 +28,17 @@
 #pragma mark - CGTableViewDataSourceManagerProtocol
 - (void)cg_dataSourceWithObjects:(NSArray *)objects
 {
-    
     //更新数据
     [[self cg_dataSource] addObjectsFromArray:objects];
     
     //
-    NSIndexPath *lastIndexPath = [self.tableView cg_lastIndexPathForTableView];
     UITableViewCellEditingStyle style = UITableViewCellEditingStyleInsert;
-    NSArray *indexPaths = [self cg_reloadRowsAtLastIndexPath:lastIndexPath count:objects.count];
-    UITableViewRowAnimation animation = [self cg_updateTableViewAnimation:style];
-    [self.tableView cg_updateTableViewsAtIndexPath:indexPaths type:UITableViewCellEditingStyleNone animation:animation];
+    NSArray *indexPaths = [self cg_insertWithSection:0 count:objects.count];
+    
+    if (indexPaths.count) {
+        UITableViewRowAnimation animation = [self cg_updateTableViewAnimation:style];
+        [self.tableView cg_updateTableViewsAtIndexPath:indexPaths type:style animation:animation];
+    }
 }
 
 - (void)cg_reloadWithNewDataSouce:(NSArray *)dataSource
@@ -51,13 +52,10 @@
     
 }
 
-- (NSArray<NSIndexPath *> *)cg_reloadRowsAtLastIndexPath:(NSIndexPath *)indexPath count:(NSUInteger)count
+- (NSArray<NSIndexPath *> *)cg_insertWithSection:(NSInteger)section count:(NSUInteger)count
 {
-    NSArray *indexPaths = [self.tableView cg_createIndexPathsAtStartRow:indexPath.row + 1
-                                                                section:indexPath.section
-                                                                  count:count
-                                               isVerityExistAtTableView:NO];
-    return indexPaths;
+    return [self.tableView cg_createIndexPathsAtLastCellWithSection:section
+                                                              count:count];
 }
 
 - (UITableViewRowAnimation)cg_updateTableViewAnimation:(UITableViewCellEditingStyle)style

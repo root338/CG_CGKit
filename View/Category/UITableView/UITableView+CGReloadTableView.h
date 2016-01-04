@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回被创建的索引数组
  */
-- (NSArray<NSIndexPath *> *)cg_createIndexPathsAtRows:(NSSet<NSNumber *> *)rows section:(NSInteger)section isVerityExistAtTableView:(BOOL)isVerityExistAtTableView;
+- (nullable NSArray< NSIndexPath *> *)cg_createIndexPathsAtRows:(NSSet<NSNumber *> *)rows section:(NSInteger)section isVerityExistAtTableView:(BOOL)isVerityExistAtTableView;
 
 /**
  *  创建同组，且连续的IndexPath
@@ -33,7 +33,18 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回被创建的索引数组
  */
-- (NSArray<NSIndexPath *> *)cg_createIndexPathsAtStartRow:(NSInteger)row section:(NSInteger)section count:(NSInteger)count isVerityExistAtTableView:(BOOL)isVerityExistAtTableView;
+- (nullable NSArray<NSIndexPath *> *)cg_createIndexPathsAtStartRow:(NSInteger)row section:(NSInteger)section count:(NSInteger)count isVerityExistAtTableView:(BOOL)isVerityExistAtTableView;
+
+/**
+ *  创建指定section最后row之后连续的indexPath
+ *
+ *  @param section 添加的组
+ *  @param count   需要添加的个数
+ *
+ *  @return 返回被创建的索引数据
+ */
+- (nullable NSArray<NSIndexPath *> *)cg_createIndexPathsAtLastCellWithSection:(NSInteger)section count:(NSInteger)count;
+
 
 #pragma mark - 刷新组
 /** 刷新组 */

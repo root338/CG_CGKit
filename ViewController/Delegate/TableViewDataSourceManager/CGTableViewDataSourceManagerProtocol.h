@@ -29,7 +29,14 @@
 
 - (UITableViewRowAnimation)cg_updateTableViewAnimation:(UITableViewCellEditingStyle)style;
 
-/** 获取需要新插入的索引 */
-- (NSArray<NSIndexPath *> *)cg_reloadRowsAtLastIndexPath:(NSIndexPath *)indexPath count:(NSUInteger)count;
+/**
+ *  插入连续索引（在指定section最后插入）
+ *
+ *  @param section   需要插入的组
+ *  @param count     需要插入的个数
+ *
+ *  @return 返回需要插入的索引数组
+ */
+- (NSArray<NSIndexPath *> *)cg_insertWithSection:(NSInteger)section count:(NSUInteger)count;
 @end
 
