@@ -10,6 +10,7 @@
 #import "UITableView+CGIndexPath.h"
 
 #import "NSArray+CGArray.h"
+#import "CGPrintLogHeader.h"
 
 @implementation UITableView (CGReloadTableView)
 
@@ -56,6 +57,17 @@
         row++;
     }
     return array;
+}
+
+- (NSArray<NSIndexPath *> *)cg_createIndexPathsAtLastCellWithSection:(NSInteger)section count:(NSInteger)count
+{
+    NSIndexPath *lastIndexPath  = [self cg_lastIndexPathForSection:section];
+    NSInteger   startRow        = lastIndexPath ? lastIndexPath.row + 1 : 0;
+    
+    return [self cg_createIndexPathsAtStartRow:startRow
+                                       section:section
+                                         count:count
+                      isVerityExistAtTableView:NO];
 }
 
 #pragma mark - 刷新组
@@ -155,21 +167,24 @@
 #pragma mark - 删除、插入
 - (void)cg_updateTableViewsAtIndexPath:(NSArray<NSIndexPath *> *)indexPaths type:(UITableViewCellEditingStyle)style animation:(UITableViewRowAnimation)animation
 {
-    [self beginUpdates];
-    
-    switch (style) {
-        case UITableViewCellEditingStyleDelete:
-            [self deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
-            break;
-        case UITableViewCellEditingStyleInsert:
-            [self insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
-            break;
-        default:
-            [self reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
-            break;
+    if (style == UITableViewCellEditingStyleInsert || style == UITableViewCellEditingStyleDelete) {
+        
+        [self beginUpdates];
+        
+        switch (style) {
+            case UITableViewCellEditingStyleDelete:
+                [self deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+                break;
+            default:
+                [self insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+                break;
+        }
+        
+        [self endUpdates];
+        
+    }else {
+        [self reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     }
-    
-    [self endUpdates];
 }
 
 @end
