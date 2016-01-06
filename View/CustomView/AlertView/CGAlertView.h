@@ -10,6 +10,9 @@
 
 @interface CGAlertView : UIAlertView
 
+/** delegate设置为自身时回调block */
+@property (nonatomic, copy) void (^clickCallback) (BOOL isCancel, NSInteger tag);
+
 #pragma mark - 可选择提示，根据用户选择执行回调
 /**
  *  创建UIAlertView并自动弹出，设置（标题，内容）
@@ -36,6 +39,19 @@
  *  @return 返回创建好的UIAlertView
  */
 + (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (^)(BOOL isCancel))resultCallback;
+
+///**
+// *  创建UIAlertView并自动弹出，设置（标题，内容，取消按钮，其他按钮（多个））
+// *
+// *  @param title          标题
+// *  @param message        内容
+// *  @param cancelTitle    取消按钮名
+// *  @param resultCallback 点击后的回调方法
+// *  @param otherTitle     其他按钮名（多个）
+// *
+// *  @return 返回创建好的UIAlertView
+// */
+//+ (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle resultCallback:(void (^)(BOOL isCancel, NSInteger clickInteger))resultCallback otherTitles:(NSString *)otherTitle, ... NS_REQUIRES_NIL_TERMINATION;
 
 #pragma mark - 仅提示，有标题和内容
 /**

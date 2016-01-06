@@ -93,11 +93,15 @@
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    BOOL isCancel = buttonIndex == alertView.cancelButtonIndex;
     if (self.resultCallback) {
         
-        self.resultCallback(buttonIndex == alertView.cancelButtonIndex);
+        self.resultCallback(isCancel);
     }
     
+    if (self.clickCallback) {
+        self.clickCallback(isCancel, buttonIndex);
+    }
 }
 
 @end
