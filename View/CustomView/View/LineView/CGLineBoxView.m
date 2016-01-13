@@ -28,6 +28,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     _lineWidth = .5;
     _lineColor = __K_CG_16_VALUE_COLOR(KCG_16_ColorValueType_0XE5E5E5);
 }

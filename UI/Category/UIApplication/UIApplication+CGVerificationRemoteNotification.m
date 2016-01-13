@@ -18,7 +18,8 @@
     UIApplication *application = [UIApplication sharedApplication];
     if (_CG_IOS_8_0_AFTER) {
         
-        isResult = [application isRegisteredForRemoteNotifications];
+        UIUserNotificationSettings *settings = [application currentUserNotificationSettings];
+        isResult = (settings.types != UIUserNotificationTypeNone);
     }else {
         
         UIRemoteNotificationType type = [application enabledRemoteNotificationTypes];
