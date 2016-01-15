@@ -193,5 +193,17 @@
 //        self.frame = newFrame;
 //    }
 //}
+#pragma mark
+
+- (void)cg_setupCenterWithView:(UIView *)paramView
+{
+    self.center = CGPointMake(paramView.width / 2.0, paramView.height / 2.0);
+}
+
+- (void)cg_setupFrameWithCenter:(CGPoint)paramCenter size:(CGSize)paramSize
+{
+    self.center = paramCenter;
+    self.size   = paramSize;
+}
 
 @end

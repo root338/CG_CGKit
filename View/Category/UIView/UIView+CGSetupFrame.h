@@ -32,4 +32,19 @@
 @property (assign, nonatomic, readonly) CGFloat     minY;
 @property (assign, nonatomic, readonly) CGFloat     maxX;
 @property (assign, nonatomic, readonly) CGFloat     maxY;
+
+#pragma mark
+/** 
+ *  设置view的中心坐标与为指定视图的中心
+ *  @warning 坐标系统为指定视图的坐标系统
+ */
+- (void)cg_setupCenterWithView:(UIView *)paramView;
+
+/**
+ *  设置视图的显示区域
+ *
+ *  @param paramCenter 视图的中心坐标
+ *  @param paramSize   视图的大小
+ */
+- (void)cg_setupFrameWithCenter:(CGPoint)paramCenter size:(CGSize)paramSize;
 @end

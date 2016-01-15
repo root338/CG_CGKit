@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CGButtonAlignStyleHeader.h"
+
 /** 创建按钮 */
 @interface UIButton (CGCreateCustomButton)
 
@@ -89,6 +91,12 @@
  */
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor radius:(CGFloat)radius;
 
+/** 创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、图片(UIImage)和标题 */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage;
+
+/** 创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、本地图片名(NSString)和标题 */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName;
+
 /**
  *  创建按钮，设置按钮样式、标题（颜色、字体）、图片名(NSString)和标题和图片的间距
  *
@@ -112,12 +120,30 @@
  *  @param title       标题
  *  @param titleColor  标题颜色
  *  @param font        标题字体
- *  @param borderWidth 边框宽度
- *  @param borderColor 边框颜色
  *  @param normalImage 普通状态下的图片
  *  @param space       标题与图片之间的间距
  *
  *  @return 返回创建好的按钮
  */
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage space:(CGFloat)space;
+
+/** 创建按钮，自动设置大小，设置按钮样式、标题（颜色、字体）、图片(UIImage)、标题和图片的间距 */
++ (instancetype)cg_createButtonAutoSizeWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space;
+
+/**
+ *  创建按钮，设置按钮样式、标题（颜色、字体）、图片(UIImage)、标题和图片的间距和按钮大小
+ *
+ *
+ *  @param type        样式
+ *  @param title       标题
+ *  @param titleColor  标题颜色
+ *  @param font        标题字体
+ *  @param normalImage 普通状态下的图片
+ *  @param style       对齐样式
+ *  @param space       标题与图片之间的间距
+ *  @param paramSize   宽度
+ *
+ *  @return 返回创建好的按钮
+ */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space size:(CGSize)paramSize;
 @end

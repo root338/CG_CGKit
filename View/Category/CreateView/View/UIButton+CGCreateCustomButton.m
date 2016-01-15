@@ -7,6 +7,9 @@
 //
 
 #import "UIButton+CGCreateCustomButton.h"
+
+#import "UIView+CGSetupFrame.h"
+#import "UIButton+UpdateLocate.h"
 #import "UIView+CGSetupAppearance.h"
 
 @implementation UIButton (CGCreateCustomButton)
@@ -83,6 +86,20 @@
     return button;
 }
 
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName
+{
+    UIImage *normalImage = !normalImageName ? nil : [self loadLocalImageName:normalImageName];
+    return [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:normalImage];
+}
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage
+{
+    UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font];
+    !normalImage ?: [button setImage:normalImage forState:UIControlStateNormal];
+    
+    return button;
+}
+
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space
 {
     UIImage *image = !normalImageName ? nil :[self loadLocalImageName:normalImageName];
@@ -91,13 +108,36 @@
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage space:(CGFloat)space
 {
-    UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font];
-    !normalImage ?: [button setImage:normalImage forState:UIControlStateNormal];
+    UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:normalImage];
     
     if (space) {
         button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, space);
     }
     
+    return button;
+}
+
++ (instancetype)cg_createButtonAutoSizeWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space
+{
+    UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:normalImage];
+    
+    button.size = [button cg_updateButtonSizeWithStyle:style space:space];
+    
+    if (style == CGButtonStyleHorizonalLeft || style == CGButtonStyleHorizonalRight) {
+        [button setNeedsLayout];
+        [button layoutIfNeeded];
+    }
+    
+    [button cg_updateButtonWithStyle:style space:space];
+    
+    return button;
+}
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space size:(CGSize)paramSize
+{
+    UIButton *button    = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:normalImage];
+    button.size         = paramSize;
+    [button cg_updateButtonWithStyle:style space:space];
     return button;
 }
 

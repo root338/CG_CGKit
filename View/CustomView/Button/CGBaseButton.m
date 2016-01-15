@@ -153,7 +153,7 @@ const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
             tempState   = CGViewBorderStateDisabled;
             break;
         default:
-            CGErrorConditionLog(state != UIControlStateNormal, @"边框属性不支持该属性(%li)", state);
+            CGErrorConditionLog(state != UIControlStateNormal, @"边框属性不支持该属性(%li)", (unsigned long)state);
             tempState = CGViewBorderStateNormal;
             break;
     }

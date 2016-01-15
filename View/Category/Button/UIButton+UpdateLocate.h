@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CGButtonAlignStyleHeader.h"
+
 /**
  *  更新按钮的位置
  */
@@ -20,4 +22,15 @@
  */
 - (void)buttonContentAligeHorizonalTitle_ImageForSpace:(CGFloat)paramSpace;
 
+/** 根据标题与图片设置按钮的大小 paramSpace为两者之间的间距 */
+- (CGSize)cg_updateButtonSizeWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
+
+/**
+ *  设置按钮的状态
+ *
+ *  @param style      对齐状态
+ *  @param paramSpace 标题与图像的间距
+ *  @param maxSize    最大大小
+ */
+- (void)cg_updateButtonWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
 @end
