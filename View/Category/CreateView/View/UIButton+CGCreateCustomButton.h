@@ -127,7 +127,10 @@
  */
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage space:(CGFloat)space;
 
-/** 创建按钮，自动设置大小，设置按钮样式、标题（颜色、字体）、图片(UIImage)、标题和图片的间距 */
+/** 
+ *  创建按钮，自动设置大小，设置按钮样式、标题（颜色、字体）、图片(UIImage)、标题和图片的间距
+ *  @bug 图片、标题上下对齐时按钮的宽度为图片宽度加标题宽度，若设置其中最大的宽度会导致标题或图片显示不全
+ */
 + (instancetype)cg_createButtonAutoSizeWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space;
 
 /**

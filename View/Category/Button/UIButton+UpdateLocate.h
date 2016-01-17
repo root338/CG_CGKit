@@ -25,6 +25,9 @@
 /** 根据标题与图片设置按钮的大小 paramSpace为两者之间的间距 */
 - (CGSize)cg_updateButtonSizeWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
 
+/** 根据标题与图片计算按钮最适合的大小 */
+- (CGSize)cg_calculateButtonSizeWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
+
 /**
  *  设置按钮的状态
  *

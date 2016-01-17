@@ -20,12 +20,6 @@ UIKIT_STATIC_INLINE CGFloat CG_CGHeightWithMaxHeight(CGFloat maxHeight, UIEdgeIn
     return maxHeight - (edgeInsets.top + edgeInsets.bottom);
 }
 
-/** 计算 { maxWith - (left + right), maxHeight - (top + bottom) } */
-UIKIT_STATIC_INLINE CGSize CG_CGSizeWidthMaxSize(CGSize maxSize, UIEdgeInsets edgeInsets)
-{
-    return CGSizeMake(CG_CGWidthWithMaxWidth(maxSize.width, edgeInsets), CG_CGHeightWithMaxHeight(maxSize.height, edgeInsets));
-}
-
 /** 计算 left + width + right */
 UIKIT_STATIC_INLINE CGFloat CG_CGMaxWidthWithWidth(CGFloat width, UIEdgeInsets edgeInsets)
 {
@@ -38,12 +32,31 @@ UIKIT_STATIC_INLINE CGFloat CG_CGMaxHeightWithHeight(CGFloat height, UIEdgeInset
     return edgeInsets.top + height + edgeInsets.bottom;
 }
 
+/** 计算 { maxWith - (left + right), maxHeight - (top + bottom) } */
+UIKIT_STATIC_INLINE CGSize CG_CGSizeWidthMaxSize(CGSize maxSize, UIEdgeInsets edgeInsets)
+{
+    return CGSizeMake(CG_CGWidthWithMaxWidth(maxSize.width, edgeInsets), CG_CGHeightWithMaxHeight(maxSize.height, edgeInsets));
+}
+
 /** 计算 { left + width + right, top + height + bottom } */
 UIKIT_STATIC_INLINE CGSize CG_CGMaxSizeWidthSize(CGSize size, UIEdgeInsets edgeInsets)
 {
     return CGSizeMake(CG_CGMaxWidthWithWidth(size.width, edgeInsets), CG_CGMaxHeightWithHeight(size.height, edgeInsets));
 }
 
+/** 获取两个CGSize值中更小的width和height */
+UIKIT_STATIC_INLINE CGSize CG_CGMinSize(CGSize s1, CGSize s2)
+{
+    return CGSizeMake(MIN(s1.width, s2.width), MIN(s1.height, s2.height));
+}
+
+/** 获取两个CGSize值中更大的width和height */
+UIKIT_STATIC_INLINE CGSize CG_CGMaxSize(CGSize s1, CGSize s2)
+{
+    return CGSizeMake(MAX(s1.width, s2.width), MAX(s1.height, s2.height));
+}
+
+/** 获取view在父视图的中心坐标下的左上角坐标 */
 UIKIT_STATIC_INLINE CGPoint CG_CGCenterPointWith(UIView *superview, UIView *view)
 {
     return CGPointMake((CGRectGetWidth(superview.bounds) - CGRectGetWidth(view.bounds)) / 2.0, (CGRectGetHeight(superview.bounds) - CGRectGetHeight(view.bounds)) / 2.0);
