@@ -19,7 +19,7 @@
 #pragma mark - CGViewSetupBorderState
 - (CGBorderObject *)borderLayerForState:(CGViewBorderState)state
 {
-    return [self borderLayerForState:state];
+    return [[self borderLayer] borderObjectForState:state];
 }
 
 - (void)setViewWithBorderColor:(UIColor *)color borderWidth:(CGFloat)borderWidth state:(CGViewBorderState)state

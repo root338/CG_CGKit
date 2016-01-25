@@ -18,6 +18,8 @@
 
 /** 验证字符串是否是中文字符 */
 - (BOOL)verificationIsChineseCharacter;
+
+
 @end
 
 @interface NSString (VerificationPhone)

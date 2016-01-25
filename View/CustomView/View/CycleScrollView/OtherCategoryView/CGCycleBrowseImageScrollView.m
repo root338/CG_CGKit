@@ -18,7 +18,9 @@
 #import "NSArray+CGArray.h"
 
 @interface CGCycleBrowseImageScrollView ()<CGCycleScrollViewDataSource, CGCycleScrollViewDelegate>
-
+{
+    NSInteger _currentIndex;
+}
 @property (strong, nonatomic) CGCycleScrollView *cycleScrollView;
 
 @property (strong, nonatomic, readwrite) UIPageControl *pageControl;
@@ -110,8 +112,9 @@
 #pragma mark - CGCycleScrollViewDelegate
 - (void)cycleScrollView:(CGCycleScrollView *)cycleScrollView didChangeCurrentIndex:(NSInteger)currentIndex
 {
-    if (self.pageControl.currentPage != currentIndex) {
+    if (_currentIndex != currentIndex) {
         
+        _currentIndex   = currentIndex;
         self.pageControl.currentPage = currentIndex;
         
         if (self.currentIndexDidChangeCallback) {

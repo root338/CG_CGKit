@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 //16进制色值 创建 UIColor 对象
-#define __K_CG_16_VALUE_ACOLOR(__K_16_VALUE) [UIColor colorWithRed:((__K_16_VALUE) & 0x0000FFFF) / 255.0 green:((__K_16_VALUE) & 0X0000FF00) / 255.0 blue:((__K_16_VALUE) & 0X000000FF) / 255.0 alpha:((__K_16_VALUE) & 0x00FFFFFF) / 255.0]
+#define __K_CG_16_VALUE_ACOLOR(__K_16_VALUE) [UIColor colorWithRed:(((__K_16_VALUE) & 0x00FF0000) >> 16) / 255.0 green:(((__K_16_VALUE) & 0X0000FF00) >> 8) / 255.0 blue:((__K_16_VALUE) & 0X000000FF) / 255.0 alpha:(((__K_16_VALUE) & 0xFF000000) >> 24) / 255.0]
 
-#define __K_CG_16_VALUE_COLOR(__K_16_VALUE) __K_CG_16_VALUE_ACOLOR((__K_16_VALUE))
+#define __K_CG_16_VALUE_COLOR(__K_16_VALUE) __K_CG_16_VALUE_ACOLOR((__K_16_VALUE) | 0xFF000000)
 
 /** 10进制数字，注意：r,g,b的数值应该在 1 ~ 255 闭区间之间 */
 #define __K_CG_10_VALUE_COLORA(R, G, B, A) [UIColor colorWithRed:(R) / 255.0 green:(G) / 255.0 blue:(B) / 255.0 alpha:(A)]
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, KCG_16_ColorValueType) {
     
     KCG_16_ColorValueType_0XE3E3E3  = 0XE3E3E3,
     
-    KCG_16_ColorValueType_0XE5E5E5  = 0xE5E5E5,
+    KCG_16_ColorValueType_0XE5E5E5  = 0XE5E5E5,
     
     KCG_16_ColorValueType_0XEFEFEF  = 0XEFEFEF,
     
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, KCG_16_ColorValueType) {
     
     KCG_16_ColorValueType_0XFF0000  = 0XFF0000,
     
-    KCG_16_ColorValueType_0XFFFFFF  = 0xFFFFFF,
+    KCG_16_ColorValueType_0XFFFFFF  = 0XFFFFFF,
 };
 
 @interface UIColor (ColorValueTransform)

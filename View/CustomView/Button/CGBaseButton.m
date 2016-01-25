@@ -95,6 +95,12 @@ const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
+    if (highlighted && !self.isBorderColorSyncTitle) {
+        if (![self borderLayerForState:CGViewBorderStateHighlighted]) {
+            return;
+        }
+    }
+    
     [self cg_borderSyncTitle];
 }
 
@@ -119,7 +125,7 @@ const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
         controlState = UIControlStateHighlighted;
     }else if (state & UIControlStateDisabled) {
         
-        controlState = UIControlStateSelected;
+        controlState = UIControlStateDisabled;
     }else if (state & UIControlStateSelected) {
         
         controlState = UIControlStateSelected;
@@ -147,7 +153,7 @@ const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
             tempState   = CGViewBorderStateDisabled;
             break;
         default:
-            CGErrorConditionLog(state != UIControlStateNormal, @"边框属性不支持该属性(%li)", state);
+            CGErrorConditionLog(state != UIControlStateNormal, @"边框属性不支持该属性(%li)", (unsigned long)state);
             tempState = CGViewBorderStateNormal;
             break;
     }
