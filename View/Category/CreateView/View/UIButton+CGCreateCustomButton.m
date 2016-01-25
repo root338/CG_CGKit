@@ -121,21 +121,20 @@
 {
     UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:normalImage];
     
-//    CGSize paramSize = [button cg_updateButtonSizeWithStyle:style space:space];
-//    
-//    if (style == CGButtonStyleHorizonalLeft || style == CGButtonStyleHorizonalRight) {
-//        
-//        button.size = paramSize;
-//    }else {
-//        
-//        button.height   = paramSize.height;
-//    }
-//    
+    CGSize paramSize = [button cg_updateButtonSizeWithStyle:style space:space];
+    
+    if (style == CGButtonStyleHorizonalLeft || style == CGButtonStyleHorizonalRight) {
+        
+        button.size = paramSize;
+    }else {
+        
+        button.height   = paramSize.height;
+    }
+    
 //    [button setNeedsLayout];
 //    [button layoutIfNeeded];
-//    
-//    [button cg_updateButtonWithStyle:style space:space];
-    [button sizeToFit];
+    
+    [button cg_updateButtonWithStyle:style space:space];
     
     return button;
 }
