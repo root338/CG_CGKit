@@ -7,7 +7,7 @@
 //
 
 #import "CGInputTextView.h"
-#import "NSObject+KeyboardNotification.h"
+#import "NSNotificationCenter+CGCreateNotification.h"
 
 #import "UIView+CGSearchView.h"
 #import "UIEdgeInsets+Category.h"
@@ -50,10 +50,11 @@
     }
     if (self.isAutoHandleKeyboardNotification) {
         if (newWindow) {
-            [self openKeyboardShowHideNotificationWithSelector:@selector(handleKeyboardNotification:)];
             
+            [NSNotificationCenter cg_addKeyboardObserver:self selector:@selector(handleKeyboardNotification:)];
         }else {
-            [self closeKeyboardShowHideNotificationWithSelector:@selector(handleKeyboardNotification:)];
+            
+            [NSNotificationCenter cg_removeKeyboardObserver:self];
         }
     }
 }
