@@ -31,4 +31,34 @@ typedef NS_ENUM(NSInteger, CGButtonStyle) {
     CGButtonStyleVerticalBottom,
 };
 
+/**
+ *  标题、图像的对齐方式
+ */
+typedef NS_ENUM(NSInteger, CGButtonContentAlignment) {
+    /**
+     *  居中
+     */
+    CGButtonContentAlignmentCenter,
+    /**
+     *  顶部对齐
+     *  @param CGButtonStyleHorizonalLeft, CGButtonStyleHorizonalRight 下有效
+     */
+    CGButtonContentAlignmentTop,
+    /**
+     *  左对齐
+     *  @param CGButtonStyleVerticalTop, CGButtonStyleVerticalBottom 下有效
+     */
+    CGButtonContentAlignmentLeft,
+    /**
+     *  底部对齐
+     *  @param CGButtonStyleHorizonalLeft, CGButtonStyleHorizonalRight 下有效
+     */
+    CGButtonContentAlignmentBottom,
+    /**
+     *  右对齐
+     *  @param CGButtonStyleVerticalTop, CGButtonStyleVerticalBottom 下有效
+     */
+    CGButtonContentAlignmentRight,
+};
+
 #endif /* CGButtonAlignStyleHeader_h */

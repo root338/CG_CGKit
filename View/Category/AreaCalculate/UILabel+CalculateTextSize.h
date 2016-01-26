@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 //#import "CGInputTextProtocol.h"
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UILabel (CalculateTextSize)//<CGInputTextProtocol>
 
 - (CGSize)calculateLabelTextSize;
@@ -28,3 +29,4 @@
 ///** 计算文本框的大小 （maxWidth：最大的宽度） */
 //- (CGSize)calculateLabelSizeWithMaxWidth:(CGFloat)maxWidth;
 @end
+NS_ASSUME_NONNULL_END

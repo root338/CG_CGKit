@@ -10,7 +10,7 @@
 
 @implementation NSBundle (GetAppInfo)
 
-+ (NSDictionary *)getAppInfo
++ (nullable NSDictionary *)getAppInfo
 {
 //    NSString *appInfoPath = [[NSBundle mainBundle] infoDictionary];
     NSDictionary *appInfo = [[NSBundle mainBundle] infoDictionary];//[NSDictionary dictionaryWithContentsOfFile:appInfoPath];

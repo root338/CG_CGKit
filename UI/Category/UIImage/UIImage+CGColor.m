@@ -22,6 +22,9 @@
 
 + (UIImage *)imageWithTintColor:(UIColor *)tintColor size:(CGSize)size capInset:(UIEdgeInsets)capInset
 {
+    if (!tintColor) {
+        return nil;
+    }
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();

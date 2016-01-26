@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /* 创建文本框 */
 @interface UITextField (CG_Create)
 
@@ -19,3 +20,4 @@
 + (instancetype)cg_createTextFieldWithPlaceholder:(NSString *)placeholder;
 
 @end
+NS_ASSUME_NONNULL_END

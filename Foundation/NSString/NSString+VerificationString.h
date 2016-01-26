@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSString (VerificationString)
 
 /** 验证字符串前缀是否是 http:// 或 https:// 开头的 */
@@ -26,3 +27,4 @@
 
 //- (BOOL)verificationIsPhone;
 @end
+NS_ASSUME_NONNULL_END

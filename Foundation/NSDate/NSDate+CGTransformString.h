@@ -10,14 +10,14 @@
 #import "CGDateConstantHeader.h"
 
 
-
+NS_ASSUME_NONNULL_BEGIN
 /** 时间转换 */
 @interface NSDate (CGTransformString)
 
 #pragma mark - 根据时区重置时间
 
 /** 根据系统默认时区，重置时间 */
-- (NSDate *)offsetDefaultTimeZone;
+- (nullable NSDate *)offsetDefaultTimeZone;
 
 /**
  *  根据指定时区，重置时间
@@ -26,7 +26,7 @@
  *
  *  @return 返回重置后的时间
  */
-- (NSDate *)offsetWithTimeZone:(NSTimeZone *)timeZone;
+- (nullable NSDate *)offsetWithTimeZone:(NSTimeZone *)timeZone;
 
 #pragma mark - 时间转换
 /**
@@ -36,7 +36,9 @@
  *
  *  @return 返回结果样式字符串
  */
-- (NSString *)transformStringWithFormatter:(CGDateForStringFormatter)stringFormatter;
+- (nullable NSString *)transformStringWithFormatter:(CGDateForStringFormatter)stringFormatter;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

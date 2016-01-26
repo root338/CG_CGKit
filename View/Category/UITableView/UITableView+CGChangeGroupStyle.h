@@ -11,6 +11,7 @@
 CG_EXTERN const CGFloat   _CG_TableView_ZeroHeight;
 CG_EXTERN const CGRect    _CG_TableView_ZeroRect;
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  iOS 7
  *  当设置UITableView的样式为UITableViewStyleGrouped时表格的页眉、页脚，每组的页眉、页脚都会设置一定的间距
@@ -48,3 +49,4 @@ CG_EXTERN const CGRect    _CG_TableView_ZeroRect;
  */
 - (void)cg_tableViewChangeSectionFooterViewZeroHeight;
 @end
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 
     判断应用是否有相应权限
  */
@@ -19,3 +20,5 @@
 /** 验证是否可以使用相机 */
 - (BOOL)cg_verifyIsCamera NS_AVAILABLE_IOS(7_0);
 @end
+
+NS_ASSUME_NONNULL_END

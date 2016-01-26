@@ -8,17 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSBundle (GetAppInfo)
 
 /** 获取 app info文件全部信息 */
-+ (NSDictionary *)getAppInfo;
++ (nullable NSDictionary *)getAppInfo;
 
 /** 获取 app 版本号 */
-+ (NSString *)getAppInfoForShortVersion;
++ (nullable NSString *)getAppInfoForShortVersion;
 
 /** 获取 app 编译版本号 */
-+ (NSString *)getAppInfoForVersion;
++ (nullable NSString *)getAppInfoForVersion;
 
 /** 获取启动图片数组 */
-+ (NSArray *)getLaunchImages;
++ (nullable NSArray *)getLaunchImages;
 @end
+
+NS_ASSUME_NONNULL_END

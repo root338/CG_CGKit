@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSTimer (ChangeTimerStatus)
 
 - (void)pauseTimer;
@@ -17,3 +18,4 @@
 - (void)resumeTimerAfterTimeInterval:(NSTimeInterval)interval;
 
 @end
+NS_ASSUME_NONNULL_END

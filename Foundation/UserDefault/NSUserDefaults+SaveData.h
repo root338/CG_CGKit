@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSUserDefaults (SaveData)
 
 + (void)cg_saveWithObject:(id)object forKey:(NSString *)key;
@@ -19,3 +20,4 @@
 + (void)cg_saveChangeData;
 
 @end
+NS_ASSUME_NONNULL_END

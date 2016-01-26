@@ -44,7 +44,9 @@ typedef NS_ENUM(NSUInteger, KCG_16_ColorValueType) {
     KCG_16_ColorValueType_0XFFFFFF  = 0XFFFFFF,
 };
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UIColor (ColorValueTransform)
 
 
 @end
+NS_ASSUME_NONNULL_END

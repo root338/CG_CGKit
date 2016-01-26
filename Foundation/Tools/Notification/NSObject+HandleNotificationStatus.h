@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-typedef SEL (^SelectorBlock)(NSString *notificationName, NSInteger index);
-typedef id  (^ObjectBlock)(NSString *notificationName, NSInteger index);
+NS_ASSUME_NONNULL_BEGIN
 
+typedef __nonnull SEL (^SelectorBlock)(NSString * _Nullable notificationName, NSInteger index);
+typedef __nonnull id  (^ObjectBlock)(NSString * _Nullable notificationName, NSInteger index);
+
+/**
+ *  @warning 应使用NSNotificationCenter+CGCreateNotification.h文件代替
+ */
 @interface NSObject (HandleNotificationStatus)
 
 /**
@@ -19,7 +24,7 @@ typedef id  (^ObjectBlock)(NSString *notificationName, NSInteger index);
  *  @param names    通知名字的数组
  *  @param isRemove YES 移除通知， NO 打开通知
  */
-- (void)notificationWithNames:(NSArray *)names isRemove:(BOOL)isRemove observer:(id)target selector:(SEL)selector object:(id)object;
+- (void)notificationWithNames:(NSArray *)names isRemove:(BOOL)isRemove observer:(id)target selector:(SEL)selector object:(nullable id)object;
 
 /**
  *  打开或关闭一组通知（block回调）
@@ -32,3 +37,4 @@ typedef id  (^ObjectBlock)(NSString *notificationName, NSInteger index);
  */
 - (void)notificationWithNames:(NSArray *)names isRemove:(BOOL)isRemove observer:(ObjectBlock)targetBlock selectorblock:(SelectorBlock)selectorBlock objectBlock:(ObjectBlock)objectBlock;
 @end
+NS_ASSUME_NONNULL_END

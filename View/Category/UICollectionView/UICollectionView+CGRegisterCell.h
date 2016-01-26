@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UICollectionView (CGRegisterCell)
 
 - (void)cg_registerReuseClass:(nullable)cellClass;
@@ -18,3 +19,4 @@
 
 - (void)cg_registerClass:(nullable Class)viewClass forSupplementaryViewOfKind:(nullable NSString *)elementKind withReuseClass:(nullable Class)identifierClass;
 @end
+NS_ASSUME_NONNULL_END

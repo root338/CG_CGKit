@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIView+CGSetupAppearance.h"
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UIButton (CGSetupAppearance)
 
 /**
@@ -89,3 +90,4 @@
 //- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage space:(CGFloat)space;
 
 @end
+NS_ASSUME_NONNULL_END

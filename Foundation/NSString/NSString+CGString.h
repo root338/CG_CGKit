@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 @interface NSString (CGString)
 
-- (NSString *)cg_stringByAppendingString:(NSString *)aString;
+- (nullable NSString *)cg_stringByAppendingString:(NSString *)aString;
 
 @end
+NS_ASSUME_NONNULL_END

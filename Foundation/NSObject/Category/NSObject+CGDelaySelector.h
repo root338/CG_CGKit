@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSObject (CGDelaySelector)
 
 /** 0s后执行 */
 - (void)cg_performAfterZeroDelaySelector:(SEL)aSelector;
 
 @end
+
+NS_ASSUME_NONNULL_END

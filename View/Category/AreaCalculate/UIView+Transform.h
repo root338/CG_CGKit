@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  设置UIView transform 属性
  */
@@ -37,3 +38,4 @@
  */
 - (void)rorationWithAngle:(CGFloat)angle duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion;
 @end
+NS_ASSUME_NONNULL_END

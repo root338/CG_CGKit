@@ -10,6 +10,7 @@
 
 #import "CGButtonAlignStyleHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  更新按钮的位置
  */
@@ -37,3 +38,4 @@
  */
 - (void)cg_updateButtonWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
 @end
+NS_ASSUME_NONNULL_END

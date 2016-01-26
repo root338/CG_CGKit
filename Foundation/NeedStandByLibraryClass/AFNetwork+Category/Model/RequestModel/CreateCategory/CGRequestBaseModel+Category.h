@@ -8,6 +8,7 @@
 
 #import "CGRequestBaseModel.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /** 创建网络请求基类 */
 @interface CGRequestBaseModel (CreateRequestBaseModel)
 
@@ -21,3 +22,5 @@
 + (instancetype)createRequestBaseModelWithBaseURL:(NSString *)baseUrl;
 
 @end
+
+NS_ASSUME_NONNULL_END

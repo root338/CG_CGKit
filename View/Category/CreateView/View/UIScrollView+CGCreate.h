@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "UIView+CGCreate.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIScrollView (CGCreate)
 
 /**
@@ -30,3 +32,4 @@
 + (instancetype)cg_createWithScrollViewWithFrame:(CGRect)frame showScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled;
 
 @end
+NS_ASSUME_NONNULL_END

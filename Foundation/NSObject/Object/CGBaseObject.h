@@ -11,9 +11,12 @@
 
 #import "CGPrintLogHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 @interface CGBaseObject : NSObject
 
 /** 初始化执行方法 */
 - (void)initialization;
 
 @end
+
+NS_ASSUME_NONNULL_END

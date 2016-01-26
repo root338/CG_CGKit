@@ -11,9 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface UIImage (CGLoadImage)
 
-+ (nullable UIImage *)cg_loadPNGImageName:(nullable NSString *)imageName;
++ (nullable UIImage *)cg_loadPNGImageName:(NSString *)imageName;
 
-+ (nullable UIImage *)cg_loadImageName:(nullable NSString *)imageName withExtension:(nullable NSString *)ext;
++ (nullable UIImage *)cg_loadImageName:(NSString *)imageName withExtension:(NSString *)ext;
 
 @end
 NS_ASSUME_NONNULL_END

@@ -11,7 +11,6 @@
 #import "UILabel+CGCreateCustomLabel.h"
 #import "UIView+CG_CGAreaCalculate.h"
 #import "UILabel+CalculateTextSize.h"
-#import "UITextView+CGCalculateTextSize.h"
 #import "UIView+CGSetupFrame.h"
 #import "CGViewConstantValue.h"
 

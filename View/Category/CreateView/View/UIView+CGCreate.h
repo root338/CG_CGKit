@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIView (CGCreate)
 
 + (instancetype)cg_createView;
 
 + (instancetype)cg_createClearColorView;
 @end
+NS_ASSUME_NONNULL_END

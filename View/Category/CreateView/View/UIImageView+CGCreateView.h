@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIImageView (CGCreateView)
 
 + (instancetype)cg_createImageViewWithContentMode:(UIViewContentMode)contentMode;
 
 @end
+
+NS_ASSUME_NONNULL_END

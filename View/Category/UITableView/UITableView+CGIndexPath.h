@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UITableView (CGVerifityIndexPath)
 
 /** 是否是第一个或最后一个cell */
@@ -33,25 +34,25 @@
 @interface UITableView (CGIndexPath)
 
 /** 获取指定 indexPath 的上一个索引 */
-- (NSIndexPath *)cg_previousIndexPathWithCurrentIndexPath:(NSIndexPath *)currentIndexPath;
+- (nullable NSIndexPath *)cg_previousIndexPathWithCurrentIndexPath:(NSIndexPath *)currentIndexPath;
 
 /** 获取指定 indexPath 的下一个索引 */
-- (NSIndexPath *)cg_nextIndexPathWithCurrentIndexPath:(NSIndexPath *)currentIndexPath;
+- (nullable NSIndexPath *)cg_nextIndexPathWithCurrentIndexPath:(NSIndexPath *)currentIndexPath;
 
 /** 获取指定值的索引 */
-- (NSIndexPath *)cg_IndexPathForSection:(NSUInteger)section row:(NSUInteger)row;
+- (nullable NSIndexPath *)cg_IndexPathForSection:(NSUInteger)section row:(NSUInteger)row;
 
 /** 
  *  获取当前视图 的上一个索引
  *  @param currentCell 表示当前cell或其子视图
  */
-- (NSIndexPath *)cg_previousIndexPathWithCurrentView:(UIView *)currentView;
+- (nullable NSIndexPath *)cg_previousIndexPathWithCurrentView:(UIView *)currentView;
 
 /** 获取当前视图的下一个索引 */
-- (NSIndexPath *)cg_nextIndexPathWithCurrentView:(UIView *)currentView;
+- (nullable NSIndexPath *)cg_nextIndexPathWithCurrentView:(UIView *)currentView;
 
 /** 获取当前视图的索引 */
-- (NSIndexPath *)cg_currentIndexPathWithCurrentView:(UIView *)currentView;
+- (nullable NSIndexPath *)cg_currentIndexPathWithCurrentView:(UIView *)currentView;
 @end
 
 @interface UITableView (CGVertexIndexPath)
@@ -66,15 +67,15 @@
 - (NSUInteger)cg_TableViewSection:(NSUInteger)section;
 
 /** 获取指定组最后一个索引 */
-- (NSIndexPath *)cg_lastIndexPathForSection:(NSUInteger)section;
+- (nullable NSIndexPath *)cg_lastIndexPathForSection:(NSUInteger)section;
 
 /** 获取指定组第一个索引 */
-- (NSIndexPath *)cg_firstIndexPathForSection:(NSUInteger)section;
+- (nullable NSIndexPath *)cg_firstIndexPathForSection:(NSUInteger)section;
 
 /** 获取表格最后一个索引 */
-- (NSIndexPath *)cg_lastIndexPathForTableView;
+- (nullable NSIndexPath *)cg_lastIndexPathForTableView;
 
 /** 获取表格第一个索引 */
-- (NSIndexPath *)cg_firstIndexPathForTableView;
+- (nullable NSIndexPath *)cg_firstIndexPathForTableView;
 @end
-
+NS_ASSUME_NONNULL_END

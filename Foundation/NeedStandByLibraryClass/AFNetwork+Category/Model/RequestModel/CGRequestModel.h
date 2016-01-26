@@ -8,6 +8,7 @@
 
 #import "CGRequestBaseModel.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /** 网络请求类 */
 @interface CGRequestModel : CGRequestBaseModel
 
@@ -39,3 +40,5 @@
 @property (assign, nonatomic) BOOL isApplyShowPromptView;
 
 @end
+
+NS_ASSUME_NONNULL_END

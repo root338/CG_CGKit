@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 创建支持 AutoLayout 的视图 */
 @interface UIView (CreateAutoLayoutTypeView)
 
 + (instancetype)newAutoLayoutView;
 
 @end
+NS_ASSUME_NONNULL_END

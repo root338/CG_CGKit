@@ -10,6 +10,7 @@
 
 #import "CGButtonAlignStyleHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /** 创建按钮 */
 @interface UIButton (CGCreateCustomButton)
 
@@ -30,7 +31,7 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font;
 
 /**
  *  创建按钮，设置按钮样式、默认图片、选中图片
@@ -41,7 +42,7 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(nullable NSString *)normalImageName selectImageName:(nullable NSString *)selectImageName;
 
 /**
  *  创建按钮，设置按钮样式、默认图片名(并且设置按钮的大小为图片大小)
@@ -51,7 +52,7 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImage;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(nullable NSString *)normalImage;
 
 /**
  *  创建按钮，设置按钮样式、默认图片(并且设置按钮的大小为图片大小)
@@ -61,7 +62,7 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImage:(UIImage *)normalImageName;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImage:(nullable UIImage *)normalImageName;
 
 /**
  *  创建按钮，设置按钮样式、标题、标题颜色、标题字体和圆角
@@ -74,7 +75,7 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius;
 
 /**
  *  创建按钮，设置按钮样式、标题、标题颜色、标题字体、外边框的宽度、颜色和圆角
@@ -89,13 +90,13 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor radius:(CGFloat)radius;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor radius:(CGFloat)radius;
 
 /** 创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、图片(UIImage)和标题 */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImage:(nullable UIImage *)normalImage;
 
 /** 创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、本地图片名(NSString)和标题 */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImageName:(nullable NSString *)normalImageName;
 
 /**
  *  创建按钮，设置按钮样式、标题（颜色、字体）、图片名(NSString)和标题和图片的间距
@@ -111,7 +112,7 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImageName:(nullable NSString *)normalImageName space:(CGFloat)space;
 
 /**
  *  创建按钮，创建按钮，设置按钮样式、标题（颜色、字体）、图片(UIImage)和标题和图片的间距
@@ -125,13 +126,13 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage space:(CGFloat)space;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImage:(nullable UIImage *)normalImage space:(CGFloat)space;
 
 /** 
  *  创建按钮，自动设置大小，设置按钮样式、标题（颜色、字体）、图片(UIImage)、标题和图片的间距
  *  @bug 图片、标题上下对齐时按钮的宽度为图片宽度加标题宽度，若设置其中最大的宽度会导致标题或图片显示不全
  */
-+ (instancetype)cg_createButtonAutoSizeWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space;
++ (instancetype)cg_createButtonAutoSizeWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImage:(nullable UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space;
 
 /**
  *  创建按钮，设置按钮样式、标题（颜色、字体）、图片(UIImage)、标题和图片的间距和按钮大小
@@ -148,5 +149,6 @@
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImage:(UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space size:(CGSize)paramSize;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImage:(nullable UIImage *)normalImage alignStyle:(CGButtonStyle)style space:(CGFloat)space size:(CGSize)paramSize;
 @end
+NS_ASSUME_NONNULL_END

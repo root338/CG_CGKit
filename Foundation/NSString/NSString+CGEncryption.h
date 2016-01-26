@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSString (CGEncryption)
 
 /** 哈希加密 */
-- (NSString*)SHA1;
+- (nullable NSString*)SHA1;
 
 /** MD5 加密 */
-- (NSString *)MD5String;
+- (nullable NSString *)MD5String;
 
 /** MD5 加密后转小写 */
-- (NSString *)MD5StringLowercase;
+- (nullable NSString *)MD5StringLowercase;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  链接的拼接类型
  */
@@ -55,3 +56,4 @@ typedef NS_ENUM(NSInteger, CGStrlenType) {
  */
 - (NSString *)cg_urlStrlenWithKey:(NSString *)key object:(NSString *)obj type:(CGStrlenType)type;
 @end
+NS_ASSUME_NONNULL_END

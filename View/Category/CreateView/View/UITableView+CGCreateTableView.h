@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  快速创建TableView的扩展方法
  */
@@ -39,3 +40,4 @@
  */
 + (instancetype)createTableViewStyle:(UITableViewStyle)style rowHeight:(CGFloat)rowHeight nibCellName:(NSString *)nibCellName cellForClass:(Class)cellClass isXibLoad:(BOOL)isXibLoad;
 @end
+NS_ASSUME_NONNULL_END

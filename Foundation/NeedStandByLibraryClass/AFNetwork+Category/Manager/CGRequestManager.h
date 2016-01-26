@@ -13,6 +13,7 @@
 @class CGRequestModel;
 @class AFHTTPRequestOperation;
 
+NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 定义block
 /** 请求成功的回调block */
 typedef void (^SuccessForRequestResult) (AFHTTPRequestOperation *operation, id responseObject);
@@ -44,3 +45,4 @@ typedef void (^CompletionForRequestResult) (AFHTTPRequestOperation *operation);
 - (AFHTTPRequestOperation *)requestWithModel:(CGRequestModel *)requestModel success:(SuccessForRequestResult)success failure:(FailureForRequestResult)failure completion:(CompletionForRequestResult)completion;
 
 @end
+NS_ASSUME_NONNULL_END

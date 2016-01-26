@@ -12,6 +12,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface RFKeyboard : NSObject
 /**
  @abstract Converts a keyboardRect via a UIKeyboard notification to the view´s coordinate system.
@@ -42,3 +43,4 @@
 @property (copy, nonatomic) void (^keyboardShowCallback)(NSNotification *note);
 @property (copy, nonatomic) void (^keyboardHideCallback)(NSNotification *note);
 @end
+NS_ASSUME_NONNULL_END

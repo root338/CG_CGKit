@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CGRequestDefineHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /** 网络请求的模型基类 */
 @interface CGRequestBaseModel : NSObject<NSCopying>
 
@@ -38,3 +39,4 @@
 @property (strong, nonatomic) NSString *loadingPromptString;
 
 @end
+NS_ASSUME_NONNULL_END

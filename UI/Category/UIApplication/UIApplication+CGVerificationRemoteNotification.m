@@ -21,9 +21,11 @@
         UIUserNotificationSettings *settings = [application currentUserNotificationSettings];
         isResult = (settings.types != UIUserNotificationTypeNone);
     }else {
-        
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
         UIRemoteNotificationType type = [application enabledRemoteNotificationTypes];
         isResult = (type != UIRemoteNotificationTypeNone);
+#endif
     }
     return isResult;
 }

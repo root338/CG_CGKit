@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UITableView (CGScrolling)
 
 /** 将表格滑动到底部 */
@@ -17,3 +18,4 @@
 - (void)cg_tableViewScrollingToBottomIsAnimated:(BOOL)isAnimated;
 
 @end
+NS_ASSUME_NONNULL_END

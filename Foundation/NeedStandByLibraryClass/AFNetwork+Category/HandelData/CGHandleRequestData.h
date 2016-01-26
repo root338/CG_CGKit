@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CGRequestDefineHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 /** 数据解析类 */
 @interface CGHandleRequestData : NSObject
 
@@ -45,3 +46,4 @@
  */
 - (instancetype)initWithObject:(id)responseObject isAutoResolveResponse:(BOOL)isAutoResolveResponse resolveResponseClass:(Class)resolveResponseClass;
 @end
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 对象转字典 */
 @interface NSObject (CGObjectToDictionary)
 
@@ -15,7 +16,7 @@
  *  对象转字典主体方法
  *  @param 自动过滤掉nil值和 NSNull对象
  */
-- (NSDictionary *)cg_objectToDictionary;
+- (nullable NSDictionary *)cg_objectToDictionary;
 
 /**
  *  转换过程中的过滤方法
@@ -28,3 +29,5 @@
  */
 - (BOOL)cg_objectToDictionaryFilterWithKey:(NSString *)key value:(id)value;
 @end
+
+NS_ASSUME_NONNULL_END

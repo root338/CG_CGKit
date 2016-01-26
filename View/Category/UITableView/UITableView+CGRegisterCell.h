@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UITableView (CGRegisterCell)
 
 /** 当注册的标识与类名相同时，注册cell的快捷方法 */
@@ -33,3 +34,4 @@
 - (void)cg_registerClass:(nullable Class)aClass forHeaderFooterViewReuseClass:(nullable Class)identifier NS_AVAILABLE_IOS(6_0);
 
 @end
+NS_ASSUME_NONNULL_END

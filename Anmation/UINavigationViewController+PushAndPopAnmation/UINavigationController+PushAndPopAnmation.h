@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 自定义导航栏push与pop时的动画效果 */
 @interface UINavigationController (PushAndPopAnmation)
 
 
 
 @end
+NS_ASSUME_NONNULL_END

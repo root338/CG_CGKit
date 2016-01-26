@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - CGFloat
 /** 计算 maxWith - (left + right) */
-UIKIT_STATIC_INLINE CGFloat CG_CGWidthWithMaxWidth(CGFloat maxWidth, UIEdgeInsets edgeInsets)
+CG_INLINE CGFloat CG_CGWidthWithMaxWidth(CGFloat maxWidth, UIEdgeInsets edgeInsets)
 {
     return maxWidth - (edgeInsets.left + edgeInsets.right);
 }
@@ -32,6 +33,7 @@ UIKIT_STATIC_INLINE CGFloat CG_CGMaxHeightWithHeight(CGFloat height, UIEdgeInset
     return edgeInsets.top + height + edgeInsets.bottom;
 }
 
+#pragma mark - CGSize
 /** 计算 { maxWith - (left + right), maxHeight - (top + bottom) } */
 UIKIT_STATIC_INLINE CGSize CG_CGSizeWidthMaxSize(CGSize maxSize, UIEdgeInsets edgeInsets)
 {
@@ -56,12 +58,21 @@ UIKIT_STATIC_INLINE CGSize CG_CGMaxSize(CGSize s1, CGSize s2)
     return CGSizeMake(MAX(s1.width, s2.width), MAX(s1.height, s2.height));
 }
 
-/** 获取view在父视图的中心坐标下的左上角坐标 */
+#pragma mark - CGPoint
+
+/** 获取 s2 在 s1 居中时的起始坐标 */
+UIKIT_STATIC_INLINE CGPoint CG_CGCenterOriginWith(CGSize s1, CGSize s2)
+{
+    return CGPointMake((s1.width - s2.width) / 2.0, (s1.height - s2.height) / 2.0);
+}
+
+/** 获取view在父视图的中心坐标下的起始坐标 */
 UIKIT_STATIC_INLINE CGPoint CG_CGCenterPointWith(UIView *superview, UIView *view)
 {
     return CGPointMake((CGRectGetWidth(superview.bounds) - CGRectGetWidth(view.bounds)) / 2.0, (CGRectGetHeight(superview.bounds) - CGRectGetHeight(view.bounds)) / 2.0);
 }
 
+#pragma mark - CGRect
 /** 计算 { { left, top }, { width - (left + right), height - (top + bottom) } } */
 UIKIT_STATIC_INLINE CGRect CG_CGRectWithMargin(CGRect rect, UIEdgeInsets edgeInsets)
 {

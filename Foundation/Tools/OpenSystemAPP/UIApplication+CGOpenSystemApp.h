@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  打开系统App的类型
  */
@@ -72,3 +73,4 @@ typedef NS_ENUM(NSInteger, CGOpenSystemAppType){
 + (CGFloat)currentSystemVersion;
 
 @end
+NS_ASSUME_NONNULL_END

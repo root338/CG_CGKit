@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  *  计算按钮一些常用值
  */
@@ -21,3 +22,4 @@
 - (CGSize)calculateButtonCurrentTitleSize;
 
 @end
+NS_ASSUME_NONNULL_END

@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UIImage (CGColor)
 
-+ (UIImage *)imageWithTintColor:(UIColor *)tintColor;
++ (nullable UIImage *)imageWithTintColor:(nullable UIColor *)tintColor;
 
-+ (UIImage *)imageWithTintColor:(UIColor *)tintColor size:(CGSize)size;
++ (nullable UIImage *)imageWithTintColor:(nullable UIColor *)tintColor size:(CGSize)size;
 
-+ (UIImage *)imageWithTintColor:(UIColor *)tintColor size:(CGSize)size capInset:(UIEdgeInsets)capInset;
++ (nullable UIImage *)imageWithTintColor:(nullable UIColor *)tintColor size:(CGSize)size capInset:(UIEdgeInsets)capInset;
 @end
+NS_ASSUME_NONNULL_END

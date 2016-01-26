@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface NSArray<ObjectType> (CGArray)
 
 - (BOOL)cg_veriftyArray;
 
 - (BOOL)cg_judgeIsZeroLengthArray;
 
-- (NSArray<ObjectType> *)cg_arrayByAddingObjectsFromArray:(NSArray<ObjectType> *)otherArray;
+- (nullable NSArray<ObjectType> *)cg_arrayByAddingObjectsFromArray:(nullable NSArray<ObjectType> *)otherArray;
 
 - (ObjectType)cg_objectAtIndex:(NSUInteger)index;
 
@@ -23,6 +24,7 @@
 
 @interface NSMutableArray<ObjectType> (CGMutableArray)
 
-- (BOOL)cg_addObjectsFromArray:(NSArray<ObjectType> *)otherArray;
+- (BOOL)cg_addObjectsFromArray:(nullable NSArray<ObjectType> *)otherArray;
 
 @end
+NS_ASSUME_NONNULL_END

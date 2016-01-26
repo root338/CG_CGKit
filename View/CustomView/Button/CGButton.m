@@ -16,10 +16,20 @@
 
 #import "CGPrintLogHeader.h"
 
+typedef NS_ENUM(NSInteger, _CGButtonContentType) {
+
+    _CGButtonContentTypeContentView,
+    _CGButtonContentTypeImageView,
+    _CGButtonContentTypeTitleLabel,
+};
+
 @interface CGButton ()
 {
-    CGRect _titleRect;
-    CGRect _imageRect;
+    ///YES表示正在cg_calculateAreaWithContentType:contentRect:方法中处理布局,
+    BOOL _isCalculateAreaButtonContentView;
+    
+    ///YES表示自动计算按钮的适合大小
+    BOOL _sizeToFit;
 }
 
 @end
@@ -29,101 +39,270 @@
 - (void)initialization
 {
     [super initialization];
-    
-    [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
 }
 
 #pragma mark - 重置按钮布局
-/** 计算按钮最适合大小 */
-- (CGSize)cg_calculateButtonSize
-{
-    CGSize size = [self cg_calculateButtonSizeWithStyle:self.buttonStyle space:self.space];
-    size        = CG_CGMaxSizeWidthSize(size, self.marginEdgeInsets);
-    
-    if (!CGSizeEqualToSize(self.maxSize, CGSizeZero)) {
-        size = CG_CGMinSize(size, self.maxSize);
-    }
-    return size;
-}
-
-- (CGRect)cg_calculateContentRect
-{
-    CGRect contentRect = UIEdgeInsetsInsetRect(self.bounds, self.marginEdgeInsets);
-    return contentRect;
-}
-
 - (void)cg_updateButtonLayout
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(cg_updateButtonLayout)
                                                object:nil];
     
-    self.size   = [self cg_calculateButtonSize];
-    
-    CGSize tempContentSize  = [self cg_calculateContentRect].size;
-    CGSize tempImageSize    = self.imageView.image.size;
-    CGSize tempTitleSize    = [self.titleLabel sizeThatFits:CGSizeMake(FLT_MAX, FLT_MAX)];
-    
-    _titleRect.size         = tempTitleSize;
-    _imageRect.size         = tempImageSize;
-    
-    if (CGButtonStyleHorizonalLeft == self.buttonStyle || CGButtonStyleHorizonalRight == self.buttonStyle) {
-        
-        CGFloat tempTitleY  = (tempContentSize.height - tempTitleSize.height) / 2.0;
-        CGFloat tempImageY  = (tempContentSize.height - tempImageSize.height) / 2.0;
-        
-        if (CGButtonStyleHorizonalLeft == self.buttonStyle) {
-            _titleRect.origin   = CGPointMake(0, tempTitleY);
-            _imageRect.origin   = CGPointMake(CGRectGetMaxX(_titleRect) + self.space, tempImageY);
-        }else if (CGButtonStyleHorizonalRight == self.buttonStyle) {
-            _imageRect.origin   = CGPointMake(0, tempImageY);
-            _titleRect.origin   = CGPointMake(CGRectGetMaxX(_imageRect) + self.space, tempTitleY);
-        }
-    }
-    
-    if (CGButtonStyleVerticalTop == self.buttonStyle || CGButtonStyleVerticalBottom == self.buttonStyle) {
-        
-        CGFloat tempTitleX  = (tempContentSize.width - tempTitleSize.width) / 2.0;
-        CGFloat tempImageX  = (tempContentSize.width - tempImageSize.width) / 2.0;
-        
-        if (CGButtonStyleVerticalTop == self.buttonStyle) {
-            _titleRect.origin   = CGPointMake(tempTitleX, 0);
-            _imageRect.origin   = CGPointMake(tempImageX, CGRectGetMaxY(_titleRect) + self.space);
-        }else if (CGButtonStyleVerticalBottom == self.buttonStyle) {
-            _imageRect.origin   = CGPointMake(tempImageX, 0);
-            _titleRect.origin   = CGPointMake(tempTitleX, CGRectGetMaxY(_imageRect) + self.space);
-        }
-    }
-    
     [self setNeedsLayout];
-    [self layoutIfNeeded];
+}
+
+///获取contentView最大的区域
+//- (CGRect)cg_calculateMaxContentRect:(CGRect)contentRect
+//{
+//    CGRect paramContentRect = contentRect;
+//    if (!CGSizeEqualToSize(self.maxSize, CGSizeZero)) {
+//        
+//        paramContentRect.size = CG_CGMinSize(contentRect.size, CG_CGSizeWidthMaxSize(self.maxSize, self.marginEdgeInsets));
+//    }
+//    return paramContentRect;
+//}
+
+///计算图片在按钮中最适合的大小
+- (CGSize)cg_calculateImageSizeWithContentRect:(CGRect)contentRect
+{
+    if (!self.currentImage) {
+        return CGSizeZero;
+    }
+    
+    CGSize imageSize = self.currentImage.size;
+    
+    if (!_sizeToFit) {
+        
+        imageSize   = CG_CGMinSize(contentRect.size, imageSize);
+        
+        if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
+            
+            CGFloat contentWidth    = CGRectGetWidth(contentRect);
+            if (imageSize.width + self.space > contentWidth) {
+                imageSize.width     = contentWidth - self.space;
+            }
+            
+        }else {
+            
+            CGFloat contentHeight   = CGRectGetHeight(contentRect);
+            if (imageSize.height + self.space > contentHeight) {
+                imageSize.height    = contentHeight - self.space;
+            }
+            
+        }
+    }
+    
+    return imageSize;
+}
+
+///计算标题在按钮中最适合的大小
+- (CGSize)cg_calculateTitleSizeWithContentRect:(CGRect)contentRect imageSize:(CGSize)imageSize
+{
+    CGSize tempLabelSize        = contentRect.size;
+    
+    //获取标题的最大区域
+    if (self.buttonStyle == CGButtonStyleHorizonalRight || self.buttonStyle == CGButtonStyleHorizonalLeft) {
+        
+        tempLabelSize.width     = CGRectGetWidth(contentRect) - (imageSize.width + self.space);
+    }else {
+        
+        tempLabelSize.height    = CGRectGetHeight(contentRect) - (imageSize.height + self.space);
+    }
+    
+    CGSize titleSize    = [self.titleLabel sizeThatFits:CGSizeMake(FLT_MAX, FLT_MAX)];
+    
+    if (!_sizeToFit) {
+        
+        titleSize   = CG_CGMinSize(tempLabelSize, titleSize);
+    }
+    
+    return titleSize;
+}
+
+- (CGRect)cg_calculateAreaWithContentType:(_CGButtonContentType)paramContentType contentRect:(CGRect)contentRect
+{
+    if (((contentRect.size.width - self.space) <= 0 || (contentRect.size.height - self.space) <= 0 ) && !_sizeToFit) {
+        return CGRectZero;
+    }
+    
+    _isCalculateAreaButtonContentView   = YES;
+    CGRect targetRect       = CGRectZero;
+    CGFloat contentWidth    = CGRectGetWidth(contentRect);
+    CGFloat contentHeight   = CGRectGetHeight(contentRect);
+    
+    CGSize imageSize        = [self cg_calculateImageSizeWithContentRect:contentRect];
+    CGSize titleSize        = [self cg_calculateTitleSizeWithContentRect:contentRect imageSize:imageSize];
+    
+    CGPoint targetPoint = CGPointZero;
+    CGSize targetSize   = CGSizeZero;
+    
+    if (paramContentType == _CGButtonContentTypeImageView) {
+        targetSize  = imageSize;
+    }else if (paramContentType == _CGButtonContentTypeTitleLabel) {
+        targetSize  = titleSize;
+    }
+    
+    if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
+        
+        CGFloat targetHeight;
+        //获取指定视图的高度
+        if (paramContentType == _CGButtonContentTypeImageView) {
+            targetHeight    = imageSize.height;
+        }else if (paramContentType == _CGButtonContentTypeTitleLabel) {
+            targetHeight    = titleSize.height;
+        }
+        
+        CGSize tempTargetSize   = CGSizeMake(titleSize.width + imageSize.width + self.space,  targetHeight);
+        
+        //获取标题+间距+图像的综合视图相对于ContentRect的起始坐标
+        CGPoint contentPoint;
+        
+        contentPoint.x          = (contentWidth - tempTargetSize.width) / 2.0;
+        
+        switch (self.contentAlignment) {
+            case CGButtonContentAlignmentTop:
+            {
+                contentPoint.y          = 0;
+            }
+                break;
+            case CGButtonContentAlignmentBottom:
+            {
+                contentPoint.y          = contentHeight - targetHeight;
+            }
+                break;
+            default:
+            {
+                contentPoint            = CG_CGCenterOriginWith(CGSizeMake(contentWidth, contentHeight), tempTargetSize);
+            }
+                break;
+        }
+        
+        //获取综合视图相对于Button的起始坐标，
+        targetPoint  = CGPointMake(CGRectGetMinX(contentRect) + contentPoint.x, CGRectGetMinY(contentRect) + contentPoint.y);
+        
+        if (self.buttonStyle == CGButtonStyleHorizonalLeft) {
+            
+            if (paramContentType == _CGButtonContentTypeImageView) {
+                targetPoint.x   += self.space + titleSize.width;
+            }
+        }else {
+            
+            if (paramContentType == _CGButtonContentTypeTitleLabel) {
+                targetPoint.x   += self.space + imageSize.width;
+            }
+        }
+    }else {
+        
+        CGFloat targetWidth;
+        //获取指定视图的宽度
+        if (paramContentType == _CGButtonContentTypeImageView) {
+            targetWidth     = imageSize.width;
+        }else if (paramContentType == _CGButtonContentTypeTitleLabel) {
+            targetWidth     = titleSize.width;
+        }
+        
+        CGSize tempTargetSize   = CGSizeMake(targetWidth, titleSize.height + imageSize.height + self.space);
+        
+        //获取标题+间距+图像的综合视图相对于ContentRect的起始坐标
+        CGPoint contentPoint;
+        contentPoint.y  = (contentHeight - tempTargetSize.height) / 2.0;
+        
+        switch (self.contentAlignment) {
+            case CGButtonContentAlignmentLeft:
+            {
+                contentPoint.x  = 0;
+            }
+                break;
+            case CGButtonContentAlignmentRight:
+            {
+                contentPoint.x  = contentWidth - targetWidth;
+            }
+                break;
+            default:
+            {
+                contentPoint = CG_CGCenterOriginWith(CGSizeMake(contentWidth, contentHeight),  tempTargetSize);
+            }
+                break;
+        }
+        
+        //获取综合视图相对于Button的起始坐标，
+        targetPoint  = CGPointMake(CGRectGetMinX(contentRect) + contentPoint.x, CGRectGetMinY(contentRect) + contentPoint.y);
+        
+        if (self.buttonStyle == CGButtonStyleVerticalTop) {
+            
+            if (paramContentType == _CGButtonContentTypeImageView) {
+                targetPoint.y   += self.space + titleSize.height;
+            }
+        }else {
+            
+            if (paramContentType == _CGButtonContentTypeTitleLabel) {
+                targetPoint.y   += self.space + imageSize.height;
+            }
+        }
+    }
+    
+    targetRect = (CGRect){targetPoint, targetSize};
+    
+    _isCalculateAreaButtonContentView = NO;
+    return targetRect;
 }
 
 #pragma mark - 重写系统布局方法
 - (CGRect)contentRectForBounds:(CGRect)bounds
 {
-    return [self cg_calculateContentRect];
+    return UIEdgeInsetsInsetRect(self.bounds, self.marginEdgeInsets);
 }
 
 - (CGRect)titleRectForContentRect:(CGRect)contentRect
 {
-    CGSize unavailableArea  = self.imageView.image.size;
-    if (self.buttonStyle == CGButtonStyleHorizonalRight || self.buttonStyle == CGButtonStyleHorizonalLeft) {
-        unavailableArea.width   += self.space;
-    }else {
-        unavailableArea.height  += self.space;
+    if (_isCalculateAreaButtonContentView) {
+        return CGRectZero;
     }
-    
-    CGSize tempSize     = CGSizeMake(CGRectGetWidth(contentRect) - unavailableArea.width , CGRectGetHeight(contentRect) - unavailableArea.height);
-    CGSize titleSize = [self.titleLabel sizeThatFits:tempSize];
-    
-    
-    return _titleRect;
+    CGRect titleRect = [self cg_calculateAreaWithContentType:_CGButtonContentTypeTitleLabel contentRect:contentRect];
+    CGInfoLog(@"title rect : %@", NSStringFromCGRect(titleRect));
+    return titleRect;
 }
 
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
 {
-    return _imageRect;
+    if (_isCalculateAreaButtonContentView) {
+        return CGRectZero;
+    }
+    CGRect imageRect = [self cg_calculateAreaWithContentType:_CGButtonContentTypeImageView contentRect:contentRect];
+    CGInfoLog(@"image rect : %@", NSStringFromCGRect(imageRect));
+    return imageRect;
+}
+
+- (void)sizeToFit
+{
+    _sizeToFit = YES;
+    //!!先使用imageView大小，在调用titleLabel大小，否则计算会出错，原因暂时没查
+    CGSize imageSize = self.imageView.size;
+    CGSize titleSize = self.titleLabel.size;
+    
+    CGSize size;
+    
+    if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
+        size = CGSizeMake(titleSize.width + self.space + imageSize.width, MAX(titleSize.height, imageSize.height));
+    }else {
+        size = CGSizeMake(MAX(titleSize.width, imageSize.width), titleSize.height + self.space + imageSize.height);
+    }
+    
+    size = CG_CGMaxSizeWidthSize(size, self.marginEdgeInsets);
+    
+    self.size = size;
+    _sizeToFit = NO;
+}
+
+#pragma mark - 无效系统一些方法
+- (void)setTitleEdgeInsets:(UIEdgeInsets)titleEdgeInsets
+{
+    
+}
+
+- (void)setImageEdgeInsets:(UIEdgeInsets)imageEdgeInsets
+{
+    
 }
 
 #pragma mark - 属性设置
@@ -150,5 +329,21 @@
         [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
     }
 }
+
+- (void)setContentAlignment:(CGButtonContentAlignment)contentAlignment
+{
+    if (contentAlignment != _contentAlignment) {
+        _contentAlignment   = contentAlignment;
+        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
+    }
+}
+
+//- (void)setMaxSize:(CGSize)maxSize
+//{
+//    if (!CGSizeEqualToSize(maxSize, _maxSize)) {
+//        _maxSize = maxSize;
+//        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
+//    }
+//}
 
 @end
