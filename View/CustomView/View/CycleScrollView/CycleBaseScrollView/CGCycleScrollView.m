@@ -70,8 +70,8 @@
         
         if (delayTimeInterval > 0) {
             
-            self.delayTimeInterval = delayTimeInterval;
-            self.isAutoScrollView = YES;
+            _delayTimeInterval  = delayTimeInterval;
+            _isAutoScrollView   = YES;
         }
         
         [self initialization];
@@ -106,8 +106,8 @@
 - (void)initialization
 {
     _isCycle = YES;
-    if (!self.cycleScrollView.superview) {
-        [self addSubview:self.cycleScrollView];
+    if (![self cycleScrollView].superview) {
+        [self addSubview:_cycleScrollView];
     }
 }
 
@@ -634,6 +634,7 @@
     }
 }
 
+/** 分页时重置滑动停止坐标 */
 - (CGPoint)nearestTargetOffsetForOffset:(CGPoint)offset
 {
     CGFloat     pageSize;

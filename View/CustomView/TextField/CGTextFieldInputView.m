@@ -23,4 +23,10 @@
 }
 */
 
++ (instancetype)createTextFieldInputView:(CGTextFieldInputViewType)viewType
+{
+    NSAssert(nil, @"未实现");
+    return nil;
+}
+
 @end
