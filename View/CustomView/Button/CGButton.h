@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  重写UIButton布局的子类，方便图像和标题的布局
  *  @param UIButton 的子类
  *  @param 功能：  1. 方便设置图像和标题的对齐样式，图像和标题之间的间距，外边界的间距
-                  2. titleEdgeInsets, imageEdgeInsets两个属性被无效化
  *
  */
 @interface CGButton : CGBaseButton

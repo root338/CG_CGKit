@@ -32,6 +32,14 @@
 }
 */
 
+//- (void)willMoveToWindow:(UIWindow *)newWindow
+//{
+//    [super willMoveToWindow:newWindow];
+//    if (!newWindow) {
+//
+//    }
+//}
+
 #pragma mark - 计时器
 - (void)startTimer
 {

@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, CGStrlenType) {
  *
  *  @return 返回拼接后的链接
  */
-- (NSString *)cg_urlPathTypeStrlenWithKey:(NSString *)key object:(NSString *)obj;
+- (nullable NSString *)cg_urlPathTypeStrlenWithKey:(NSString *)key object:(NSString *)obj;
 
 /**
  *  HTTP链接的拼接
@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, CGStrlenType) {
  *
  *  @return 返回拼接后的链接
  */
-- (NSString *)cg_urlKey_ValuePairsTypeStrlenWithKey:(NSString *)key object:(NSString *)obj;
+- (nullable NSString *)cg_urlKey_ValuePairsTypeStrlenWithKey:(NSString *)key object:(NSString *)obj;
 
 /**
  *  HTTP链接的拼接
@@ -54,6 +54,6 @@ typedef NS_ENUM(NSInteger, CGStrlenType) {
  *
  *  @return 返回拼接后的链接
  */
-- (NSString *)cg_urlStrlenWithKey:(NSString *)key object:(NSString *)obj type:(CGStrlenType)type;
+- (nullable NSString *)cg_urlStrlenWithKey:(NSString *)key object:(NSString *)obj type:(CGStrlenType)type;
 @end
 NS_ASSUME_NONNULL_END
