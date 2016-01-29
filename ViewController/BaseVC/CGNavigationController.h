@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CGNavigationAppearanceProtocol;
+NS_ASSUME_NONNULL_BEGIN
 @interface CGNavigationController : UINavigationController
+
+@property (nonatomic, weak) id<CGNavigationAppearanceProtocol> appearanceDelegate;
+
 
 
 @end
+NS_ASSUME_NONNULL_END
