@@ -294,17 +294,6 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     _sizeToFit = NO;
 }
 
-#pragma mark - 无效系统一些方法
-- (void)setTitleEdgeInsets:(UIEdgeInsets)titleEdgeInsets
-{
-    
-}
-
-- (void)setImageEdgeInsets:(UIEdgeInsets)imageEdgeInsets
-{
-    
-}
-
 #pragma mark - 属性设置
 - (void)setButtonStyle:(CGButtonStyle)buttonStyle
 {

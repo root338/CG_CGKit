@@ -10,19 +10,18 @@
 #define QuickAskCommunity_CGPrintLogHeader_h
 
 ////在preprocessor Macros设置
-//#ifdef DEBUG
-//
-//#define CGPrintLogOpen 1
-//
-//#define CGPrintInfoOpen 0
-//#else
-//
-//#define CGPrintLogOpen
-//#define CGPrintInfoOpen
-//
-//#endif
+#if DEBUG
 
-#ifdef CGPrintLogOpen //---------if
+#define CGPrintLogOpen      1
+#define CGPrintInfoOpen     0
+#else
+
+#define CGPrintLogOpen
+#define CGPrintInfoOpen
+
+#endif
+
+#if CGPrintLogOpen //---------if
 
 
 //有条件的错误输出，只有当condition为真时输出日志
@@ -57,7 +56,7 @@
 
 #define CGErrorLog(format, ...) CGErrorConditionLog(YES, format, ##__VA_ARGS__)
 
-#ifdef CGPrintInfoOpen  //-----------InfoOpen   if判断
+#if CGPrintInfoOpen  //-----------InfoOpen   if判断
 
 #define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
 #define CGInfoConditionLog(condition, format, ...) CGConditionLog(condition, format, ##__VA_ARGS__)

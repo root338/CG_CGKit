@@ -40,7 +40,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = [UIColor whiteColor];
+        [self setBackgroundColor:[UIColor whiteColor]];
     }
     return self;
 }

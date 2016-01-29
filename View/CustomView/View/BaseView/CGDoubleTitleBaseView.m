@@ -30,8 +30,9 @@
 {
     self = [super init];
     if (self) {
-        self.rightViewPriority = 250;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self setRightViewPriority:250];
+        [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     }
     return self;
 }

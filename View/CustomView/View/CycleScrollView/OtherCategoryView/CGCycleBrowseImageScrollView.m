@@ -39,7 +39,7 @@
 
 - (void)initialization
 {
-    self.imageViewContentMode = UIViewContentModeScaleAspectFit;
+    _imageViewContentMode = UIViewContentModeScaleAspectFit;
 }
 
 - (void)setupDataSourceWithObject:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock
