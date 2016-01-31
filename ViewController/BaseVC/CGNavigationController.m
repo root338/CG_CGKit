@@ -27,6 +27,8 @@
     
     self.delegateObject = [[CGNavigationDelegateObject alloc] init];
     self.delegate   = self.delegateObject;
+    
+    self.defaultNavigationBarBackgroundColor    = self.navigationBar.barTintColor;
 }
 
 #pragma mark - 设置属性

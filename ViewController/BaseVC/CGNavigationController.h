@@ -12,9 +12,10 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface CGNavigationController : UINavigationController
 
-@property (nonatomic, weak) id<CGNavigationAppearanceProtocol> appearanceDelegate;
+@property (nullable, nonatomic, weak) id<CGNavigationAppearanceProtocol> appearanceDelegate;
 
-
+/** 导航栏默认的颜色 */
+@property (nullable, nonatomic, strong) UIColor *defaultNavigationBarBackgroundColor;
 
 @end
 NS_ASSUME_NONNULL_END

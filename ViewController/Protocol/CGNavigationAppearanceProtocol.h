@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 设置导航栏外观的协议 */
 @protocol CGNavigationAppearanceProtocol <NSObject>
 
@@ -16,5 +17,8 @@
 /** 是否隐藏导航栏 */
 - (BOOL)cg_prefersNavigationBarHidden;
 
-
+/** 导航栏的背景色 */
+- (UIColor *)cg_prefersNavigationBarBackgroundColor;
 @end
+
+NS_ASSUME_NONNULL_END
