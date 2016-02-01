@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, weak) id<CGNavigationAppearanceProtocol> appearanceDelegate;
 
+/** 导航栏默认是否隐藏 */
+@property (nonatomic, assign) BOOL defaultNavigationBarHidden;
+
 /** 导航栏默认的颜色 */
 @property (nullable, nonatomic, strong) UIColor *defaultNavigationBarBackgroundColor;
 
