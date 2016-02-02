@@ -20,11 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 导航栏的背景色 */
 - (UIColor *)cg_prefersNavigationBarBackgroundColor;
 
-/** 是否隐藏状态栏 */
-- (BOOL)cg_prefersStatusBarHidden;
-
-/** 设置状态栏的样式 */
-- (UIStatusBarStyle)cg_statusBarStyle;
 /** 导航栏的背景图 */
 //- (UIImage *)cg_prefersNavigationBarBackgroundImage;
 @end

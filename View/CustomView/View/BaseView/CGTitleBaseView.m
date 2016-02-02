@@ -39,4 +39,14 @@
     }
 }
 
+#pragma mark - 设置属性
+
+- (void)setMarginEdgeInsets:(UIEdgeInsets)marginEdgeInsets
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(marginEdgeInsets, _marginEdgeInsets)) {
+        _marginEdgeInsets   = marginEdgeInsets;
+        [self setNeedsLayout];
+    }
+}
+
 @end
