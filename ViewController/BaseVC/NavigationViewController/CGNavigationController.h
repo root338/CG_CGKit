@@ -15,10 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, weak) id<CGNavigationAppearanceProtocol> appearanceDelegate;
 
 /** 导航栏默认是否隐藏 */
-@property (nonatomic, assign) BOOL defaultNavigationBarHidden;
+//@property (nonatomic, assign) BOOL defaultNavigationBarHidden;
 
 /** 导航栏默认的颜色 */
 @property (nullable, nonatomic, strong) UIColor *defaultNavigationBarBackgroundColor;
 
+/** 默认导航栏的样式 */
+@property (nonatomic, assign) UIStatusBarStyle defaultStatusBarStyle;
+
+/** 默认导航栏是否隐藏 */
+@property (nonatomic, assign) BOOL defaultStatusBarHidden;
 @end
 NS_ASSUME_NONNULL_END

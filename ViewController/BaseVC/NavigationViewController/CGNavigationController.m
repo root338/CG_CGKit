@@ -31,6 +31,25 @@
     self.defaultNavigationBarBackgroundColor    = self.navigationBar.barTintColor ? self.navigationBar.barTintColor : [UIColor whiteColor];
 }
 
+#pragma mark - 设置导航栏
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIStatusBarStyle statusBarStyle = self.defaultStatusBarStyle;
+    if ([self.topViewController respondsToSelector:@selector(preferredStatusBarStyle)]) {
+        statusBarStyle  = [self.topViewController preferredStatusBarStyle];
+    }
+    return statusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    BOOL statusBarHidden    = self.defaultStatusBarHidden;
+    if ([self.topViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
+        statusBarHidden = [self.topViewController prefersStatusBarHidden];
+    }
+    return statusBarHidden;
+}
+
 #pragma mark - 设置属性
 
 @end

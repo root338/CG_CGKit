@@ -8,9 +8,6 @@
 
 #import "CGNavigationDelegateObject.h"
 
-//视图类
-#import "CGBaseNavigationController.h"
-
 //具体功能类
 #import "CGDefaultPopAnimation.h"
 

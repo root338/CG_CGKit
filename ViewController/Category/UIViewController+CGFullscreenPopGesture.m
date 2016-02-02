@@ -17,7 +17,6 @@
 
 /**
  *  配合CGNavigationController对导航栏的设置
- *  @warning 普通视图控制器不应该调用
  */
 @interface UIViewController (CGSetupNavigationBar)
 
