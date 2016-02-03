@@ -9,50 +9,9 @@
 #import "UIView+CGLineMoveView.h"
 
 #import "UIView+CGSetupFrame.h"
+#import "UIView+CGSetupAnimationArea.h"
 
 @implementation UIView (CGLineMoveView)
-
-- (void)cg_setupPointWithOverlayView:(UIView *)overlayView startPoint:(CGPoint *)paramStartPoint endPoint:(CGPoint *)paramEndPoint type:(CGLineMoveViewType)type isShow:(BOOL)isShow
-{
-    CGPoint startPoint  = CGPointZero;
-    CGPoint endPoint    = CGPointZero;
-    
-    switch (type) {
-        case CGLineMoveViewTypeTop:
-        {
-            startPoint  = CGPointMake(overlayView.xOrigin, overlayView.yOrigin - self.height);
-            endPoint    = overlayView.origin;
-        }
-            break;
-        case CGLineMoveViewTypeLeft:
-        {
-            startPoint  = CGPointMake(overlayView.xOrigin - self.width, overlayView.yOrigin);
-            endPoint    = overlayView.origin;
-        }
-            break;
-        case CGLineMoveViewTypeBottom:
-        {
-            startPoint  = CGPointMake(overlayView.xOrigin, overlayView.maxY);
-            endPoint    = CGPointMake(overlayView.xOrigin, overlayView.maxY - self.height);
-        }
-            break;
-        case CGLineMoveViewTypeRight:
-        {
-            startPoint  = CGPointMake(overlayView.maxX, overlayView.yOrigin);
-            endPoint    = CGPointMake(overlayView.maxX - self.width, overlayView.yOrigin);
-        }
-            break;
-        default:
-            break;
-    }
-    
-    if (isShow) {
-        *paramStartPoint    = startPoint;
-        *paramEndPoint      = endPoint;
-    }else {
-        *paramEndPoint      = startPoint;
-    }
-}
 
 #pragma mark - 显示视图
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type
@@ -72,17 +31,28 @@
 
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration completion:(void(^)(void))completion
 {
+    [self cg_showLineMoveWithOverlayView:overlayView type:type animation:animation duration:duration beforeAnimationBlock:nil afterAnimationBlock:nil completion:completion];
+}
+
+- (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration beforeAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))beforeAnimationBlock afterAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))afterAnimationBlock completion:(nonnull void (^)(void))completion
+{
     CGPoint startPoint  = CGPointZero;
     CGPoint endPoint    = CGPointZero;
     
-    [self cg_setupPointWithOverlayView:overlayView startPoint:&startPoint endPoint:&endPoint type:type isShow:YES];
+    [self cg_setupLineMovePointWithOverlayView:overlayView startPoint:&startPoint endPoint:&endPoint type:type isShow:YES];
     
     if (animation) {
         
         self.origin = startPoint;
+        if (beforeAnimationBlock) {
+            beforeAnimationBlock(self);
+        }
         [UIView animateWithDuration:duration animations:^{
             
             self.origin = endPoint;
+            if (afterAnimationBlock) {
+                afterAnimationBlock(self);
+            }
         } completion:^(BOOL finished) {
             if (completion) {
                 completion();
@@ -91,6 +61,9 @@
     }else {
         
         self.origin = endPoint;
+        if (afterAnimationBlock) {
+            afterAnimationBlock(self);
+        }
     }
 }
 
@@ -112,23 +85,39 @@
 
 - (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration completion:(void(^)(void))completion
 {
+    [self cg_dismissLineMoveWithOverlayView:overlayView type:type animation:animation duration:duration beforeAnimationBlock:nil afterAnimationBlock:nil completion:completion];
+}
+
+- (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration beforeAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))beforeAnimationBlock afterAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))afterAnimationBlock completion:(nonnull void (^)(void))completion
+{
     CGPoint endPoint    = CGPointZero;
     
-    [self cg_setupPointWithOverlayView:overlayView startPoint:nil endPoint:&endPoint type:type isShow:NO];
+    [self cg_setupLineMovePointWithOverlayView:overlayView startPoint:nil endPoint:&endPoint type:type isShow:NO];
     
     if (animation) {
         
-        [UIView animateWithDuration:duration animations:^{
+        if (beforeAnimationBlock) {
+            beforeAnimationBlock(self);
+        }
+        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             
             self.origin = endPoint;
+            if (afterAnimationBlock) {
+                afterAnimationBlock(self);
+            }
         } completion:^(BOOL finished) {
+            
             if (completion) {
                 completion();
             }
         }];
+        
     }else {
         
         self.origin = endPoint;
+        if (afterAnimationBlock) {
+            afterAnimationBlock(self);
+        }
     }
 }
 

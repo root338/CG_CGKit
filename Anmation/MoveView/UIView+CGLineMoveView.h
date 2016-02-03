@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, CGLineMoveViewType) {
-    
-    CGLineMoveViewTypeTop,
-    CGLineMoveViewTypeRight,
-    CGLineMoveViewTypeBottom,
-    CGLineMoveViewTypeLeft,
-};
+#import "CGMoveViewTypeHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIView (CGLineMoveView)
 
 #pragma mark - 显示视图
+/** 显示视图，不回调 */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type;
+/** 显示视图，仅回调 */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type completion:(void(^ __nullable)(void))completion;
 
 /**
@@ -31,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation completion:(void(^ __nullable)(void))completion;
 
 /**
- *  移动view到overlayView
+ *  移动view到overlayView，回调
  *
  *  @param view        需要移动的视图
  *  @param overlayView 参照视图，与view在同一个坐标系
@@ -42,8 +38,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration completion:(void(^ __nullable)(void))completion;
 
+/** 移动视图，可设置更多视图属性 */
+- (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration beforeAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))beforeAnimationBlock afterAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))afterAnimationBlock completion:(nonnull void (^)(void))completion;
+
 #pragma mark - 隐藏视图
+/** 隐藏视图，不回调 */
 - (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type;
+/** 隐藏视图，仅回调 */
 - (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type completion:(void(^ __nullable)(void))completion;
 
 /**
@@ -51,6 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation completion:(void(^ __nullable)(void))completion;
 
+/** 移动视图，自动设置时间，回调 */
 - (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration completion:(void(^ __nullable)(void))completion;
+
+/**
+ *  移动视图，可设置更多视图属性
+ *  @param beforeAnimationBlock 动画开始前UIView的属性设置
+ *  @param afterAnimationBlock  UIView最终的属性设置
+ */
+- (void)cg_dismissLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration beforeAnimationBlock:(void(^ __nullable)(UIView *paramView))beforeAnimationBlock afterAnimationBlock:(void (^ __nullable)(UIView *paramView))afterAnimationBlock completion:(void(^)(void))completion;
 @end
 NS_ASSUME_NONNULL_END
