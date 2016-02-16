@@ -79,4 +79,11 @@
     return isFlag;
 }
 
+- (void)cg_removeObjectAtIndex:(NSUInteger)index
+{
+    if (self.count > index) {
+        [self removeObjectAtIndex:index];
+    }
+}
+
 @end
