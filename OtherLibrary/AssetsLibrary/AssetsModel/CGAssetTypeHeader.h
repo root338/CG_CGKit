@@ -28,17 +28,17 @@ typedef NS_ENUM(NSInteger, CGAssetType) {
 };
 
 /**
- *  缩略图的类型
+ *  资源的图片类型
  */
-typedef NS_ENUM(NSInteger, CGThumbnailsType) {
+typedef NS_ENUM(NSInteger, CGAssetImageType) {
     /**
-     *  方形
+     *  方形缩略图
      */
-    CGThumbnailsTypeSquare,
+    CGAssetImageTypeSquareThumbnails,
     /**
-     *  等比
+     *  等比缩略图
      */
-    CGThumbnailsTypeAspectRatio,
+    CGAssetImageTypeAspectRatioThumbnails,
 };
 
 #endif /* CGAssetTypeHeader_h */

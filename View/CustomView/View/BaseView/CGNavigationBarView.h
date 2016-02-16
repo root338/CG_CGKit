@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 状态栏的底图 */
 @property (nonatomic, strong, readonly) UIView *statusView;
 
+/** 当没有颜色时默认设置为白色 */
 @property (nullable, nonatomic, strong, readonly) UINavigationBar *navigationBar;
 @property (nonatomic, strong, readonly) UIView *contentView;
 

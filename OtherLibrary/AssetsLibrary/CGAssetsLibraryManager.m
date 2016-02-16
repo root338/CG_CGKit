@@ -8,8 +8,6 @@
 
 #import "CGAssetsLibraryManager.h"
 
-#import "CGAssetModel.h"
-#import "CGAssetsGroupModel.h"
 #import "CGAssetsFilterObject.h"
 
 @interface CGAssetsLibraryManager ()
@@ -93,25 +91,6 @@
     } failureBlock:failureBlock];
 }
 
-- (void)cg_assetsGroupsModelListWithGroupsType:(ALAssetsGroupType)groupType assetsGroupsModelList:(nonnull void (^)(NSArray<CGAssetsGroupModel *> * _Nullable))assetsGroupsModelListBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock
-{
-    [self cg_assetsGroupsWithGroupsType:groupType assetsGroups:^(NSArray<ALAssetsGroup *> * _Nullable paramAssetsGroup) {
-        
-        NSMutableArray *assetsGroupModelList    = nil;
-        if (paramAssetsGroup.count) {
-            
-            assetsGroupModelList    = [NSMutableArray arrayWithCapacity:paramAssetsGroup.count];
-            [paramAssetsGroup enumerateObjectsUsingBlock:^(ALAssetsGroup * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                CGAssetsGroupModel *assetsGroupModel    = [CGAssetsGroupModel createAssetsGroupWithAssetsGroup:obj];
-                [assetsGroupModelList addObject:assetsGroupModel];
-            }];
-        }
-        if (assetsGroupsModelListBlock) {
-            assetsGroupsModelListBlock(assetsGroupModelList);
-        }
-    } failureBlock:failureBlock];
-}
-
 #pragma mark - 图片视频单个对象资源处理
 - (NSArray<ALAsset *> *)cg_assetsWithGroup:(ALAssetsGroup *)assetsGroup assetsFilterType:(CGAssetsFilterType)assetsFilterType
 {
@@ -185,30 +164,6 @@
         
         return comparisonResult;
     }];
-}
-
-- (NSArray<CGAssetModel *> *)cg_assetModelListWithGroup:(ALAssetsGroup *)assetsGroup assetsFilterType:(CGAssetsFilterType)assetsFilterType
-{
-    return [self cg_assetModelListWithGroup:assetsGroup assetsFilterType:assetsFilterType thumbnailsType:CGThumbnailsTypeSquare];
-}
-
-- (NSArray<CGAssetModel *> *)cg_assetModelListWithGroup:(ALAssetsGroup *)assetsGroup assetsFilterType:(CGAssetsFilterType)assetsFilterType thumbnailsType:(CGThumbnailsType)thumbnailsType
-{
-    NSArray<ALAsset *> *assetsList  = [self cg_assetsWithGroup:assetsGroup assetsFilterType:assetsFilterType];
-    
-    if (!assetsList.count) {
-        return nil;
-    }
-    
-    NSMutableArray *assetModelsArray    = [NSMutableArray arrayWithCapacity:assetsList.count];
-    
-    [assetsList enumerateObjectsUsingBlock:^(ALAsset * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        CGAssetModel *assetModel    = [CGAssetModel createAssetModelWithAsset:obj thumbnailsType:thumbnailsType];
-        
-        [assetModelsArray addObject:assetModel];
-    }];
-    return assetModelsArray;
 }
 
 - (void)cg_assetsListWithAssetsFilter:(CGAssetsFilterObject *)assetsFilter assetList:(nonnull void (^)(NSArray<ALAsset *> * _Nullable))assetListBlock failureBlock:(nullable ALAssetsLibraryAccessFailureBlock)failureBlock

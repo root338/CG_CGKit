@@ -23,9 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 获取的图片资源类型 */
 @property (nonatomic, assign) CGAssetsFilterType assetsFilterType;
 
-/** 获取单个资源缩略图的类型 */
-@property (nonatomic, assign) CGThumbnailsType assetThumbnailsType;
-
 /** 图片排序方式 */
 @property (nonatomic, assign) CGAssetsSequenceType assetsSequenceType;
 

@@ -25,11 +25,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         _delegate   = pDelegate;
+        [self cg_initialization];
     }
     return self;
 }
 
-- (void)initialization
+- (void)cg_initialization
 {
     [self createNavigationBar];
 //    [self addNavigationBarAndContentViewSubviews];
@@ -49,6 +50,14 @@
 - (void)createNavigationBar
 {
     self.navigationBar  = [[UINavigationBar alloc] initWithFrame:CGRectZero];
+    if (!self.navigationBar.barTintColor) {
+        self.navigationBar.barTintColor = [UIColor whiteColor];
+        self.navigationBar.translucent  = NO;
+    }
+    
+    //立即更新视图布局，否则子类在视图添加内容时有时会显示错误
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 - (void)setupSubviewsLayout
