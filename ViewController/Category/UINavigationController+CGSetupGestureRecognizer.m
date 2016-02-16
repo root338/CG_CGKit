@@ -23,7 +23,6 @@
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    
     if (self.navigationController.viewControllers.count <= 1) {
         return NO;
     }
@@ -59,18 +58,48 @@
 /** 打开全屏回退手势 */
 - (void)cg_openFullScreenPopGestureRecognizer
 {
-    if (![self.fullScreenPopGestureRecognizer.view.gestureRecognizers containsObject:self.fullScreenPopGestureRecognizer]) {
-        
-        self.fullScreenPopGestureRecognizer.delegate = self.cg_fullScreenPopGestureRecognizerDelegate;
-        [self.navigationController.view addGestureRecognizer:self.fullScreenPopGestureRecognizer];
+    if (![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.fullScreenPopGestureRecognizer]) {
         
         //使用默认的滑动样式
         NSArray *targets        = [self.interactivePopGestureRecognizer valueForKey:@"targets"];
-        id target               = [targets.firstObject objectForKey:@"target"];
-        NSString *selectName    = [targets.firstObject objectForKey:@"action"];
-        [self.fullScreenPopGestureRecognizer addTarget:target action:NSSelectorFromString(selectName)];
+        id target               = [targets.firstObject valueForKey:@"target"];
+        SEL select              = NSSelectorFromString(@"handleNavigationTransition:");
         
-        self.interactivePopGestureRecognizer.enabled    = NO;
+        if (target && [target respondsToSelector:select]) {
+        
+            [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.fullScreenPopGestureRecognizer];
+            
+            self.fullScreenPopGestureRecognizer.delegate = self.cg_fullScreenPopGestureRecognizerDelegate;
+            
+            [self.fullScreenPopGestureRecognizer addTarget:target action:select];
+
+            self.interactivePopGestureRecognizer.enabled    = NO;
+        }
+    }
+}
+
+- (void)handlePopGestureRecognizer:(UIPanGestureRecognizer *)recognizer
+{
+    CGFloat progress    = [recognizer locationInView:recognizer.view].x / recognizer.view.bounds.size.width;
+    progress    = MAX(0, MIN(1, progress));
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        
+        self.interactivePopTransition   = [[UIPercentDrivenInteractiveTransition alloc] init];
+        [self popViewControllerAnimated:YES];
+    }else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        
+        [self.interactivePopTransition updateInteractiveTransition:progress];
+    }else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+        
+        if (progress > 0.5) {
+            
+            [self.interactivePopTransition finishInteractiveTransition];
+        }else {
+            
+            [self.interactivePopTransition cancelInteractiveTransition];
+        }
+        
+        self.interactivePopTransition = nil;
     }
 }
 
@@ -79,7 +108,7 @@
 - (UIPanGestureRecognizer *)fullScreenPopGestureRecognizer
 {
     UIPanGestureRecognizer *_fullScreenPopGestureRecognizer = objc_getAssociatedObject(self, _cmd);
-    if (_fullScreenPopGestureRecognizer) {
+    if (!_fullScreenPopGestureRecognizer) {
         
         _fullScreenPopGestureRecognizer = [[UIPanGestureRecognizer alloc] init];
         _fullScreenPopGestureRecognizer.maximumNumberOfTouches  = 1;
@@ -100,4 +129,18 @@
     }
     return _fullScreenPopGestureRecognizerDelegate;
 }
+@end
+
+@implementation UINavigationController (CGPopAnimation)
+
+- (void)setInteractivePopTransition:(UIPercentDrivenInteractiveTransition *)interactive
+{
+    objc_setAssociatedObject(self, @selector(interactivePopTransition), interactive, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIPercentDrivenInteractiveTransition *)interactivePopTransition
+{
+    return objc_getAssociatedObject(self, _cmd);
+}
+
 @end

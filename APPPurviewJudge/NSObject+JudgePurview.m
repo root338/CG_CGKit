@@ -8,6 +8,7 @@
 
 #import "NSObject+JudgePurview.h"
 
+
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import <AVFoundation/AVCaptureDevice.h>
@@ -17,6 +18,7 @@
 
 - (BOOL)cg_verifyIsAccessAssetsLibrary
 {
+    
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusDenied || status == ALAuthorizationStatusRestricted) {
         return NO;
