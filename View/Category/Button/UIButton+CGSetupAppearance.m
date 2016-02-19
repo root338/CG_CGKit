@@ -18,6 +18,12 @@
     !font ?: [self.titleLabel setFont:font];
 }
 
+- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName
+{
+    [self cg_setupWithTitle:title titleColor:titleColor font:font];
+    [self cg_setupWithNormalImageName:normalImageName selectImageName:nil];
+}
+
 - (void)cg_setupWithNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
 {
     UIImage *normalImage = [self loadLocalImageName:normalImageName];
@@ -39,7 +45,7 @@
     [self cg_setupBorderWithWidth:borderWidth color:borderColor cornerRadius:radius];
 }
 
-- (UIImage *)loadLocalImageName:(NSString *)imageName
+- (nullable UIImage *)loadLocalImageName:(nullable NSString *)imageName
 {
     UIImage *image = nil;
     if (imageName) {

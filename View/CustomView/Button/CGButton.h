@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGButtonContentAlignment contentAlignment;
 //@property (nonatomic, assign) UIOffset imageViewOffset;
 
+/** 指定imageView的大小 @warning 当图片不存在时也会占据显示区域 */
+@property (nonatomic, assign) CGSize imageViewSize;
+
 - (void)sizeToFit;
 @end
 NS_ASSUME_NONNULL_END

@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     BOOL _sizeToFit;
 }
 
+@property (nonatomic, strong) UILabel *tempCalculateLabel;
 @end
 
 @implementation CGButton
@@ -65,11 +66,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 ///计算图片在按钮中最适合的大小
 - (CGSize)cg_calculateImageSizeWithContentRect:(CGRect)contentRect
 {
-    if (!self.currentImage) {
+    BOOL useCustomImageView = !CGSizeEqualToSize(self.imageViewSize, CGSizeZero);
+    if (!self.currentImage && !useCustomImageView) {
         return CGSizeZero;
     }
     
-    CGSize imageSize = self.currentImage.size;
+    CGSize imageSize = useCustomImageView ? self.imageViewSize : self.currentImage.size;
     
     if (!_sizeToFit) {
         
@@ -109,7 +111,13 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         tempLabelSize.height    = CGRectGetHeight(contentRect) - (imageSize.height + self.space);
     }
     
-    CGSize titleSize    = [self.titleLabel sizeThatFits:CGSizeMake(FLT_MAX, FLT_MAX)];
+    /** 获取私有属性，如果直接使用self.titleLabel会导致出现两个一样的标题控件 */
+    id titleView    = [self valueForKey:@"_titleView"];
+    
+    CGSize titleSize    = CGSizeZero;
+    if ([titleView isKindOfClass:[UILabel class]]) {
+        titleSize   = [titleView sizeThatFits:CGSizeMake(FLT_MAX, FLT_MAX)];
+    }
     
     if (!_sizeToFit) {
         

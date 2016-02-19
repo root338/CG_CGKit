@@ -40,6 +40,13 @@
 - (void)initialization
 {
     _imageViewContentMode = UIViewContentModeScaleAspectFit;
+    
+    [self addObserver:self forKeyPath:@"marginEdgeInset" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    
 }
 
 - (void)setupDataSourceWithObject:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock
@@ -106,6 +113,9 @@
 {
     UIImageView *imageView = [UIImageView cg_createImageViewWithContentMode:self.imageViewContentMode];
     [imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
+    if (self.setupImageViewContent) {
+        self.setupImageViewContent(imageView, index);
+    }
     return imageView;
 }
 
@@ -148,9 +158,10 @@
 
 - (void)setupCycleScrollViewFrame
 {
+    
     CGRect frame = CG_CGRectWithMargin(self.bounds, self.marginEdgeInset);
-    if (!CGRectEqualToRect(_cycleScrollView.frame, frame)) {
-        _cycleScrollView.frame = frame;
+    if (!CGRectEqualToRect(self.cycleScrollView.frame, frame)) {
+        self.cycleScrollView.frame = frame;
     }
 }
 
@@ -210,7 +221,8 @@
 
 - (void)setMarginEdgeInset:(UIEdgeInsets)marginEdgeInset
 {
-    if (UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInset, marginEdgeInset)) {
+    if (!UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInset, marginEdgeInset)) {
+        
         _marginEdgeInset = marginEdgeInset;
         [self setupCycleScrollViewFrame];
     }

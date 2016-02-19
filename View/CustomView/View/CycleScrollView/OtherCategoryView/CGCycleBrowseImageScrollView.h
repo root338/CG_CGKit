@@ -46,6 +46,9 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 图片加载的类型，默认UIViewContentModeScaleAspectFit */
 @property (assign, nonatomic) UIViewContentMode imageViewContentMode;
 
+/** 设置加载的图像视图 */
+@property (nonatomic, copy) void (^setupImageViewContent) (UIImageView *imageView, NSInteger index);
+
 #pragma mark - pageControl
 /** 是否显示分页视图，默认NO */
 @property (assign, nonatomic) BOOL isHidePageControl;
