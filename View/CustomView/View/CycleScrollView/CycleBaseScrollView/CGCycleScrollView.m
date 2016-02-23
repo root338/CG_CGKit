@@ -847,4 +847,10 @@
     _pageContentView = [UIView cg_createView];
     return _pageContentView;
 }
+
+- (void)setClipsToBounds:(BOOL)clipsToBounds
+{
+    [super setClipsToBounds:clipsToBounds];
+    self.cycleScrollView.clipsToBounds  = clipsToBounds;
+}
 @end

@@ -41,12 +41,6 @@
 {
     _imageViewContentMode = UIViewContentModeScaleAspectFit;
     
-    [self addObserver:self forKeyPath:@"marginEdgeInset" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    
 }
 
 - (void)setupDataSourceWithObject:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock
@@ -79,11 +73,10 @@
     
     if (_cycleScrollView) {
         [self.cycleScrollView reloadAllView];
-    }else {
-        [self cycleScrollView];
-        [self addSubview:self.cycleScrollView];
-        [self setupCycleScrollViewFrame];
     }
+    
+    self.cycleScrollView.superview ?: [self addSubview:self.cycleScrollView];
+    [self setupCycleScrollViewFrame];
     
     if (self.isHidePageControl) {
         if (_pageControl.superview) {
@@ -234,5 +227,20 @@
         _marginEdgeInsetForSubview = marginEdgeInsetForSubview;
         self.cycleScrollView.marginEdgeInsetForSubviews = marginEdgeInsetForSubview;
     }
+}
+
+- (void)setContentViewSpace:(CGFloat)contentViewSpace
+{
+    if (_contentViewSpace != contentViewSpace) {
+        
+        _contentViewSpace   = contentViewSpace;
+        self.cycleScrollView.subviewSpace   = contentViewSpace;
+    }
+}
+
+- (void)setClipsToBounds:(BOOL)clipsToBounds
+{
+    [super setClipsToBounds:clipsToBounds];
+    self.cycleScrollView.clipsToBounds  = clipsToBounds;
 }
 @end
