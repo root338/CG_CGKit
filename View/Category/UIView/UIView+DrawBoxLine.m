@@ -14,6 +14,7 @@
 
 @dynamic lineColor;
 @dynamic lineWidth;
+@dynamic drawLineType;
 
 - (UIBezierPath *)createBoxType:(DDrawLineType)type edge:(UIEdgeInsets)edgeInsets
 {
@@ -51,7 +52,7 @@
     CGPathRelease(path);
     [self.lineColor setStroke];
     
-    bezierPath.lineWidth = self.lineWidth.floatValue;
+    bezierPath.lineWidth = self.lineWidth;
     return bezierPath;
 }
 
@@ -72,13 +73,23 @@
     return objc_getAssociatedObject(self, @selector(lineColor));
 }
 
-- (void)setLineWidth:(NSNumber *)paramLineWidth
+- (void)setLineWidth:(CGFloat)paramLineWidth
 {
-    objc_setAssociatedObject(self, @selector(lineWidth), paramLineWidth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(lineWidth), @(paramLineWidth), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSNumber *)lineWidth
+- (CGFloat)lineWidth
 {
-    return objc_getAssociatedObject(self, @selector(lineWidth));
+    return [objc_getAssociatedObject(self, @selector(lineWidth)) floatValue];
+}
+
+- (void)setDrawLineType:(DDrawLineType)lineType
+{
+    objc_setAssociatedObject(self, @selector(drawLineType), @(lineType), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (DDrawLineType)drawLineType
+{
+    return [objc_getAssociatedObject(self, _cmd) integerValue];
 }
 @end

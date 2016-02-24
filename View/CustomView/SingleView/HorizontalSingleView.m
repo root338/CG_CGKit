@@ -28,7 +28,7 @@
     if (self.appearance.lineType != DDrawLineTypeNone) {
         
         self.lineColor = self.appearance.lineColor;
-        self.lineWidth = @(self.appearance.lineWidth);
+        self.lineWidth = self.appearance.lineWidth;
         
         UIBezierPath *bezierPath = [self createBoxType:self.appearance.lineType edge:self.appearance.lineEdgeInsets];
         [bezierPath stroke];
