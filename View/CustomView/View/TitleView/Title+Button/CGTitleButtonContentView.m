@@ -75,7 +75,8 @@
         originYForTitleButton   = (self.height - self.titleButton.height) / 2;
     }else {
         
-        originYForTitleButton   = CG_CGHeightWithMaxHeight(self.height, self.titleButtonMarginEdgeInsets);
+        self.titleButton.height = CG_CGHeightWithMaxHeight(self.height, self.titleButtonMarginEdgeInsets);
+        originYForTitleButton   = self.titleButtonMarginEdgeInsets.top;
     }
     self.titleButton.origin     = CGPointMake(originXForTitleButton, originYForTitleButton);
     

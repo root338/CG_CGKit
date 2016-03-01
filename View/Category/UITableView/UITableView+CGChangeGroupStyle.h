@@ -28,11 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cg_tableViewChangeHeaderViewZeroHeight;
 
+- (void)cg_tableViewChangeHeaderViewWithHeight:(CGFloat)height;
+
 /**
  *  设置表格的页脚高度为_CG_TableView_ZeroHeight 
  *  @warning UITableView中没有全局设置tableViewFooterView高度的属性，此方法会重新创建一个UIView，并赋值给tableViewFooterView属性，所以如果之前已经有页脚请注意会被覆盖
  */
 - (void)cg_tableViewChangeFooterViewZeroHeight;
+
+- (void)cg_tableViewChangeFooterViewWithHeight:(CGFloat)height;
 
 /** 将UITableView页眉页脚高度设为Zero */
 - (void)cg_tableViewChangeHeaderFooterZeroHeight;

@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 指定imageView的大小 @warning 当图片不存在时也会占据显示区域 */
 @property (nonatomic, assign) CGSize imageViewSize;
 
+/** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
+@property (nonatomic, assign) CGFloat titleLabelMaxWidth;
+
 - (void)sizeToFit;
 @end
 NS_ASSUME_NONNULL_END

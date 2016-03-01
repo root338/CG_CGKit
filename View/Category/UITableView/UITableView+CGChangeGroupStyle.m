@@ -16,29 +16,36 @@ const CGRect    _CG_TableView_ZeroRect      = { { 0, 0 }, { 0, _CG_TableView_Zer
 
 @implementation UITableView (CGChangeGroupStyle)
 
-- (UIView *)cg_createZeroView
+- (UIView *)cg_createViewWithHeight:(CGFloat)height
 {
-    return [[UIView alloc] initWithFrame:_CG_TableView_ZeroRect];
+    CGRect frame     = CGRectMake(0, 0, 0, height);
+    return [[UIView alloc] initWithFrame:frame];
 }
 
 - (void)cg_tableViewChangeHeaderViewZeroHeight
 {
-    UIView *view = [self cg_createZeroView];
+    [self cg_tableViewChangeHeaderViewWithHeight:_CG_TableView_ZeroHeight];
+}
+
+- (void)cg_tableViewChangeHeaderViewWithHeight:(CGFloat)height
+{
+    UIView *view = [self cg_createViewWithHeight:MAX(_CG_TableView_ZeroHeight, height)];
     
     CGInfoConditionLog(self.tableHeaderView, @"UITableView:%@ 源表格tableHeaderView被替换", self);
-    [self beginUpdates];
     self.tableHeaderView = view;
-    [self endUpdates];
 }
 
 - (void)cg_tableViewChangeFooterViewZeroHeight
 {
-    UIView *view = [self cg_createZeroView];
+    [self cg_tableViewChangeFooterViewWithHeight:_CG_TableView_ZeroHeight];
+}
+
+- (void)cg_tableViewChangeFooterViewWithHeight:(CGFloat)height
+{
+    UIView *view = [self cg_createViewWithHeight:MAX(_CG_TableView_ZeroHeight, height)];
     
     CGInfoConditionLog(self.tableFooterView, @"UITableView:%@ 源表格tableFooterView被替换", self);
-    [self beginUpdates];
     self.tableFooterView = view;
-    [self endUpdates];
 }
 
 - (void)cg_tableViewChangeHeaderFooterZeroHeight
