@@ -24,6 +24,13 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
     CGCycleViewScrollDirectionVertical,
 };
 
+/** 滑动时视图根据滑动时的样式变化 */
+typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
+    
+    CGCycleViewScrollAnimationStyleNone,
+    CGCycleViewScrollAnimationStyleAnimation1,
+};
+
 @protocol CGCycleScrollViewDataSource <NSObject>
 
 /**
@@ -129,6 +136,9 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
  必须设置isAutoScrollView为YES，才能启动自动滑动
  */
 @property (assign, nonatomic) NSTimeInterval delayTimeInterval;
+
+/** 滑动时，子视图的显示样式 */
+@property (nonatomic, assign) CGCycleViewScrollAnimationStyle animationStyle;
 
 #pragma mark - 内容设置
 /**

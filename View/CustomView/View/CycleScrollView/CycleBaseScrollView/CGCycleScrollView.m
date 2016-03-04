@@ -25,6 +25,7 @@
 
 //功能相关扩展
 #import "CGCycleScrollView+CGBuildView.h"
+#import "CGCycleScrollView+CGScrollAnimation.h"
 
 @interface CGCycleScrollView ()<UIScrollViewDelegate>
 {
@@ -672,6 +673,12 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self scrollView:scrollView isMinUpdateContentMark:isDraggerScrollSubviewMark];
+    
+    [self cg_scrollWithScrollView:scrollView
+                     previousView:_previousView
+                      currentView:_currentView
+                         nextView:_nextView
+                   animationStyle:self.animationStyle];
 }
 
 - (void)scrollView:(UIScrollView *)scrollView isMinUpdateContentMark:(BOOL)isUpdateContentMark
