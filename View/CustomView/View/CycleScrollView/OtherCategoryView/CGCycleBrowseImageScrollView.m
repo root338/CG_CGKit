@@ -21,7 +21,7 @@
 {
     NSInteger _currentIndex;
 }
-@property (strong, nonatomic) CGCycleScrollView *cycleScrollView;
+@property (strong, nonatomic, readwrite) CGCycleScrollView *cycleScrollView;
 
 @property (strong, nonatomic, readwrite) UIPageControl *pageControl;
 @end

@@ -41,7 +41,7 @@
 
 - (void)initialization
 {
-    [self performSelector:@selector(cg_updateBorder) withObject:nil afterDelay:0];
+    
 }
 
 #pragma mark - 重新系统方法
@@ -53,6 +53,7 @@
     
     [self cg_updateBorderColor:[UIColor colorWithCGColor:borderColor]
                           state:self.borderState];
+    [self cg_setupBorderColor:borderColor];
 }
 
 - (void)setBorderWidth:(CGFloat)borderWidth
@@ -62,6 +63,7 @@
     }
     [self cg_updateBorderWidth:borderWidth
                          state:self.borderState];
+    [self cg_setupBorderWidth:borderWidth];
 }
 
 #pragma mark - 状态值转换、保存
@@ -138,8 +140,18 @@
 {
     
     CGBorderObject *borderObject = [self borderObjectForState:self.borderState];
-    super.borderColor    = borderObject.borderColor.CGColor;
-    super.borderWidth    = borderObject.borderWidth;
+    [self cg_setupBorderColor:[borderObject.borderColor CGColor]];
+    [self cg_setupBorderWidth:borderObject.borderWidth];
+}
+
+- (void)cg_setupBorderWidth:(CGFloat)borderWidth
+{
+    super.borderWidth   = borderWidth;
+}
+
+- (void)cg_setupBorderColor:(CGColorRef)borderColor
+{
+    super.borderColor   = borderColor;
 }
 
 #pragma mark - 设置属性

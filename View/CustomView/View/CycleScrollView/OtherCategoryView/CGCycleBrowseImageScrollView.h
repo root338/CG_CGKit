@@ -9,6 +9,7 @@
 #import "CGBaseView.h"
 #import "CGBlockdDefinitionHeader.h"
 
+@class CGCycleScrollView;
 /**
  *  分页视图的位置
  */
@@ -51,6 +52,8 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 
 /** 设置加载的图像视图 */
 @property (nonatomic, copy) void (^setupImageViewContent) (UIImageView *imageView, NSInteger index);
+
+@property (strong, nonatomic, readonly) CGCycleScrollView *cycleScrollView;
 
 #pragma mark - pageControl
 /** 是否显示分页视图，默认NO */

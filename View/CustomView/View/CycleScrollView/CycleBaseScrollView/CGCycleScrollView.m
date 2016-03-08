@@ -50,6 +50,9 @@
      *  添加标识的原因：再循环滑动的条件下,在代理方法scrollViewWillEndDragging:withVelocity:targetContentOffset:中设置偏移量{0,0}时，由于有反弹效果索引，在代理方法scrollViewDidScroll:到偏移量小于0时就会更新导致偏移量变为滑动视图宽度+视图间距，但是滑动没有停止所以还会继续滑动，导致分页效果出现问题
      */
     BOOL isDraggerScrollSubviewMark;
+    
+    /** 滑动视图减速滑动时的标识 */
+    BOOL isDeceleratingScrollSubviewMark;
 }
 
 ///加载的滑动视图
@@ -148,12 +151,14 @@
 
 - (void)handleAutoScroll:(NSTimer *)paramTimer
 {
+    
     CGPoint contentOffset;
     if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
         contentOffset = CGPointMake((self.cycleScrollView.width + self.subviewSpace) * 2, 0);
     }else {
         contentOffset = CGPointMake(0, (self.cycleScrollView.height + self.subviewSpace) * 2);
     }
+    
     [self.cycleScrollView setContentOffset:contentOffset animated:YES];
 }
 
@@ -622,6 +627,7 @@
         isDraggerPauseTimerMark = NO;
     }
     
+    isDeceleratingScrollSubviewMark = NO;
     [self scrollView:scrollView isMinUpdateContentMark:YES];
 }
 
@@ -631,7 +637,10 @@
     if (!decelerate) {
         //手指离开没有减速效果时
         [self startAutoScroll];
-        isDraggerPauseTimerMark = NO;
+        isDraggerPauseTimerMark         = NO;
+        isDeceleratingScrollSubviewMark = NO;
+    }else {
+        isDeceleratingScrollSubviewMark = YES;
     }
 }
 
@@ -672,6 +681,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
     [self scrollView:scrollView isMinUpdateContentMark:isDraggerScrollSubviewMark];
     
     [self cg_scrollWithScrollView:scrollView
@@ -685,6 +695,7 @@
 {
     CGPoint offset = scrollView.contentOffset;
     
+    CGFloat paramSubviewSpace   = self.subviewSpace;
     //是否刷新上一页标识
     BOOL isUpdatePreviousMark   = NO;
     //是否刷新下一页标识
@@ -696,11 +707,11 @@
         if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
             
             isUpdatePreviousMark    = (offset.x <= 0);
-            isUpdateNextMark        = (offset.x >= (scrollView.width + self.subviewSpace) * 2);
+            isUpdateNextMark        = (offset.x >= (scrollView.width + paramSubviewSpace) * 2);
         }else {
             
             isUpdatePreviousMark    = (offset.y <= 0);
-            isUpdateNextMark        = (offset.y >= (scrollView.height + self.subviewSpace) * 2);
+            isUpdateNextMark        = (offset.y >= (scrollView.height + paramSubviewSpace) * 2);
         }
         
     }else {
@@ -717,19 +728,19 @@
         
         if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
             //当当前视图x坐标为0，但滑动视图偏移量为一个视图宽度时执行刷新 （YES 刷新）
-            isShouldUpdateNextView  = (_currentView.xOrigin == 0 && offset.x >= (scrollView.width + self.subviewSpace));
+            isShouldUpdateNextView  = (_currentView.xOrigin == 0 && offset.x >= (scrollView.width + paramSubviewSpace));
             
             isUpdatePreviousMark    = (offset.x <= 0) && !isMinIndex;
             
-            isUpdateNextMark        = (((offset.x >= (scrollView.width * 2 + self.subviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
+            isUpdateNextMark        = (((offset.x >= (scrollView.width * 2 + paramSubviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
         }else {
             
             //当当前视图y坐标为0，但滑动视图偏移量为一个视图高度时执行刷新 （YES 刷新）
-            isShouldUpdateNextView  = (_currentView.yOrigin == 0 && offset.y >= (scrollView.height + self.subviewSpace));
+            isShouldUpdateNextView  = (_currentView.yOrigin == 0 && offset.y >= (scrollView.height + paramSubviewSpace));
             
             isUpdatePreviousMark    = (offset.y <= 0) && !isMinIndex;
             
-            isUpdateNextMark        = (((offset.y >= (scrollView.height * 2 + self.subviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
+            isUpdateNextMark        = (((offset.y >= (scrollView.height * 2 + paramSubviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
         }
         
     }
@@ -737,7 +748,7 @@
     {
         //与是否循环滑动无关的条件
         //是否可以刷新
-        BOOL isShouldUpdate = ((isUpdateContentMark && self.pagingEnabled) || !self.pagingEnabled);
+        BOOL isShouldUpdate = ((isUpdateContentMark && self.pagingEnabled) || (!isDraggerPauseTimerMark && !isDeceleratingScrollSubviewMark) || !self.pagingEnabled);
         
         /**
          *  当应该刷新时，但因为目标滑动问题而停止刷新时，增加辅助视图，来改善页面的显示问题
@@ -815,6 +826,23 @@
         _isAutoScrollView = isAutoScrollView;
         if (!self.delayTimeInterval) {
             self.delayTimeInterval = 2;
+        }
+    }
+}
+
+- (void)setDelayTimeInterval:(NSTimeInterval)delayTimeInterval
+{
+    if (_delayTimeInterval != delayTimeInterval) {
+        
+        _delayTimeInterval  = delayTimeInterval;
+        if (self.window) {
+            
+            [self stopAutoScroll];
+            if (delayTimeInterval > 0) {
+                
+                [self stopAutoScroll];
+                [self startAutoScroll];
+            }
         }
     }
 }

@@ -45,9 +45,9 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 #pragma mark - 重置按钮布局
 - (void)cg_updateButtonLayout
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(cg_updateButtonLayout)
-                                               object:nil];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self
+//                                             selector:@selector(cg_updateButtonLayout)
+//                                               object:nil];
     
     [self setNeedsLayout];
 }
@@ -307,7 +307,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     if (buttonStyle != _buttonStyle) {
         _buttonStyle = buttonStyle;
-        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
+        [self cg_updateButtonLayout];
     }
 }
 
@@ -315,7 +315,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     if (space != _space) {
         _space = space;
-        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
+        [self cg_updateButtonLayout];
     }
 }
 
@@ -323,7 +323,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     if (!UIEdgeInsetsEqualToEdgeInsets(marginEdgeInsets, _marginEdgeInsets)) {
         _marginEdgeInsets = marginEdgeInsets;
-        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
+        [self cg_updateButtonLayout];
     }
 }
 
@@ -331,7 +331,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     if (contentAlignment != _contentAlignment) {
         _contentAlignment   = contentAlignment;
-        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
+        [self cg_updateButtonLayout];
     }
 }
 
