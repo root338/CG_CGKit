@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 自定义状态栏的颜色，默认为NO(和导航栏的背景色相同) */
 @property (nonatomic, assign) BOOL customStatusViewBackgroundColor;
 
+/** 自定义导航栏 */
 @property (nullable, nonatomic, strong, readonly) UINavigationBar *navigationBar;
+/** 内容视图 */
 @property (nullable, nonatomic, strong, readonly) UIView *contentView;
 
 /** 视图控制器视图 */
