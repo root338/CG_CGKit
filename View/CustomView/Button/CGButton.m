@@ -27,9 +27,6 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     ///YES表示正在cg_calculateAreaWithContentType:contentRect:方法中处理布局,
     BOOL _isCalculateAreaButtonContentView;
-    
-    ///YES表示自动计算按钮的适合大小
-    BOOL _sizeToFit;
 }
 
 @property (nonatomic, strong) UILabel *tempCalculateLabel;
@@ -72,26 +69,23 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     }
     
     CGSize imageSize = useCustomImageView ? self.imageViewSize : self.currentImage.size;
+        
+    imageSize   = CG_CGMinSize(contentRect.size, imageSize);
     
-    if (!_sizeToFit) {
+    if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
         
-        imageSize   = CG_CGMinSize(contentRect.size, imageSize);
-        
-        if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
-            
-            CGFloat contentWidth    = CGRectGetWidth(contentRect);
-            if (imageSize.width + self.space > contentWidth) {
-                imageSize.width     = contentWidth - self.space;
-            }
-            
-        }else {
-            
-            CGFloat contentHeight   = CGRectGetHeight(contentRect);
-            if (imageSize.height + self.space > contentHeight) {
-                imageSize.height    = contentHeight - self.space;
-            }
-            
+        CGFloat contentWidth    = CGRectGetWidth(contentRect);
+        if (imageSize.width + self.space > contentWidth) {
+            imageSize.width     = contentWidth - self.space;
         }
+        
+    }else {
+        
+        CGFloat contentHeight   = CGRectGetHeight(contentRect);
+        if (imageSize.height + self.space > contentHeight) {
+            imageSize.height    = contentHeight - self.space;
+        }
+        
     }
     
     return imageSize;
@@ -119,17 +113,14 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         titleSize   = [titleView sizeThatFits:CGSizeMake(FLT_MAX, FLT_MAX)];
     }
     
-    if (!_sizeToFit) {
-        
-        titleSize   = CG_CGMinSize(tempLabelSize, titleSize);
-    }
+    titleSize   = CG_CGMinSize(tempLabelSize, titleSize);
     
     return titleSize;
 }
 
 - (CGRect)cg_calculateAreaWithContentType:(_CGButtonContentType)paramContentType contentRect:(CGRect)contentRect
 {
-    if (((contentRect.size.width - self.space) <= 0 || (contentRect.size.height - self.space) <= 0 ) && !_sizeToFit) {
+    if (((contentRect.size.width - self.space) <= 0 || (contentRect.size.height - self.space) <= 0)) {
         return CGRectZero;
     }
     
@@ -281,12 +272,11 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     return imageRect;
 }
 
-- (void)sizeToFit
+- (CGSize)sizeThatFits:(CGSize)paramSize
 {
-    _sizeToFit = YES;
     //!!先使用imageView大小，在调用titleLabel大小，否则计算会出错，原因暂时没查
-    CGSize imageSize = self.imageView.size;
-    CGSize titleSize = self.titleLabel.size;
+    CGSize imageSize = self.currentImage.size;
+    CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
     
     CGSize size;
     
@@ -298,8 +288,8 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     
     size = CG_CGMaxSizeWidthSize(size, self.marginEdgeInsets);
     
-    self.size = size;
-    _sizeToFit = NO;
+    
+    return size;
 }
 
 #pragma mark - 属性设置

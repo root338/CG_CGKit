@@ -16,8 +16,8 @@
 #define CGPrintInfoOpen     0
 #else
 
-#define CGPrintLogOpen
-#define CGPrintInfoOpen
+#define CGPrintLogOpen      0
+#define CGPrintInfoOpen     0
 
 #endif
 

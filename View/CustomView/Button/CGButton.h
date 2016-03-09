@@ -38,6 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
 @property (nonatomic, assign) CGFloat titleLabelMaxWidth;
 
-- (void)sizeToFit;
+- (CGSize)sizeThatFits:(CGSize)size;
 @end
 NS_ASSUME_NONNULL_END
