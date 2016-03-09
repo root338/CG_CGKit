@@ -7,10 +7,12 @@
 //
 
 #import "CGTitleBaseView.h"
-#import "CGBaseButton.h"
+#import "CGButton.h"
 
+NS_ASSUME_NONNULL_BEGIN
 @interface CGTitleButtonView : CGTitleBaseView
 
-@property (strong, nonatomic, readonly) CGBaseButton *titleButton;
+@property (strong, nonatomic, readonly) CGButton *titleButton;
 
 @end
+NS_ASSUME_NONNULL_END

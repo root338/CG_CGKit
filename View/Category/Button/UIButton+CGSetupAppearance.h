@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIButton (CGSetupAppearance)
 
 /**
- *  设置按钮样式、标题、标题颜色和标题字体
+ *  设置按钮标题、标题颜色和标题字体
  *
  *  @param title      标题
  *  @param titleColor 标题颜色
@@ -21,7 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回创建好的按钮
  */
-- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font;
+- (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font;
+
+/** 设置按钮标题（颜色，字体）图像 */
+- (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImageName:(nullable NSString *)normalImageName;
 
 /**
  *  设置按钮样式、默认图片、选中图片
@@ -31,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回创建好的按钮
  */
-- (void)cg_setupWithNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
+- (void)cg_setupWithNormalImageName:(nullable NSString *)normalImageName selectImageName:(nullable NSString *)selectImageName;
 
 /**
  *  设置按钮样式、标题、标题颜色、标题字体和圆角
@@ -43,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回创建好的按钮
  */
-- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius;
+- (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius;
 
 /**
  *  设置按钮样式、标题、标题颜色、标题字体、外边框的宽度、颜色和圆角
@@ -57,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回创建好的按钮
  */
-- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor radius:(CGFloat)radius;
+- (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor radius:(CGFloat)radius;
 
 /**
  *  设置按钮样式、标题（颜色、字体）、图片名(NSString)和标题和图片的间距

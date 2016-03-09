@@ -32,6 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGButtonContentAlignment contentAlignment;
 //@property (nonatomic, assign) UIOffset imageViewOffset;
 
-- (void)sizeToFit;
+/** 指定imageView的大小 @warning 当图片不存在时也会占据显示区域 */
+@property (nonatomic, assign) CGSize imageViewSize;
+
+/** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
+@property (nonatomic, assign) CGFloat titleLabelMaxWidth;
+
+- (CGSize)sizeThatFits:(CGSize)size;
 @end
 NS_ASSUME_NONNULL_END

@@ -21,7 +21,7 @@
 {
     NSInteger _currentIndex;
 }
-@property (strong, nonatomic) CGCycleScrollView *cycleScrollView;
+@property (strong, nonatomic, readwrite) CGCycleScrollView *cycleScrollView;
 
 @property (strong, nonatomic, readwrite) UIPageControl *pageControl;
 @end
@@ -40,6 +40,7 @@
 - (void)initialization
 {
     _imageViewContentMode = UIViewContentModeScaleAspectFit;
+    
 }
 
 - (void)setupDataSourceWithObject:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock
@@ -72,11 +73,10 @@
     
     if (_cycleScrollView) {
         [self.cycleScrollView reloadAllView];
-    }else {
-        [self cycleScrollView];
-        [self addSubview:self.cycleScrollView];
-        [self setupCycleScrollViewFrame];
     }
+    
+    self.cycleScrollView.superview ?: [self addSubview:self.cycleScrollView];
+    [self setupCycleScrollViewFrame];
     
     if (self.isHidePageControl) {
         if (_pageControl.superview) {
@@ -106,6 +106,9 @@
 {
     UIImageView *imageView = [UIImageView cg_createImageViewWithContentMode:self.imageViewContentMode];
     [imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
+    if (self.setupImageViewContent) {
+        self.setupImageViewContent(imageView, index);
+    }
     return imageView;
 }
 
@@ -148,9 +151,10 @@
 
 - (void)setupCycleScrollViewFrame
 {
+    
     CGRect frame = CG_CGRectWithMargin(self.bounds, self.marginEdgeInset);
-    if (!CGRectEqualToRect(_cycleScrollView.frame, frame)) {
-        _cycleScrollView.frame = frame;
+    if (!CGRectEqualToRect(self.cycleScrollView.frame, frame)) {
+        self.cycleScrollView.frame = frame;
     }
 }
 
@@ -210,7 +214,8 @@
 
 - (void)setMarginEdgeInset:(UIEdgeInsets)marginEdgeInset
 {
-    if (UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInset, marginEdgeInset)) {
+    if (!UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInset, marginEdgeInset)) {
+        
         _marginEdgeInset = marginEdgeInset;
         [self setupCycleScrollViewFrame];
     }
@@ -222,5 +227,20 @@
         _marginEdgeInsetForSubview = marginEdgeInsetForSubview;
         self.cycleScrollView.marginEdgeInsetForSubviews = marginEdgeInsetForSubview;
     }
+}
+
+- (void)setContentViewSpace:(CGFloat)contentViewSpace
+{
+    if (_contentViewSpace != contentViewSpace) {
+        
+        _contentViewSpace   = contentViewSpace;
+        self.cycleScrollView.subviewSpace   = contentViewSpace;
+    }
+}
+
+- (void)setClipsToBounds:(BOOL)clipsToBounds
+{
+    [super setClipsToBounds:clipsToBounds];
+    self.cycleScrollView.clipsToBounds  = clipsToBounds;
 }
 @end

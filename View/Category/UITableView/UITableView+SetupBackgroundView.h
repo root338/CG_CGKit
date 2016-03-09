@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  主要用于在需要跟随tableView滑动而移动（比如：下拉刷新时背景视图也随着滑动而移动），系统的backgroundView 不满足需求
  *  @warning 不会自动随着页面的frame变化为自动变化，需要在tableView变化后手动设置，建议在优先考虑使用系统backgroundView属性
  */
-@property (strong, nonatomic) UIView * bgCustomView;
+@property (nullable, strong, nonatomic) UIView * bgCustomView;
 
 @end
 NS_ASSUME_NONNULL_END

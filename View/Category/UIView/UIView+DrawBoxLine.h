@@ -26,12 +26,14 @@ typedef NS_OPTIONS(NSInteger, DDrawLineType) {
 /**
  *  边框的宽度
  */
-@property (strong, nonatomic) NSNumber *lineWidth;
+@property (assign, nonatomic) CGFloat lineWidth;
 
 /**
  *  边框的颜色
  */
 @property (strong, nonatomic) UIColor *lineColor;
+
+@property (nonatomic, assign) DDrawLineType drawLineType;
 
 /**
  *  创建绘制对象

@@ -9,6 +9,7 @@
 #import "CGBaseView.h"
 #import "CGBlockdDefinitionHeader.h"
 
+@class CGCycleScrollView;
 /**
  *  分页视图的位置
  */
@@ -37,6 +38,9 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 滑动视图内部视图中子视图的外边距 */
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForSubview;
 
+/** 图像视图之间的间距 */
+@property (nonatomic, assign) CGFloat contentViewSpace;
+
 /** 点击回调 */
 @property (copy, nonatomic) cg_singleValueCallback clickIndexCallback;
 
@@ -45,6 +49,11 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 
 /** 图片加载的类型，默认UIViewContentModeScaleAspectFit */
 @property (assign, nonatomic) UIViewContentMode imageViewContentMode;
+
+/** 设置加载的图像视图 */
+@property (nonatomic, copy) void (^setupImageViewContent) (UIImageView *imageView, NSInteger index);
+
+@property (strong, nonatomic, readonly) CGCycleScrollView *cycleScrollView;
 
 #pragma mark - pageControl
 /** 是否显示分页视图，默认NO */

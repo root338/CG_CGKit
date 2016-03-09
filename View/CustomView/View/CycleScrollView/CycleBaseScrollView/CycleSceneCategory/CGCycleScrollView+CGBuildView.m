@@ -73,7 +73,7 @@
                 currentIndex = minIndex;
             }else {
                 
-                CGLog(@"加载的视图索引大于最大索引数(%li)，你设置为(%li)，自动重置为 %li", maxIndex, paramCurrentIndex, maxIndex);
+                CGLog(@"加载的视图索引大于最大索引数(%li)，你设置为(%li)，自动重置为 %li", (long)maxIndex, paramCurrentIndex, maxIndex);
                 currentIndex = maxIndex;
             }
         }else  {
@@ -83,7 +83,7 @@
                 currentIndex = maxIndex;
             }else {
                 
-                CGLog(@"初始加载的视图索引小于最小索引数(%li)，你设置为(%li)，自动重置为 %li", minIndex, paramCurrentIndex, minIndex);
+                CGLog(@"初始加载的视图索引小于最小索引数(%li)，你设置为(%li)，自动重置为 %li", (long)minIndex, paramCurrentIndex, minIndex);
                 currentIndex = minIndex;
             }
         }
