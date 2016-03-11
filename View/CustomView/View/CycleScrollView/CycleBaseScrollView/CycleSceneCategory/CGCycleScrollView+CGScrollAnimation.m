@@ -16,20 +16,23 @@
 
 @implementation CGCycleScrollView (CGScrollAnimation)
 
-- (void)cg_scrollWithScrollView:(UIScrollView *)scrollView previousView:(UIView *)previousView currentView:(UIView *)currentView nextView:(UIView *)nextView animationStyle:(CGCycleViewScrollAnimationStyle)style
+- (void)cg_scrollWithScrollView:(UIScrollView *)scrollView animationStyle:(CGCycleViewScrollAnimationStyle)style
 {
-    switch (style) {
-        case CGCycleViewScrollAnimationStyleAnimation1:
-        {
-            [previousView cg_scrollOneAnimationWithScrollView:scrollView];
-            [currentView cg_scrollOneAnimationWithScrollView:scrollView];
-            [nextView cg_scrollOneAnimationWithScrollView:scrollView];
-        }
-            break;
-            
-        default:
-            break;
+    if (style == CGCycleViewScrollAnimationStyleNone) {
+        return;
     }
+    [scrollView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        switch (style) {
+            case CGCycleViewScrollAnimationStyleAnimation1:
+            {
+                [obj cg_scrollOneAnimationWithScrollView:scrollView];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
 }
 
 @end
@@ -46,10 +49,11 @@
     CGRect scrollViewVisibleRect    = (CGRect){scrollView.contentOffset, scrollView.size};
     
     CATransform3D transform = CATransform3DIdentity;
-    transform.m34           = -1.0 / 200;
+    
+    transform.m34           = -1.0 / 300;
     
     /** 最大旋转角度 */
-    CGFloat maxAngle        = 3.0;
+    CGFloat maxAngle        = 5.0;
     CGFloat maxScaleX       = 1.0;
     CGFloat scaleX          = maxScaleX;
     CGFloat scaleY          = maxScaleX;
@@ -62,6 +66,7 @@
         
     }else if (space > scrollView.width) {
         angle   = maxAngle;
+        
     }else {
         angle   = space * (maxAngle / scrollView.width);
 //        scaleX  = space * (maxScaleX / scrollView.width);
@@ -73,6 +78,10 @@
     
     transform               = CATransform3DScale(transform, scaleX, scaleY, scaleZ);
     transform               = CATransform3DRotate(transform, radian, 0, 1, 0);
+    
+//    transform   = CATransform3DTranslate(transform, 0, 0, -10);
+    
+//    layer.anchorPointZ      = 50;
     layer.transform         = transform;
 }
 

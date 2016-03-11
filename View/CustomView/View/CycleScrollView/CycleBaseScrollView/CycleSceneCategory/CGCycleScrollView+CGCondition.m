@@ -38,7 +38,7 @@
         }
     }else {
         
-        CGErrorLog(@"指定的当前索引(%li)超出索引范围(0 ~ %li)", (long)paramCurrentIndex, self.totalViewNumber);
+        CGErrorLog(@"指定的当前索引(%li)超出索引范围(0 ~ %li)", (long)paramCurrentIndex, (long)self.totalViewNumber);
     }
     return isResult;
 }

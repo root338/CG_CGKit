@@ -18,10 +18,16 @@
     
 }
 
-@property (strong, nonatomic) UIButton *cycleContentButton;
 @end
 
 @implementation CGCycleContentView
+
+/** 固定视图样式 */
++ (instancetype)buttonWithType:(UIButtonType)buttonType
+{
+    CGErrorConditionLog(buttonType != UIButtonTypeCustom, @"按钮样式只能是UIButtonTypeCustom，已自动转换");
+    return [super buttonWithType:UIButtonTypeCustom];
+}
 
 + (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index
 {
@@ -39,11 +45,19 @@
     return cycleContentView;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self addTarget:self action:@selector(handleClickAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return self;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     self.contentView.frame          = CG_CGRectWithMargin(self.bounds, self.marginEdgeInsets);
-    self.cycleContentButton.frame   = self.bounds;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -51,8 +65,6 @@
     [super willMoveToSuperview:newSuperview];
     if (newSuperview) {
         
-        self.cycleContentButton.superview ?: [self insertSubview:self.cycleContentButton atIndex:0];
-        self.cycleContentButton.frame = self.bounds;
     }
 }
 
@@ -80,14 +92,4 @@
     }
 }
 
-- (UIButton *)cycleContentButton
-{
-    if (_cycleContentButton) {
-        return _cycleContentButton;
-    }
-    
-    _cycleContentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_cycleContentButton addTarget:self action:@selector(handleClickAction:) forControlEvents:UIControlEventTouchUpInside];
-    return _cycleContentButton;
-}
 @end

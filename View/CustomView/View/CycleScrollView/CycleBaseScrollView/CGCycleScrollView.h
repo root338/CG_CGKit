@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CGScrollViewDirectionHeader.h"
+
 @class CGCycleScrollView;
 
 /**
@@ -161,6 +163,13 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 
 /** 滑动视图的滑动方向 */
 @property (assign, nonatomic) CGCycleViewScrollDirection scrollDirection;
+
+/** 是否开启滑动视图滑动方向的监听 */
+@property (nonatomic, assign) BOOL enableScrollDirectionMonitor;
+
+/** 滑动视图滑动的方向 */
+@property (nonatomic, assign, readonly) CGScrollDirectionType scrollDirectionType;
+
 
 /** 
  *  关闭默认计时器设定(默认为NO)

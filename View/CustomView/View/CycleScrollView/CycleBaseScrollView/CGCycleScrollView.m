@@ -8,6 +8,7 @@
 
 #import "CGCycleScrollView.h"
 
+#import "CGScrollView.h"
 /** CGCycleContentView的子类 */
 #import "CGCycleContentView.h"
 
@@ -56,7 +57,7 @@
 }
 
 ///加载的滑动视图
-@property (nonatomic, strong) UIScrollView *cycleScrollView;
+@property (nonatomic, strong) CGScrollView *cycleScrollView;
 
 /** 被缓存的视图 */
 @property (strong, nonatomic, readwrite) NSMutableDictionary *cacheViews;
@@ -167,16 +168,7 @@
 {
     [super willMoveToWindow:newWindow];
     
-    if (!self.isCloseDefaultTimerSetting) {
-        if (newWindow) {
-            
-            [self startAutoScroll];
-            
-        }else {
-            
-            [self pasueAutoScroll];
-        }
-    }
+    [self setupTimerWithWindows:newWindow];
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -186,6 +178,20 @@
     if (!self.isCloseDefaultTimerSetting && !newSuperview) {
         
         [self stopAutoScroll];
+    }
+}
+
+- (void)setupTimerWithWindows:(UIWindow *)newWindow
+{
+    if (!self.isCloseDefaultTimerSetting) {
+        
+        if (newWindow) {
+            
+            [self startAutoScroll];
+        }else {
+            
+            [self pasueAutoScroll];
+        }
     }
 }
 
@@ -199,6 +205,8 @@
     [self removeAllCacheViews];
     [self setupScrollContentView];
     [self reloadPageView];
+    
+    [self cg_scrollWithScrollView:self.cycleScrollView animationStyle:self.animationStyle];
 }
 
 - (void)reloadPageView
@@ -368,9 +376,6 @@
 
 - (void)addAideViewToCycleScrollViewWithType:(_CGCycleSubviewType)type
 {
-    if (_aideView.superview) {
-        return;
-    }
     BOOL isShouldAdd = NO;
     NSInteger targetIndex = 0;
     NSInteger willCurrentIndex = 0;
@@ -378,11 +383,7 @@
     
     if (type == _CGCycleSubviewTypePreviousIndex || type == _CGCycleSubviewTypeNextIndex) {
         
-        if (type == _CGCycleSubviewTypePreviousIndex) {
-            willCurrentCycleContentView = _previousView;
-        }else {
-            willCurrentCycleContentView = _nextView;
-        }
+        willCurrentCycleContentView = [self getWillShowCycleContentViewWithType:type];
         
         if (willCurrentCycleContentView) {
             
@@ -399,34 +400,61 @@
     }
     
     if (isShouldAdd) {
-        
-        _aideView = [self createCycleContentViewAtIndex:targetIndex];
-        CGRect frame = willCurrentCycleContentView.frame;
-        BOOL isScrollDirectionHorizontal = (self.scrollDirection == CGCycleViewScrollDirectionHorizontal);
-        BOOL isNextIndex = (type == _CGCycleSubviewTypeNextIndex);
-        
-        if (isScrollDirectionHorizontal) {
-            CGFloat targetWidthSpace = self.subviewSpace + CGRectGetWidth(frame);
-            if (isNextIndex) {
-                frame.origin.x += targetWidthSpace;
-            }else {
-                frame.origin.x -= targetWidthSpace;
+        if (_aideView.viewIndex != targetIndex) {
+            if (_aideView.superview) {
+                [_aideView removeFromSuperview];
             }
-        }else {
-            
-            CGFloat targetHeightSpace = self.subviewSpace + CGRectGetHeight(frame);
-            if (isNextIndex) {
-                frame.origin.y += targetHeightSpace;
-            }else {
-                frame.origin.y -= targetHeightSpace;
-            }
+            _aideView = [self createCycleContentViewAtIndex:targetIndex];
         }
         
-        _aideView.frame = frame;
+        _aideView.frame = [self updateAideViewFrameWithType:type];
+        
         [self.cycleScrollView addSubview:_aideView];
         
         CGInfoLog(@"加载辅助视图");
     }
+}
+
+/** 获取将要将要显示的内容视图 */
+- (CGCycleContentView *)getWillShowCycleContentViewWithType:(_CGCycleSubviewType)type
+{
+    CGCycleContentView *willCurrentCycleContentView = nil;
+    if (type == _CGCycleSubviewTypePreviousIndex) {
+        
+        willCurrentCycleContentView = _previousView;
+    }else {
+        
+        willCurrentCycleContentView = _nextView;
+    }
+    return willCurrentCycleContentView;
+}
+
+/** 设置辅助视图的显示区域 */
+- (CGRect)updateAideViewFrameWithType:(_CGCycleSubviewType)type
+{
+    CGCycleContentView *willCurrentCycleContentView = [self getWillShowCycleContentViewWithType:type];
+    CGRect frame = willCurrentCycleContentView.frame;
+    BOOL isScrollDirectionHorizontal = (self.scrollDirection == CGCycleViewScrollDirectionHorizontal);
+    BOOL isNextIndex = (type == _CGCycleSubviewTypeNextIndex);
+    
+    if (isScrollDirectionHorizontal) {
+        CGFloat targetWidthSpace = self.subviewSpace + CGRectGetWidth(frame);
+        if (isNextIndex) {
+            frame.origin.x += targetWidthSpace;
+        }else {
+            frame.origin.x -= targetWidthSpace;
+        }
+    }else {
+        
+        CGFloat targetHeightSpace = self.subviewSpace + CGRectGetHeight(frame);
+        if (isNextIndex) {
+            frame.origin.y += targetHeightSpace;
+        }else {
+            frame.origin.y -= targetHeightSpace;
+        }
+    }
+    
+    return frame;
 }
 
 #pragma mark - 更新布局
@@ -546,8 +574,6 @@
     [self updateCycleScrollViewLayoutSubviews];
     
 }
-
-
 
 ///设置滑动内容视图
 - (void)setupScrollContentView
@@ -685,9 +711,6 @@
     [self scrollView:scrollView isMinUpdateContentMark:isDraggerScrollSubviewMark];
     
     [self cg_scrollWithScrollView:scrollView
-                     previousView:_previousView
-                      currentView:_currentView
-                         nextView:_nextView
                    animationStyle:self.animationStyle];
 }
 
@@ -755,13 +778,14 @@
          *  具体原因看声明isDraggerScrollSubviewMark变量的说明
          */
         
-        if (scrollView.decelerating) {
-            
+        if (scrollView.decelerating || scrollView.dragging) {
+        
             _CGCycleSubviewType type = _CGCycleSubviewTypeCurrentIndex;
-            if (isUpdatePreviousMark && !isShouldUpdate) {
+            
+            if (self.cycleScrollView.scrollDirectionType == CGScrollDirectionTypeRight) {
                 type = _CGCycleSubviewTypePreviousIndex;
             }
-            if (isUpdateNextMark && !isShouldUpdate) {
+            if (self.cycleScrollView.scrollDirectionType == CGScrollDirectionTypeLeft) {
                 type = _CGCycleSubviewTypeNextIndex;
             }
             if (type != _CGCycleSubviewTypeCurrentIndex) {
@@ -789,6 +813,15 @@
 - (void)dealloc
 {
     CGLog(@"已释放");
+}
+
+#pragma mark - 属性内部方法
+- (void)setupAutoScrollTimer
+{
+    if (self.isAutoScrollView) {
+        [self stopAutoScroll];
+        [self setupTimerWithWindows:self.window];
+    }
 }
 
 #pragma mark - 属性设置
@@ -826,24 +859,23 @@
         _isAutoScrollView = isAutoScrollView;
         if (!self.delayTimeInterval) {
             self.delayTimeInterval = 2;
+        }else {
+            [self setupAutoScrollTimer];
         }
     }
 }
 
 - (void)setDelayTimeInterval:(NSTimeInterval)delayTimeInterval
 {
+    if (delayTimeInterval <= 0) {
+        CGErrorConditionLog(delayTimeInterval <= 0, @"自动滑动的时间不应小于0");
+        return;
+    }
     if (_delayTimeInterval != delayTimeInterval) {
         
         _delayTimeInterval  = delayTimeInterval;
-        if (self.window) {
-            
-            [self stopAutoScroll];
-            if (delayTimeInterval > 0) {
-                
-                [self stopAutoScroll];
-                [self startAutoScroll];
-            }
-        }
+        
+        [self setupAutoScrollTimer];
     }
 }
 
@@ -868,7 +900,7 @@
         return _cycleScrollView;
     }
     
-    _cycleScrollView = [UIScrollView cg_createWithScrollViewWithShowScrollIndicator:NO pagingEnabled:NO];
+    _cycleScrollView = [CGScrollView cg_createWithScrollViewWithShowScrollIndicator:NO pagingEnabled:NO];
     _cycleScrollView.delegate = self;
     return _cycleScrollView;
 }
@@ -888,4 +920,16 @@
     [super setClipsToBounds:clipsToBounds];
     self.cycleScrollView.clipsToBounds  = clipsToBounds;
 }
+
+- (void)setEnableScrollDirectionMonitor:(BOOL)enableScrollDirectionMonitor
+{
+    _enableScrollDirectionMonitor   = enableScrollDirectionMonitor;
+    self.cycleScrollView.enableScrollDirectionMonitor   = enableScrollDirectionMonitor;
+}
+
+- (CGScrollDirectionType)scrollDirectionType
+{
+    return self.cycleScrollView.scrollDirectionType;
+}
+
 @end
