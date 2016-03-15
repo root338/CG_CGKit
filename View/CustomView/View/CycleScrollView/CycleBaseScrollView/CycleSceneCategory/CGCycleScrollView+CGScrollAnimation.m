@@ -7,6 +7,7 @@
 //
 
 #import "CGCycleScrollView+CGScrollAnimation.h"
+#import "CGAngleRadianHeader.h"
 
 @interface UIView (CGCycleScrollViewAnimation)
 
@@ -21,7 +22,8 @@
     if (style == CGCycleViewScrollAnimationStyleNone) {
         return;
     }
-    [scrollView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSArray *subviews = scrollView.subviews;
+    [subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         switch (style) {
             case CGCycleViewScrollAnimationStyleAnimation1:
             {
@@ -48,40 +50,29 @@
     
     CGRect scrollViewVisibleRect    = (CGRect){scrollView.contentOffset, scrollView.size};
     
-    CATransform3D transform = CATransform3DIdentity;
-    
-    transform.m34           = -1.0 / 300;
-    
     /** 最大旋转角度 */
     CGFloat maxAngle        = 5.0;
-    CGFloat maxScaleX       = 1.0;
-    CGFloat scaleX          = maxScaleX;
-    CGFloat scaleY          = maxScaleX;
-    CGFloat scaleZ          = maxScaleX;
     CGFloat angle           = 0;
     CGFloat space           = CGRectGetMidX(scrollViewVisibleRect) - self.centerX;
     
     if (space < -scrollView.width) {
+        
         angle   = -maxAngle;
-        
     }else if (space > scrollView.width) {
-        angle   = maxAngle;
         
+        angle   = maxAngle;
     }else {
+        
         angle   = space * (maxAngle / scrollView.width);
-//        scaleX  = space * (maxScaleX / scrollView.width);
-//        scaleY  = space * (maxScaleX / scrollView.width);
         
     }
     
-    CGFloat radian          = angle / 180.0 * M_PI;
+    CGFloat radian          = _CG_RadianForAngle(angle);
     
-    transform               = CATransform3DScale(transform, scaleX, scaleY, scaleZ);
+    CATransform3D transform = CATransform3DIdentity;
+    transform.m34           = -1.0 / 300;
     transform               = CATransform3DRotate(transform, radian, 0, 1, 0);
-    
-//    transform   = CATransform3DTranslate(transform, 0, 0, -10);
-    
-//    layer.anchorPointZ      = 50;
+//    layer.anchorPoint       = CGPointMake(0, 0.5);
     layer.transform         = transform;
 }
 

@@ -165,7 +165,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 @property (assign, nonatomic) CGCycleViewScrollDirection scrollDirection;
 
 /** 是否开启滑动视图滑动方向的监听 */
-@property (nonatomic, assign) BOOL enableScrollDirectionMonitor;
+//@property (nonatomic, assign) BOOL enableScrollDirectionMonitor;
 
 /** 滑动视图滑动的方向 */
 @property (nonatomic, assign, readonly) CGScrollDirectionType scrollDirectionType;

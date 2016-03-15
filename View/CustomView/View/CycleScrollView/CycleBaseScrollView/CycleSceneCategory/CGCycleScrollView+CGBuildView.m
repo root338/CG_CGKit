@@ -46,11 +46,12 @@
 {
     
     void (^completionBlock)(BOOL, NSInteger, NSInteger) = ^(BOOL isSuccess, NSInteger paramCurrentIndex, NSInteger viewIndex){
-    
+        
         if (completion) {
             completion(isSuccess, paramCurrentIndex, viewIndex);
         }
     };
+    
     //更新当前显示索引
     if (paramCurrentIndex >= self.totalViewNumber || paramCurrentIndex < 0) {
         
@@ -94,13 +95,7 @@
     //更新当前显示索引前后索引
     NSInteger viewIndex = paramCurrentIndex + subviewType;
     
-    if (viewIndex < 0) {
-        viewIndex = self.totalViewNumber - 1;
-    }
-    
-    if (viewIndex >= self.totalViewNumber) {
-        viewIndex = 0;
-    }
+    viewIndex   = [self cg_getViewIndexWithIndex:viewIndex];
     
     BOOL issuccess = [self isShouldCreateViewWithIndex:viewIndex currentIndex:paramCurrentIndex type:subviewType];
     if (!issuccess && self.isCycle) {
@@ -110,6 +105,23 @@
     }
     
     completionBlock(issuccess, paramCurrentIndex, viewIndex);
+}
+
+- (NSInteger)cg_getViewIndexWithIndex:(NSInteger)paramViewIndex
+{
+    if (paramViewIndex >= 0 && paramViewIndex < self.totalViewNumber) {
+        return paramViewIndex;
+    }
+    
+    if (paramViewIndex < 0) {
+        paramViewIndex = self.totalViewNumber + paramViewIndex;
+    }
+    
+    if (paramViewIndex >= self.totalViewNumber) {
+        paramViewIndex = paramViewIndex - self.totalViewNumber;
+    }
+    
+    return paramViewIndex;
 }
 
 @end

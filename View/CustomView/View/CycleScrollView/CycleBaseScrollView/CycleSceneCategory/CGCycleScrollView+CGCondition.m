@@ -27,15 +27,23 @@
     BOOL isResult = NO;
     if (paramCurrentIndex >= 0 && paramCurrentIndex < self.totalViewNumber && ((type != _CGCycleSubviewTypeCurrentIndex && index >= 0 && index < self.totalViewNumber) || type == _CGCycleSubviewTypeCurrentIndex)) {
         
-        if (_CGCycleSubviewTypeCurrentIndex == type) {
-            isResult = YES;
-        }else if (_CGCycleSubviewTypePreviousIndex == type) {
-            isResult = !(!self.isCycle && index >= paramCurrentIndex);
-        }else if (_CGCycleSubviewTypeNextIndex == type) {
-            isResult = !(!self.isCycle && index <= paramCurrentIndex);
-        }else {
-            CGErrorLog(@"指定的判断类型不存在");
+        switch (type) {
+            case _CGCycleSubviewTypePreviousAideView:
+            case _CGCycleSubviewTypePreviousIndex:
+                isResult = !(!self.isCycle && index >= paramCurrentIndex);
+                break;
+            case _CGCycleSubviewTypeCurrentIndex:
+                isResult = YES;
+                break;
+            case _CGCycleSubviewTypeNextIndex:
+            case _CGCycleSubviewTypeNextAideView:
+                isResult = !(!self.isCycle && index <= paramCurrentIndex);
+                break;
+            default:
+                CGErrorLog(@"指定的判断类型不存在");
+                break;
         }
+        
     }else {
         
         CGErrorLog(@"指定的当前索引(%li)超出索引范围(0 ~ %li)", (long)paramCurrentIndex, (long)self.totalViewNumber);
