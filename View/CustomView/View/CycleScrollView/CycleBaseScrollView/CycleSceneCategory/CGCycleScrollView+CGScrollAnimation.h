@@ -9,6 +9,7 @@
 #import "CGCycleScrollView.h"
 
 NS_ASSUME_NONNULL_BEGIN
+/** 滑动时的动画 */
 @interface CGCycleScrollView (CGScrollAnimation)
 
 - (void)cg_scrollWithScrollView:(UIScrollView *)scrollView animationStyle:(CGCycleViewScrollAnimationStyle)style;
