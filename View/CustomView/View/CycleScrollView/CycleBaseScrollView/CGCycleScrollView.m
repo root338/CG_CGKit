@@ -58,6 +58,9 @@
     BOOL isDeceleratingScrollSubviewMark;
 }
 
+/** 滑动视图添加的视图集 */
+//@property (nonatomic, strong) NSMutableDictionary *cycleContentViews;
+
 ///加载的滑动视图
 @property (nonatomic, strong) CGScrollView *cycleScrollView;
 
