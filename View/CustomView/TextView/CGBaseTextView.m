@@ -30,11 +30,6 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [self initialization];
-}
-
 - (void)initialization
 {
     
