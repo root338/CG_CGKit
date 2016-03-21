@@ -26,20 +26,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isCacheInputViews;
 
 /** 缓存的输入视图 */
-@property (strong, nonatomic) NSArray<UIView *> *cacheInputViews;
+@property (nullable, strong, nonatomic) NSArray<UIView *> *cacheInputViews;
 
 #pragma mark - 只能在当前视图内寻找
 /** 搜索当前视图内，下一个可输入视图 */
-- (UIView *)searchNextWithCurrentInputView:(UIView *)currentInputView;
+- (nullable UIView *)searchNextWithCurrentInputView:(UIView *)currentInputView;
 
 /** 搜索当前视图内，上一个可输入视图 */
-- (UIView *)searchPreviousWithCurrentInputView:(UIView *)currentInputView;
+- (nullable UIView *)searchPreviousWithCurrentInputView:(UIView *)currentInputView;
 
 /** 
  *  搜索当前视图的输入控件 
  *  @param 只返回当前搜索到得第一个输入控件
  */
-- (UIView *)searchInputTextControl;
+- (nullable UIView *)searchInputTextControl;
 
 /**
  *  搜索指定类的视图
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回搜索后的结果
  */
-- (NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne targetViewClassArray:(NSArray<Class> *)targetViewClassArray;
+- (nullable NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne targetViewClassArray:(NSArray<Class> *)targetViewClassArray;
 @end
 
 NS_ASSUME_NONNULL_END

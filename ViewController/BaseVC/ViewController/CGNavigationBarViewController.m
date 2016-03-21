@@ -29,10 +29,11 @@
     return CGRectMake(0, 0, self.navigationController ? self.navigationController.navigationBar.width : self.view.width, 20);
 }
 
+/** 当状态栏高度为0，自动设置状态栏高度为64 */
 - (CGRect)cg_navigationBarFrame
 {
     CGRect statusViewFrame = [self cg_statusViewFrame];
-    return (CGRect){CGPointMake(0, CGRectGetMaxY(statusViewFrame)), self.navigationController ? self.navigationController.navigationBar.size : CGSizeMake(CGRectGetWidth(statusViewFrame), 44)};
+    return (CGRect){CGPointMake(0, CGRectGetMaxY(statusViewFrame)), self.navigationController ? self.navigationController.navigationBar.size : CGSizeMake(CGRectGetWidth(statusViewFrame), CGRectGetHeight(statusViewFrame) == 0 ? 64 : 44)};
 }
 
 - (void)viewDidLoad

@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 }
 
 @property (nonatomic, strong) UILabel *tempCalculateLabel;
+
 @end
 
 @implementation CGButton
@@ -158,7 +159,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         
         contentPoint.x          = (contentWidth - tempTargetSize.width) / 2.0;
         
-        switch (self.contentAlignment) {
+        switch (self.contentSubviewAlignment) {
             case CGButtonContentAlignmentTop:
             {
                 contentPoint.y          = 0;
@@ -206,7 +207,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         CGPoint contentPoint;
         contentPoint.y  = (contentHeight - tempTargetSize.height) / 2.0;
         
-        switch (self.contentAlignment) {
+        switch (self.contentSubviewAlignment) {
             case CGButtonContentAlignmentLeft:
             {
                 contentPoint.x  = 0;
@@ -317,10 +318,10 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     }
 }
 
-- (void)setContentAlignment:(CGButtonContentAlignment)contentAlignment
+- (void)setContentSubviewAlignment:(CGButtonContentAlignment)contentSubviewAlignment
 {
-    if (contentAlignment != _contentAlignment) {
-        _contentAlignment   = contentAlignment;
+    if (contentSubviewAlignment != _contentSubviewAlignment) {
+        _contentSubviewAlignment   = contentSubviewAlignment;
         [self cg_updateButtonLayout];
     }
 }

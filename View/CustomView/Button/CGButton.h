@@ -29,7 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** contentView距离外边框之间的间距 */
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
 /** 标题和图片的对齐方式 */
-@property (nonatomic, assign) CGButtonContentAlignment contentAlignment;
+@property (nonatomic, assign) CGButtonContentAlignment contentSubviewAlignment;
+
+//@property (nonatomic, assign) UIControlContentHorizontalAlignment   contentViewHorizontalAlignment;
+//@property (nonatomic, assign) UIControlContentVerticalAlignment     contentViewVerticalAlignment;
 //@property (nonatomic, assign) UIOffset imageViewOffset;
 
 /** 指定imageView的大小 @warning 当图片不存在时也会占据显示区域 */

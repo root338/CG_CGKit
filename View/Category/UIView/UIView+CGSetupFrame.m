@@ -197,13 +197,26 @@
 
 - (void)cg_setupCenterWithView:(UIView *)paramView
 {
-    self.center = CGPointMake(paramView.width / 2.0, paramView.height / 2.0);
+    self.center = [self cg_centerOriginWithTargetView:paramView];
 }
 
 - (void)cg_setupFrameWithCenter:(CGPoint)paramCenter size:(CGSize)paramSize
 {
     self.center = paramCenter;
     self.size   = paramSize;
+}
+
+- (CGPoint)cg_centerOrigin
+{
+    if (!self.superview) {
+        return CGPointZero;
+    }
+    return [self cg_centerOriginWithTargetView:self.superview];
+}
+
+- (CGPoint)cg_centerOriginWithTargetView:(UIView *)targetView
+{
+    return CGPointMake(targetView.width / 2.0, targetView.height / 2.0);
 }
 
 @end

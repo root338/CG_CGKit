@@ -20,7 +20,6 @@
 + (instancetype)cg_createDefaultLabel
 {
     UILabel *label = [self cg_createLabel];
-    
     [label cg_setupDefaultLabel];
     
     return label;
@@ -31,6 +30,13 @@
     UILabel *label = [self cg_createLabel];
     [label cg_setupWithText:text font:font textColor:textColor];
     
+    return label;
+}
+
++ (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment
+{
+    UILabel *label  = [self cg_createLabel];
+    [label cg_setupWithText:text font:font textColor:textColor textAlignment:textAlignment];
     return label;
 }
 

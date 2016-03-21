@@ -34,6 +34,7 @@
 {
     [self createNavigationBar];
 //    [self addNavigationBarAndContentViewSubviews];
+    
 }
 
 #pragma mark - 设置 navigationBar 和 contentView
@@ -71,18 +72,19 @@
     }
     
     CGRect navigationBarFrame   = [self.delegate cg_navigationBarFrame];
-    self.navigationBar.frame    = navigationBarFrame;
-    if ([self cg_addSubview:self.navigationBar]) {
-        
-        //对导航栏进行设置
-        [self cg_setupNavigationBarAppearance];
-    }
     
     self.contentView.frame      = CGRectMake(0, CGRectGetMaxY(navigationBarFrame), self.width, self.height - CGRectGetMaxY(navigationBarFrame));
     if ([self cg_addSubview:self.contentView]) {
         
         //对内容视图进行设置
         [self cg_setupContentViewAppearance];
+    }
+    
+    self.navigationBar.frame    = navigationBarFrame;
+    if ([self cg_addSubview:self.navigationBar]) {
+        
+        //对导航栏进行设置
+        [self cg_setupNavigationBarAppearance];
     }
 }
 
@@ -108,6 +110,7 @@
     }
     
     _contentView = [[UIView alloc] initWithFrame:CGRectZero];
+//    _contentView.backgroundColor    = [UIColor whiteColor];
     
     return _contentView;
 }

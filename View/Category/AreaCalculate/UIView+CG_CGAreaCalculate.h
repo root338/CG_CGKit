@@ -33,6 +33,16 @@ UIKIT_STATIC_INLINE CGFloat CG_CGMaxHeightWithHeight(CGFloat height, UIEdgeInset
     return edgeInsets.top + height + edgeInsets.bottom;
 }
 
+/** 计算视图 中心 x 坐标 */
+UIKIT_STATIC_INLINE CGFloat CG_CGCenterOriginX(CGFloat viewWidth, CGFloat superviewWidth) {
+    return (superviewWidth - viewWidth) / 2.0;
+}
+
+/** 计算视图 中心 y 坐标 */
+UIKIT_STATIC_INLINE CGFloat CG_CGCenterOriginY(CGFloat viewHeight, CGFloat superviewHeight) {
+    return (superviewHeight - viewHeight) / 2.0;
+}
+
 #pragma mark - CGSize
 /** 计算 { maxWith - (left + right), maxHeight - (top + bottom) } */
 UIKIT_STATIC_INLINE CGSize CG_CGSizeWidthMaxSize(CGSize maxSize, UIEdgeInsets edgeInsets)

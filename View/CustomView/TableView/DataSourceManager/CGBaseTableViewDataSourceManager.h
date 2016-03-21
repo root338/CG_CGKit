@@ -11,6 +11,7 @@
 
 @class CGBaseTableViewCell;
 
+NS_ASSUME_NONNULL_BEGIN
 /** 手动设置tableView 多少组 */
 typedef NSUInteger (^CGNumberOfSectionsInTableView) (UITableView *tableView);
 
@@ -18,13 +19,13 @@ typedef NSUInteger (^CGNumberOfSectionsInTableView) (UITableView *tableView);
 typedef NSInteger (^CGTableViewNumberOfRowsInSection) (UITableView *tableView, NSInteger section);
 
 /** 获取tableView indexPath 下的 cell Identifier */
-typedef id (^CGTableViewReusableCellIdentifier) (UITableView *tableView, NSIndexPath *indexPath);
+typedef _Nonnull id (^CGTableViewReusableCellIdentifier) (UITableView *tableView, NSIndexPath *indexPath);
 
 /** 获取 tableView 中 indexPath 下的数据 */
-typedef id (^CGTableViewDataSourceAtIndexPath) (UITableView *tableView, NSIndexPath *indexPath);
+typedef _Nonnull id (^CGTableViewDataSourceAtIndexPath) (UITableView *tableView, NSIndexPath *indexPath);
 
 /** 设置cell的block  */
-typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCell *cell, NSIndexPath *indexPath, id data);
+typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGBaseTableViewCell *cell, NSIndexPath *indexPath, id data);
 
 /**
  *  tableView的数据管理类
@@ -44,7 +45,7 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
 @property (assign, nonatomic) NSInteger sectionNumber;
 
 /** cell的唯一标识 */
-@property (strong, nonatomic) NSString *cellIdentifier;
+@property (nullable, strong, nonatomic) NSString *cellIdentifier;
 
 /** 
  *  设置tableView 的 row 数，且每组 row 都为设置值
@@ -54,7 +55,7 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
 @property (assign, nonatomic) NSInteger rowNumberForAllSections;
 
 /** 需要加载的数据 */
-@property (strong, nonatomic) NSArray *dataSource;
+@property (nullable, strong, nonatomic) NSArray *dataSource;
 
 /** 
  *  设置 tableView 每组的 row 值
@@ -62,14 +63,14 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
  *  @warning 优先级最高，当设置该block时，会忽略numberRowForAllSections,dataSource.count的值
  *  设置此block时应该同时设置dataSourceAtIndexPath值
  */
-@property (copy, nonatomic) CGTableViewNumberOfRowsInSection numberOfRowsAtTableViewSection;
+@property (nullable, copy, nonatomic) CGTableViewNumberOfRowsInSection numberOfRowsAtTableViewSection;
 
 /**
  *  获取 indexPath 下的cell的 Identifier
  *  应该在多cell下使用
  *  @warning 返回的数据类型应为NSString对象 或 Class 值
  */
-@property (copy, nonatomic) CGTableViewReusableCellIdentifier reusableCellIdentifier;
+@property (nullable, copy, nonatomic) CGTableViewReusableCellIdentifier reusableCellIdentifier;
 
 /**
  *  获取 tableView 中 indexPath 下的数据
@@ -93,7 +94,7 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
  *  @param setupCellBlock 设置cell的方法
  *
  */
-- (void)setupDataSource:(NSArray *)dataSource cellIdentifierForString:(NSString *)cellIdentifier setupCellBlock:(CGSetupTableViewCell)setupCellBlock;
+- (void)setupDataSource:(nullable NSArray *)dataSource cellIdentifierForString:(nullable NSString *)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
 
 /**
  *  设置管理类（数据、cell标识（Class）、设置cell block）
@@ -103,7 +104,7 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
  *  @param setupCellBlock 设置cell的方法
  *
  */
-- (void)setupDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(CGSetupTableViewCell)setupCellBlock;
+- (void)setupDataSource:(nullable NSArray *)dataSource cellIdentifierForClass:(nullable Class)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
 
 /**
  *  初始化管理类，并设置（数据、cell标识（NSString）、设置cell block）
@@ -113,5 +114,6 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, CGBaseTableViewCel
  *  @param setupCellBlock 设置cell的方法
  *
  */
-- (instancetype)initWithDataSource:(NSArray *)dataSource cellIdentifierForString:(NSString *)cellIdentifier setupCellBlock:(CGSetupTableViewCell)setupCellBlock;
+- (instancetype)initWithDataSource:(nullable NSArray *)dataSource cellIdentifierForString:(nullable NSString *)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
 @end
+NS_ASSUME_NONNULL_END
