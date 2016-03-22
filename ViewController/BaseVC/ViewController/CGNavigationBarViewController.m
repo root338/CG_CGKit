@@ -52,6 +52,11 @@
     self.view   = [[CGNavigationBarView alloc] initWithFrame:frame delegate:self];
 }
 
+- (void)dealloc
+{
+    CGInfoLog(@"已释放");
+}
+
 #pragma mark - 设置属性
 - (CGNavigationBarView *)navigationBarView
 {
