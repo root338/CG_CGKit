@@ -38,8 +38,9 @@
             
             UINavigationItem *navigationItem    = [[UINavigationItem alloc] init];
             
-            !leftItems ?: [navigationItem setLeftBarButtonItems:leftItems];
-            !rightItems ?: [navigationItem setRightBarButtonItems:rightItems];
+            !leftItems  ?:  [navigationItem setLeftBarButtonItems:leftItems];
+            !rightItems ?:  [navigationItem setRightBarButtonItems:rightItems];
+            !self.title ?:  [navigationItem setTitle:self.title];
             
             [self.navigationBar pushNavigationItem:navigationItem animated:YES];
         }

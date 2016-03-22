@@ -9,9 +9,8 @@
 #import "UIView+Constant.h"
 
 #pragma mark - 简单自动布局常量值
-const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
+const UIViewAutoresizing    UIViewAutoresizingFlexibleAllMargin = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 
-const UIViewAutoresizing UIViewAutoresizingFlexibleSize = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
+const UIViewAutoresizing    UIViewAutoresizingFlexibleSize = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
 
