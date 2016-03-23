@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)addObserver:(id)observer selector:(SEL)selector name:(NSString *)aName object:(nullable id)anObject;
 
 /** 添加通知，同一个目标和方法，监听多个通知对象 */
-+ (void)addObserver:(id)observer selector:(SEL)selector names:(NSArray<NSString *> *)aNames object:(id)anObject;
++ (void)addObserver:(id)observer selector:(SEL)selector names:(NSArray<NSString *> *)aNames object:(nullable id)anObject;
 
 ///移除通知
 
