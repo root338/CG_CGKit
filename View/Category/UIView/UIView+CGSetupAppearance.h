@@ -10,6 +10,7 @@
 
 /** 设置视图的外观 */
 
+#pragma mark - 单视图设置
 /** 设置视图边框、圆角 */
 @interface UIView (CGSetupBorder)
 
@@ -21,5 +22,6 @@
 
 /** 设置视图圆角、边框 */
 - (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius;
+
 
 @end

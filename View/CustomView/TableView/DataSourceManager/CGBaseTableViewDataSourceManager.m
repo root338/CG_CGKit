@@ -16,7 +16,8 @@
 
 - (void)initialization
 {
-    _sectionNumber = 1;
+    _sectionNumber              = 1;
+    _rowNumberForAllSections    = 0;
 }
 
 #pragma mark - UITableViewDataSource

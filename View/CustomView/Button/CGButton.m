@@ -144,7 +144,9 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     
     if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
         
-        CGFloat targetHeight;
+        CGFloat targetHeight = 0.0;   //当前控件的高度
+        CGFloat maxContentHeight    = MAX(imageSize.height, titleSize.height);
+        
         //获取指定视图的高度
         if (paramContentType == _CGButtonContentTypeImageView) {
             targetHeight    = imageSize.height;
@@ -152,33 +154,56 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
             targetHeight    = titleSize.height;
         }
         
-        CGSize tempTargetSize   = CGSizeMake(titleSize.width + imageSize.width + self.space,  targetHeight);
+        CGSize tempTargetSize   = CGSizeMake(titleSize.width + imageSize.width + self.space,  maxContentHeight);
         
         //获取标题+间距+图像的综合视图相对于ContentRect的起始坐标
         CGPoint contentPoint;
+        switch (self.contentHorizontalAlignment) {
+            
+            case UIControlContentHorizontalAlignmentLeft:
+                contentPoint.x  = 0;
+                break;
+            case UIControlContentHorizontalAlignmentRight:
+                contentPoint.x  = contentWidth - tempTargetSize.width;
+                break;
+            default:
+                contentPoint.x  = CG_CGCenterOriginX(tempTargetSize.width, contentWidth);
+                break;
+        }
         
-        contentPoint.x          = (contentWidth - tempTargetSize.width) / 2.0;
+        switch (self.contentVerticalAlignment) {
+            case UIControlContentVerticalAlignmentTop:
+                contentPoint.y  = 0;
+                break;
+            case UIControlContentVerticalAlignmentBottom:
+                contentPoint.y  = contentHeight - tempTargetSize.height;
+                break;
+            default:
+                contentPoint.y  = CG_CGCenterOriginY(tempTargetSize.height, contentHeight);
+                break;
+        }
         
+        CGFloat originTargetY   = 0;
         switch (self.contentSubviewAlignment) {
             case CGButtonContentAlignmentTop:
             {
-                contentPoint.y          = 0;
+                originTargetY   = 0;
             }
                 break;
             case CGButtonContentAlignmentBottom:
             {
-                contentPoint.y          = contentHeight - targetHeight;
+                originTargetY   = maxContentHeight - targetHeight;
             }
                 break;
             default:
             {
-                contentPoint            = CG_CGCenterOriginWith(CGSizeMake(contentWidth, contentHeight), tempTargetSize);
+                originTargetY   = CG_CGCenterOriginY(targetHeight, maxContentHeight);
             }
                 break;
         }
         
         //获取综合视图相对于Button的起始坐标，
-        targetPoint  = CGPointMake(CGRectGetMinX(contentRect) + contentPoint.x, CGRectGetMinY(contentRect) + contentPoint.y);
+        targetPoint  = CGPointMake(CGRectGetMinX(contentRect) + contentPoint.x, CGRectGetMinY(contentRect) + contentPoint.y + originTargetY);
         
         if (self.buttonStyle == CGButtonStyleHorizonalLeft) {
             
@@ -250,11 +275,13 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 #pragma mark - 重写系统布局方法
 - (CGRect)contentRectForBounds:(CGRect)bounds
 {
+    
     return UIEdgeInsetsInsetRect(self.bounds, self.marginEdgeInsets);
 }
 
 - (CGRect)titleRectForContentRect:(CGRect)contentRect
 {
+    
     if (_isCalculateAreaButtonContentView) {
         return CGRectZero;
     }
@@ -265,6 +292,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
 {
+    
     if (_isCalculateAreaButtonContentView) {
         return CGRectZero;
     }
