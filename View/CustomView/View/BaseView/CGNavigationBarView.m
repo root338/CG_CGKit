@@ -8,7 +8,7 @@
 
 #import "CGNavigationBarView.h"
 
-#import "UIView+CGAddView.h"
+#import "UIView+CGAddSubview.h"
 
 @interface CGNavigationBarView ()
 

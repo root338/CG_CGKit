@@ -8,7 +8,7 @@
 
 #import "UIView+CGCreateViews.h"
 
-#import "CGCreateViewsAppearance.h"
+#import "CGAddSubviewsAppearance.h"
 
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CG_CGAreaCalculate.h"
@@ -17,39 +17,42 @@
 
 @implementation UIView (CGCreateViews)
 
-- (void)cg_createViewsWithRule:(CGCreateViewsAppearance *)viewsRule subview:(nonnull __kindof UIView * _Nonnull (^)(NSInteger))setupSubview
+- (BOOL)isStopAddSubviews:(BOOL (^ __nullable) (CGAddSubviewsErrorType errorType))stopAddSubviews errorType:(CGAddSubviewsErrorType)errorType
 {
-    if (!viewsRule.shouldPrivatePropertyValue) {
-        //不满足添加子视图
-        return;
+    BOOL isStopAddSubviews  = NO;
+    if (CGAddSubviewsErrorTypeNone == errorType && stopAddSubviews) {
+        isStopAddSubviews   = stopAddSubviews(errorType);
     }
-    if (!(viewsRule.isAutoSetupViewSize && viewsRule.shouldAutoSetupViewSize)) {
-        //不满足自动设置视图
-        return;
-    }
+    return isStopAddSubviews;
+}
+
+- (void)cg_createViewsWithRule:(__kindof CGAddSubviewsAppearance *)viewsRule stopAddSubviews:(BOOL (^ _Nullable)(CGAddSubviewsErrorType))stopAddSubviews subview:(nonnull __kindof UIView * _Nonnull (^)(NSInteger))setupSubview didSetupCallback:(void (^ _Nullable)(CGSize))didSetupCallback
+{
+    __block CGAddSubviewsErrorType _errorType;
+    __block CGFloat width, height, itemWidth, itemHeight;
     
-    if (viewsRule.isAutoSetupViewSize) {
+    [viewsRule cg_getWidthWithSuperview:self completion:^(CGAddSubviewsErrorType errorType, CGFloat paramWidth, CGFloat superWidth) {
         
-        self.size       = viewsRule.viewSize;
-    }
+        _errorType  = errorType;
+        width       = superWidth;
+        itemWidth   = paramWidth;
+    }];
     
-    //获取内容视图的大小
-    CGFloat contentWidth    = MAX(CG_CGWidthWithMaxWidth(self.width, viewsRule.marginEdgeInset), 0);
-    CGFloat contentHeight   = MAX(CG_CGHeightWithMaxHeight(self.height, viewsRule.marginEdgeInset), 0);
-    
-    if (contentWidth == 0 || contentHeight == 0) {
-        CGErrorLog(@"添加的视图大小不能为CGSizeZero");
+    CGDebugAssert(!_errorType, @"设置的布局数值有问题");
+    if ([self isStopAddSubviews:stopAddSubviews errorType:_errorType]) {
         return;
     }
     
-    CGFloat itemWidth   = 0;
-    CGFloat itemHeight  = 0;
-    if (viewsRule.shouldAutoSetupViewSize) {
-        itemWidth   = viewsRule.itemSize.width;
-        itemHeight  = viewsRule.itemSize.height;
-    }else {
-        itemWidth   = (contentWidth - (viewsRule.count - 1) * viewsRule.horizontalSpace) / viewsRule.count;
-        itemHeight  = (contentHeight - (viewsRule.count - 1) * viewsRule.verticalSpace) / viewsRule.count;
+    [viewsRule cg_getHeightWithSuperview:self completion:^(CGAddSubviewsErrorType errorTye, CGFloat paramHeight, CGFloat superHeight) {
+        
+        _errorType  = errorTye;
+        height      = superHeight;
+        itemHeight  = paramHeight;
+    }];
+    
+    CGDebugAssert(!_errorType, @"设置的布局数值有问题");
+    if ([self isStopAddSubviews:stopAddSubviews errorType:_errorType]) {
+        return;
     }
     
     for (NSInteger index = 0; index < viewsRule.subviewsTotal; index++) {
@@ -58,6 +61,17 @@
         
         subview.frame   = CGRectMake(viewsRule.marginEdgeInset.left + (index % viewsRule.count) * (itemWidth + viewsRule.horizontalSpace), viewsRule.marginEdgeInset.top + (index / viewsRule.count) * (itemHeight + viewsRule.verticalSpace), itemWidth, itemHeight);
         [self addSubview:subview];
+    }
+    
+    if (viewsRule.isAutoSetupViewWidth) {
+        self.width  = width;
+    }
+    if (viewsRule.isAutoSetupViewHeight) {
+        self.height = height;
+    }
+    
+    if (didSetupCallback) {
+        didSetupCallback(CGSizeMake(width, height));
     }
 }
 

@@ -6,12 +6,16 @@
 //  Copyright © 2016年 ym. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+
+NS_ASSUME_NONNULL_BEGIN
 /** 
  *  一个视图添加多个相同视图时的全局设置
  *  @warning 数据之间不能冲突，当maxWidth,maxHeight为0时，自动使用视图的bounds属性值。
  */
+NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "暂时没有任何其他类使用")
 @interface CGCreateViewsAppearance : NSObject
 
 #pragma mark - 父视图区域设置
@@ -51,3 +55,4 @@
 /** 视图的大小 */
 @property (nonatomic, assign, readonly) CGSize viewSize;
 @end
+NS_ASSUME_NONNULL_END

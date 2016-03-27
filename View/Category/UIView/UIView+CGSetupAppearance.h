@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /** 设置视图的外观 */
-
+NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 单视图设置
 /** 设置视图边框、圆角 */
 @interface UIView (CGSetupBorder)
@@ -25,3 +25,4 @@
 
 
 @end
+NS_ASSUME_NONNULL_END

@@ -13,6 +13,8 @@
 #import "UIView+CGSearchView.h"
 #import "UIView+CG_CGAreaCalculate.h"
 
+#import "CGPrintLogHeader.h"
+
 @interface CGCycleContentView ()
 {
     

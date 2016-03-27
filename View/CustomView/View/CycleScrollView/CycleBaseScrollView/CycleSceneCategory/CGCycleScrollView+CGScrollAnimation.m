@@ -9,6 +9,8 @@
 #import "CGCycleScrollView+CGScrollAnimation.h"
 #import "CGAngleRadianHeader.h"
 
+#import "UIView+CGSetupFrame.h"
+
 @interface UIView (CGCycleScrollViewAnimation)
 
 - (void)cg_scrollOneAnimationWithScrollView:(UIScrollView *)scrollView;
@@ -53,7 +55,7 @@
     /** 最大旋转角度 */
     CGFloat maxAngle        = 5.0;
     CGFloat angle           = 0;
-    CGFloat space           = CGRectGetMidX(scrollViewVisibleRect) - self.centerX;
+    CGFloat space           = CGRectGetMidX(scrollViewVisibleRect) - self.xCenter;
     
     if (space < -scrollView.width) {
         

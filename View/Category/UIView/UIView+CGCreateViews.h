@@ -7,12 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CGAddSubviewsErrorTypeHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class CGCreateViewsAppearance;
+@class CGAddSubviewsAppearance;
 @interface UIView (CGCreateViews)
 
-- (void)cg_createViewsWithRule:(CGCreateViewsAppearance *)viewsRule subview:(__kindof UIView * (^) (NSInteger index))setupSubview;
+/**
+ *  批量添加子视图
+ *
+ *  @param viewsRule    子视图创建的规则
+ *  @param setupSubview 返回创建的子视图
+ *  @param completion   判断给定的规则是否满足
+ */
+- (void)cg_createViewsWithRule:(__kindof CGAddSubviewsAppearance *)viewsRule stopAddSubviews:(BOOL (^ __nullable) (CGAddSubviewsErrorType errorType))stopAddSubviews subview:(__kindof UIView * (^) (NSInteger index))setupSubview didSetupCallback:(void (^ __nullable) (CGSize compressedSize))didSetupCallback;
 
 @end
 NS_ASSUME_NONNULL_END

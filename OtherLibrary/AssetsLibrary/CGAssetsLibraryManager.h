@@ -12,8 +12,6 @@
 
 #import "CGAssetsFilterTypeHeader.h"
 
-@class CGAssetModel;
-@class CGAssetsGroupModel;
 @class CGAssetsFilterObject;
 
 

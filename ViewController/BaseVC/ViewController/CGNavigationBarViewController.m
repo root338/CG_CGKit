@@ -10,6 +10,8 @@
 
 #import "CGNavigationAppearanceProtocol.h"
 
+#import "CGPrintLogHeader.h"
+
 @interface CGNavigationBarViewController ()<CGNavigationAppearanceProtocol>
 
 @end
