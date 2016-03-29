@@ -60,6 +60,8 @@
     CGDebugAssert(cellIdentifier, @"cell 的标识不能为空");
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    CGDebugAssert(cell, @"没有注册 cell");
+    
     id data = nil;
     if (self.dataSourceAtIndexPath) {
         data = self.dataSourceAtIndexPath(tableView, indexPath);

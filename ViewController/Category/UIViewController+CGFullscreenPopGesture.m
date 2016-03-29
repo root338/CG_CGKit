@@ -31,6 +31,10 @@
 
 - (void)cg_setupNavigationBarBackgroundColor
 {
+    if (![self cg_shouldSetupCurrentViewController]) {
+        return;
+    }
+    
     UINavigationController *navigationController = self.navigationController;
     //设置导航栏颜色
     if (!navigationController.navigationBarHidden) {
@@ -59,6 +63,10 @@
 
 - (void)cg_setupNavigationBarHiddenWithAnimation:(BOOL)animated
 {
+    if (![self cg_shouldSetupCurrentViewController]) {
+        return;
+    }
+    
     UIViewController<CGNavigationAppearanceProtocol> * viewController = (id)self;
     UINavigationController *navigationController = self.navigationController;
     
@@ -77,6 +85,14 @@
     }
 }
 
+- (BOOL)cg_shouldSetupCurrentViewController
+{
+    if (![self.navigationController isKindOfClass:[CGNavigationController class]] && ![self conformsToProtocol:@protocol(CGNavigationAppearanceProtocol)]) {
+        //当视图没有实现CGNavigationAppearanceProtocol，或导航栏不是CGNavigationController时取消对导航栏的设置
+        return NO;
+    }
+    return YES;
+}
 @end
 
 @implementation UIViewController (CGFullscreenPopGesture)

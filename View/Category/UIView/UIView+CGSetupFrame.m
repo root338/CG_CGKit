@@ -216,7 +216,7 @@
 
 - (CGPoint)cg_centerOriginWithTargetView:(UIView *)targetView
 {
-    return CGPointMake(targetView.width / 2.0, targetView.height / 2.0);
+    return CGPointMake((targetView.width - self.width) / 2.0, (targetView.height - self.height) / 2.0);
 }
 
 @end

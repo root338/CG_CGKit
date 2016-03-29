@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 创建UILabel，设置（文本，字体，字体颜色，对齐方式） */
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment;
 
+/** 创建UILabel，设置（文本，字体，字体颜色，对齐方式, 背景色） */
++ (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment backgroundColor:(UIColor *)backgroundColor;
+
 /** 创建UILabel，设置（文本，字体，字体颜色，圆角） */
 + (instancetype)cg_createLabelWithText:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor cornerRadius:(CGFloat)cornerRadius;
 

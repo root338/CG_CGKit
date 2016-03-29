@@ -20,8 +20,8 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
 
 /** 顶部左上角按钮的标题 */
 @property (nullable, nonatomic, strong) NSString *leftItemTitle;
-/** 顶部右上角按钮的标题 */
-@property (nullable, nonatomic, strong) NSString *rightItemTitle;
+/** 顶部右上角按钮的标题 */   //父类已定义
+//@property (nullable, nonatomic, strong) NSString *rightItemTitle;
 
 /** 顶部左上角按钮的属性，key：为不同状态下按钮的样式 */
 @property (nullable, nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSDictionary *> *leftItemTitleAttributesDict;
@@ -33,8 +33,8 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
 
 /** 顶部左上角按钮的图片 */
 @property (nullable, nonatomic, strong) UIImage *leftItemImage;
-/** 顶部右上角按钮的图片 */
-@property (nullable, nonatomic, strong) UIImage *rightItemImage;
+/** 顶部右上角按钮的图片 */   //父类已定义
+//@property (nullable, nonatomic, strong) UIImage *rightItemImage;
 
 /** 
  *  设置左边按钮 
