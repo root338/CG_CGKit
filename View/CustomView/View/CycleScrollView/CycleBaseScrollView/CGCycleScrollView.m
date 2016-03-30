@@ -53,9 +53,6 @@
      *  添加标识的原因：再循环滑动的条件下,在代理方法scrollViewWillEndDragging:withVelocity:targetContentOffset:中设置偏移量{0,0}时，由于有反弹效果索引，在代理方法scrollViewDidScroll:到偏移量小于0时就会更新导致偏移量变为滑动视图宽度+视图间距，但是滑动没有停止所以还会继续滑动，导致分页效果出现问题
      */
     BOOL isDraggerScrollSubviewMark;
-    
-    /** 滑动视图减速滑动时的标识 */
-    BOOL isDeceleratingScrollSubviewMark;
 }
 
 /** 滑动视图添加的视图集 */
@@ -620,7 +617,6 @@
         isDraggerPauseTimerMark = NO;
     }
     
-    isDeceleratingScrollSubviewMark = NO;
     [self scrollView:scrollView isMinUpdateContentMark:YES];
 }
 
@@ -631,9 +627,6 @@
         //手指离开没有减速效果时
         [self startAutoScroll];
         isDraggerPauseTimerMark         = NO;
-        isDeceleratingScrollSubviewMark = NO;
-    }else {
-        isDeceleratingScrollSubviewMark = YES;
     }
 }
 
@@ -697,11 +690,11 @@
         if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
             
             isUpdatePreviousMark    = (offset.x <= 0);
-            isUpdateNextMark        = (offset.x >= (scrollView.width + paramSubviewSpace) * 2);
+            isUpdateNextMark        = (offset.x >= (NSInteger)(scrollView.width + paramSubviewSpace) * 2);
         }else {
             
             isUpdatePreviousMark    = (offset.y <= 0);
-            isUpdateNextMark        = (offset.y >= (scrollView.height + paramSubviewSpace) * 2);
+            isUpdateNextMark        = (offset.y >= (NSInteger)(scrollView.height + paramSubviewSpace) * 2);
         }
         
     }else {
@@ -722,7 +715,7 @@
             
             isUpdatePreviousMark    = (offset.x <= 0) && !isMinIndex;
             
-            isUpdateNextMark        = (((offset.x >= (scrollView.width * 2 + paramSubviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
+            isUpdateNextMark        = (((offset.x >= (NSInteger)(scrollView.width * 2 + paramSubviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
         }else {
             
             //当当前视图y坐标为0，但滑动视图偏移量为一个视图高度时执行刷新 （YES 刷新）
@@ -730,7 +723,7 @@
             
             isUpdatePreviousMark    = (offset.y <= 0) && !isMinIndex;
             
-            isUpdateNextMark        = (((offset.y >= (scrollView.height * 2 + paramSubviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
+            isUpdateNextMark        = (((offset.y >= (NSInteger)(scrollView.height * 2 + paramSubviewSpace)) && !isMaxIndex) || isShouldUpdateNextView);
         }
         
     }
@@ -738,7 +731,7 @@
     {
         //与是否循环滑动无关的条件
         //是否可以刷新
-        BOOL isShouldUpdate = ((isUpdateContentMark && self.pagingEnabled) || (!isDraggerPauseTimerMark && !isDeceleratingScrollSubviewMark) || !self.pagingEnabled);
+        BOOL isShouldUpdate = ((isUpdateContentMark && self.pagingEnabled) || !isDraggerPauseTimerMark || !self.pagingEnabled);
         
         isUpdatePreviousMark    = (isUpdatePreviousMark && isShouldUpdate);
         isUpdateNextMark        = (isUpdateNextMark && isShouldUpdate);
