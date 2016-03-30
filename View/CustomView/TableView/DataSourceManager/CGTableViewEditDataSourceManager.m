@@ -6,9 +6,9 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "CGBaseTableViewEditDataSourceManager.h"
+#import "CGTableViewEditDataSourceManager.h"
 
-@implementation CGBaseTableViewEditDataSourceManager
+@implementation CGTableViewEditDataSourceManager
 
 #pragma mark - UITableViewDataSource
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

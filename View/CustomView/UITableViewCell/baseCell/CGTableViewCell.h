@@ -1,5 +1,5 @@
 //
-//  CGBaseTableViewCell.h
+//  CGTableViewCell.h
 //  TestCG_CGKit
 //
 //  Created by apple on 15/12/6.
@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "CGViewProtocol.h"
 
-@protocol CGBaseTableViewCellDelegate <NSObject>
+@protocol CGTableViewCellDelegate <NSObject>
 
 @optional
 - (void)setupTableViewCellContentWithData:(id)paramData;
 
 @end
 
-@interface CGBaseTableViewCell : UITableViewCell<CGBaseTableViewCellDelegate,CGViewInitializationProtocol>
+@interface CGTableViewCell : UITableViewCell<CGTableViewCellDelegate,CGViewInitializationProtocol>
 
 
 

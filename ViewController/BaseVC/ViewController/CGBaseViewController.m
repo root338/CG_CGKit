@@ -8,6 +8,8 @@
 
 #import "CGBaseViewController.h"
 
+#import "CGPrintLogHeader.h"
+
 @interface CGBaseViewController ()
 
 @end

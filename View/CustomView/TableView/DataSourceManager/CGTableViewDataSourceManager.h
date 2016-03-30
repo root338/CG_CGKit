@@ -1,5 +1,5 @@
 //
-//  CGBaseTableViewDataSourceManager.h
+//  CGTableViewDataSourceManager.h
 //  TestCG_CGKit
 //
 //  Created by apple on 15/12/6.
@@ -9,7 +9,7 @@
 #import "CGBaseObject.h"
 #import <UIKit/UIKit.h>
 
-@class CGBaseTableViewCell;
+@class CGTableViewCell;
 
 NS_ASSUME_NONNULL_BEGIN
 /** 手动设置tableView 多少组 */
@@ -25,7 +25,7 @@ typedef _Nonnull id (^CGTableViewReusableCellIdentifier) (UITableView *tableView
 typedef _Nonnull id (^CGTableViewDataSourceAtIndexPath) (UITableView *tableView, NSIndexPath *indexPath);
 
 /** 设置cell的block  */
-typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGBaseTableViewCell *cell, NSIndexPath *indexPath, id data);
+typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGTableViewCell *cell, NSIndexPath *indexPath, id data);
 
 /**
  *  tableView的数据管理类
@@ -39,7 +39,7 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGBaseTab
                 CGBaseTableViewEditDataSourceManager.h 文件 实现便捷功能
  *
  */
-@interface CGBaseTableViewDataSourceManager : CGBaseObject<UITableViewDataSource>
+@interface CGTableViewDataSourceManager : CGBaseObject<UITableViewDataSource>
 
 /** 设置tableView 的 section 默认为1 */
 @property (assign, nonatomic) NSInteger sectionNumber;

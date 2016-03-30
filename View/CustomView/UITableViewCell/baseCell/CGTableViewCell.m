@@ -1,14 +1,14 @@
 //
-//  CGBaseTableViewCell.m
+//  CGTableViewCell.m
 //  TestCG_CGKit
 //
 //  Created by apple on 15/12/6.
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
-#import "CGBaseTableViewCell.h"
+#import "CGTableViewCell.h"
 
-@implementation CGBaseTableViewCell
+@implementation CGTableViewCell
 
 - (void)setupTableViewCellContentWithData:(id)paramData
 {

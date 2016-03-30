@@ -1,18 +1,18 @@
 //
-//  CGBaseTableViewDataSourceManager.m
+//  CGTableViewDataSourceManager.m
 //  TestCG_CGKit
 //
 //  Created by apple on 15/12/6.
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
-#import "CGBaseTableViewDataSourceManager.h"
+#import "CGTableViewDataSourceManager.h"
 
 #import "NSArray+CGArray.h"
 
 #import "CGPrintLogHeader.h"
 
-@implementation CGBaseTableViewDataSourceManager
+@implementation CGTableViewDataSourceManager
 
 - (void)initialization
 {
