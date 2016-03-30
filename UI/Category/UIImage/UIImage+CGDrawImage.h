@@ -13,5 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)cg_drawImageInRect:(CGRect)frame;
 
+
+//+ (UIImage *)cg_drawImageInRect:(CGRect)frame text:(NSAttributedString *)text viewContentModel:(NSTextAlignment)textAlignment;
+
 @end
 NS_ASSUME_NONNULL_END

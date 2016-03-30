@@ -19,4 +19,10 @@
     return drawImage;
 }
 
+//+ (UIImage *)cg_drawImageInRect:(CGRect)frame text:(nonnull NSAttributedString *)text viewContentModel:(NSTextAlignment)textAlignment
+//{
+//    UIGraphicsBeginImageContextWithOptions(frame.size, NO, 1);
+//    
+//    
+//}
 @end
