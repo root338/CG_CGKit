@@ -125,7 +125,7 @@
         return;
     }
     
-    if ([note.name isEqualToString:UIKeyboardWillHideNotification]) {
+    if ([note.name isEqualToString:UIKeyboardDidHideNotification]) {
         
         if (_handleNotificationFailureType != CGInputTextViewNoteTypeNone) {
             //处理事件没有错误
