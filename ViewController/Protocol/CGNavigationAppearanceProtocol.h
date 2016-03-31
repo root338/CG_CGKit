@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIColor *)cg_prefersNavigationBarBackgroundColor;
 
 /** 设置导航栏标题颜色样式 */
-- (NSDictionary *)cg_prefersNavigationBarTitleTextAttributes;
+- (NSDictionary<NSString *, id> *)cg_prefersNavigationBarTitleTextAttributes;
 
 /** 导航栏的背景图 */
 //- (UIImage *)cg_prefersNavigationBarBackgroundImage;

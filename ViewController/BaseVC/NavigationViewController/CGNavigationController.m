@@ -26,9 +26,20 @@
     [self cg_openFullScreenPopGestureRecognizer];
     
     self.delegateObject = [[CGNavigationDelegateObject alloc] init];
-    self.delegate   = self.delegateObject;
+    self.delegate       = self.delegateObject;
     
-    self.defaultNavigationBarBackgroundColor    = self.navigationBar.barTintColor ? self.navigationBar.barTintColor : [UIColor whiteColor];
+    [self performSelector:@selector(setupDefaultAppearance) withObject:nil afterDelay:0];
+}
+
+- (void)setupDefaultAppearance
+{
+    if (!self.defaultTitleTextAttributes) {
+        self.defaultTitleTextAttributes             = self.navigationBar.titleTextAttributes;
+    }
+    
+    if (!self.defaultNavigationBarBackgroundColor) {
+        self.defaultNavigationBarBackgroundColor    = self.navigationBar.barTintColor;
+    }
 }
 
 #pragma mark - 设置导航栏

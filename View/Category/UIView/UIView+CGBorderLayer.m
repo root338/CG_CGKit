@@ -63,7 +63,7 @@
 
 - (BOOL)isDisableStateOfDisableUserInteraction
 {
-    return objc_getAssociatedObject(self, _cmd);
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 - (CGBorderBaseLayer *)borderLayer

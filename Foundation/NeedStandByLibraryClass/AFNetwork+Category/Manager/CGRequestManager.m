@@ -138,7 +138,7 @@
     NSMutableURLRequest *request = nil;
     
     //更新ReqeustSerializer变量
-    [self setupRequestSerializerWithType:self.requestBaseModel.HTTPRequestBodyType headerIsChange:requestModel.HTTPHeaderParameters];
+    [self setupRequestSerializerWithType:self.requestBaseModel.HTTPRequestBodyType headerIsChange:requestModel.HTTPHeaderParameters ? YES : NO];
     
     
     AFHTTPRequestSerializer *serializer = self.requestOperationManager.requestSerializer;

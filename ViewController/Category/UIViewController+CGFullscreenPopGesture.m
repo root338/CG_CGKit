@@ -20,20 +20,29 @@
  */
 @interface UIViewController (CGSetupNavigationBar)
 
+/** 设置导航栏的外观 */
+- (void)cg_setupNavigationBarAppearance;
+
 /** 设置视图控制器的导航栏颜色 */
 - (void)cg_setupNavigationBarBackgroundColor;
 
 /** 设置视图控制器的导航栏是否隐藏 */
 - (void)cg_setupNavigationBarHiddenWithAnimation:(BOOL)animated;
+
+/** 设置视图控制器的导航栏标题样式 */
+- (void)cg_setupNavigationBarTitleTextAttributes;
 @end
 
 @implementation UIViewController (CGSetupNavigationBar)
 
+- (void)cg_setupNavigationBarAppearance
+{
+    [self cg_setupNavigationBarBackgroundColor];
+    [self cg_setupNavigationBarTitleTextAttributes];
+}
+
 - (void)cg_setupNavigationBarBackgroundColor
 {
-    if (![self cg_shouldSetupCurrentViewController]) {
-        return;
-    }
     
     UINavigationController *navigationController = self.navigationController;
     //设置导航栏颜色
@@ -49,23 +58,41 @@
         }else if ([navigationController isKindOfClass:[CGNavigationController class]]) {
             //当视图控制器的导航栏为CGNavigationController时，获取默认的导航栏颜色
             navigationBarBackground  = [(CGNavigationController *)navigationController defaultNavigationBarBackgroundColor];
-        }else {
-            
-            navigationBarBackground  = navigationController.navigationBar.barTintColor;
         }
         
-        if (![navigationBarBackground isEqual:navigationController.navigationBar.barTintColor]) {
+        if (navigationBarBackground && ![navigationBarBackground isEqual:navigationController.navigationBar.barTintColor]) {
             
             navigationController.navigationBar.barTintColor  = navigationBarBackground;
         }
     }
 }
 
+- (void)cg_setupNavigationBarTitleTextAttributes
+{
+    UINavigationController *navigationController = self.navigationController;
+    
+    if (self.title && !navigationController.navigationBarHidden) {
+        
+        UIViewController<CGNavigationAppearanceProtocol> * viewController = (id)self;
+        NSDictionary *titleTextAttributes = nil;
+        
+        if ([viewController respondsToSelector:@selector(cg_prefersNavigationBarTitleTextAttributes)]) {
+            //获取自定义的标题属性
+            titleTextAttributes = [viewController cg_prefersNavigationBarTitleTextAttributes];
+        }else if ([navigationController isKindOfClass:[CGNavigationController class]]) {
+            
+            //获取默认的导航栏颜色
+            titleTextAttributes = [(CGNavigationController *)navigationController defaultTitleTextAttributes];
+        }
+        
+        if (titleTextAttributes && ![titleTextAttributes isEqualToDictionary:navigationController.navigationBar.titleTextAttributes]) {
+            navigationController.navigationBar.titleTextAttributes  = titleTextAttributes;
+        }
+    }
+}
+
 - (void)cg_setupNavigationBarHiddenWithAnimation:(BOOL)animated
 {
-    if (![self cg_shouldSetupCurrentViewController]) {
-        return;
-    }
     
     UIViewController<CGNavigationAppearanceProtocol> * viewController = (id)self;
     UINavigationController *navigationController = self.navigationController;
@@ -115,8 +142,11 @@
 {
     [self cg_viewWillAppear:animation];
     
-    [self cg_setupNavigationBarHiddenWithAnimation:animation];
-    [self cg_setupNavigationBarBackgroundColor];
+    if ([self cg_shouldSetupCurrentViewController]) {
+        
+        [self cg_setupNavigationBarHiddenWithAnimation:animation];
+        [self cg_setupNavigationBarAppearance];
+    }
 }
 
 - (void)setCg_interactivePopDisabled:(BOOL)interactivePopDisabled

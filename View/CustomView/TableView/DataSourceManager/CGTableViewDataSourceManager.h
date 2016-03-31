@@ -19,7 +19,10 @@ typedef NSUInteger (^CGNumberOfSectionsInTableView) (UITableView *tableView);
 typedef NSInteger (^CGTableViewNumberOfRowsInSection) (UITableView *tableView, NSInteger section);
 
 /** 获取tableView indexPath 下的 cell Identifier */
-typedef _Nonnull id (^CGTableViewReusableCellIdentifier) (UITableView *tableView, NSIndexPath *indexPath);
+typedef _Nonnull Class (^CGTableViewReusableCellClassIdentifier) (UITableView *tableView, NSIndexPath *indexPath);
+
+/** 获取tableView indexPath 下的 cell Identifier */
+typedef  NSString * _Nonnull  (^CGTableViewReusableCellStringIdentifier) (UITableView *tableView, NSIndexPath *indexPath);
 
 /** 获取 tableView 中 indexPath 下的数据 */
 typedef _Nonnull id (^CGTableViewDataSourceAtIndexPath) (UITableView *tableView, NSIndexPath *indexPath);
@@ -66,11 +69,16 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGTableVi
 @property (nullable, copy, nonatomic) CGTableViewNumberOfRowsInSection numberOfRowsAtTableViewSection;
 
 /**
- *  获取 indexPath 下的cell的 Identifier
- *  应该在多cell下使用
- *  @warning 返回的数据类型应为NSString对象 或 Class 值
+ *  获取 indexPath 下的cell 类名作为标识符
+ *  @param      应该在多cell下使用
  */
-@property (nullable, copy, nonatomic) CGTableViewReusableCellIdentifier reusableCellIdentifier;
+@property (nullable, copy, nonatomic) CGTableViewReusableCellClassIdentifier reusableCellClassIdentifier;
+
+/**
+ *  获取 indexPath 下的 cell Identifier
+ *  @param 应该在多 cell 下使用
+ */
+@property (nullable, nonatomic, copy) CGTableViewReusableCellStringIdentifier reusableCellStringIdentifier;
 
 /**
  *  获取 tableView 中 indexPath 下的数据

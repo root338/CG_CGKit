@@ -40,18 +40,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = nil;
-    if (self.reusableCellIdentifier) {
-        id value = self.reusableCellIdentifier(tableView, indexPath);
+    if (self.reusableCellClassIdentifier) {
         
-        if (value) {
-            if ([value isKindOfClass:[NSString class]]) {
-                
-                cellIdentifier = value;
-            }else {
-                
-                cellIdentifier = NSStringFromClass(value);
-            }
-        }
+        Class value     = self.reusableCellClassIdentifier(tableView, indexPath);
+        cellIdentifier  = NSStringFromClass(value);
+    }else if (self.reusableCellStringIdentifier) {
+        
+        cellIdentifier  = self.reusableCellStringIdentifier(tableView, indexPath);
     }else if (self.cellIdentifier) {
         
         cellIdentifier = self.cellIdentifier;

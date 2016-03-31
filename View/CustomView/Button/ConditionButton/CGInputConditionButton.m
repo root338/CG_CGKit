@@ -78,7 +78,7 @@
 {
     [super willMoveToWindow:newWindow];
     
-    BOOL isOpenNote = newWindow;
+    BOOL isOpenNote = newWindow ? YES : NO;
     [self cg_setupInputChangeNotificationWithIsOpenNote:isOpenNote];
 }
 

@@ -20,10 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 /** 导航栏默认的颜色 */
 @property (nullable, nonatomic, strong) UIColor *defaultNavigationBarBackgroundColor;
 
-/** 默认导航栏的样式 */
+/** 状态栏的默认样式 */
 @property (nonatomic, assign) UIStatusBarStyle defaultStatusBarStyle;
 
-/** 默认导航栏是否隐藏 */
+/** 状态栏默认是否隐藏 */
 @property (nonatomic, assign) BOOL defaultStatusBarHidden;
+
+/** 导航栏标题默认的样式 */
+@property (nullable, nonatomic, strong) NSDictionary<NSString *, id> *defaultTitleTextAttributes;
 @end
 NS_ASSUME_NONNULL_END

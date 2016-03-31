@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong, readwrite) UITableView *tableView;
 
+@property (nonatomic, strong) CGTableViewDataSourceManager *dataSourceManager;
 @end
 
 @implementation CGSingeContentTableView
@@ -30,7 +31,14 @@
 - (void)addTableViewWithStyle:(UITableViewStyle)style
 {
     _tableView  = [[UITableView alloc] initWithFrame:self.bounds style:style];
+    
     [self addSubview:_tableView];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.tableView.frame    = self.bounds;
 }
 
 #pragma mark - 设置属性
