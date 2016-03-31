@@ -1,22 +1,23 @@
 //
-//  CGBaseTableViewDataSourceManager.m
+//  CGTableViewDataSourceManager.m
 //  TestCG_CGKit
 //
 //  Created by apple on 15/12/6.
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
-#import "CGBaseTableViewDataSourceManager.h"
+#import "CGTableViewDataSourceManager.h"
 
 #import "NSArray+CGArray.h"
 
 #import "CGPrintLogHeader.h"
 
-@implementation CGBaseTableViewDataSourceManager
+@implementation CGTableViewDataSourceManager
 
 - (void)initialization
 {
-    _sectionNumber = 1;
+    _sectionNumber              = 1;
+    _rowNumberForAllSections    = 0;
 }
 
 #pragma mark - UITableViewDataSource
@@ -59,6 +60,8 @@
     CGDebugAssert(cellIdentifier, @"cell 的标识不能为空");
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    CGDebugAssert(cell, @"没有注册 cell");
+    
     id data = nil;
     if (self.dataSourceAtIndexPath) {
         data = self.dataSourceAtIndexPath(tableView, indexPath);

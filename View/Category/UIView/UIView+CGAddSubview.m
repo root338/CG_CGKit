@@ -17,4 +17,17 @@
     }];
 }
 
+- (BOOL)cg_addSubview:(UIView *)view
+{
+    BOOL isShouldView;
+    if ( (isShouldView = !CGRectEqualToRect(view.bounds, CGRectZero)) ) {
+        if (!view.superview) {
+            [self addSubview:view];
+        }
+    }else {
+        !view.superview ?: [view removeFromSuperview];
+    }
+    return isShouldView;
+}
+
 @end

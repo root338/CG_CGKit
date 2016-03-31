@@ -7,6 +7,9 @@
 //
 
 #import "CGCycleScrollView+CGScrollAnimation.h"
+#import "CGAngleRadianHeader.h"
+
+#import "UIView+CGSetupFrame.h"
 
 @interface UIView (CGCycleScrollViewAnimation)
 
@@ -16,20 +19,24 @@
 
 @implementation CGCycleScrollView (CGScrollAnimation)
 
-- (void)cg_scrollWithScrollView:(UIScrollView *)scrollView previousView:(UIView *)previousView currentView:(UIView *)currentView nextView:(UIView *)nextView animationStyle:(CGCycleViewScrollAnimationStyle)style
+- (void)cg_scrollWithScrollView:(UIScrollView *)scrollView animationStyle:(CGCycleViewScrollAnimationStyle)style
 {
-    switch (style) {
-        case CGCycleViewScrollAnimationStyleAnimation1:
-        {
-            [previousView cg_scrollOneAnimationWithScrollView:scrollView];
-            [currentView cg_scrollOneAnimationWithScrollView:scrollView];
-            [nextView cg_scrollOneAnimationWithScrollView:scrollView];
-        }
-            break;
-            
-        default:
-            break;
+    if (style == CGCycleViewScrollAnimationStyleNone) {
+        return;
     }
+    NSArray *subviews = scrollView.subviews;
+    [subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        switch (style) {
+            case CGCycleViewScrollAnimationStyleAnimation1:
+            {
+                [obj cg_scrollOneAnimationWithScrollView:scrollView];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
 }
 
 @end
@@ -45,34 +52,29 @@
     
     CGRect scrollViewVisibleRect    = (CGRect){scrollView.contentOffset, scrollView.size};
     
-    CATransform3D transform = CATransform3DIdentity;
-    transform.m34           = -1.0 / 200;
-    
     /** 最大旋转角度 */
-    CGFloat maxAngle        = 3.0;
-    CGFloat maxScaleX       = 1.0;
-    CGFloat scaleX          = maxScaleX;
-    CGFloat scaleY          = maxScaleX;
-    CGFloat scaleZ          = maxScaleX;
+    CGFloat maxAngle        = 5.0;
     CGFloat angle           = 0;
-    CGFloat space           = CGRectGetMidX(scrollViewVisibleRect) - self.centerX;
+    CGFloat space           = CGRectGetMidX(scrollViewVisibleRect) - self.xCenter;
     
     if (space < -scrollView.width) {
-        angle   = -maxAngle;
         
+        angle   = -maxAngle;
     }else if (space > scrollView.width) {
+        
         angle   = maxAngle;
     }else {
+        
         angle   = space * (maxAngle / scrollView.width);
-//        scaleX  = space * (maxScaleX / scrollView.width);
-//        scaleY  = space * (maxScaleX / scrollView.width);
         
     }
     
-    CGFloat radian          = angle / 180.0 * M_PI;
+    CGFloat radian          = _CG_RadianForAngle(angle);
     
-    transform               = CATransform3DScale(transform, scaleX, scaleY, scaleZ);
+    CATransform3D transform = CATransform3DIdentity;
+    transform.m34           = -1.0 / 300;
     transform               = CATransform3DRotate(transform, radian, 0, 1, 0);
+//    layer.anchorPoint       = CGPointMake(0, 0.5);
     layer.transform         = transform;
 }
 

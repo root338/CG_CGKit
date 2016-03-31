@@ -52,12 +52,6 @@ const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    [self initialization];
-}
-
 - (void)initialization
 {
     

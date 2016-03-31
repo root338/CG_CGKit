@@ -28,12 +28,6 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    [self initialization];
-}
-
 #pragma mark - CGViewInitializationProtocol
 - (void)initialization
 {

@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 #pragma mark - 主视图设置
 
 /** 单选视图背景 */
-@property (nonatomic, strong) UIColor * backgroundColor;
+@property (nonatomic, copy) UIColor * backgroundColor;
 
 /** 单选视图背景图片 */
 @property (nonatomic, strong) UIImage * backgroundImage;

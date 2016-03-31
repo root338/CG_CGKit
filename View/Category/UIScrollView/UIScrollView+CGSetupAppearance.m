@@ -10,18 +10,28 @@
 
 @implementation UIScrollView (CGSetupAppearance)
 
-- (void)cg_setupWithShowScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled
-{
-    [self cg_setupWithFrame:CGRectZero showScrollIndicator:showScrollIndicator pagingEnabled:paramPagingEnabled];
-}
+@dynamic showsScrollIndicator;
 
 - (void)cg_setupWithFrame:(CGRect)frame showScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled
 {
     
-    self.frame = frame;
-    self.showsHorizontalScrollIndicator = showScrollIndicator;
-    self.showsVerticalScrollIndicator = showScrollIndicator;
-    self.pagingEnabled = paramPagingEnabled;
+    self.frame                  = frame;
+    self.showsScrollIndicator   = showScrollIndicator;
+    
+    if (self.pagingEnabled != paramPagingEnabled) {
+        self.pagingEnabled          = paramPagingEnabled;
+    }
 }
 
+- (void)setShowsScrollIndicator:(BOOL)showsScrollIndicator
+{
+    
+    if (self.showsHorizontalScrollIndicator != showsScrollIndicator) {
+        self.showsHorizontalScrollIndicator = showsScrollIndicator;
+    }
+    
+    if (self.showsVerticalScrollIndicator != showsScrollIndicator) {
+        self.showsVerticalScrollIndicator = showsScrollIndicator;
+    }
+}
 @end

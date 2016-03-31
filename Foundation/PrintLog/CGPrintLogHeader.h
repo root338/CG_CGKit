@@ -42,9 +42,11 @@
     }                                                                               \
 } while (0)
 
-#define CGLog(format, ...) CGConditionLog(YES, format, ##__VA_ARGS__)
+#define CGLog(format, ...)      CGConditionLog(YES, format, ##__VA_ARGS__)
 
-#define CGDefaultLog() CGLog(@"");
+#define CGDefaultLog()          CGLog(@"");
+
+#define CGPrintClassNameLog()   CGLog(@"className : %@", [self class]);
 
 
 #define CGErrorConditionLog(condition, format, ...) do {    \
@@ -79,6 +81,7 @@
 #define CGLog(format, ...)
 
 #define CGDefaultLog()
+#define CGPrintClassNameLog()
 
 #define CGInfoConditionLog(condition, format, ...)
 #define CGInfoLog(format, ...)

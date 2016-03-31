@@ -13,10 +13,15 @@
  *  子视图的类型
  */
 typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
+    
+    /**
+     *  左边辅助视图
+     */
+    _CGCycleSubviewTypePreviousAideView = -2,
     /**
      *  上一视图
      */
-    _CGCycleSubviewTypePreviousIndex = -1,
+    _CGCycleSubviewTypePreviousIndex,
     /**
      *  当前视图
      */
@@ -25,6 +30,11 @@ typedef NS_ENUM(NSInteger, _CGCycleSubviewType) {
      *  下一视图
      */
     _CGCycleSubviewTypeNextIndex,
+    
+    /**
+     *  右边辅助视图
+     */
+    _CGCycleSubviewTypeNextAideView,
 };
 
 #endif /* CGCycleViewPrivateHeader_h */

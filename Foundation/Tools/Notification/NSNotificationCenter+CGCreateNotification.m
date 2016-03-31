@@ -22,7 +22,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:aName object:anObject];
 }
 
-+ (void)addObserver:(id)observer selector:(SEL)selector names:(nonnull NSArray<NSString *> *)aNames object:(nonnull id)anObject
++ (void)addObserver:(id)observer selector:(SEL)selector names:(nonnull NSArray<NSString *> *)aNames object:(id)anObject
 {
     [aNames enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [self addObserver:observer selector:selector name:obj object:anObject];

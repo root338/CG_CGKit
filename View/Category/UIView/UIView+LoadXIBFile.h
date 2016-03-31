@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UIView (LoadXIBFile)
 
 + (instancetype)loadXIBFile;
@@ -15,3 +16,4 @@
 + (instancetype)loadXIBFileWithName:(NSString *)xibFileName;
 
 @end
+NS_ASSUME_NONNULL_END

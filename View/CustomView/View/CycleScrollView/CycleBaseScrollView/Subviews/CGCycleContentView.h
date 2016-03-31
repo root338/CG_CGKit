@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /** 循环滑动视图的内容视图 */
-@interface CGCycleContentView : UIView
+@interface CGCycleContentView : UIButton
 
 /** 内容视图 */
 @property (strong, nonatomic) UIView *contentView;
@@ -33,4 +33,6 @@
  *  @return 返回创建好的视图
  */
 + (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index marginEdgeInsets:(UIEdgeInsets)marginEdgeInsets;
+
++ (instancetype)buttonWithType:(UIButtonType)buttonType;
 @end

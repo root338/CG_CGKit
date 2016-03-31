@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /** 设置 view frame */
 @interface UIView (CGSetupFrame)
 
@@ -47,4 +48,11 @@
  *  @param paramSize   视图的大小
  */
 - (void)cg_setupFrameWithCenter:(CGPoint)paramCenter size:(CGSize)paramSize;
+
+/** 获取视图在指定视图的中心点的坐标 */
+- (CGPoint)cg_centerOriginWithTargetView:(UIView *)targetView;
+/** 获取视图在父视图的中心点的坐标 */
+- (CGPoint)cg_centerOrigin;
+
 @end
+NS_ASSUME_NONNULL_END

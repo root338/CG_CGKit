@@ -29,12 +29,6 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    [self initialization];
-}
-
 - (void)initialization
 {
     

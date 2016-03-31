@@ -38,8 +38,9 @@
             
             UINavigationItem *navigationItem    = [[UINavigationItem alloc] init];
             
-            !leftItems ?: [navigationItem setLeftBarButtonItems:leftItems];
-            !rightItems ?: [navigationItem setRightBarButtonItems:rightItems];
+            !leftItems  ?:  [navigationItem setLeftBarButtonItems:leftItems];
+            !rightItems ?:  [navigationItem setRightBarButtonItems:rightItems];
+            !self.title ?:  [navigationItem setTitle:self.title];
             
             [self.navigationBar pushNavigationItem:navigationItem animated:YES];
         }
@@ -53,7 +54,7 @@
     if (self.navigationController) {
         [self.navigationController popViewControllerAnimated:YES];
     }else {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:self.dismissViewControllerCompletion];
     }
 }
 
@@ -66,25 +67,51 @@
 - (NSArray<UIBarButtonItem *> *)setupLeftItemButtons
 {
     UIBarButtonItem *leftItem   = nil;
+    
+    id target                   = self;
+    SEL action                  = @selector(handleLeftItemAction:);
+    UIBarButtonItemStyle style  = UIBarButtonItemStylePlain;
     if (self.leftItemTitle) {
-        leftItem    = [[UIBarButtonItem alloc] initWithTitle:self.leftItemTitle style:UIBarButtonItemStyleDone target:self action:@selector(handleLeftItemAction:)];
+        leftItem    = [[UIBarButtonItem alloc] initWithTitle:self.leftItemTitle
+                                                       style:style
+                                                      target:target
+                                                      action:action];
         [self.leftItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
             [leftItem setTitleTextAttributes:obj forState:[key integerValue]];
         }];
+    }else if (self.leftItemImage) {
+        leftItem    = [[UIBarButtonItem alloc] initWithImage:self.leftItemImage
+                                         landscapeImagePhone:nil
+                                                       style:style
+                                                      target:target
+                                                      action:action];
     }
-    return @[leftItem];
+    return leftItem ? @[leftItem] : nil;
 }
 
 - (NSArray<UIBarButtonItem *> *)setupRightItemButtons
 {
-    UIBarButtonItem *rightItem  = nil;;
+    UIBarButtonItem *rightItem  = nil;
+    
+    id target                   = self;
+    SEL action                  = @selector(handleRightItemAction:);
+    UIBarButtonItemStyle style  = UIBarButtonItemStylePlain;
     if (self.rightItemTitle) {
-        rightItem   = [[UIBarButtonItem alloc] initWithTitle:self.rightItemTitle style:UIBarButtonItemStyleDone target:self action:@selector(handleRightItemAction:)];
+        rightItem   = [[UIBarButtonItem alloc] initWithTitle:self.rightItemTitle
+                                                       style:style
+                                                      target:target
+                                                      action:action];
         [self.rightItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
             [rightItem setTitleTextAttributes:obj forState:[key integerValue]];
         }];
+    }else if (self.rightItemImage) {
+        rightItem   = [[UIBarButtonItem alloc] initWithImage:self.rightItemImage
+                                         landscapeImagePhone:nil
+                                                       style:style
+                                                      target:target
+                                                      action:action];
     }
-    return @[rightItem];
+    return rightItem ? @[rightItem] : nil;
 }
 
 - (void)cg_setTitleTextAttributes:(NSDictionary<NSString *,id> *)attributes forState:(UIControlState)state type:(CGTitleBarItemType)type

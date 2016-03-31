@@ -12,6 +12,10 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface UILabel (CGSetupAppearance)
 
+- (UIColor *)defaultBackgroundColor;
+
+- (NSTextAlignment)defaultTextAlignment;
+
 /** 设置UILabel 设置系统默认属性 */
 - (void)cg_setupDefaultLabel;
 

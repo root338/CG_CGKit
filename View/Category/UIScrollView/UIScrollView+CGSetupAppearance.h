@@ -11,13 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface UIScrollView (CGSetupAppearance)
 
-/**
- *  设置滑动视图（滑动条显隐，是否分页）
- *
- *  @param showScrollIndicator 横竖滑动条显隐
- *  @param paramPagingEnabled  是否分页
- */
-- (void)cg_setupWithShowScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled;
+/** 显示横向，竖向滚动条 */
+@property (nonatomic, assign, readwrite) BOOL showsScrollIndicator;
 
 /**
  *  设置滑动视图（区域，滑动条显隐，是否分页）

@@ -86,4 +86,11 @@
     }
 }
 
+- (void)cg_addObject:(id)anObject
+{
+    if (anObject) {
+        [self addObject:anObject];
+    }
+}
+
 @end
