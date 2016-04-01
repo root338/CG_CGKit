@@ -11,7 +11,7 @@
 
 @interface HorizontalSingleView ()
 {
-    
+    BOOL isChangeValue;
 }
 @property (strong, nonatomic) UIView *contentView;
 
@@ -217,14 +217,34 @@
     }
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    if (newWindow) {
+        if (isChangeValue) {
+            [self updateContentView];
+            isChangeValue   = NO;
+        }
+        
+    }
+}
+
 #pragma mark - 设置属性
+
+- (void)setAppearance:(HorizontalSingleAppearance *)appearance
+{
+    if (![appearance isEqual:_appearance]) {
+        _appearance     = appearance;
+        isChangeValue   = YES;
+    }
+}
 
 - (void)setTitles:(NSArray *)titles
 {
     if (![_titles isEqualToArray:titles]) {
-        _titles = titles;
         
-        [self performSelector:@selector(updateContentView) withObject:nil afterDelay:0];
+        _titles         = titles;
+        isChangeValue   = YES;
     }
 }
 
