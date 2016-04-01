@@ -8,6 +8,23 @@
 
 #import "CGPhotoListViewController.h"
 
+#import "CGAssetsLibraryManager.h"
+
+@interface CGPhotoListViewController ()
+
+@property (nonatomic, strong) UICollectionView *photoCollectionView;
+
+@end
+
 @implementation CGPhotoListViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+    
+    self.view.backgroundColor   = [UIColor whiteColor];
+}
 
 @end

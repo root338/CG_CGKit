@@ -64,8 +64,8 @@
 
 - (void)cg_setupScaleWithOverlayView:(nullable UIView *)overlayView vertexPoint:(CGPoint *)paramVertexPoint originPoint:(CGPoint *)paramOriginPoint type:(CGScaleViewType)type offsetPoint:(CGPoint)offsetPoint
 {
-    CGPoint vertexPoint;
-    CGPoint originPoint;
+    CGPoint vertexPoint = CGPointZero;
+    CGPoint originPoint = CGPointZero;
     
     UIView *targetView  = overlayView ? overlayView : self;
     

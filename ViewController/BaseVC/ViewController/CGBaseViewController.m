@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    CGPrintClassNameLog()
+//    CGPrintClassNameLog()
     
     if (!self.navigationController.navigationBarHidden) {
         
@@ -59,7 +59,7 @@
 
 - (void)dealloc
 {
-    CGPrintClassNameLog()
+//    CGPrintClassNameLog()
 }
 
 @end
