@@ -80,8 +80,15 @@
 
 - (void)cg_setupBorderWithBorderObject:(CGBorderObject *)borderObject state:(CGViewBorderState)state
 {
-    
-    !borderObject ?: [self.borderDict setObject:borderObject forKey:[self cg_keyWithState:state]];
+    if (borderObject) {
+        
+        [self.borderDict setObject:borderObject forKey:[self cg_keyWithState:state]];
+        if (CGViewBorderStateNormal == state && self.borderState == state) {
+            //当状态为Normal时，且当前状态相同时更新边框值
+            
+            [self cg_updateBorder];
+        }
+    }
 }
 
 //状态转key值
