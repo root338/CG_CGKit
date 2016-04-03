@@ -18,8 +18,8 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
 
 @interface CGTitleBarViewController : CGNavigationBarViewController
 
-/** 顶部左上角按钮的标题 */
-@property (nullable, nonatomic, strong) NSString *leftItemTitle;
+///** 顶部左上角按钮的标题 */ //父类已定义
+//@property (nullable, nonatomic, strong) NSString *leftItemTitle;
 /** 顶部右上角按钮的标题 */   //父类已定义
 //@property (nullable, nonatomic, strong) NSString *rightItemTitle;
 
@@ -31,8 +31,8 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
 /** 设置指定标题的属性 */
 - (void)cg_setTitleTextAttributes:(nullable NSDictionary<NSString *,id> *)attributes forState:(UIControlState)state type:(CGTitleBarItemType)type;
 
-/** 顶部左上角按钮的图片 */
-@property (nullable, nonatomic, strong) UIImage *leftItemImage;
+///** 顶部左上角按钮的图片 */ //父类已定义
+//@property (nullable, nonatomic, strong) UIImage *leftItemImage;
 /** 顶部右上角按钮的图片 */   //父类已定义
 //@property (nullable, nonatomic, strong) UIImage *rightItemImage;
 
@@ -47,13 +47,13 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
  */
 - (nullable NSArray<UIBarButtonItem *> *)setupRightItemButtons;
 
-/** dismiss后回调block */
-@property (nullable, nonatomic, copy) void (^dismissViewControllerCompletion) (void);
+///** 视图为model加载，dismiss后回调block */ //父类已定义
+//@property (nullable, nonatomic, copy) void (^dismissViewControllerCompletion) (void);
 
-/** 左边按钮触发的方法 */
-- (void)handleLeftItemAction:(id)sender;
-/** 右边按钮触发的方法 */
-- (void)handleRightItemAction:(id)sender;
+///** 左边按钮触发的方法 */
+//- (void)handleLeftItemAction:(id)sender;
+///** 右边按钮触发的方法 */
+//- (void)handleRightItemAction:(id)sender;
 
 
 @end

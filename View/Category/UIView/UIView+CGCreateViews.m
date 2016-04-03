@@ -76,3 +76,14 @@
 }
 
 @end
+
+@implementation UIView (CGCreateView)
+
++ (instancetype)cg_createViewWithBackgroundColor:(UIColor *)backgroundColor
+{
+    UIView *view            = [[self alloc] initWithFrame:CGRectZero];
+    view.backgroundColor    = backgroundColor;
+    return view;
+}
+
+@end

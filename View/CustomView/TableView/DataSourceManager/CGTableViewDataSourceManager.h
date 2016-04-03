@@ -104,14 +104,7 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGTableVi
  */
 - (void)setupDataSource:(nullable NSArray *)dataSource cellIdentifierForString:(nullable NSString *)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
 
-/**
- *  设置管理类（数据、cell标识（Class）、设置cell block）
- *
- *  @param dataSource     需要加载的元数据
- *  @param cellIdentifier 加载cell 在TableView中的唯一标识
- *  @param setupCellBlock 设置cell的方法
- *
- */
+/** 设置管理类（数据、cell标识（Class）、设置cell block） */
 - (void)setupDataSource:(nullable NSArray *)dataSource cellIdentifierForClass:(nullable Class)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
 
 /**
@@ -123,5 +116,8 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGTableVi
  *
  */
 - (instancetype)initWithDataSource:(nullable NSArray *)dataSource cellIdentifierForString:(nullable NSString *)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
+
+/** 初始化管理类，并设置（数据、cell标识（Class）、设置cell block） */
+- (instancetype)initWithDataSource:(nullable NSArray *)dataSource cellIdentifierForClass:(nullable Class)cellIdentifier setupCellBlock:(nullable CGSetupTableViewCell)setupCellBlock;
 @end
 NS_ASSUME_NONNULL_END

@@ -23,4 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_createViewsWithRule:(__kindof CGAddSubviewsAppearance *)viewsRule stopAddSubviews:(BOOL (^ __nullable) (CGAddSubviewsErrorType errorType))stopAddSubviews subview:(__kindof UIView * (^) (NSInteger index))setupSubview didSetupCallback:(void (^ __nullable) (CGSize compressedSize))didSetupCallback;
 
 @end
+
+@interface UIView (CGCreateView)
+
++ (instancetype)cg_createViewWithBackgroundColor:(UIColor *)backgroundColor;
+
+@end
 NS_ASSUME_NONNULL_END

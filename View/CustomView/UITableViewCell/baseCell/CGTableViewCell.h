@@ -16,7 +16,7 @@
 
 @end
 
-@interface CGTableViewCell : UITableViewCell<CGTableViewCellDelegate,CGViewInitializationProtocol>
+@interface CGTableViewCell : UITableViewCell<CGTableViewCellDelegate, CGViewInitializationProtocol>
 
 
 

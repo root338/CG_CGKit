@@ -34,6 +34,22 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
         return [self.superview searchSuperViewWithClass:className];
     }
 }
+
+- (__kindof UIView *)cg_searchCommonSuperviewWithView:(__kindof UIView *)otherView
+{
+    UIView *paramSuperview  = nil;
+    UIView *startView       = self;
+    
+    while (!paramSuperview && startView) {
+        
+        if ([otherView isDescendantOfView:startView]) {
+            paramSuperview  = startView;
+        }
+        startView   = startView.superview;
+    }
+    return paramSuperview;
+}
+
 @end
 
 @implementation UIView (CGSearchNextInputView)

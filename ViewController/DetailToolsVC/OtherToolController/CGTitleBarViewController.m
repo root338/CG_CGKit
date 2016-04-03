@@ -48,21 +48,6 @@
     }
 }
 
-#pragma mark - 事件触发
-- (void)handleLeftItemAction:(id)sender
-{
-    if (self.navigationController) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }else {
-        [self dismissViewControllerAnimated:YES completion:self.dismissViewControllerCompletion];
-    }
-}
-
-- (void)handleRightItemAction:(id)sender
-{
-    
-}
-
 #pragma mark - 标题按钮设置
 - (NSArray<UIBarButtonItem *> *)setupLeftItemButtons
 {

@@ -1,5 +1,5 @@
 //
-//  CGBaseCollectionView.h
+//  CGCollectionView.h
 //  QuickAskCommunity
 //
 //  Created by DY on 15/7/24.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CGBaseCollectionView : UICollectionView
+@interface CGCollectionView : UICollectionView
 
 @end

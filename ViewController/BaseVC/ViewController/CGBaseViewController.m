@@ -8,6 +8,8 @@
 
 #import "CGBaseViewController.h"
 
+#import "CGBaseViewController+CGSetupItem.h"
+
 #import "CGPrintLogHeader.h"
 
 @interface CGBaseViewController ()
@@ -16,35 +18,92 @@
 
 @implementation CGBaseViewController
 
+#pragma mark - 事件触发
+- (void)handleLeftItemAction:(id)sender
+{
+    
+    if (self.navigationController) {
+        
+        UINavigationController *navigationController = self.navigationController;
+        
+        if (navigationController.viewControllers.count > 1) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+        if (navigationController.presentingViewController) {
+            [navigationController dismissViewControllerAnimated:YES completion:self.dismissViewControllerCompletion];
+        }
+        
+    }else if (self.presentingViewController) {
+        
+        [self dismissViewControllerAnimated:YES completion:self.dismissViewControllerCompletion];
+    }
+}
+
+- (void)handleRightItemAction:(id)sender
+{
+    [self handleLeftItemAction:sender];
+}
+
+#pragma mark - 标题按钮的设置
+
+- (BOOL)cg_shouldAddRightBarButtonItem
+{
+    return !self.navigationItem.rightBarButtonItem;
+}
+
+- (BOOL)cg_shouldAddLeftBarButtonItem
+{
+    return !self.navigationItem.leftBarButtonItem || !self.navigationItem.backBarButtonItem || self.navigationItem.hidesBackButton;
+}
+
+- (UIBarButtonItem *)cg_addLeftBarButtonItem
+{
+    if (![self cg_shouldAddLeftBarButtonItem]) {
+        return nil;
+    }
+    
+    return [self cg_createBarButtonItemWithTitle:self.leftItemTitle image:self.leftItemImage landscapeImage:self.leftLandscapeImage];
+}
+
+- (UIBarButtonItem *)cg_addRightBarButtonItem
+{
+    if (![self cg_shouldAddRightBarButtonItem]) {
+        return nil;
+    }
+    
+    return [self cg_createBarButtonItemWithTitle:self.rightItemTitle image:self.rightItemImage landscapeImage:self.rightLandscapeImage];
+}
+
+- (UIBarButtonItem *)cg_createBarButtonItemWithTitle:(NSString *)title image:(UIImage *)image landscapeImage:(UIImage *)landscapeImage
+{
+    UIBarButtonItem *item   = nil;
+    if (image) {
+        item    = [self cg_createItemWithImage:image landscapeImage:landscapeImage];
+    }else if (title.length) {
+        item    = [self cg_createItemWithTitle:title];
+    }
+    
+    return item;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
 //    CGPrintClassNameLog()
     
     if (!self.navigationController.navigationBarHidden) {
         
-        UIBarButtonItem *rightItem  = nil;
-        id target   = self;
-        SEL action  = @selector(handleRightItemAction:);
-        
-        if (self.rightItemImage) {
-            rightItem   = [[UIBarButtonItem alloc] initWithImage:self.rightItemImage landscapeImagePhone:self.landscapeImage ? self.landscapeImage : self.rightItemImage style:UIBarButtonItemStylePlain target:target action:action];
-        }else if (self.rightItemTitle) {
-            rightItem   = [[UIBarButtonItem alloc] initWithTitle:self.rightItemTitle style:UIBarButtonItemStylePlain target:target action:action];
-        }
-        
-        self.navigationItem.rightBarButtonItem  = rightItem;
+        UINavigationItem *navigationItem    = self.navigationItem;
+        navigationItem.rightBarButtonItem   = [self cg_addRightBarButtonItem];
+        navigationItem.leftBarButtonItem    = [self cg_addLeftBarButtonItem];
     }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)handleRightItemAction:(id)sender
-{
-    
 }
 
 /*

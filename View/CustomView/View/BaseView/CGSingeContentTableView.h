@@ -14,5 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) UITableView *tableView;
 
 - (instancetype)initWithFrame:(CGRect)frame tableViewStyle:(UITableViewStyle)style;
+
 @end
 NS_ASSUME_NONNULL_END

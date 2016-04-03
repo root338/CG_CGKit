@@ -81,6 +81,11 @@
     return self;
 }
 
+- (instancetype)initWithDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(CGSetupTableViewCell)setupCellBlock
+{
+    return [self initWithDataSource:dataSource cellIdentifierForString:NSStringFromClass(cellIdentifier) setupCellBlock:setupCellBlock];
+}
+
 - (void)setupDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(CGSetupTableViewCell)setupCellBlock
 {
     [self setupDataSource:dataSource cellIdentifierForString:NSStringFromClass(cellIdentifier) setupCellBlock:setupCellBlock];
