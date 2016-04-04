@@ -7,7 +7,7 @@
 //
 
 #import "CGBaseViewController.h"
-#import "CGBaseTableView.h"
+#import "CGTableView.h"
 
 /**
  *  基础UITableView视图控制器
@@ -17,7 +17,7 @@
 @interface CGBaseTableViewController : CGBaseViewController
 
 #pragma mark - UI
-@property (nonatomic, strong, readonly) CGBaseTableView *tableView;
+@property (nonatomic, strong, readonly) CGTableView *tableView;
 
 #pragma mark - UI 外观设置
 /** tableView 的样式 */

@@ -209,9 +209,19 @@
     return [self cg_attribute:attribute relatedBy:relation toItem:view2 attribute:att2 multiplier:1.0 constant:c];
 }
 
+- (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2
+{
+    return [self cg_attribute:attribute toItem:view2 attribute:attr2 constant:0];
+}
+
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2
 {
     return [self cg_attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 constant:0];
+}
+
+- (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2 constant:(CGFloat)c
+{
+    return [self cg_attribute:attribute relatedBy:NSLayoutRelationEqual toItem:view2 attribute:attr2 constant:c];
 }
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2 constant:(CGFloat)c

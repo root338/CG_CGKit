@@ -28,10 +28,12 @@
         
         if (navigationController.viewControllers.count > 1) {
             [self.navigationController popViewControllerAnimated:YES];
+            return;
         }
         
         if (navigationController.presentingViewController) {
             [navigationController dismissViewControllerAnimated:YES completion:self.dismissViewControllerCompletion];
+            return;
         }
         
     }else if (self.presentingViewController) {
@@ -91,13 +93,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-//    CGPrintClassNameLog()
+    CGPrintClassNameLog()
     
     if (!self.navigationController.navigationBarHidden) {
         
         UINavigationItem *navigationItem    = self.navigationItem;
         navigationItem.rightBarButtonItem   = [self cg_addRightBarButtonItem];
         navigationItem.leftBarButtonItem    = [self cg_addLeftBarButtonItem];
+    }
+    
+    if (!self.view.backgroundColor) {
+        self.view.backgroundColor   = [UIColor whiteColor];
     }
 }
 
@@ -118,7 +124,7 @@
 
 - (void)dealloc
 {
-//    CGPrintClassNameLog()
+    CGPrintClassNameLog()
 }
 
 @end

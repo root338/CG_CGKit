@@ -10,7 +10,7 @@
 
 @interface CGBaseTableViewController ()
 
-@property (nonatomic, strong, readwrite) CGBaseTableView *tableView;
+@property (nonatomic, strong, readwrite) CGTableView *tableView;
 
 @end
 
@@ -37,13 +37,13 @@
 */
 
 #pragma mark - 设置属性
-- (CGBaseTableView *)tableView
+- (CGTableView *)tableView
 {
     if (_tableView) {
         return _tableView;
     }
     
-    _tableView = [[CGBaseTableView alloc] initWithFrame:self.view.bounds style:self.tableViewStyle];
+    _tableView = [[CGTableView alloc] initWithFrame:self.view.bounds style:self.tableViewStyle];
     
     return _tableView;
 }

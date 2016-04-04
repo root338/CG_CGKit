@@ -6,7 +6,7 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "CGBaseObject.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -17,14 +17,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 /** 照片管理类 */
-@interface CGAssetsLibraryManager : NSObject
+@interface CGAssetsLibraryManager : CGBaseObject
 
-+ (instancetype)sharedManager;
+//+ (instancetype)sharedManager;
 
-/** 获取的资源类型 */
+/** 获取的资源类型 默认为CGAssetsFilterTypeAllPhotos */
 @property (nonatomic, assign) CGAssetsFilterType assetsFilterType;
 
-/** 获取单个资源的排序方式 */
+/** 获取单个资源的排序方式 默认为CGAssetsSequenceTypeDescending */
 @property (nonatomic, assign) CGAssetsSequenceType assetsSequenceType;
 
 #pragma mark - 获取资源数组
@@ -33,10 +33,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 获取单个资源数组
 /** 获取图片视频组下的指定资源数组(ALAsset) */
+- (NSArray<ALAsset *> *)cg_assetsWithGroup:(ALAssetsGroup *)assetsGroup;
+
+/** 获取图片视频组下的指定资源数组(ALAsset) */
 - (nullable NSArray<ALAsset *> *)cg_assetsWithGroup:(ALAssetsGroup *)assetsGroup assetsFilterType:(CGAssetsFilterType)assetsFilterType;
 
-/** 获取指定类型下的所有指定资源 */
+/** 
+ *  获取指定类型下的所有指定资源
+ */
 - (void)cg_assetsListWithAssetsFilter:(CGAssetsFilterObject *)assetsFilter assetList:(void (^) (NSArray<ALAsset *> * _Nullable paramAssetList))assetListBlock failureBlock:(nullable ALAssetsLibraryAccessFailureBlock)failureBlock;
+
+/**
+ *  获取指定类型下的所有指定资源
+ */
+- (void)cg_assetsListWithAssetsGroupType:(ALAssetsGroupType)assetsGroupType assetList:(void (^) (NSArray<ALAsset *> * _Nullable paramAssetList))assetListBlock failureBlock:(nullable ALAssetsLibraryAccessFailureBlock)failureBlock;
 
 @end
 NS_ASSUME_NONNULL_END

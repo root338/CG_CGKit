@@ -7,28 +7,50 @@
 //
 
 #import "CGPhotoListViewController.h"
+#import "CGPhotoNavigationController.h"
 
-#import "CGBrowsePhotoListView.h"
+#import "CGCollectionView.h"
+#import "CGPhotoCollectionViewCell.h"
 
+#import "UIView+CGSetupFrame.h"
 #import "UIView+CGAddConstraints.h"
+#import "CGBaseViewController+CGSetupItem.h"
+#import "UICollectionViewFlowLayout+CGCreateLayout.h"
 
 #import "CGAssetsLibraryManager.h"
-#import "CGAssetsFilterObject.h"
+#import "ALAssetsGroup+CGProperty.h"
+#import "CGCollectionViewDataSourceManager.h"
 
 @interface CGPhotoListViewController ()
 
-@property (nonatomic, strong) CGBrowsePhotoListView *brosePhotoListView;
+@property (nonatomic, strong) CGCollectionView *collectionView;
+@property (nonatomic, strong) CGCollectionViewDataSourceManager *dataSourceManager;
 
+@property (readonly) CGAssetsLibraryManager *assetsLibraryManager;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @end
 
 @implementation CGPhotoListViewController
+
++ (instancetype)cg_createPhotoList
+{
+    CGPhotoListViewController *photoListVC  = [[CGPhotoListViewController alloc] init];
+    photoListVC.rightItemTitle  = @"取消";
+    return photoListVC;
+}
+
+- (void)handleRightItemAction:(id)sender
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self setupPhotoListView];
+    [self setupToolView];
+    [self setupLayout];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
@@ -36,33 +58,79 @@
 - (void)setupPhotoListView
 {
     
-    CGFloat count                           = 4;
-    CGFloat space                           = 5;
-    CGFloat length                          = (self.view.width - space * (count - 1)) / (float)count;
-    UICollectionViewFlowLayout *flowLayout  = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumInteritemSpacing      = space;
-    flowLayout.minimumLineSpacing           = space;
-    flowLayout.itemSize                     = CGSizeMake(length, length);
+    UICollectionViewFlowLayout *flowLayout  = [UICollectionViewFlowLayout cg_createWithWidth:self.view.width count:4 space:5];
     
-    self.brosePhotoListView = [[CGBrowsePhotoListView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout photoList:nil];
-    [self.view addSubview:self.brosePhotoListView];
-    [self.brosePhotoListView cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero];
+    NSArray *photoList  = [self.assetsLibraryManager cg_assetsWithGroup:self.assetsGroup];
     
-    CGAssetsLibraryManager * assetsLibraryManager   = [CGAssetsLibraryManager sharedManager];
-    assetsLibraryManager.assetsFilterType           = CGAssetsFilterTypeAllPhotos;
-    assetsLibraryManager.assetsSequenceType         = CGAssetsSequenceTypeDescending;
+    _collectionView = [[CGCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    _collectionView.allowsMultipleSelection = YES;
+    _collectionView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_collectionView];
     
-    CGAssetsFilterObject *filterObject              = [[CGAssetsFilterObject alloc] init];
-    filterObject.assetsFilterType                   = CGAssetsFilterTypeAllPhotos;
-    filterObject.assetsGroupType                    = ALAssetsGroupAll;
-    filterObject.assetsSequenceType                 = CGAssetsSequenceTypeDescending;
+    Class registerCellClassName = [CGPhotoCollectionViewCell class];
+    [_collectionView cg_registerReuseClass:registerCellClassName];
+    _dataSourceManager          = [[CGCollectionViewDataSourceManager alloc] initWithDataSource:photoList cellIdentifierForClass:registerCellClassName setupCellBlock:^(UICollectionView * _Nonnull collectionView, __kindof CGCollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
+        [cell setupCollectionViewCellContentWithData:data];
+    }];
+    _collectionView.dataSource  = _dataSourceManager;
+}
+
+- (void)setupToolView
+{
+    self.toolbar    = [[UIToolbar alloc] init];
+    UIBarButtonItem *browseItem = [self cg_createItemWithTitle:@"预览" target:self action:@selector(handleBrowseSelectedImageAction:)];
+    UIBarButtonItem *middenItem     = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *completionItem = [self cg_createItemWithTitle:@"确定" target:self action:@selector(handleFinishedAction:)];
     
-    [assetsLibraryManager cg_assetsListWithAssetsFilter:filterObject assetList:^(NSArray<ALAsset *> * _Nullable paramAssetList) {
-        
-        paramAssetList  = [paramAssetList arrayByAddingObjectsFromArray:paramAssetList];
-        paramAssetList  = [paramAssetList arrayByAddingObjectsFromArray:paramAssetList];
-        [self.brosePhotoListView cg_setupPhotoList:paramAssetList];
-    } failureBlock:nil];
+    [self.toolbar setItems:@[browseItem, middenItem, completionItem]];
+    [self.view addSubview:self.toolbar];
+}
+
+- (void)setupLayout
+{
+    [_collectionView cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero exculdingEdge:CGLayoutEdgeBottom];
+    [self.toolbar cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero exculdingEdge:CGLayoutEdgeTop];
+    [_collectionView cg_attribute:NSLayoutAttributeBottom toItem:self.toolbar attribute:NSLayoutAttributeTop];
+//    [self.toolbar cg_autoDimension:CGDimensionHeight fixedLength:44];
+}
+
+#pragma mark - 处理方法
+- (void)cg_setupPhotoList:(NSArray *)photoList
+{
+    self.dataSourceManager.dataSource   = photoList;
+    [self.collectionView reloadData];
+}
+
+#pragma mark - 事件
+- (void)handleBrowseSelectedImageAction:(id)sender
+{
+    
+}
+
+- (void)handleFinishedAction:(id)sender
+{
+    
+}
+
+#pragma mark - 设置属性
+
+- (CGAssetsLibraryManager *)assetsLibraryManager
+{
+    if ([self.navigationController isKindOfClass:[CGPhotoNavigationController class]]) {
+        CGPhotoNavigationController *photoNavigationController  = (id)self.navigationController;
+        return photoNavigationController.assetsLibraryManager;
+    }
+    return nil;
+}
+
+- (void)setAssetsGroup:(ALAssetsGroup *)assetsGroup
+{
+    _assetsGroup    = assetsGroup;
+    self.title      = self.assetsGroup.assetsGroupName;
+    
+    if (self.collectionView) {
+        [self cg_setupPhotoList:[self.assetsLibraryManager cg_assetsWithGroup:assetsGroup]];
+    }
 }
 
 @end

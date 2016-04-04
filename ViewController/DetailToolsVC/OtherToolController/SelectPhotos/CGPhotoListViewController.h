@@ -8,12 +8,15 @@
 
 #import "CGBaseViewController.h"
 
+@class ALAssetsGroup;
+
+NS_ASSUME_NONNULL_BEGIN
 /** 照片浏览列表 */
 @interface CGPhotoListViewController : CGBaseViewController
 
-/** 选择照片的最大数 默认为 1 */
-@property (nonatomic, assign) NSInteger selectedMaxNumber;
-/** 选择照片的最小数 默认为 1 */
-@property (nonatomic, assign) NSInteger selectedMinNumber;
+/** 图片组 */
+@property (nullable, nonatomic, strong) ALAssetsGroup *assetsGroup;
 
++ (instancetype)cg_createPhotoList;
 @end
+NS_ASSUME_NONNULL_END

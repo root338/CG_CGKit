@@ -14,20 +14,40 @@
 {
     ALAssetsFilter *_assetsFilter;
 }
+
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong, readonly) ALAssetsFilter *assetsFilter;
+
+@property (nonatomic, assign) BOOL isCache;
+/** 缓存的图片数组集合 */
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSArray<ALAssetsGroup *> *> *cacheAssetsGroupDictionary;
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSArray<ALAsset *> *> *cacheAssetsDictionary;
 @end
 
 @implementation CGAssetsLibraryManager
 
-+ (instancetype)sharedManager
+//+ (instancetype)sharedManager
+//{
+//    static CGAssetsLibraryManager *sharedManager = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        sharedManager  = [[CGAssetsLibraryManager alloc] init];
+//    });
+//    return sharedManager;
+//}
+
+- (void)initialization
 {
-    static CGAssetsLibraryManager *libraryManager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        libraryManager  = [[CGAssetsLibraryManager alloc] init];
-    });
-    return libraryManager;
+    _isCache                = YES;
+    self.assetsFilterType   = CGAssetsFilterTypeAllPhotos;
+    self.assetsSequenceType = CGAssetsSequenceTypeDescending;
+    
+    _assetsLibrary = [[ALAssetsLibrary alloc] init];
+    
+    if (_isCache) {
+        _cacheAssetsGroupDictionary = [NSMutableDictionary dictionary];
+        _cacheAssetsDictionary      = [NSMutableDictionary dictionary];
+    }
 }
 
 - (void)cg_verify
@@ -76,6 +96,17 @@
 #pragma mark - 图片视频集资源处理
 - (void)cg_assetsGroupsWithGroupsType:(ALAssetsGroupType)groupType assetsGroups:(nonnull void (^)(NSArray<ALAssetsGroup *> * _Nullable))assetsGroupsBlock failureBlock:(nullable ALAssetsLibraryAccessFailureBlock)failureBlock
 {
+    if (self.isCache) {
+        NSArray<ALAssetsGroup *> *tempAssetsGroup   = [self.cacheAssetsGroupDictionary objectForKey:@(groupType)];
+        if (tempAssetsGroup) {
+            if (assetsGroupsBlock) {
+                assetsGroupsBlock(tempAssetsGroup);
+            }
+            
+            return;
+        }
+    }
+    
     NSMutableArray *assetsGroup = [NSMutableArray array];
     
     [self.assetsLibrary enumerateGroupsWithTypes:groupType usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
@@ -83,6 +114,10 @@
         if (group) {
             [assetsGroup addObject:group];
         }else {
+            if (self.isCache) {
+                
+                !assetsGroup ?: [self.cacheAssetsGroupDictionary setObject:assetsGroup forKey:@(groupType)];
+            }
             //当图片视频组为空时，资源结束
             if (assetsGroupsBlock) {
                 assetsGroupsBlock(assetsGroup);
@@ -92,6 +127,11 @@
 }
 
 #pragma mark - 图片视频单个对象资源处理
+- (NSArray<ALAsset *> *)cg_assetsWithGroup:(ALAssetsGroup *)assetsGroup
+{
+    return [self cg_assetsWithGroup:assetsGroup assetsFilterType:self.assetsFilterType];
+}
+
 - (NSArray<ALAsset *> *)cg_assetsWithGroup:(ALAssetsGroup *)assetsGroup assetsFilterType:(CGAssetsFilterType)assetsFilterType
 {
     return [self cg_assetsWithGroup:assetsGroup assetsFilterType:assetsFilterType flag:YES];
@@ -106,6 +146,7 @@
         return nil;
     }
     
+    
     NSArray        *assets      = nil;
     NSMutableArray *assetsList  = [NSMutableArray arrayWithCapacity:assetsGroup.numberOfAssets];
     
@@ -118,6 +159,8 @@
             [assetsList addObject:result];
         }
     }];
+    
+    
     if (flag) {
         assets  = [self cg_assetsSequenceWithOldAssets:assetsList type:self.assetsSequenceType];
     }else {
@@ -168,19 +211,30 @@
 
 - (void)cg_assetsListWithAssetsFilter:(CGAssetsFilterObject *)assetsFilter assetList:(nonnull void (^)(NSArray<ALAsset *> * _Nullable))assetListBlock failureBlock:(nullable ALAssetsLibraryAccessFailureBlock)failureBlock
 {
+    [self cg_assetsListWithAssetsGroupType:assetsFilter.assetsGroupType assetsFilterType:assetsFilter.assetsFilterType assetsSequenceType:assetsFilter.assetsSequenceType assetList:assetListBlock failureBlock:failureBlock];
+}
+
+- (void)cg_assetsListWithAssetsGroupType:(ALAssetsGroupType)assetsGroupType assetList:(void (^)(NSArray<ALAsset *> * _Nullable))assetListBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock
+{
+    
+    [self cg_assetsListWithAssetsGroupType:assetsGroupType assetsFilterType:self.assetsFilterType assetsSequenceType:self.assetsSequenceType assetList:assetListBlock failureBlock:failureBlock];
+}
+
+- (void)cg_assetsListWithAssetsGroupType:(ALAssetsGroupType)assetsGroupType assetsFilterType:(CGAssetsFilterType)assetsFilterType assetsSequenceType:(CGAssetsSequenceType)assetsSequenceType assetList:(void (^)(NSArray<ALAsset *> * _Nullable))assetListBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock
+{
     __weak __block typeof(self) weakself = self;
-    [self cg_assetsGroupsWithGroupsType:assetsFilter.assetsGroupType assetsGroups:^(NSArray<ALAssetsGroup *> * _Nullable paramAssetsGroup) {
+    [self cg_assetsGroupsWithGroupsType:assetsGroupType assetsGroups:^(NSArray<ALAssetsGroup *> * _Nullable paramAssetsGroup) {
         
         NSArray<ALAsset *> *assetList = nil;
         if (paramAssetsGroup.count) {
             NSMutableArray<ALAsset *> *assetListArray = [NSMutableArray array];
             [paramAssetsGroup enumerateObjectsUsingBlock:^(ALAssetsGroup * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                NSArray<ALAsset *> *assets  = [weakself cg_assetsWithGroup:obj assetsFilterType:assetsFilter.assetsFilterType flag:NO];
+                NSArray<ALAsset *> *assets  = [weakself cg_assetsWithGroup:obj assetsFilterType:assetsFilterType flag:NO];
                 if (assets) {
                     [assetListArray addObjectsFromArray:assets];
                 }
             }];
-            assetList   = [weakself cg_assetsSequenceWithOldAssets:assetListArray type:assetsFilter.assetsSequenceType];
+            assetList   = [weakself cg_assetsSequenceWithOldAssets:assetListArray type:assetsSequenceType];
         }
         
         if (assetListBlock) {
@@ -190,17 +244,6 @@
 }
 
 #pragma mark - 设置属性
-
-- (ALAssetsLibrary *)assetsLibrary
-{
-    if (_assetsLibrary) {
-        return _assetsLibrary;
-    }
-    
-    _assetsLibrary = [[ALAssetsLibrary alloc] init];
-    
-    return _assetsLibrary;
-}
 
 - (void)setAssetsFilterType:(CGAssetsFilterType)assetsFilterType
 {
