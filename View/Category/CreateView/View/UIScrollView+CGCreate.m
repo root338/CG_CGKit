@@ -12,6 +12,11 @@
 
 @implementation UIScrollView (CGCreate)
 
++ (instancetype)cg_createWithScrollViewWithShowScrollIndicator:(BOOL)showScrollIndicator
+{
+    return [self cg_createWithScrollViewWithShowScrollIndicator:showScrollIndicator pagingEnabled:NO];
+}
+
 + (instancetype)cg_createWithScrollViewWithShowScrollIndicator:(BOOL)showScrollIndicator pagingEnabled:(BOOL)paramPagingEnabled
 {
     return [self cg_createWithScrollViewWithFrame:CGRectZero showScrollIndicator:showScrollIndicator pagingEnabled:paramPagingEnabled];

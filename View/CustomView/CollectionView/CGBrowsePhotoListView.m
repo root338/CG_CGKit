@@ -30,6 +30,11 @@
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout photoList:(nullable NSArray *)photoList
 {
+    return [self initWithFrame:frame registerCellClass:[CGPhotoCollectionViewCell class] collectionViewLayout:layout photoList:photoList];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame registerCellClass:(Class)registerCellClass collectionViewLayout:(UICollectionViewLayout *)layout photoList:(NSArray *)photoList
+{
     self    = [super initWithFrame:frame];
     if (self) {
         
@@ -41,9 +46,10 @@
         
         _collectionView.backgroundColor = [UIColor whiteColor];
         
-        Class registerCellClassName = [CGPhotoCollectionViewCell class];
+        Class registerCellClassName = registerCellClass;
         [_collectionView cg_registerReuseClass:registerCellClassName];
         _dataSourceManager          = [[CGCollectionViewDataSourceManager alloc] initWithDataSource:photoList cellIdentifierForClass:registerCellClassName setupCellBlock:^(UICollectionView * _Nonnull collectionView, __kindof CGCollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
+            NSAssert([cell respondsToSelector:@selector(setupCollectionViewCellContentWithData:)], @"需要使用的cell没有setupCollectionViewCellContentWithData:方法");
             [cell setupCollectionViewCellContentWithData:data];
         }];
         _collectionView.dataSource  = _dataSourceManager;

@@ -31,7 +31,7 @@
     static CGFCManager *sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedManager  = [[CGFCManager alloc] init];
+//        sharedManager  = [[CGFCManager alloc] init];
     });
     return sharedManager;
 }

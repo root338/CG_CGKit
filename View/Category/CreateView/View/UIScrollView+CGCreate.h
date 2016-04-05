@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIScrollView (CGCreate)
 
+/** 创建滑动视图（滑动条显隐） */
++ (instancetype)cg_createWithScrollViewWithShowScrollIndicator:(BOOL)showScrollIndicator;
+
 /**
  *  创建滑动视图（滑动条显隐，是否分页）
  *

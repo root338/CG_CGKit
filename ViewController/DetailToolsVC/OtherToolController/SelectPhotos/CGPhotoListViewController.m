@@ -8,6 +8,7 @@
 
 #import "CGPhotoListViewController.h"
 #import "CGPhotoNavigationController.h"
+#import "CGBrowsePhotoViewController.h"
 
 #import "CGCollectionView.h"
 #import "CGPhotoCollectionViewCell.h"
@@ -21,7 +22,7 @@
 #import "ALAssetsGroup+CGProperty.h"
 #import "CGCollectionViewDataSourceManager.h"
 
-@interface CGPhotoListViewController ()
+@interface CGPhotoListViewController ()<UICollectionViewDelegate>
 
 @property (nonatomic, strong) CGCollectionView *collectionView;
 @property (nonatomic, strong) CGCollectionViewDataSourceManager *dataSourceManager;
@@ -39,11 +40,39 @@
     return photoListVC;
 }
 
+#pragma mark - 处理方法
+- (void)cg_setupPhotoList:(NSArray *)photoList
+{
+    self.dataSourceManager.dataSource   = photoList;
+    [self.collectionView reloadData];
+}
+
+#pragma mark - 事件
+- (void)handleBrowseSelectedImageAction:(id)sender
+{
+    
+}
+
+- (void)handleFinishedAction:(id)sender
+{
+    
+}
+
 - (void)handleRightItemAction:(id)sender
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGBrowsePhotoViewController *browsePhotoVC  = [[CGBrowsePhotoViewController alloc] init];
+    browsePhotoVC.browsePhotoDataSource         = self.dataSourceManager.dataSource;
+    browsePhotoVC.startIndex                    = indexPath.row;
+    [self.navigationController pushViewController:browsePhotoVC animated:YES];
+}
+
+#pragma mark - 视图内容设置
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -72,7 +101,9 @@
     _dataSourceManager          = [[CGCollectionViewDataSourceManager alloc] initWithDataSource:photoList cellIdentifierForClass:registerCellClassName setupCellBlock:^(UICollectionView * _Nonnull collectionView, __kindof CGCollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
         [cell setupCollectionViewCellContentWithData:data];
     }];
+    
     _collectionView.dataSource  = _dataSourceManager;
+    _collectionView.delegate    = self;
 }
 
 - (void)setupToolView
@@ -92,24 +123,6 @@
     [self.toolbar cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero exculdingEdge:CGLayoutEdgeTop];
     [_collectionView cg_attribute:NSLayoutAttributeBottom toItem:self.toolbar attribute:NSLayoutAttributeTop];
 //    [self.toolbar cg_autoDimension:CGDimensionHeight fixedLength:44];
-}
-
-#pragma mark - 处理方法
-- (void)cg_setupPhotoList:(NSArray *)photoList
-{
-    self.dataSourceManager.dataSource   = photoList;
-    [self.collectionView reloadData];
-}
-
-#pragma mark - 事件
-- (void)handleBrowseSelectedImageAction:(id)sender
-{
-    
-}
-
-- (void)handleFinishedAction:(id)sender
-{
-    
 }
 
 #pragma mark - 设置属性

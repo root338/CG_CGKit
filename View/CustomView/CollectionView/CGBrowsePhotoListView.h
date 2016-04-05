@@ -17,7 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 //@property (nonatomic, strong) NSMutableArray *photoDataSource;
 
+/** 初始化视图 默认注册CGPhotoCollectionViewCell */
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout photoList:(nullable NSArray *)photoList;
+
+/** 初始化器，设置需要注册的cell 类 */
+- (instancetype)initWithFrame:(CGRect)frame registerCellClass:(Class)registerCellClass collectionViewLayout:(UICollectionViewLayout *)layout photoList:(NSArray *)photoList;
 
 - (void)cg_setupPhotoList:(NSArray *)photoList;
 @end
