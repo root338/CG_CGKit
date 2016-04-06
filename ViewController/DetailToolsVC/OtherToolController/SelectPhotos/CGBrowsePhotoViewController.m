@@ -13,12 +13,18 @@
 
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CGAddConstraints.h"
+#import "UIScrollView+CGProperty.h"
 #import "CGNavigationAppearanceProtocol.h"
 
 #import "CGCollectionViewDataSourceManager.h"
 #import "CGBrowseImageCollectionViewFlowLayout.h"
 
-@interface CGBrowsePhotoViewController ()<UICollectionViewDelegate, CGNavigationAppearanceProtocol>
+@interface CGBrowsePhotoViewController ()
+<
+    UICollectionViewDelegate,
+    CGNavigationAppearanceProtocol,
+    UIGestureRecognizerDelegate
+>
 {
     
 }
@@ -28,23 +34,29 @@
 
 @implementation CGBrowsePhotoViewController
 
+- (BOOL)prefersStatusBarHidden
+{
+    return self.isNavigationBarHidden;
+}
+
 #pragma mark - 事件
+
 - (void)handleTopAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    BOOL isHidde    = !self.navigationController.isNavigationBarHidden;
-    [self.navigationController setNavigationBarHidden:isHidde animated:YES];
+    BOOL isHidden   = !self.navigationBar.hidden;
+    [self setNavigationBarHidden:isHidden animated:YES];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewDidLoad {
     
-    self.title  = @"浏览";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self cg_setupBrowsePhotoListView];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTopAction:)];
-    [self.view addGestureRecognizer:tap];
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTopAction:)];
+    tapGestureRecognizer.delegate   = self;
+    [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,12 +88,44 @@
     
     _browsePhotoCollectionView.dataSource   = _dataSourceManager;
     _browsePhotoCollectionView.delegate     = self;
+    
+    if (self.startIndex >= self.browsePhotoDataSource.count) {
+        //判断开始索引是否符合要求
+        self.startIndex = 0;
+    }
+    
+    if (self.startIndex) {
+        [_browsePhotoCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:self.startIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+    }
+    [self setupTitleWithPage:self.startIndex + 1];
 }
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    [self setupTitleWithPage:[scrollView cg_calculateScrollPageWithScale:0.5]];
+}
+
+- (void)setupTitleWithPage:(NSInteger)page
+{
+    if (page < 1 || page > self.browsePhotoDataSource.count) {
+        CGErrorLog(@"现在的索引为%li 索引应 大于0 小于%li", (long)page, self.browsePhotoDataSource.count);
+        return ;
+    }
     
+    self.title  = [NSString stringWithFormat:@"%li/%lu", page, self.browsePhotoDataSource.count];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (self.isNavigationBarHidden) {
+        return YES;
+    }else {
+        CGPoint touchPoint  = [gestureRecognizer locationInView:self.view];
+        //当点击的坐标不在导航栏时允许手势执行
+        return !CGRectContainsPoint(self.navigationBar.frame, touchPoint);
+    }
 }
 
 /*

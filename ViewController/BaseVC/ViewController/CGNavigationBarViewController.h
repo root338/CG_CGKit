@@ -21,6 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 视图控制器视图 */
 @property (nullable, nonatomic, strong, readonly) CGNavigationBarView *navigationBarView;
+/** 是否隐藏导航栏 */
+@property (nonatomic, assign) BOOL isNavigationBarHidden;
+/** 是否隐藏导航栏，并且是否执行动画 */
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
 
 /** 
  *  设置视图控制器的view 

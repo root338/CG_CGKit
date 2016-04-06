@@ -65,7 +65,12 @@
         return nil;
     }
     
-    return [self cg_createBarButtonItemWithTitle:self.leftItemTitle image:self.leftItemImage landscapeImage:self.leftLandscapeImage];
+    UIBarButtonItem *leftItem   = [self cg_createBarButtonItemWithTitle:self.leftItemTitle image:self.leftItemImage landscapeImage:self.leftLandscapeImage];
+    [self.leftItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
+        [leftItem setTitleTextAttributes:obj forState:key.integerValue];
+    }];
+    
+    return leftItem;
 }
 
 - (UIBarButtonItem *)cg_addRightBarButtonItem
@@ -74,7 +79,11 @@
         return nil;
     }
     
-    return [self cg_createBarButtonItemWithTitle:self.rightItemTitle image:self.rightItemImage landscapeImage:self.rightLandscapeImage];
+    UIBarButtonItem *rightItem   = [self cg_createBarButtonItemWithTitle:self.rightItemTitle image:self.rightItemImage landscapeImage:self.rightLandscapeImage];
+    [self.rightItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
+        [rightItem setTitleTextAttributes:obj forState:key.integerValue];
+    }];
+    return rightItem;
 }
 
 - (UIBarButtonItem *)cg_createBarButtonItemWithTitle:(NSString *)title image:(UIImage *)image landscapeImage:(UIImage *)landscapeImage
@@ -87,6 +96,28 @@
     }
     
     return item;
+}
+
+/** 设置item标题的属性 */
+- (BOOL)cg_setTitleTextAttributes:(NSDictionary<NSString *,id> *)attributes forState:(UIControlState)state type:(CGTitleBarItemType)type
+{
+    if (!attributes) {
+        return NO;
+    }
+    
+    NSNumber *key   = @(state);
+    if (CGTitleBarItemTypeLeft == type) {
+        if (self.leftItemTitleAttributesDict == nil) {
+            self.leftItemTitleAttributesDict    = [NSMutableDictionary dictionaryWithCapacity:1];
+        }
+        [self.leftItemTitleAttributesDict setObject:attributes forKey:key];
+    }else if (CGTitleBarItemTypeRight == type) {
+        if (self.rightItemTitleAttributesDict == nil) {
+            self.rightItemTitleAttributesDict   = [NSMutableDictionary dictionaryWithCapacity:1];
+        }
+        [self.rightItemTitleAttributesDict setObject:attributes forKey:key];
+    }
+    return YES;
 }
 
 - (void)viewDidLoad {

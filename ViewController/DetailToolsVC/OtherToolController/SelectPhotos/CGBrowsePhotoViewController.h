@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) NSArray *browsePhotoDataSource;
 
 /** 开始观看的位置 */
-@property (nonatomic, assign) NSInteger startIndex;
+@property (nonatomic, assign) NSUInteger startIndex;
 
 @end
 

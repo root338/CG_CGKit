@@ -11,11 +11,25 @@
 @interface CGTitleBarViewController ()<UINavigationBarDelegate>
 {
     BOOL _titleDidAddToNavigationBar;
+    UINavigationItem *_titleItem;
 }
 
 @end
 
 @implementation CGTitleBarViewController
+
+#pragma mark - 事件
+- (void)handleBackItemAction:(id)sender
+{
+    [self handleLeftItemAction:sender];
+}
+
+#pragma mark - UINavigationBarDelegate
+- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
+{
+    [self handleBackItemAction:nil];
+    return YES;
+}
 
 - (void)viewDidLoad
 {
@@ -31,21 +45,22 @@
         
         NSArray<UIBarButtonItem *> *leftItems   = [self setupLeftItemButtons];
         NSArray<UIBarButtonItem *> *rightItems  = [self setupRightItemButtons];
+        UIBarButtonItem            *backItem    = [self setupBackItemButton];
         
-        if (leftItems || rightItems || self.title) {
+        UINavigationItem *navigationItem    = [[UINavigationItem alloc] initWithTitle:self.title];
+        
+        !leftItems  ?:  [navigationItem setLeftBarButtonItems:leftItems];
+        !rightItems ?:  [navigationItem setRightBarButtonItems:rightItems];
+        
+        if (self.backItemTitle) {
             
-            UINavigationItem *navigationItem    = [[UINavigationItem alloc] initWithTitle:self.title];
-            
-            UINavigationItem *backNavigationItem    = [[UINavigationItem alloc] initWithTitle:@"Back"];
-            
-            !leftItems  ?:  [navigationItem setLeftBarButtonItems:leftItems];
-            !rightItems ?:  [navigationItem setRightBarButtonItems:rightItems];
-            
-//            [self.navigationBar pushNavigationItem:navigationItem animated:YES];
+            UINavigationItem *backNavigationItem    = [[UINavigationItem alloc] init];
+            backNavigationItem.backBarButtonItem    = backItem;
             [self.navigationBar pushNavigationItem:backNavigationItem animated:NO];
-            [self.navigationBar pushNavigationItem:navigationItem animated:NO];
-            
         }
+        
+        [self.navigationBar pushNavigationItem:navigationItem animated:NO];
+        _titleItem  = navigationItem;
         
         _titleDidAddToNavigationBar = YES;
     }
@@ -102,25 +117,41 @@
     return rightItem ? @[rightItem] : nil;
 }
 
-- (void)cg_setTitleTextAttributes:(NSDictionary<NSString *,id> *)attributes forState:(UIControlState)state type:(CGTitleBarItemType)type
+- (UIBarButtonItem *)setupBackItemButton
 {
-    if (!attributes) {
-        return;
+    UIBarButtonItem *backItem   = nil;
+//    id target                   = self;
+//    SEL action                  = @selector(handleBackItemAction:);
+    //设置触发的方法不管用，现在在navigationBar:shouldPopItem:代理方法中POP当前视图
+    if (self.backItemTitle) {
+        backItem    = [[UIBarButtonItem alloc] initWithTitle:self.backItemTitle style:UIBarButtonItemStylePlain target:nil action:nil];
+        [self.backItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary<NSString *,id> * _Nonnull obj, BOOL * _Nonnull stop) {
+            [backItem setTitleTextAttributes:obj forState:key.integerValue];
+        }];
     }
-    
-    if (CGTitleBarItemTypeLeft == type) {
-        if (self.leftItemTitleAttributesDict == nil) {
-            self.leftItemTitleAttributesDict    = [NSMutableDictionary dictionaryWithCapacity:1];
-        }
-        [self.leftItemTitleAttributesDict setObject:attributes forKey:@(state)];
-    }else if (CGTitleBarItemTypeRight == type) {
-        if (self.rightItemTitleAttributesDict == nil) {
-            self.rightItemTitleAttributesDict   = [NSMutableDictionary dictionaryWithCapacity:1];
-        }
-        [self.rightItemTitleAttributesDict setObject:attributes forKey:@(state)];
+    return backItem;
+}
+
+- (BOOL)cg_setTitleTextAttributes:(NSDictionary<NSString *,id> *)attributes forState:(UIControlState)state type:(CGTitleBarItemType)type
+{
+    BOOL isResult   = [super cg_setTitleTextAttributes:attributes forState:state type:type];
+    if (!isResult) {
+        return NO;
     }
+    if (CGTitleBarItemTypeBack == type) {
+        if (self.backItemTitleAttributesDict == nil) {
+            self.backItemTitleAttributesDict    = [NSMutableDictionary dictionaryWithCapacity:1];
+        }
+        [self.backItemTitleAttributesDict setObject:attributes forKey:@(state)];
+    }
+    return YES;
 }
 
 #pragma mark - 设置属性
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    _titleItem.title    = title;
+}
 
 @end

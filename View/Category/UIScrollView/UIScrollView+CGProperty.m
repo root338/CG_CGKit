@@ -16,11 +16,20 @@
     return (CGRect){self.contentOffset, self.bounds.size};
 }
 
-- (NSInteger)cg_calculateScrollPage
+- (NSInteger)cg_calculateScrollPageWithScale:(CGFloat)scale
 {
-    NSInteger pageNumber    = (NSInteger)(self.contentOffset.x / self.width) + 1;
     
-    return pageNumber;
+    CGFloat pageNumber      = (self.contentOffset.x / self.width) + 1;
+    NSInteger pageInteget   = (NSInteger)pageNumber;
+    NSInteger targetPage    = pageInteget;
+    
+    if (pageNumber > pageInteget) {
+        if (pageNumber - pageInteget > scale) {
+            targetPage  = pageInteget + 1;
+        }
+    }
+    
+    return targetPage;
 }
 
 @end

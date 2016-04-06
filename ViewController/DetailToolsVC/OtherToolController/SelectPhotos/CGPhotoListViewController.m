@@ -69,6 +69,7 @@
     CGBrowsePhotoViewController *browsePhotoVC  = [[CGBrowsePhotoViewController alloc] init];
     browsePhotoVC.browsePhotoDataSource         = self.dataSourceManager.dataSource;
     browsePhotoVC.startIndex                    = indexPath.row;
+    browsePhotoVC.backItemTitle                 = self.title;
     [self.navigationController pushViewController:browsePhotoVC animated:YES];
 }
 

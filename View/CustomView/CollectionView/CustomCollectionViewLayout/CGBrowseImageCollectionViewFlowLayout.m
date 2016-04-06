@@ -27,14 +27,16 @@
     if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         //横向滑动时
         CGFloat horizontalVelocity  = velocity.x;
-        if (horizontalVelocity < 0.5 && horizontalVelocity > - 0.5) {
+        if (horizontalVelocity < 0.5 && horizontalVelocity > -0.5) {
             
             CGFloat firstSpace  = fabs([layoutAttributes firstObject].center.x - center.x);
             CGFloat lastSpace   = fabs([layoutAttributes lastObject].center.x - center.x);
             targetPoint         = firstSpace > lastSpace ? lastOrigin : firstOrigin;
         }else if (horizontalVelocity >= 0.5) {
+            
             targetPoint = lastOrigin;
         }else {
+            
             targetPoint = firstOrigin;
         }
         
