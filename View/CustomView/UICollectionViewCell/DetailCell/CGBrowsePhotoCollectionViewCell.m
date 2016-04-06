@@ -27,7 +27,10 @@
     if ([paramData isKindOfClass:[ALAsset class]]) {
         
         ALAsset *asset          = paramData;
-        self.imageView.image    = [asset cg_assetImageWithType:CGAssetImageTypeSquareThumbnails];
+        self.imageView.image    = [asset cg_assetImageWithType:CGAssetImageTypeAspectRatioThumbnails];
+        [asset cg_assetImageWithType:CGAssetImageTypeFullScreenImage completion:^(UIImage * _Nullable didLoadImage) {
+            self.imageView.image    = didLoadImage;
+        }];
     }
 }
 /*

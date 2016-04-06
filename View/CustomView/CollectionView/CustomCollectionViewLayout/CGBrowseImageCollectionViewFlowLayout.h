@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface CGBrowseImageCollectionViewFlowLayout : UICollectionViewFlowLayout
 
 @end
+NS_ASSUME_NONNULL_END

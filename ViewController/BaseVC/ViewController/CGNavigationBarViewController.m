@@ -25,17 +25,11 @@
 }
 
 #pragma mark - CGNavigationBarViewDelegate
-//当导航栏的背景色为图片时，应该设置状态栏的高度为0，导航栏覆盖状态栏
-- (CGRect)cg_statusViewFrame
-{
-    return CGRectMake(0, 0, self.navigationController ? self.navigationController.navigationBar.width : self.view.width, 20);
-}
-
 /** 当状态栏高度为0，自动设置状态栏高度为64 */
 - (CGRect)cg_navigationBarFrame
 {
-    CGRect statusViewFrame = [self cg_statusViewFrame];
-    return (CGRect){CGPointMake(0, CGRectGetMaxY(statusViewFrame)), self.navigationController ? self.navigationController.navigationBar.size : CGSizeMake(CGRectGetWidth(statusViewFrame), CGRectGetHeight(statusViewFrame) == 0 ? 64 : 44)};
+    CGFloat width   = self.navigationController ? self.navigationController.navigationBar.width : self.view.width;
+    return CGRectMake(0, 0, width, 64);
 }
 
 - (void)viewDidLoad
@@ -43,15 +37,13 @@
     [super viewDidLoad];
     
     [self setupView];
-    if (!self.customStatusViewBackgroundColor) {
-        self.navigationBarView.statusView.backgroundColor = self.navigationBar.barTintColor;
-    }
 }
 
 - (void)setupView
 {
     CGRect frame    = self.view.frame;
     self.view   = [[CGNavigationBarView alloc] initWithFrame:frame delegate:self];
+    self.view.backgroundColor   = [UIColor whiteColor];
 }
 
 - (void)dealloc

@@ -8,7 +8,15 @@
 
 #import "CGPhotoGroupTableViewCell.h"
 
+#import "UIFont+CGCreateFont.h"
 #import "ALAssetsGroup+CGProperty.h"
+
+@interface CGPhotoGroupTableViewCell ()
+{
+    NSDictionary<NSString *, id> *_titleAttDictionary;
+    NSDictionary<NSString *, id> *_numberAttDictionary;
+}
+@end
 
 @implementation CGPhotoGroupTableViewCell
 
@@ -18,12 +26,35 @@
         
         ALAssetsGroup *assetsGroup  = paramData;
         self.imageView.image        = assetsGroup.posterAssetsGroupImage;
-        self.textLabel.text         = assetsGroup.assetsGroupName;
+        if (!_titleAttDictionary || !_numberAttDictionary) {
+            
+            [self setupTextAttributed];
+        }
+        
+        NSMutableAttributedString *textAttributedString = [[NSMutableAttributedString alloc] initWithString:assetsGroup.assetsGroupName attributes:_titleAttDictionary];
+        NSString *number    = [NSString stringWithFormat:@" (%li)", (long)assetsGroup.numberOfAssets];
+        [textAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:number attributes:_numberAttDictionary]];
+        self.textLabel.attributedText   = textAttributedString;
     }
 }
 
 - (void)initialization
 {
     self.accessoryType  = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)setupTextAttributed
+{
+    UIFont *font            = [UIFont cg_defaultFontWithSize:14];
+    UIColor *titleColor     = [UIColor blackColor];
+    UIColor *numberColor    = [UIColor grayColor];
+    _titleAttDictionary     = @{
+                                NSFontAttributeName : font,
+                                NSForegroundColorAttributeName : titleColor,
+                                };
+    _numberAttDictionary    = @{
+                                NSFontAttributeName : font,
+                                NSForegroundColorAttributeName : numberColor,
+                                };
 }
 @end

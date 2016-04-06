@@ -39,6 +39,10 @@ typedef NS_ENUM(NSInteger, CGAssetImageType) {
      *  等比缩略图
      */
     CGAssetImageTypeAspectRatioThumbnails,
+    /** 全屏图 */
+    CGAssetImageTypeFullScreenImage,
+    /** 全尺寸图 */
+    CGAssetImageTypeFullResolutionImage,
 };
 
 #endif /* CGAssetTypeHeader_h */

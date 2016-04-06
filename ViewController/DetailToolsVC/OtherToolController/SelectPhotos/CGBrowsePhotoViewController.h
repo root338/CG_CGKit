@@ -6,12 +6,12 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGTitleBarViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /** 图片浏览视图 */
-@interface CGBrowsePhotoViewController : UIViewController
+@interface CGBrowsePhotoViewController : CGTitleBarViewController
 
 /** 图片数据 */
 @property (nullable, nonatomic, strong) NSArray *browsePhotoDataSource;

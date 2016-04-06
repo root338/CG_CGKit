@@ -15,5 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 获取滑动视图的可视区域 */
 @property (nonatomic, assign, readonly) CGRect scrollVisibleRect;
 
+/** 计算滑动页数 */
+- (NSInteger) cg_calculateScrollPage;
 @end
 NS_ASSUME_NONNULL_END

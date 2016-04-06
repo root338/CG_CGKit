@@ -52,14 +52,23 @@
     return statusBarStyle;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    BOOL statusBarHidden    = self.defaultStatusBarHidden;
-    if ([self.topViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
-        statusBarHidden = [self.topViewController prefersStatusBarHidden];
-    }
-    return statusBarHidden;
-}
+//- (BOOL)prefersStatusBarHidden
+//{
+//    BOOL statusBarHidden    = self.defaultStatusBarHidden;
+//    if ([self.topViewController respondsToSelector:@selector(prefersStatusBarHidden)]) {
+//        statusBarHidden = [self.topViewController prefersStatusBarHidden];
+//    }
+//    return statusBarHidden;
+//}
+//
+//- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+//{
+//    UIStatusBarAnimation statusBarUpdateAnimation   = self.defaultStatusBarAnimation;
+//    if ([self.topViewController respondsToSelector:@selector(preferredStatusBarUpdateAnimation)]) {
+//        statusBarUpdateAnimation    = [self.topViewController preferredStatusBarUpdateAnimation];
+//    }
+//    return statusBarUpdateAnimation;
+//}
 
 #pragma mark - 设置属性
 

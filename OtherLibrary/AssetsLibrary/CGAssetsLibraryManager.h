@@ -21,11 +21,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 //+ (instancetype)sharedManager;
 
-/** 获取的资源类型 默认为CGAssetsFilterTypeAllPhotos */
+/** 获取的资源类型 默认为CGAssetsFilterTypeAll */
 @property (nonatomic, assign) CGAssetsFilterType assetsFilterType;
 
 /** 获取单个资源的排序方式 默认为CGAssetsSequenceTypeDescending */
 @property (nonatomic, assign) CGAssetsSequenceType assetsSequenceType;
+
+/** 设置照片组的排序方式 默认为CGAssetsGroupFilterTypeValue1 */
+@property (nonatomic, assign) CGAssetsGroupFilterType assetsGroupFilterType;
+
+/** 是否添加数量为 0 的相册，默认为NO，不添加 */
+@property (nonatomic, assign) BOOL isAddZeroNumberAssetsGroup;
 
 #pragma mark - 获取资源数组
 /** 获取所有的图片视频数组(ALAssetsGroup) */

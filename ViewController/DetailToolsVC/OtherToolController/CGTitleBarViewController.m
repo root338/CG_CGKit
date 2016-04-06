@@ -8,13 +8,10 @@
 
 #import "CGTitleBarViewController.h"
 
-@interface CGTitleBarViewController ()
+@interface CGTitleBarViewController ()<UINavigationBarDelegate>
 {
     BOOL _titleDidAddToNavigationBar;
 }
-
-@property (nullable, nonatomic, strong, readwrite) NSMutableDictionary<NSNumber *, NSDictionary *> *leftItemTitleAttributesDict;
-@property (nullable, nonatomic, strong, readwrite) NSMutableDictionary<NSNumber *, NSDictionary *> *rightItemTitleAttributesDict;
 
 @end
 
@@ -24,6 +21,7 @@
 {
     [super viewDidLoad];
     
+    self.navigationBar.delegate = self;
     [self setupNavigationItemContent];
 }
 
@@ -34,16 +32,21 @@
         NSArray<UIBarButtonItem *> *leftItems   = [self setupLeftItemButtons];
         NSArray<UIBarButtonItem *> *rightItems  = [self setupRightItemButtons];
         
-        if (leftItems || rightItems) {
+        if (leftItems || rightItems || self.title) {
             
-            UINavigationItem *navigationItem    = [[UINavigationItem alloc] init];
+            UINavigationItem *navigationItem    = [[UINavigationItem alloc] initWithTitle:self.title];
+            
+            UINavigationItem *backNavigationItem    = [[UINavigationItem alloc] initWithTitle:@"Back"];
             
             !leftItems  ?:  [navigationItem setLeftBarButtonItems:leftItems];
             !rightItems ?:  [navigationItem setRightBarButtonItems:rightItems];
-            !self.title ?:  [navigationItem setTitle:self.title];
             
-            [self.navigationBar pushNavigationItem:navigationItem animated:YES];
+//            [self.navigationBar pushNavigationItem:navigationItem animated:YES];
+            [self.navigationBar pushNavigationItem:backNavigationItem animated:NO];
+            [self.navigationBar pushNavigationItem:navigationItem animated:NO];
+            
         }
+        
         _titleDidAddToNavigationBar = YES;
     }
 }

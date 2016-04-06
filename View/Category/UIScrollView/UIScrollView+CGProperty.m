@@ -7,6 +7,7 @@
 //
 
 #import "UIScrollView+CGProperty.h"
+#import "UIView+CGSetupFrame.h"
 
 @implementation UIScrollView (CGProperty)
 
@@ -14,4 +15,12 @@
 {
     return (CGRect){self.contentOffset, self.bounds.size};
 }
+
+- (NSInteger)cg_calculateScrollPage
+{
+    NSInteger pageNumber    = (NSInteger)(self.contentOffset.x / self.width) + 1;
+    
+    return pageNumber;
+}
+
 @end

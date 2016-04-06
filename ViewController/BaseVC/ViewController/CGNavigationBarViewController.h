@@ -14,9 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 自定义导航栏的视图控制器 */
 @interface CGNavigationBarViewController : CGBaseViewController<CGNavigationBarViewDelegate>
 
-/** 自定义状态栏的颜色，默认为NO(和导航栏的背景色相同) */
-@property (nonatomic, assign) BOOL customStatusViewBackgroundColor;
-
 /** 自定义导航栏 */
 @property (nullable, nonatomic, strong, readonly) UINavigationBar *navigationBar;
 /** 内容视图 */

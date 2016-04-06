@@ -24,9 +24,9 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
 //@property (nullable, nonatomic, strong) NSString *rightItemTitle;
 
 /** 顶部左上角按钮的属性，key：为不同状态下按钮的样式 */
-@property (nullable, nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSDictionary *> *leftItemTitleAttributesDict;
+@property (nullable, nonatomic, strong) NSMutableDictionary<NSNumber *, NSDictionary *> *leftItemTitleAttributesDict;
 /** 顶部右上角按钮的属性，key：为不同状态下按钮的样式 */
-@property (nullable, nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, NSDictionary *> *rightItemTitleAttributesDict;
+@property (nullable, nonatomic, strong) NSMutableDictionary<NSNumber *, NSDictionary *> *rightItemTitleAttributesDict;
 
 /** 设置指定标题的属性 */
 - (void)cg_setTitleTextAttributes:(nullable NSDictionary<NSString *,id> *)attributes forState:(UIControlState)state type:(CGTitleBarItemType)type;

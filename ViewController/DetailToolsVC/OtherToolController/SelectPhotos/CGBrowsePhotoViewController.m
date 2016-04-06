@@ -11,23 +11,40 @@
 #import "CGCollectionView.h"
 #import "CGBrowsePhotoCollectionViewCell.h"
 
+#import "UIView+CGSetupFrame.h"
 #import "UIView+CGAddConstraints.h"
+#import "CGNavigationAppearanceProtocol.h"
 
 #import "CGCollectionViewDataSourceManager.h"
 #import "CGBrowseImageCollectionViewFlowLayout.h"
 
-@interface CGBrowsePhotoViewController ()
-
+@interface CGBrowsePhotoViewController ()<UICollectionViewDelegate, CGNavigationAppearanceProtocol>
+{
+    
+}
 @property (nonatomic, strong) CGCollectionView *browsePhotoCollectionView;
 @property (nonatomic, strong) CGCollectionViewDataSourceManager *dataSourceManager;
 @end
 
 @implementation CGBrowsePhotoViewController
 
+#pragma mark - 事件
+- (void)handleTopAction:(UITapGestureRecognizer *)tapGestureRecognizer
+{
+    BOOL isHidde    = !self.navigationController.isNavigationBarHidden;
+    [self.navigationController setNavigationBarHidden:isHidde animated:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
 - (void)viewDidLoad {
+    
+    self.title  = @"浏览";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self cg_setupBrowsePhotoListView];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTopAction:)];
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,15 +56,16 @@
 {
     
     CGBrowseImageCollectionViewFlowLayout *flowLayout = [[CGBrowseImageCollectionViewFlowLayout alloc] init];
+    
     flowLayout.itemSize                 = self.view.bounds.size;
-    flowLayout.minimumInteritemSpacing  = 20;
+    flowLayout.minimumLineSpacing       = 30;
     flowLayout.scrollDirection          = UICollectionViewScrollDirectionHorizontal;
     
     _browsePhotoCollectionView  = [[CGCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
-    _browsePhotoCollectionView.backgroundColor  = [UIColor whiteColor];
+    _browsePhotoCollectionView.showsHorizontalScrollIndicator   = NO;
     
     [self.view addSubview:_browsePhotoCollectionView];
-    [_browsePhotoCollectionView cg_autoEdgesInsetsZeroToViewController:self];
+    [_browsePhotoCollectionView cg_autoEdgesInsetsZeroToSuperview];
     
     Class registerCollectionCellClassName   = [CGBrowsePhotoCollectionViewCell class];
     [_browsePhotoCollectionView cg_registerReuseClass:registerCollectionCellClassName];
@@ -57,6 +75,13 @@
     }];
     
     _browsePhotoCollectionView.dataSource   = _dataSourceManager;
+    _browsePhotoCollectionView.delegate     = self;
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
 }
 
 /*

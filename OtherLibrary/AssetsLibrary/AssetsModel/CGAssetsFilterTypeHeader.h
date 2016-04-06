@@ -28,6 +28,28 @@ typedef NS_ENUM(NSInteger, CGAssetsFilterType) {
 };
 
 /**
+ *  照片数组排序方式
+ */
+typedef NS_ENUM(NSInteger, CGAssetsGroupFilterType) {
+    /**
+     *  默认
+     */
+    CGAssetsGroupFilterTypeDefault,
+    /**
+     *  内部自定义好的排序，相机胶卷提前，其他默认
+     */
+    CGAssetsGroupFilterTypeValue1,
+    /**
+     *  按数量升序
+     */
+    CGAssetsGroupFilterTypeNumberAscending,
+    /**
+     *  按数量降序
+     */
+    CGAssetsGroupFilterTypeNumberDescending,
+};
+
+/**
  *  图片排序方式
  */
 typedef NS_ENUM(NSInteger, CGAssetsSequenceType) {

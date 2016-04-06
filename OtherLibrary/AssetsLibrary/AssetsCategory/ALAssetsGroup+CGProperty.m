@@ -27,4 +27,9 @@
     return posterImage;
 }
 
+- (ALAssetsGroupType)assetsGroupType
+{
+    return [[self valueForProperty:ALAssetsGroupPropertyType] unsignedIntegerValue];
+}
+
 @end

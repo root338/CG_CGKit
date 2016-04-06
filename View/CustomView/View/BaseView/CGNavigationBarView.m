@@ -12,7 +12,6 @@
 
 @interface CGNavigationBarView ()
 
-@property (nonatomic, strong, readwrite) UIView *statusView;
 @property (nullable, nonatomic, strong, readwrite) UINavigationBar *navigationBar;
 @property (nonatomic, strong, readwrite) UIView *contentView;
 
@@ -51,10 +50,10 @@
 - (void)createNavigationBar
 {
     self.navigationBar  = [[UINavigationBar alloc] initWithFrame:CGRectZero];
-    if (!self.navigationBar.barTintColor) {
-        self.navigationBar.barTintColor = [UIColor whiteColor];
-        self.navigationBar.translucent  = NO;
-    }
+//    if (!self.navigationBar.barTintColor) {
+//        self.navigationBar.barTintColor = [UIColor whiteColor];
+//        self.navigationBar.translucent  = NO;
+//    }
     
     //立即更新视图布局，否则子类在视图添加内容时有时会显示错误
     [self setNeedsLayout];
@@ -63,13 +62,6 @@
 
 - (void)setupSubviewsLayout
 {
-    CGRect statusViewFrame      = [self.delegate cg_statusViewFrame];
-    self.statusView.frame       = statusViewFrame;
-    if ([self cg_addSubview:self.statusView]) {
-        
-        //对状态栏进行设置
-        [self cg_setupStatusViewAppearance];
-    }
     
     CGRect navigationBarFrame   = [self.delegate cg_navigationBarFrame];
     
@@ -89,7 +81,6 @@
 }
 
 #pragma mark - 设置内容视图样式
-- (void)cg_setupStatusViewAppearance{}
 - (void)cg_setupNavigationBarAppearance{}
 - (void)cg_setupContentViewAppearance{};
 
@@ -99,6 +90,15 @@
     [super layoutSubviews];
     
     [self setupSubviewsLayout];
+}
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    if (newWindow) {
+        //移动视图
+        !_navigationBar.superview   ?: [self bringSubviewToFront:_navigationBar];
+    }
 }
 
 #pragma mark - 设置属性
@@ -113,17 +113,6 @@
 //    _contentView.backgroundColor    = [UIColor whiteColor];
     
     return _contentView;
-}
-
-- (UIView *)statusView
-{
-    if (_statusView) {
-        return _statusView;
-    }
-    
-    _statusView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    return _statusView;
 }
 
 @end

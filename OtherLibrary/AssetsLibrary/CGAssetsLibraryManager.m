@@ -10,6 +10,10 @@
 
 #import "CGAssetsFilterObject.h"
 
+#import "ALAssetsGroup+CGProperty.h"
+
+#import "CGPrintLogHeader.h"
+
 @interface CGAssetsLibraryManager ()
 {
     ALAssetsFilter *_assetsFilter;
@@ -38,9 +42,11 @@
 
 - (void)initialization
 {
-    _isCache                = YES;
-    self.assetsFilterType   = CGAssetsFilterTypeAllPhotos;
-    self.assetsSequenceType = CGAssetsSequenceTypeDescending;
+    _isCache                    = YES;
+    _isAddZeroNumberAssetsGroup = NO;
+    _assetsFilterType           = CGAssetsFilterTypeAll;
+    _assetsSequenceType         = CGAssetsSequenceTypeDescending;
+    _assetsGroupFilterType      = CGAssetsGroupFilterTypeValue1;
     
     _assetsLibrary = [[ALAssetsLibrary alloc] init];
     
@@ -112,18 +118,77 @@
     [self.assetsLibrary enumerateGroupsWithTypes:groupType usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         
         if (group) {
-            [assetsGroup addObject:group];
+            if ((!self.isAddZeroNumberAssetsGroup && group.numberOfAssets > 0) || self.isAddZeroNumberAssetsGroup) {
+                [assetsGroup addObject:group];
+            }
+            
         }else {
+            
+            NSArray *resultAssetsGroup  = [self cg_updateOrderWithAssetsGroups:assetsGroup];
             if (self.isCache) {
                 
-                !assetsGroup ?: [self.cacheAssetsGroupDictionary setObject:assetsGroup forKey:@(groupType)];
+                !assetsGroup ?: [self.cacheAssetsGroupDictionary setObject:resultAssetsGroup forKey:@(groupType)];
             }
+            
             //当图片视频组为空时，资源结束
             if (assetsGroupsBlock) {
-                assetsGroupsBlock(assetsGroup);
+                assetsGroupsBlock(resultAssetsGroup);
             }
         }
     } failureBlock:failureBlock];
+}
+
+/** 对相册进行排序 */
+- (NSArray<ALAssetsGroup *> *)cg_updateOrderWithAssetsGroups:(NSArray<ALAssetsGroup *> *)assetsGroups
+{
+    if (!assetsGroups.count) {
+        //没有数据时
+        return assetsGroups;
+    }
+    if (self.assetsGroupFilterType == CGAssetsGroupFilterTypeDefault) {
+        //不排序时
+        return assetsGroups;
+    }
+    
+    
+    if (self.assetsGroupFilterType == CGAssetsGroupFilterTypeValue1) {
+        //提前相机胶卷
+        NSMutableArray *tempAssetsGroups    = [NSMutableArray arrayWithCapacity:assetsGroups.count];
+        [assetsGroups enumerateObjectsUsingBlock:^(ALAssetsGroup * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.assetsGroupType == ALAssetsGroupSavedPhotos) {
+                [tempAssetsGroups insertObject:obj atIndex:0];
+            }else {
+                [tempAssetsGroups addObject:obj];
+            }
+        }];
+        return tempAssetsGroups;
+    }
+    
+    if (self.assetsGroupFilterType == CGAssetsGroupFilterTypeNumberAscending || self.assetsGroupFilterType == CGAssetsGroupFilterTypeNumberDescending) {
+        //按照相册数量升序，降序
+        
+        NSArray<ALAssetsGroup *> * tempAssetsGroups = [assetsGroups sortedArrayUsingComparator:^NSComparisonResult(ALAssetsGroup *  _Nonnull obj1, ALAssetsGroup *  _Nonnull obj2) {
+            
+            NSInteger isMark = obj1.numberOfAssets - obj2.numberOfAssets;
+            NSComparisonResult comparisonResult = NSOrderedSame;
+            
+            if (isMark != 0) {
+                
+                if (self.assetsGroupFilterType == CGAssetsGroupFilterTypeNumberDescending) {
+                    
+                    comparisonResult    = isMark > 0 ? NSOrderedDescending : NSOrderedAscending;
+                }else {
+                    comparisonResult    = isMark > 0 ? NSOrderedAscending : NSOrderedDescending;
+                }
+            }
+            
+            return comparisonResult;
+        }];
+        return tempAssetsGroups;
+    }
+    
+    CGDebugAssert(nil, @"没有可选的排序选项");
+    return nil;
 }
 
 #pragma mark - 图片视频单个对象资源处理
@@ -159,7 +224,6 @@
             [assetsList addObject:result];
         }
     }];
-    
     
     if (flag) {
         assets  = [self cg_assetsSequenceWithOldAssets:assetsList type:self.assetsSequenceType];

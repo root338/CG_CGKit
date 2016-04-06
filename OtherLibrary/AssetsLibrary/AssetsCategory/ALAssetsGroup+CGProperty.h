@@ -20,5 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 相册封面图片 */
 @property (nullable, nonatomic, strong, readonly) UIImage *posterAssetsGroupImage;
 
+/** 相册的类型 */
+@property (nonatomic, assign, readonly) ALAssetsGroupType assetsGroupType;
 @end
 NS_ASSUME_NONNULL_END

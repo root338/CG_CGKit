@@ -37,9 +37,11 @@
         }else {
             targetPoint = firstOrigin;
         }
+        
     }else {
         NSAssert(nil, @"竖向滑动没有实现");
     }
+    
     return targetPoint;
 }
 
