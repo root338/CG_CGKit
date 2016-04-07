@@ -10,6 +10,7 @@
 //#import "CGImageView.h"
 
 #import "UIScrollView+CGCreate.h"
+#import "UIView+CGAddConstraints.h"
 
 #import "ALAsset+CGProperty.h"
 
@@ -40,12 +41,6 @@
     // Drawing code
 }
 */
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.scrollView.frame   = self.bounds;
-    self.imageView.frame    = self.scrollView.bounds;
-}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -55,6 +50,11 @@
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    
+}
+
+- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
 {
     
 }
@@ -69,9 +69,8 @@
     
     _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     _imageView.contentMode  = UIViewContentModeScaleAspectFit;
-//    _imageView.maxZoomScale                 = 3;
-//    _imageView.isAutoImageViewContentMode   = YES;
     [self.scrollView addSubview:_imageView];
+    
     
     return _imageView;
 }
@@ -84,7 +83,9 @@
     
     _scrollView = [UIScrollView cg_createWithScrollViewWithShowScrollIndicator:NO];
     [self addSubview:_scrollView];
-    _scrollView.delegate    = self;
+    _scrollView.delegate                = self;
+    _scrollView.maximumZoomScale        = 3.0;
+    [_scrollView cg_autoEdgesInsetsZeroToSuperview];
     
     return _scrollView;
 }

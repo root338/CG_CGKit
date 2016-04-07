@@ -54,9 +54,10 @@
     // Do any additional setup after loading the view.
     [self cg_setupBrowsePhotoListView];
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTopAction:)];
-    tapGestureRecognizer.delegate   = self;
-    [self.view addGestureRecognizer:tapGestureRecognizer];
+//    UITapGestureRecognizer *tapGestureRecognizer    = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTopAction:)];
+//    tapGestureRecognizer.numberOfTapsRequired       = 1;
+//    tapGestureRecognizer.delegate   = self;
+//    [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,7 +83,8 @@
     Class registerCollectionCellClassName   = [CGBrowsePhotoCollectionViewCell class];
     [_browsePhotoCollectionView cg_registerReuseClass:registerCollectionCellClassName];
     
-    _dataSourceManager  = [[CGCollectionViewDataSourceManager alloc] initWithDataSource:self.browsePhotoDataSource cellIdentifierForClass:registerCollectionCellClassName setupCellBlock:^(UICollectionView * _Nonnull collectionView, __kindof CGCollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
+    _dataSourceManager  = [[CGCollectionViewDataSourceManager alloc] initWithDataSource:self.browsePhotoDataSource cellIdentifierForClass:registerCollectionCellClassName setupCellBlock:^(UICollectionView * _Nonnull collectionView, __kindof CGBrowsePhotoCollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
+        
         [cell setupCollectionViewCellContentWithData:data];
     }];
     
@@ -119,9 +121,15 @@
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
+    
     if (self.isNavigationBarHidden) {
         return YES;
     }else {
+        
+        if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+            
+        }
+        
         CGPoint touchPoint  = [gestureRecognizer locationInView:self.view];
         //当点击的坐标不在导航栏时允许手势执行
         return !CGRectContainsPoint(self.navigationBar.frame, touchPoint);

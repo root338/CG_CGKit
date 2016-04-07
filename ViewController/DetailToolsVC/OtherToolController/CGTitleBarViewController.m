@@ -25,6 +25,7 @@
 }
 
 #pragma mark - UINavigationBarDelegate
+//!REF:https://github.com/onegray/UIViewController-BackButtonHandler
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
     [self handleBackItemAction:nil];
@@ -120,11 +121,11 @@
 - (UIBarButtonItem *)setupBackItemButton
 {
     UIBarButtonItem *backItem   = nil;
-//    id target                   = self;
-//    SEL action                  = @selector(handleBackItemAction:);
+    id target                   = self;
+    SEL action                  = @selector(handleBackItemAction:);
     //设置触发的方法不管用，现在在navigationBar:shouldPopItem:代理方法中POP当前视图
     if (self.backItemTitle) {
-        backItem    = [[UIBarButtonItem alloc] initWithTitle:self.backItemTitle style:UIBarButtonItemStylePlain target:nil action:nil];
+        backItem    = [[UIBarButtonItem alloc] initWithTitle:self.backItemTitle style:UIBarButtonItemStylePlain target:target action:action];
         [self.backItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary<NSString *,id> * _Nonnull obj, BOOL * _Nonnull stop) {
             [backItem setTitleTextAttributes:obj forState:key.integerValue];
         }];

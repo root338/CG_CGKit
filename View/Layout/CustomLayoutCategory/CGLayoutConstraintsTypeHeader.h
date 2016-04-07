@@ -9,7 +9,7 @@
 #ifndef CGLayoutConstraintsTypeHeader_h
 #define CGLayoutConstraintsTypeHeader_h
 
-typedef NS_OPTIONS(NSInteger, CGLayoutAttribute) {
+typedef /**NS_OPTIONS*/NS_ENUM(NSInteger, CGLayoutAttribute) {
     
     CGLayoutAttributeLeft       = NSLayoutAttributeLeft,
     CGLayoutAttributeRight      = NSLayoutAttributeRight,
@@ -26,15 +26,15 @@ typedef NS_OPTIONS(NSInteger, CGLayoutAttribute) {
     
     CGLayoutAttributeBaseline   = NSLayoutAttributeBaseline,
     
-    CGLayoutAttributeEdgeAll    = CGLayoutAttributeTop | CGLayoutAttributeLeading | CGLayoutAttributeBottom | CGLayoutAttributeTrailing,
-    
-    CGLayoutAttributeEdgeExcludeTop         = CGLayoutAttributeLeading | CGLayoutAttributeBottom | CGLayoutAttributeTrailing,
-    
-    CGLayoutAttributeEdgeExcludeLeading     = CGLayoutAttributeTop | CGLayoutAttributeBottom | CGLayoutAttributeTrailing,
-    
-    CGLayoutAttributeEdgeExcludeBottom      = CGLayoutAttributeTop | CGLayoutAttributeLeading | CGLayoutAttributeTrailing,
-    
-    CGLayoutAttributeEdgeExcludeTrailing    = CGLayoutAttributeTop | CGLayoutAttributeLeading | CGLayoutAttributeBottom,
+//    CGLayoutAttributeEdgeAll    = CGLayoutAttributeTop | CGLayoutAttributeLeading | CGLayoutAttributeBottom | CGLayoutAttributeTrailing,
+//    
+//    CGLayoutAttributeEdgeExcludeTop         = CGLayoutAttributeLeading | CGLayoutAttributeBottom | CGLayoutAttributeTrailing,
+//    
+//    CGLayoutAttributeEdgeExcludeLeading     = CGLayoutAttributeTop | CGLayoutAttributeBottom | CGLayoutAttributeTrailing,
+//    
+//    CGLayoutAttributeEdgeExcludeBottom      = CGLayoutAttributeTop | CGLayoutAttributeLeading | CGLayoutAttributeTrailing,
+//    
+//    CGLayoutAttributeEdgeExcludeTrailing    = CGLayoutAttributeTop | CGLayoutAttributeLeading | CGLayoutAttributeBottom,
 };
 
 typedef NS_ENUM(NSInteger, CGLayoutEdge) {
@@ -51,6 +51,13 @@ typedef NS_ENUM(NSInteger, CGDimension) {
     
     CGDimensionWidth        = CGLayoutAttributeWidth,
     CGDimensionHeight       = CGLayoutAttributeHeight,
+};
+
+typedef NS_ENUM(NSInteger, CGAxis) {
+    
+    CGAxisVertical          = CGLayoutAttributeCenterX,
+    CGAxisHorizontal        = CGLayoutAttributeCenterY,
+    CGAxisBaseline          = CGLayoutAttributeBaseline,
 };
 
 #endif /* CGLayoutConstraintsTypeHeader_h */

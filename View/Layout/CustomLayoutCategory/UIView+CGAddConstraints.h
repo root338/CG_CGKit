@@ -83,6 +83,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+#pragma mark - 设置视图中心对齐
+
+@interface UIView (CGViewAxisConstraint)
+
+
+
+@end
+
 #pragma mark - 设置视图自身的大小
 
 @interface UIView (CGViewDimensionConstraint)
