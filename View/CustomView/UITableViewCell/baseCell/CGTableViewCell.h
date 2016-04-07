@@ -15,7 +15,7 @@
 
 - (void)setupTableViewCellContentWithData:(id)paramData;
 
-+ (UITableViewCellStyle)cg_tableViewCellStyle;
+//+ (UITableViewCellStyle)cg_tableViewCellStyle;
 @end
 
 @interface CGTableViewCell : UITableViewCell<CGTableViewCellDelegate, CGViewInitializationProtocol>

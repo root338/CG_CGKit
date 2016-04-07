@@ -18,9 +18,6 @@
 #pragma mark - 初始化方法
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    if ([[self class] respondsToSelector:@selector(cg_tableViewCellStyle)]) {
-        style   = [[self class] cg_tableViewCellStyle];
-    }
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self initialization];
