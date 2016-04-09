@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 图片浏览的cell */
 @interface CGBrowsePhotoCollectionViewCell : CGCollectionViewCell
 
-@property (nonatomic, strong, readonly) UIImageView *imageView;
+@property (nonatomic, readonly) UIImageView *imageView;
 
 @end
 

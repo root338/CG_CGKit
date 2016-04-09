@@ -6,96 +6,26 @@
 //  Copyright (c) 2015年 345. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGBaseView.h"
 
-@class CGImageView;
-@protocol CGImageViewDelegate <NSObject>
-
-@optional
-/**
- *  当图片的显示区域变化时进行回调
- *
- *  @param zoomImageView 图片的视图对象
- *  @param imageRect     改变后的显示区域
- */
-- (void)cg_imageView:(CGImageView *)zoomImageView imageRect:(CGRect)imageRect;
-
-/**
- *  用于控制当前缩放因数下是否可以继续缩放
- *
- *  @param zoomImageView 图片的视图对象
- *  @param scale         当前缩放因数的数值
- *
- *  @return 一个BOOL值，当为YES时可以缩放，当为NO时不可以缩放
- */
-- (BOOL)cg_imageView:(CGImageView *)zoomImageView isScale:(CGFloat)scale;
-@end
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  可以对图片进行缩放
  */
-@interface CGImageView : UIView
+@interface CGImageView : CGBaseView
 
-/**
- 代理对象
- */
-@property (weak, nonatomic) id<CGImageViewDelegate> delegate;
+@property (nonatomic, readonly) UIImageView *imageView;
 
-/**
- 加载的图片
- 
- 默认加载方式为UIViewContentModeScaleAspectFit
- */
-@property (strong, nonatomic) UIImage *image;
+@property (nonatomic, strong, readonly) UIScrollView *imageScrollView;
 
-/**
- 最大的放大比例
- */
-@property (assign, nonatomic) CGFloat maxZoomScale;
+/** 是否禁止缩放 默认 NO*/
+@property (nonatomic, assign) BOOL disableScale;
+/** 是否禁止双击缩放 默认 NO  */
+@property (nonatomic, assign) BOOL disableDoubleScale;
 
-/**
- *  是否可以缩放的比最小的缩放值还小
- *  
- *  默认为YES
- */
-@property (assign, nonatomic) BOOL isZoomLessThanMinScale;
-
-/**
- 最小的缩小比例
- 默认为 1
- */
-@property (assign, nonatomic) CGFloat minZoomScale;
-
-/**
- 当前缩放的比例
- */
-@property (assign, nonatomic) CGFloat currentZoomScale;
-
-/**
- 是否使用自动判断的图片加载模式显示图片
- */
-@property (assign, nonatomic) BOOL isAutoImageViewContentMode;
-
-/**
- 是否可以缩放图片
- 
- 默认为 YES
- */
-@property (assign, nonatomic) BOOL isZoomImage;
-
-/**
- 图片当前显示的区域
- */
-@property (assign, nonatomic, readonly) CGRect imageCurrentRect;
-
-/**
- 滑动视图
- */
-@property (strong, nonatomic, readonly) UIScrollView *scrollView;
-
-/**
- 缩放手势的触发器
- */
-- (void)zoomImageView:(UIPinchGestureRecognizer *)pinch;
-
+/** 双击放大的倍数 默认 1.5 */
+@property (nonatomic, assign) CGFloat zoomMultiple;
 @end
+
+NS_ASSUME_NONNULL_END

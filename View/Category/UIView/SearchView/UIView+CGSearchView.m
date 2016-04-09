@@ -40,6 +40,11 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
     UIView *paramSuperview  = nil;
     UIView *startView       = self;
     
+    if (!otherView) {
+        //当其他视图不存在时
+        return self;
+    }
+    
     while (!paramSuperview && startView) {
         
         if ([otherView isDescendantOfView:startView]) {

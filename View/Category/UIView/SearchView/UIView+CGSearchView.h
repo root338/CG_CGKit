@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id)searchSuperViewWithClass:(Class)className;
 
 /** 搜索两个视图共同的父视图 */
-- (__kindof UIView *)cg_searchCommonSuperviewWithView:(__kindof UIView *)otherView;
+- (nullable __kindof UIView *)cg_searchCommonSuperviewWithView:(nullable __kindof UIView *)otherView;
 @end
 
 @interface UIView (CGSearchNextInputView)

@@ -8,6 +8,9 @@
 
 #import "UIView+CGAddConstraints.h"
 #import "UIView+CGSearchView.h"
+#import "NSLayoutConstraint+CGVerifyConstraint.h"
+
+
 
 #pragma mark - 添加多个约束
 
@@ -124,11 +127,50 @@
 
 @end
 
+@implementation UIView (CGViewAxisConstraint)
+
+- (NSLayoutConstraint *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView
+{
+    return [self cg_attribute:(NSLayoutAttribute)axis toItem:otherView];
+}
+
+- (NSLayoutConstraint *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView withOffset:(CGFloat)offset
+{
+    return [self cg_attribute:(NSLayoutAttribute)axis toItem:otherView constant:offset];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSameAxisOfView:(UIView *)otherView
+{
+    return [self cg_autoCenterToSameAxisOfView:otherView withOffset:CGPointZero];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSameAxisOfView:(UIView *)otherView withOffset:(CGPoint)offset
+{
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:2];
+    
+    [constraints addObject:[self cg_autoAxis:CGAxisVertical toSameAxisOfView:otherView withOffset:offset.x]];
+    [constraints addObject:[self cg_autoAxis:CGAxisHorizontal toSameAxisOfView:otherView withOffset:offset.y]];
+    
+    return constraints;
+}
+
+@end
+
 @implementation UIView (CGViewDimensionConstraint)
 
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength
 {
     return [self cg_autoDimension:dimension fixedLength:fixedLength relation:NSLayoutRelationEqual];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupViewSize:(CGSize)viewSize
+{
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:2];
+    
+    [constraints addObject:[self cg_autoDimension:CGDimensionWidth fixedLength:viewSize.width]];
+    [constraints addObject:[self cg_autoDimension:CGDimensionHeight fixedLength:viewSize.height]];
+    
+    return constraints;
 }
 
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength relation:(NSLayoutRelation)relation
@@ -137,6 +179,16 @@
     NSLayoutConstraint *constraint  = [NSLayoutConstraint constraintWithItem:self attribute:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:fixedLength];
     [self addConstraint:constraint];
     return constraint;
+}
+
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)view
+{
+    return [self cg_autoDimension:dimension view:view relatedBy:NSLayoutRelationEqual];
+}
+
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation
+{
+    return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:0];
 }
 
 @end
@@ -174,7 +226,13 @@
 
 - (NSLayoutConstraint *)cg_bottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
+    
     inset   = -inset;
+    if (NSLayoutRelationGreaterThanOrEqual == relation) {
+        relation    = NSLayoutRelationLessThanOrEqual;
+    }else if (NSLayoutRelationLessThanOrEqual == relation) {
+        relation    = NSLayoutRelationGreaterThanOrEqual;
+    }
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:inset];
     [viewController.view addConstraint:layoutConstraint];
@@ -204,7 +262,14 @@
 {
     if (attribute == NSLayoutAttributeTrailing || attribute == NSLayoutAttributeRight || attribute == NSLayoutAttributeBottom) {
         c = -c;
+        
+        if (relation == NSLayoutRelationGreaterThanOrEqual) {
+            relation    = NSLayoutRelationLessThanOrEqual;
+        }else if (relation == NSLayoutRelationLessThanOrEqual) {
+            relation    = NSLayoutRelationGreaterThanOrEqual;
+        }
     }
+    
     NSLayoutAttribute att2 = attribute;
     return [self cg_attribute:attribute relatedBy:relation toItem:view2 attribute:att2 multiplier:1.0 constant:c];
 }
@@ -245,3 +310,4 @@
 }
 
 @end
+

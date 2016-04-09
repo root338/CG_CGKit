@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CGSearchConstraintTypeHeader.h"
 #import "CGLayoutConstraintsTypeHeader.h"
 #import "UIView+CreateAutoLayoutTypeView.h"
 
@@ -87,8 +88,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (CGViewAxisConstraint)
 
+/** 设置去指定视图的对齐 */
+- (NSLayoutConstraint *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView;
 
+/** 设置与指定视图的对齐，并设置偏移的间距 */
+- (NSLayoutConstraint *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView withOffset:(CGFloat)offset;
 
+/** 设置与指定视图中心对齐 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSameAxisOfView:(UIView *)otherView;
+
+/** 设置与指定视图中心对齐，并设置偏移的坐标 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSameAxisOfView:(UIView *)otherView withOffset:(CGPoint)offset;
 @end
 
 #pragma mark - 设置视图自身的大小
@@ -98,8 +108,18 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置指定大小的长度 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength;
 
+/** 设置视图的大小 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupViewSize:(CGSize)viewSize;
+
 /** 设置指定大小的长度并设置约束类型 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength relation:(NSLayoutRelation)relation;
+
+/** 设置视图与指定视图大小相等 */
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)view;
+
+/** 设置视图与指定视图大小的关系 */
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation;
+
 @end
 
 #pragma mark - 与对象设置的单个约束
@@ -136,4 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c;
 
 @end
+
+
+
 NS_ASSUME_NONNULL_END
