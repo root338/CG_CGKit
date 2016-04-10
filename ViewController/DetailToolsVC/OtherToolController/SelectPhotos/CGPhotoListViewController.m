@@ -88,7 +88,7 @@
 - (void)setupPhotoListView
 {
     
-    UICollectionViewFlowLayout *flowLayout  = [UICollectionViewFlowLayout cg_createWithWidth:self.view.width count:4 space:5];
+    UICollectionViewFlowLayout *flowLayout  = [self createFlowLayoutWithWidth:self.view.width];
     
     NSArray *photoList  = [self.assetsLibraryManager cg_assetsWithGroup:self.assetsGroup];
     
@@ -125,6 +125,28 @@
     [_collectionView cg_attribute:NSLayoutAttributeBottom toItem:self.toolbar attribute:NSLayoutAttributeTop];
 //    [self.toolbar cg_autoDimension:CGDimensionHeight fixedLength:44];
 }
+
+- (__kindof UICollectionViewLayout *)createFlowLayoutWithWidth:(CGFloat)width
+{
+    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout cg_createWithWidth:width count:4 space:5];
+    
+    return flowLayout;
+}
+
+#pragma mark - 视图旋转
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [self.collectionView setCollectionViewLayout:[self createFlowLayoutWithWidth:size.width] animated:YES];
+}
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.collectionView setCollectionViewLayout:[self createFlowLayout] animated:YES];
+}
+
+#endif
 
 #pragma mark - 设置属性
 
