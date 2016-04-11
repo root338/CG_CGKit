@@ -33,6 +33,11 @@
         
     }
 }
+
+- (void)addSingleTapTarget:(id)target action:(SEL)action
+{
+    [self.photoImageView addSingleTapTarget:target action:action];
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

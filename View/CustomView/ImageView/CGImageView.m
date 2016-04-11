@@ -39,7 +39,7 @@
 @property (nonatomic, strong, readwrite) UIScrollView *imageScrollView;
 
 @property (nullable, nonatomic, strong) UITapGestureRecognizer *doubleTapGesture;
-
+@property (nullable, nonatomic, strong) UITapGestureRecognizer *singleTapGesture;
 @end
 
 @implementation CGImageView
@@ -48,7 +48,14 @@
 #pragma mark - 事件处理
 - (void)handleDoubleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
-    CGFloat newScale    = self.imageScrollView.zoomScale * self.zoomMultiple;
+    CGFloat newScale        = 0;
+    
+    if (self.imageScrollView.zoomScale < self.imageScrollView.maximumZoomScale) {
+        newScale    = self.imageScrollView.zoomScale * self.zoomMultiple;
+    }else {
+        newScale    = self.imageScrollView.zoomScale / self.zoomMultiple;
+    }
+    
     CGRect zoomRect     = [self zoomRectForScale:newScale withCenter:[gestureRecognizer locationInView:gestureRecognizer.view]];
     [self.imageScrollView zoomToRect:zoomRect animated:YES];
 }
@@ -110,10 +117,16 @@
     }else {
         
         CGFloat width   = self.width;
-//        CGFloat height  = self.height;
+        CGFloat height  = MAX(self.height, 1) ;
         CGSize imageSize    = self.imageBrowseView.image.size;
+        CGFloat imageWidth  = imageSize.width;
+        CGFloat imageHeight = MAX(1, imageSize.height);
         
-        imageBrowseSize = CGSizeMake(width, (imageSize.height * width) / MAX(1, imageSize.width));
+        if (width / height <= imageWidth / imageHeight) {
+            imageBrowseSize = CGSizeMake(width, (imageHeight * width) / imageWidth);
+        }else {
+            imageBrowseSize = CGSizeMake((imageWidth * height) / imageHeight, height);
+        }
     }
     self.imageBrowseView.size   = imageBrowseSize;
     self.imageBrowseView.center = self.imageScrollView.center;
@@ -145,12 +158,41 @@
                     //创建手势
                     self.doubleTapGesture   = [self cg_addGestureRecognizerWithType:CGGestureRecognizerTypeTap action:@selector(handleDoubleTap:)];
                     self.doubleTapGesture.numberOfTapsRequired      = 2;
-                    self.doubleTapGesture.numberOfTouchesRequired   = 1;
                     self.doubleTapGesture.delegate                  = self;
+                    [self cg_requireGestureRecognizerToFail];
                 }
             }
         }
     }
+}
+
+/** 设置单击、双击同时执行 */
+- (void)cg_requireGestureRecognizerToFail
+{
+    if (self.singleTapGesture && self.doubleTapGesture) {
+        
+        //当设置时，双击时，单击不会执行。否则双击时，单击会提前执行
+        [self.singleTapGesture requireGestureRecognizerToFail:self.doubleTapGesture];
+    }
+}
+
+- (void)addSingleTapTarget:(id)target action:(SEL)action
+{
+    if (!self.singleTapGesture) {
+        self.singleTapGesture   = [self cg_addGestureRecognizerWithType:CGGestureRecognizerTypeTap target:target action:action];
+        [self cg_requireGestureRecognizerToFail];
+    }else {
+        [self.singleTapGesture addTarget:target action:action];
+    }
+}
+
+- (void)removeSingleTapTarget:(id)target action:(SEL)action
+{
+    if (!self.singleTapGesture) {
+        return;
+    }
+    
+    [self.singleTapGesture removeTarget:target action:action];
 }
 
 #pragma mark - 设置属性

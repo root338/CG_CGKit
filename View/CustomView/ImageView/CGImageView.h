@@ -26,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 双击放大的倍数 默认 1.5 */
 @property (nonatomic, assign) CGFloat zoomMultiple;
+
+/** 添加单击事件处理方法 */
+- (void)addSingleTapTarget:(id)target action:(SEL)action;
+/** 移除单击事件处理方法 */
+- (void)removeSingleTapTarget:(id)target action:(SEL)action;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -19,8 +19,10 @@
 #import "UICollectionViewFlowLayout+CGCreateLayout.h"
 
 #import "CGAssetsLibraryManager.h"
-#import "ALAssetsGroup+CGProperty.h"
 #import "CGCollectionViewDataSourceManager.h"
+
+#import "ALAssetsGroup+CGProperty.h"
+#import "UIApplication+CGVerifyDeviceDirection.h"
 
 @interface CGPhotoListViewController ()<UICollectionViewDelegate>
 
@@ -122,31 +124,54 @@
 {
     [_collectionView cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero exculdingEdge:CGLayoutEdgeBottom];
     [self.toolbar cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero exculdingEdge:CGLayoutEdgeTop];
+    [self.toolbar cg_autoDimension:CGDimensionHeight fixedLength:44];
     [_collectionView cg_attribute:NSLayoutAttributeBottom toItem:self.toolbar attribute:NSLayoutAttributeTop];
-//    [self.toolbar cg_autoDimension:CGDimensionHeight fixedLength:44];
+}
+
+- (NSInteger)setupCollectionCount
+{
+    NSInteger count;
+    if ([UIApplication cg_currentDeviceDirection] == CGDeivceDirectionPortrait) {
+        count   = 4;
+    }else {
+        count   = 7;
+    }
+    return count;
 }
 
 - (__kindof UICollectionViewLayout *)createFlowLayoutWithWidth:(CGFloat)width
 {
-    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout cg_createWithWidth:width count:4 space:5];
+    
+    NSInteger count = 4;//[self setupCollectionCount];
+    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout cg_createWithWidth:width count:count space:5];
     
     return flowLayout;
 }
 
 #pragma mark - 视图旋转
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [self.collectionView setCollectionViewLayout:[self createFlowLayoutWithWidth:size.width] animated:YES];
-}
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+//{
+//    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+//        [self.collectionView setCollectionViewLayout:[self createFlowLayoutWithWidth:size.width]];
+//    }];
+//}
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self.collectionView setCollectionViewLayout:[self createFlowLayout] animated:YES];
-}
+//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+//{
+//    [self.collectionView setCollectionViewLayout:[self createFlowLayoutWithWidth:self.collectionView.width]];
+//}
 
 #endif
+
+//- (void)updateCollectionViewLayoutWithItemSize:(CGSize)itemSize;
+//{
+//    UICollectionViewFlowLayout *flowLayout   = (id)self.collectionView.collectionViewLayout;
+//    if ([flowLayout isKindOfClass:[UICollectionViewFlowLayout class]]) {
+//        flowLayout.itemSize = itemSize;
+//    }
+//}
 
 #pragma mark - 设置属性
 

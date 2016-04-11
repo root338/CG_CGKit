@@ -14,6 +14,7 @@
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CGAddConstraints.h"
 #import "UIScrollView+CGProperty.h"
+#import "UIView+CGAddGestureRecognizer.h"
 #import "CGNavigationAppearanceProtocol.h"
 
 #import "CGCollectionViewDataSourceManager.h"
@@ -41,7 +42,7 @@
 
 #pragma mark - 事件
 
-- (void)handleTopAction:(UITapGestureRecognizer *)tapGestureRecognizer
+- (void)handleSingleTap:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     BOOL isHidden   = !self.navigationBar.hidden;
     [self setNavigationBarHidden:isHidden animated:YES];
@@ -53,11 +54,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self cg_setupBrowsePhotoListView];
-    
-//    UITapGestureRecognizer *tapGestureRecognizer    = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTopAction:)];
-//    tapGestureRecognizer.numberOfTapsRequired       = 1;
-//    tapGestureRecognizer.delegate   = self;
-//    [self.view addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,9 +79,11 @@
     Class registerCollectionCellClassName   = [CGBrowsePhotoCollectionViewCell class];
     [_browsePhotoCollectionView cg_registerReuseClass:registerCollectionCellClassName];
     
+    __weak typeof(self) weakSelf    = self;
     _dataSourceManager  = [[CGCollectionViewDataSourceManager alloc] initWithDataSource:self.browsePhotoDataSource cellIdentifierForClass:registerCollectionCellClassName setupCellBlock:^(UICollectionView * _Nonnull collectionView, __kindof CGBrowsePhotoCollectionViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
         
         [cell setupCollectionViewCellContentWithData:data];
+        [cell addSingleTapTarget:weakSelf action:@selector(handleSingleTap:)];
     }];
     
     _browsePhotoCollectionView.dataSource   = _dataSourceManager;
@@ -100,6 +98,29 @@
         [_browsePhotoCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:self.startIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
     }
     [self setupTitleWithPage:self.startIndex + 1];
+}
+
+#pragma mark - 屏幕旋转
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [self updateCollectionViewLayoutWithItemSize:size];
+}
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self updateCollectionViewLayoutWithItemSize:self.view.size];
+}
+
+#endif
+
+- (void)updateCollectionViewLayoutWithItemSize:(CGSize)itemSize;
+{
+    CGBrowseImageCollectionViewFlowLayout *flowLayout   = (id)self.browsePhotoCollectionView.collectionViewLayout;
+    if ([flowLayout isKindOfClass:[CGBrowseImageCollectionViewFlowLayout class]]) {
+        flowLayout.itemSize = itemSize;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
