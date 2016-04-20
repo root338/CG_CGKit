@@ -7,9 +7,10 @@
 //
 
 #import "UIView+CGAddConstraints.h"
+#import "UIView+CGCreateConstraint.h"
+
 #import "UIView+CGSearchView.h"
 #import "NSLayoutConstraint+CGVerifyConstraint.h"
-
 
 
 #pragma mark - 添加多个约束
@@ -19,6 +20,11 @@
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController
 {
     return [self cg_autoEdgesToViewController:viewController withInsets:UIEdgeInsetsZero];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController exculdingEdge:(CGLayoutEdge)edge
+{
+    return [self cg_autoEdgesToViewController:viewController withInsets:UIEdgeInsetsZero exculdingEdge:edge];
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets
@@ -303,11 +309,14 @@
     
     UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:view2];
     NSAssert(commonSuperview, @"添加约束的两视图没有共同父视图");
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
+    
+    NSLayoutConstraint *layoutConstraint    = [self cg_createAttribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
     [commonSuperview addConstraint:layoutConstraint];
     
     return layoutConstraint;
 }
 
 @end
+
+
 

@@ -31,13 +31,13 @@
     NSString *formatterStr = nil;
     switch (stringFormatter) {
         case CGDateForStringFormatterDefault:
-            formatterStr = [NSString stringWithFormat:@"%04li-%02li-%02li %02li:%02li-%02li", (long)dateComponent.year, (long)dateComponent.month, dateComponent.day, (long)dateComponent.hour, dateComponent.minute, dateComponent.second];
+            formatterStr = [NSString stringWithFormat:@"%04li-%02li-%02li %02li:%02li-%02li", (long)dateComponent.year, (long)dateComponent.month, (long)dateComponent.day, (long)dateComponent.hour, (long)dateComponent.minute, (long)dateComponent.second];
             break;
         case CGDateForStringFormatterTimer:
-            formatterStr = [NSString stringWithFormat:@"%02li:%02li-%02li", (long)dateComponent.hour, (long)dateComponent.minute, dateComponent.second];
+            formatterStr = [NSString stringWithFormat:@"%02li:%02li-%02li", (long)dateComponent.hour, (long)dateComponent.minute, (long)dateComponent.second];
             break;
         case CGDateForStringFormatterYear:
-            formatterStr = [NSString stringWithFormat:@"%04li-%02li-%02li", (long)dateComponent.year, (long)dateComponent.month, dateComponent.day];
+            formatterStr = [NSString stringWithFormat:@"%04li-%02li-%02li", (long)dateComponent.year, (long)dateComponent.month, (long)dateComponent.day];
             break;
         default:
             break;

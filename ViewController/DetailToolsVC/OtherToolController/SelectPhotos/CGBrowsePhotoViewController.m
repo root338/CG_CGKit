@@ -132,11 +132,11 @@
 - (void)setupTitleWithPage:(NSInteger)page
 {
     if (page < 1 || page > self.browsePhotoDataSource.count) {
-        CGErrorLog(@"现在的索引为%li 索引应 大于0 小于%li", (long)page, self.browsePhotoDataSource.count);
+        CGErrorLog(@"现在的索引为%li 索引应 大于0 小于%lu", (long)page, self.browsePhotoDataSource.count);
         return ;
     }
     
-    self.title  = [NSString stringWithFormat:@"%li/%lu", page, self.browsePhotoDataSource.count];
+    self.title  = [NSString stringWithFormat:@"%li/%lu", (long)page, self.browsePhotoDataSource.count];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
