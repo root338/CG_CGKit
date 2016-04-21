@@ -6,6 +6,8 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
+@import WebKit;
+
 #import "CGWebViewController.h"
 
 #import "CGWebView.h"
@@ -13,7 +15,10 @@
 #import "UIView+CGAddConstraints.h"
 
 @interface CGWebViewController ()
-
+{
+    UIBarButtonItem *goBackItem;
+    UIBarButtonItem *goForwardItem;
+}
 @property (nonatomic, strong, readwrite) CGWebView *webView;
 @property (nonatomic, strong, readwrite) UIProgressView *progressView;
 
@@ -23,6 +28,11 @@
 @implementation CGWebViewController
 
 #pragma mark - 事件
+- (void)handleWebViewBack:(UIBarButtonItem *)sender
+{
+    
+}
+
 
 - (void)viewDidLoad
 {
@@ -31,6 +41,8 @@
     [self setupWebView];
     [self setupProgressView];
     [self setupToolBar];
+    
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
 }
 
 #pragma mark - 设置页面内容
