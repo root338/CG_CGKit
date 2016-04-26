@@ -18,10 +18,10 @@
 #import "CGBaseViewController+CGSetupItem.h"
 #import "UICollectionViewFlowLayout+CGCreateLayout.h"
 
-#import "CGAssetsLibraryManager.h"
+#import "CGImageLibraryManager.h"
 #import "CGCollectionViewDataSourceManager.h"
 
-#import "ALAssetsGroup+CGProperty.h"
+#import "CGAssetsCollectionModel.h"
 #import "UIApplication+CGVerifyDeviceDirection.h"
 
 @interface CGPhotoListViewController ()<UICollectionViewDelegate>
@@ -29,7 +29,7 @@
 @property (nonatomic, strong) CGCollectionView *collectionView;
 @property (nonatomic, strong) CGCollectionViewDataSourceManager *dataSourceManager;
 
-@property (readonly) CGAssetsLibraryManager *assetsLibraryManager;
+@property (readonly) CGImageLibraryManager *assetsLibraryManager;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @end
 
@@ -175,7 +175,7 @@
 
 #pragma mark - 设置属性
 
-- (CGAssetsLibraryManager *)assetsLibraryManager
+- (CGImageLibraryManager *)assetsLibraryManager
 {
     if ([self.navigationController isKindOfClass:[CGPhotoNavigationController class]]) {
         CGPhotoNavigationController *photoNavigationController  = (id)self.navigationController;
@@ -184,10 +184,10 @@
     return nil;
 }
 
-- (void)setAssetsGroup:(ALAssetsGroup *)assetsGroup
+- (void)setAssetsCollection:(CGAssetsCollectionModel *)assetsCollection
 {
-    _assetsGroup    = assetsGroup;
-    self.title      = self.assetsGroup.assetsGroupName;
+    _assetsCollection   = assetsCollection;
+    self.title          = assetsCollection.assetsCollectionName;
     
     if (self.collectionView) {
         [self cg_setupPhotoList:[self.assetsLibraryManager cg_assetsWithGroup:assetsGroup]];

@@ -15,7 +15,7 @@
 
 #import "UIView+CGAddConstraints.h"
 
-#import "CGAssetsLibraryManager.h"
+#import "CGImageLibraryManager.h"
 #import "CGTableViewDataSourceManager.h"
 
 @interface CGPhotoGroupViewController ()<UITableViewDelegate>
@@ -23,7 +23,7 @@
 @property (nonatomic, strong) CGTableView *tableView;
 @property (nonatomic, strong) CGTableViewDataSourceManager *dataSourceManager;
 
-@property (readonly) CGAssetsLibraryManager *assetsLibraryManager;
+@property (readonly) CGImageLibraryManager *assetsLibraryManager;
 @end
 
 @implementation CGPhotoGroupViewController
@@ -58,14 +58,14 @@
     
     Class registerCellClass = [CGPhotoGroupTableViewCell class];
     [_tableView cg_registerClassWithClassIdentifier:registerCellClass];
-    self.dataSourceManager  = [[CGTableViewDataSourceManager alloc] initWithDataSource:self.assetsGroups cellIdentifierForClass:registerCellClass setupCellBlock:^(UITableView * _Nonnull tableView, __kindof CGTableViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
+    self.dataSourceManager  = [[CGTableViewDataSourceManager alloc] initWithDataSource:self.assetsCollection cellIdentifierForClass:registerCellClass setupCellBlock:^(UITableView * _Nonnull tableView, __kindof CGTableViewCell * _Nonnull cell, NSIndexPath * _Nonnull indexPath, id  _Nonnull data) {
         [cell setupTableViewCellContentWithData:data];
     }];
     _tableView.dataSource   = self.dataSourceManager;
     _tableView.delegate     = self;
 }
 
-- (void)cg_setupPhotoGroupList:(NSArray *)photoGroupList
+- (void)cg_setupPhotoGroupList:(NSArray<CGAssetsCollectionModel *> *)photoGroupList
 {
     self.dataSourceManager.dataSource   = photoGroupList;
     [self.tableView reloadData];
@@ -75,7 +75,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGPhotoListViewController *photoListVC  = [CGPhotoListViewController cg_createPhotoList];
-    photoListVC.assetsGroup = self.assetsGroups[indexPath.row];
+    photoListVC.assetsCollection = self.assetsCollection[indexPath.row];
     [self.navigationController pushViewController:photoListVC animated:YES];
 }
 
@@ -91,7 +91,7 @@
 
 #pragma mark - 设置属性
 
-- (CGAssetsLibraryManager *)assetsLibraryManager
+- (CGImageLibraryManager *)assetsLibraryManager
 {
     if ([self.navigationController isKindOfClass:[CGPhotoNavigationController class]]) {
         CGPhotoNavigationController *photoNavigationController  = (id)self.navigationController;
@@ -100,10 +100,10 @@
     return nil;
 }
 
-- (void)setAssetsGroups:(NSArray<ALAssetsGroup *> *)assetsGroups
+- (void)setAssetsCollection:(NSArray<CGAssetsCollectionModel *> *)assetsCollection
 {
-    _assetsGroups   = assetsGroups;
-    [self cg_setupPhotoGroupList:assetsGroups];
+    _assetsCollection   = assetsCollection;
+    [self cg_setupPhotoGroupList:assetsCollection];
 }
 
 @end

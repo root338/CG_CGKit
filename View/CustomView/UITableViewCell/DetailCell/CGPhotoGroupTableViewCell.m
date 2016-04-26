@@ -9,7 +9,7 @@
 #import "CGPhotoGroupTableViewCell.h"
 
 #import "UIFont+CGCreateFont.h"
-#import "ALAssetsGroup+CGProperty.h"
+#import "CGAssetsCollectionModel.h"
 
 @interface CGPhotoGroupTableViewCell ()
 {
@@ -22,19 +22,24 @@
 
 - (void)setupTableViewCellContentWithData:(id)paramData
 {
-    if ([paramData isKindOfClass:[ALAssetsGroup class]]) {
+    if ([paramData isKindOfClass:[CGAssetsCollectionModel class]]) {
         
-        ALAssetsGroup *assetsGroup  = paramData;
-        self.imageView.image        = assetsGroup.posterAssetsGroupImage;
+        CGAssetsCollectionModel *assetsGroup    = paramData;
+        [assetsGroup posterAssetsCollectionImage:^(UIImage * _Nonnull posterAssetImage) {
+            self.imageView.image    = posterAssetImage;
+        }];
+        
         if (!_titleAttDictionary || !_numberAttDictionary) {
             
             [self setupTextAttributed];
         }
         
-        NSMutableAttributedString *textAttributedString = [[NSMutableAttributedString alloc] initWithString:assetsGroup.assetsGroupName attributes:_titleAttDictionary];
+        NSMutableAttributedString *textAttributedString = [[NSMutableAttributedString alloc] initWithString:assetsGroup.assetsCollectionName attributes:_titleAttDictionary];
         NSString *number    = [NSString stringWithFormat:@" (%li)", (long)assetsGroup.numberOfAssets];
         [textAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:number attributes:_numberAttDictionary]];
         self.textLabel.attributedText   = textAttributedString;
+    }else {
+        NSAssert(nil, @"???");
     }
 }
 

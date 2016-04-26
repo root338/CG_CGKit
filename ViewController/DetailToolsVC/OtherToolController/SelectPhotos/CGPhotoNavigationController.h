@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGAssetsLibraryManager;
+@class CGImageLibraryManager;
 
 @interface CGPhotoNavigationController : CGNavigationController
 
@@ -27,6 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)cg_createDefalutNavigationController;
 
 /** 图片资源管理类 */
-@property (nonatomic, strong) CGAssetsLibraryManager *assetsLibraryManager;
+@property (nonatomic, strong, readonly) CGImageLibraryManager *assetsLibraryManager;
 @end
 NS_ASSUME_NONNULL_END

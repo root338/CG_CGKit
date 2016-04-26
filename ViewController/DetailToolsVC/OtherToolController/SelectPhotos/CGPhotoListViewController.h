@@ -8,14 +8,14 @@
 
 #import "CGBaseViewController.h"
 
-@class ALAssetsGroup;
+@class CGAssetsCollectionModel;
 
 NS_ASSUME_NONNULL_BEGIN
 /** 照片浏览列表 */
 @interface CGPhotoListViewController : CGBaseViewController
 
 /** 图片组 */
-@property (nullable, nonatomic, strong) ALAssetsGroup *assetsGroup;
+@property (nullable, nonatomic, strong) CGAssetsCollectionModel *assetsCollection;
 
 + (instancetype)cg_createPhotoList;
 @end

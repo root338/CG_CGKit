@@ -8,13 +8,13 @@
 
 #import "CGBaseViewController.h"
 
-@class ALAssetsGroup;
+@class CGAssetsCollectionModel;
 
 NS_ASSUME_NONNULL_BEGIN
 /** 相片组 */
 @interface CGPhotoGroupViewController : CGBaseViewController
 
-@property (nonatomic, assign) NSArray<ALAssetsGroup *> * assetsGroups;
+@property (nonatomic, strong) NSArray<CGAssetsCollectionModel *> * assetsCollection;
 
 @end
 NS_ASSUME_NONNULL_END

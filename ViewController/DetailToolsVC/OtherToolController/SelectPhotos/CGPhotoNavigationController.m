@@ -12,6 +12,13 @@
 #import "CGPhotoGroupViewController.h"
 
 #import "CGAssetsLibraryManager.h"
+#import "CGImageLibraryManager.h"
+
+@interface CGPhotoNavigationController ()
+
+@property (nonatomic, strong, readwrite) CGImageLibraryManager *assetsLibraryManager;
+
+@end
 
 @implementation CGPhotoNavigationController
 
@@ -26,13 +33,10 @@
     
     CGPhotoListViewController *photoListVC      = [CGPhotoListViewController cg_createPhotoList];
     
-    [photoNavigationController.assetsLibraryManager cg_assetsGroupsWithGroupsType:ALAssetsGroupAll assetsGroups:^(NSArray<ALAssetsGroup *> * _Nullable paramAssetsGroup) {
+    [photoNavigationController.assetsLibraryManager.assetsCollectionManager cg_getAssetsCollectionCompletion:^(NSArray<CGAssetsCollectionModel *> * _Nullable assetsCollectionArray) {
         
-        if (paramAssetsGroup.count) {
-            photoGroupVC.assetsGroups   = paramAssetsGroup;
-            photoListVC.assetsGroup     = paramAssetsGroup[0];
-        }
-        
+        photoGroupVC.assetsCollection   = assetsCollectionArray;
+        photoListVC.assetsCollection    = [assetsCollectionArray firstObject];
     } failureBlock:nil];
     
     NSMutableArray *viewControllers             = [NSMutableArray arrayWithArray:photoNavigationController.viewControllers];
@@ -45,13 +49,13 @@
 
 #pragma mark - 设置属性
 
-- (CGAssetsLibraryManager *)assetsLibraryManager
+- (CGImageLibraryManager *)assetsLibraryManager
 {
     if (_assetsLibraryManager) {
         return _assetsLibraryManager;
     }
     
-    _assetsLibraryManager = [[CGAssetsLibraryManager alloc] init];;
+    _assetsLibraryManager = [[CGImageLibraryManager alloc] init];
     
     return _assetsLibraryManager;
 }
