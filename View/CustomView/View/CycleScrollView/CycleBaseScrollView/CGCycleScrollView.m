@@ -59,7 +59,7 @@
 //@property (nonatomic, strong) NSMutableDictionary *cycleContentViews;
 
 ///加载的滑动视图
-@property (nonatomic, strong) CGScrollView *cycleScrollView;
+@property (nonatomic, strong, readwrite) UIScrollView *cycleScrollView;
 
 /** 被缓存的视图 */
 @property (strong, nonatomic, readwrite) NSMutableDictionary *cacheViews;
@@ -865,9 +865,9 @@
 //    _enableScrollDirectionMonitor   = enableScrollDirectionMonitor;
 //    self.cycleScrollView.enableScrollDirectionMonitor   = enableScrollDirectionMonitor;
 //}
-
-- (CGScrollDirectionType)scrollDirectionType
-{
-    return self.cycleScrollView.scrollDirectionType;
-}
+//
+//- (CGScrollDirectionType)scrollDirectionType
+//{
+//    return self.cycleScrollView.scrollDirectionType;
+//}
 @end

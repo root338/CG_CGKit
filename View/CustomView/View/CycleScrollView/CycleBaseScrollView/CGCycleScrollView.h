@@ -142,6 +142,9 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 /** 滑动时，子视图的显示样式 */
 @property (nonatomic, assign) CGCycleViewScrollAnimationStyle animationStyle;
 
+///加载的滑动视图
+@property (nonatomic, strong, readonly) UIScrollView *cycleScrollView;
+
 #pragma mark - 内容设置
 /**
  *  当前显示视图的索引 
@@ -168,8 +171,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 //@property (nonatomic, assign) BOOL enableScrollDirectionMonitor;
 
 /** 滑动视图滑动的方向 */
-@property (nonatomic, assign, readonly) CGScrollDirectionType scrollDirectionType;
-
+//@property (nonatomic, assign, readonly) CGScrollDirectionType scrollDirectionType;
 
 /** 
  *  关闭默认计时器设定(默认为NO)
