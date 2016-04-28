@@ -15,6 +15,10 @@
 - (CGRect)cg_navigationBarFrame;
 
 @optional
+/** 设置contentView的显示区域 */
+- (CGRect)cg_contentViewFrame;
+
+@optional
 
 @end
 
