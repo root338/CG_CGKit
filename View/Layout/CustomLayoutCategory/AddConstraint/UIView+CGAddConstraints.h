@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置与视图控制器视图的四周约束为 0 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController;
 
+/** 设置与视图控制器视图的四周约束为 0 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController exculdingEdge:(CGLayoutEdge)edge;
+
 /** 设置与视图控制器视图的四周约束 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets;
 
@@ -156,7 +159,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c;
 
 @end
-
 
 
 NS_ASSUME_NONNULL_END

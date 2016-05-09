@@ -20,6 +20,11 @@
     return [self cg_updateAutoEdgesToViewController:viewController withInsets:UIEdgeInsetsZero];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_updateAutoEdgesInsetsZeroToViewController:(UIViewController *)viewController exculdingEdge:(CGLayoutEdge)edge
+{
+    return [self cg_updateAutoEdgesToViewController:viewController withInsets:UIEdgeInsetsZero exculdingEdge:edge];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_updateAutoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets
 {
     NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:4];

@@ -20,11 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 验证字符串是否是中文字符 */
 - (BOOL)verificationIsChineseCharacter;
 
-
-@end
-
-@interface NSString (VerificationPhone)
-
+/** 验证字符串是否是手机号 */
 //- (BOOL)verificationIsPhone;
+
 @end
 NS_ASSUME_NONNULL_END

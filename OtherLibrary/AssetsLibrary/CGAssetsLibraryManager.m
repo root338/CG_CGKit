@@ -45,7 +45,7 @@
     _isCache                    = YES;
     _isAddZeroNumberAssetsGroup = NO;
     _assetsFilterType           = CGAssetsFilterTypeAll;
-    _assetsSequenceType         = CGAssetsSequenceTypeDescending;
+    _assetsSequenceType         = CGAssetsSequenceTypeDefault;
     _assetsGroupFilterType      = CGAssetsGroupFilterTypeValue1;
     
     _assetsLibrary = [[ALAssetsLibrary alloc] init];

@@ -7,10 +7,11 @@
 //
 
 #import "UIView+CGAddConstraints.h"
+#import "UIView+CGCreateConstraint.h"
+
 #import "UIView+CGSearchView.h"
+#import "UIView+CGCreateConstraint.h"
 #import "NSLayoutConstraint+CGVerifyConstraint.h"
-
-
 
 #pragma mark - 添加多个约束
 
@@ -19,6 +20,11 @@
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController
 {
     return [self cg_autoEdgesToViewController:viewController withInsets:UIEdgeInsetsZero];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController exculdingEdge:(CGLayoutEdge)edge
+{
+    return [self cg_autoEdgesToViewController:viewController withInsets:UIEdgeInsetsZero exculdingEdge:edge];
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets
@@ -176,8 +182,11 @@
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints  = NO;
-    NSLayoutConstraint *constraint  = [NSLayoutConstraint constraintWithItem:self attribute:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:fixedLength];
+    NSLayoutConstraint *constraint  = [self cg_createDimension:dimension fixedLength:fixedLength relation:relation];
     [self addConstraint:constraint];
+    
+    
+    
     return constraint;
 }
 
@@ -209,7 +218,7 @@
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints  = NO;
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:inset];
+    NSLayoutConstraint *layoutConstraint    = [self cg_createTopLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
     [viewController.view addConstraint:layoutConstraint];
     return layoutConstraint;
 }
@@ -226,16 +235,8 @@
 
 - (NSLayoutConstraint *)cg_bottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
-    
-    inset   = -inset;
-    if (NSLayoutRelationGreaterThanOrEqual == relation) {
-        relation    = NSLayoutRelationLessThanOrEqual;
-    }else if (NSLayoutRelationLessThanOrEqual == relation) {
-        relation    = NSLayoutRelationGreaterThanOrEqual;
-    }
     self.translatesAutoresizingMaskIntoConstraints  = NO;
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:inset];
-    [viewController.view addConstraint:layoutConstraint];
+    NSLayoutConstraint *layoutConstraint    = [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
     return layoutConstraint;
 }
 
@@ -303,11 +304,14 @@
     
     UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:view2];
     NSAssert(commonSuperview, @"添加约束的两视图没有共同父视图");
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
+    
+    NSLayoutConstraint *layoutConstraint    = [self cg_createAttribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
     [commonSuperview addConstraint:layoutConstraint];
     
     return layoutConstraint;
 }
 
 @end
+
+
 

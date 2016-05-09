@@ -44,10 +44,13 @@
     }
     return isResult;
 }
-@end
 
-@implementation NSString (VerificationPhone)
-
-
-
+//- (BOOL)verificationIsPhone
+//{
+//    BOOL isResult   = NO;
+//    
+//    
+//    
+//    return isResult;
+//}
 @end

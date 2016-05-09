@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置与视图控制器视图的四周约束为 0 */
 - (NSArray<NSLayoutConstraint *> *)cg_updateAutoEdgesInsetsZeroToViewController:(UIViewController *)viewController;
 
+/** 设置与视图控制器视图的四周约束为 0，并忽略指定边 */
+- (NSArray<NSLayoutConstraint *> *)cg_updateAutoEdgesInsetsZeroToViewController:(UIViewController *)viewController exculdingEdge:(CGLayoutEdge)edge;
+
 /** 设置与视图控制器视图的四周约束 */
 - (NSArray<NSLayoutConstraint *> *)cg_updateAutoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets;
 
