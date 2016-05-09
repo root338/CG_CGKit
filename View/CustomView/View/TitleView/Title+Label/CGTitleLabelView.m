@@ -95,7 +95,8 @@
         return _titleLabel;
     }
     
-    _titleLabel = [CGMultilineLabel cg_createDefaultLabel];
+    _titleLabel = [CGMultilineLabel cg_createZeroLinesLabel];
+    
     
     return _titleLabel;
 }
