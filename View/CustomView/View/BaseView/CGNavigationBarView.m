@@ -63,9 +63,16 @@
 - (void)setupSubviewsLayout
 {
     
-    CGRect navigationBarFrame   = [self.delegate cg_navigationBarFrame];
+    CGRect navigationBarFrame;
+    if ([self.delegate respondsToSelector:@selector(cg_contentViewFrame)]) {
+        
+        self.contentView.frame  = [self.delegate cg_contentViewFrame];
+    }else {
+        
+        navigationBarFrame      = [self.delegate cg_navigationBarFrame];
+        self.contentView.frame      = CGRectMake(0, CGRectGetMaxY(navigationBarFrame), self.width, self.height - CGRectGetMaxY(navigationBarFrame));
+    }
     
-    self.contentView.frame      = CGRectMake(0, CGRectGetMaxY(navigationBarFrame), self.width, self.height - CGRectGetMaxY(navigationBarFrame));
     if ([self cg_addSubview:self.contentView]) {
         
         //对内容视图进行设置
@@ -97,7 +104,7 @@
     [super willMoveToWindow:newWindow];
     if (newWindow) {
         //移动视图
-        !_navigationBar.superview   ?: [self bringSubviewToFront:_navigationBar];
+//        !_navigationBar.superview   ?: [self bringSubviewToFront:_navigationBar];
     }
 }
 

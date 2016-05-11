@@ -185,8 +185,6 @@
     NSLayoutConstraint *constraint  = [self cg_createDimension:dimension fixedLength:fixedLength relation:relation];
     [self addConstraint:constraint];
     
-    
-    
     return constraint;
 }
 
@@ -237,6 +235,7 @@
 {
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *layoutConstraint    = [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
+    [viewController.view addConstraint:layoutConstraint];
     return layoutConstraint;
 }
 

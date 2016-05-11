@@ -50,6 +50,7 @@
         layer.allowsEdgeAntialiasing    = YES;
     }
     
+//    layer.anchorPoint               = CGPointMake(0, 0.5);
     CGRect scrollViewVisibleRect    = (CGRect){scrollView.contentOffset, scrollView.size};
     
     /** 最大旋转角度 */
