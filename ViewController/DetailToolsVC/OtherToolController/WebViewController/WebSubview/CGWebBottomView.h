@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, CGWebBottomViewActionType) {
 
 @property (nullable, nonatomic, copy) void (^actionCallback) (CGWebBottomViewActionType actionType);
 
-
+/** 设置指定类型的按钮开关 */
+- (void)cg_setupItemType:(CGWebBottomViewActionType)type enable:(BOOL)enable;
 @end
 NS_ASSUME_NONNULL_END
