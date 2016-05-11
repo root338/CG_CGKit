@@ -53,38 +53,41 @@
 //    [self.lineColor setStroke];
 //    [bezierPath stroke];
     
-    CGMutablePathRef path = CGPathCreateMutable();
-    
-    if (self.rectCorner & LineBoxTypeTop) {
-        CGPathMoveToPoint(path, NULL, 0, 0);
-        CGPathAddLineToPoint(path, NULL, self.width, 0);
+    if (self.rectCorner != 0 && self.lineColor && self.lineWidth > 0.001) {
+        
+        CGMutablePathRef path = CGPathCreateMutable();
+        
+        if (self.rectCorner & LineBoxTypeTop) {
+            CGPathMoveToPoint(path, NULL, 0, 0);
+            CGPathAddLineToPoint(path, NULL, self.width, 0);
+        }
+        
+        if (self.rectCorner & LineBoxTypeRight) {
+            CGFloat originX = self.width - self.lineWidth;
+            CGPathMoveToPoint(path, NULL, originX, 0);
+            CGPathAddLineToPoint(path, NULL, originX, self.height);
+        }
+        
+        if (self.rectCorner & LineBoxTypeBottom) {
+            CGFloat originY = self.height - self.lineWidth;
+            CGPathMoveToPoint(path, NULL, self.width, originY);
+            CGPathAddLineToPoint(path, NULL, 0, originY);
+        }
+        
+        if (self.rectCorner & LineBoxTypeLeft) {
+            CGPathMoveToPoint(path, NULL, 0, self.height);
+            CGPathAddLineToPoint(path, NULL, 0, 0);
+        }
+        
+        UIBezierPath *bezierPath = [UIBezierPath bezierPath];
+        bezierPath.CGPath = path;
+        
+        [self.lineColor setStroke];
+        bezierPath.lineWidth = self.lineWidth;
+        [bezierPath stroke];
+        
+        CGPathRelease(path);
     }
-    
-    if (self.rectCorner & LineBoxTypeRight) {
-        CGFloat originX = self.width - self.lineWidth;
-        CGPathMoveToPoint(path, NULL, originX, 0);
-        CGPathAddLineToPoint(path, NULL, originX, self.height);
-    }
-    
-    if (self.rectCorner & LineBoxTypeBottom) {
-        CGFloat originY = self.height - self.lineWidth;
-        CGPathMoveToPoint(path, NULL, self.width, originY);
-        CGPathAddLineToPoint(path, NULL, 0, originY);
-    }
-    
-    if (self.rectCorner & LineBoxTypeLeft) {
-        CGPathMoveToPoint(path, NULL, 0, self.height);
-        CGPathAddLineToPoint(path, NULL, 0, 0);
-    }
-    
-    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
-    bezierPath.CGPath = path;
-    
-    [self.lineColor setStroke];
-    bezierPath.lineWidth = self.lineWidth;
-    [bezierPath stroke];
-    
-    CGPathRelease(path);
 }
 
 #pragma mark 设置属性
