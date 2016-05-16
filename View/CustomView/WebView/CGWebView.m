@@ -110,8 +110,8 @@
 
 - (void)dealloc
 {
-    [self removeObserver:self.webView forKeyPath:[self webViewTitleKeyPath]];
-    [self removeObserver:self.webView forKeyPath:[self webViewProgressKeyPath]];
+    [self.webView removeObserver:self forKeyPath:[self webViewTitleKeyPath]];
+    [self.webView removeObserver:self forKeyPath:[self webViewProgressKeyPath]];
 }
 
 #pragma mark - 设置属性
