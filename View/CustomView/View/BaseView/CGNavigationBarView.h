@@ -31,6 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, weak) id<CGNavigationBarViewDelegate> delegate;
 
+/** contentView 是否全屏显示，默认NO */
+@property (nonatomic, assign) BOOL isContentViewFullScreen;
+
+/** 是否隐藏导航栏 */
+@property (nonatomic, assign) BOOL isNavigationBarHidden;
+/** 是否隐藏导航栏，并且是否执行动画 */
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+
 /**
  *  创建导航栏
  *  @warning 子类可以重写创建的导航栏

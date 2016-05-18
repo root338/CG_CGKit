@@ -26,41 +26,28 @@
 
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-    _isNavigationBarHidden  = hidden;
-    CGFloat originY  = hidden ? - self.navigationBar.height : 0;
-    if (!hidden || !animated) {
-        //显示时，或没有动画时
-        self.navigationBar.hidden   = hidden;
-    }
-    if (animated) {
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            
-            self.navigationBar.yOrigin  = originY;
-        } completion:^(BOOL finished) {
-            
-            if (hidden) {
-                self.navigationBar.hidden   = hidden;
-            }
-        }];
-    }else {
-        
-        self.navigationBar.yOrigin  = originY;
-    }
+    [self.navigationBarView setNavigationBarHidden:hidden animated:animated];
 }
 
 #pragma mark - CGNavigationBarViewDelegate
 /** 当状态栏高度为0，自动设置状态栏高度为64 */
 - (CGRect)cg_navigationBarFrame
 {
+    CGFloat height  = 64;
     CGFloat width   = self.navigationController ? self.navigationController.navigationBar.width : self.view.width;
-    return CGRectMake(0, 0, width, 64);
+    return CGRectMake(0, self.isNavigationBarHidden ? -height : 0, width, height);
+}
+
+- (void)loadView
+{
+    [super loadView];
+    [self setupView];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self setupView];
 }
 
 - (void)setupView
@@ -97,9 +84,11 @@
 
 - (void)setIsNavigationBarHidden:(BOOL)isNavigationBarHidden
 {
-    if (_isNavigationBarHidden != isNavigationBarHidden) {
-        
-        [self setNavigationBarHidden:isNavigationBarHidden animated:NO];
-    }
+    self.navigationBarView.isNavigationBarHidden    = isNavigationBarHidden;
+}
+
+- (BOOL)isNavigationBarHidden
+{
+    return self.navigationBarView.isNavigationBarHidden;
 }
 @end
