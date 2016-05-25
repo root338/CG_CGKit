@@ -37,9 +37,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSNotificationCenter (CGCreateKeyboardNotification)
 
+/** 
+ *  添加UIKeyboardDidHideNotification， UIKeyboardDidShowNotification键盘通知
+ */
 + (void)cg_addKeyboardObserver:(id)observer selector:(SEL)selector;
+/** 移除UIKeyboardDidHideNotification， UIKeyboardDidShowNotification键盘通知 */
 + (void)cg_removeKeyboardObserver:(id)observer;
 
+/** 添加UIKeyboardWillHideNotification, UIKeyboardWillShowNotification键盘通知 */
++ (void)cg_addWillKeyboardObserver:(id)observer selector:(SEL)selector;
+/** 移除UIKeyboardWillHideNotification, UIKeyboardWillShowNotification键盘通知 */
++ (void)cg_removeWillKeyboardObserver:(id)observer;
+
+/** 添加UIKeyboardWillChangeFrameNotification键盘通知 */
++ (void)cg_addKeyboardWillChangeFrameObserver:(id)observer selector:(SEL)selector;
+/** 移除UIKeyboardWillChangeFrameNotification键盘通知 */
++ (void)cg_removeKeyboardWillChangeFrameObserver:(id)observer;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -51,6 +51,7 @@
 
 - (void)viewDidLoad {
     
+    self.navigationBarView.isContentViewFullScreen  = YES;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self cg_setupBrowsePhotoListView];
@@ -73,7 +74,8 @@
     _browsePhotoCollectionView  = [[CGCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
     _browsePhotoCollectionView.showsHorizontalScrollIndicator   = NO;
     
-    [self.view addSubview:_browsePhotoCollectionView];
+    //如果直接添加到contentView会因为状态栏的显隐而相应变化
+    [self.navigationBarView insertSubview:_browsePhotoCollectionView belowSubview:self.navigationBar];
     [_browsePhotoCollectionView cg_autoEdgesInsetsZeroToSuperview];
     
     Class registerCollectionCellClassName   = [CGBrowsePhotoCollectionViewCell class];
