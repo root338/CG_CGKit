@@ -14,5 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 加载本地图片，并以中心进行拉伸 */
 + (UIImage *)cg_resizableImageWithCapCenterImageName:(NSString *)imageName;
 
+
 @end
 NS_ASSUME_NONNULL_END

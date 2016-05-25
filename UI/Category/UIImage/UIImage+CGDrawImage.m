@@ -12,7 +12,9 @@
 
 - (UIImage *)cg_drawImageInRect:(CGRect)frame
 {
+    
     UIGraphicsBeginImageContextWithOptions(frame.size, NO, 1);
+    
     [self drawInRect:frame];
     UIImage *drawImage  = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
