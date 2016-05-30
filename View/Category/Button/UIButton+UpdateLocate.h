@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param paramSpace 标题和图片之间的距离
  */
-- (void)buttonContentAligeHorizonalTitle_ImageForSpace:(CGFloat)paramSpace NS_DEPRECATED_IOS(2_0, 2_0, "使用- cg_calculateButtonSizeWithStyle: space:替换");
+- (void)buttonContentAligeHorizonalTitle_ImageForSpace:(CGFloat)paramSpace __deprecated_msg("请使用 - cg_calculateButtonSizeWithStyle: space:");
 
 /** 根据标题与图片设置按钮的大小 paramSpace为两者之间的间距 */
 - (CGSize)cg_updateButtonSizeWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
