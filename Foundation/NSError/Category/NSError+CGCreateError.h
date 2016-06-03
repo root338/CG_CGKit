@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSError (CGCreateError)
 
 /** 创建错误信息 */
-+ (NSError *)cg_CreateWithCode:(NSInteger)code errorMessage:(nullable NSString *)errorMessage;
++ (NSError *)cg_createWithCode:(NSInteger)code errorMessage:(nullable NSString *)errorMessage;
 
 /** 创建只有错误信息(code = -1) */
-+ (NSError *)cg_CreateWithErrorMessage:(nullable NSString *)errorMessage;
++ (NSError *)cg_createWithErrorMessage:(nullable NSString *)errorMessage;
 @end
 
 NS_ASSUME_NONNULL_END

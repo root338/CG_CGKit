@@ -10,7 +10,7 @@
 
 @implementation NSError (CGCreateError)
 
-+ (NSError *)cg_CreateWithCode:(NSInteger)code errorMessage:(NSString *)errorMessage
++ (NSError *)cg_createWithCode:(NSInteger)code errorMessage:(NSString *)errorMessage
 {
     if (errorMessage) {
         errorMessage = @"";
@@ -22,8 +22,8 @@
     return error;
 }
 
-+ (NSError *)cg_CreateWithErrorMessage:(NSString *)errorMessage
++ (NSError *)cg_createWithErrorMessage:(NSString *)errorMessage
 {
-    return [self cg_CreateWithCode:-1 errorMessage:errorMessage];
+    return [self cg_createWithCode:-1 errorMessage:errorMessage];
 }
 @end
