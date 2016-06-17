@@ -15,6 +15,8 @@
 
 #pragma mark - 添加多个约束
 
+
+
 @implementation UIView (CGViewControllerConstraints)
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToViewController:(UIViewController *)viewController
@@ -260,18 +262,7 @@
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c
 {
-    if (attribute == NSLayoutAttributeTrailing || attribute == NSLayoutAttributeRight || attribute == NSLayoutAttributeBottom) {
-        c = -c;
-        
-        if (relation == NSLayoutRelationGreaterThanOrEqual) {
-            relation    = NSLayoutRelationLessThanOrEqual;
-        }else if (relation == NSLayoutRelationLessThanOrEqual) {
-            relation    = NSLayoutRelationGreaterThanOrEqual;
-        }
-    }
-    
-    NSLayoutAttribute att2 = attribute;
-    return [self cg_attribute:attribute relatedBy:relation toItem:view2 attribute:att2 multiplier:1.0 constant:c];
+    return [self cg_attribute:attribute relatedBy:relation toItem:view2 attribute:attribute multiplier:1.0 constant:c];
 }
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2
@@ -296,6 +287,16 @@
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c
 {
+    if (attr1 == NSLayoutAttributeTrailing || attr1 == NSLayoutAttributeRight || attr1 == NSLayoutAttributeBottom) {
+        c = -c;
+        
+        if (relation == NSLayoutRelationGreaterThanOrEqual) {
+            relation    = NSLayoutRelationLessThanOrEqual;
+        }else if (relation == NSLayoutRelationLessThanOrEqual) {
+            relation    = NSLayoutRelationGreaterThanOrEqual;
+        }
+    }
+    
     NSAssert(self.superview, @"请添加到父视图中再添加约束");
     
     self.translatesAutoresizingMaskIntoConstraints  = NO;

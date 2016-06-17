@@ -39,6 +39,17 @@
                                         radius:radius];
 }
 
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius backgroundColor:(UIColor *)backgroundColor
+{
+    UIButton *button = [self cg_createButtonWithButtonType:type
+                                                     title:title
+                                                titleColor:titleColor
+                                                      font:font
+                                                    radius:radius];
+    button.backgroundColor  = backgroundColor;
+    return button;
+}
+
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor radius:(CGFloat)radius
 {
     UIButton *button = [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font];
