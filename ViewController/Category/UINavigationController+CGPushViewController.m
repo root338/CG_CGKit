@@ -26,6 +26,7 @@
 {
     NSMutableArray *newViewControllers  = [NSMutableArray arrayWithArray:self.viewControllers];
     [newViewControllers removeLastObject];
+    [newViewControllers addObject:viewController];
     [self setViewControllers:newViewControllers animated:animated];
 }
 
@@ -42,6 +43,8 @@
             [newViewControllers addObject:viewControllers];
         }
     }];
+    
+    [newViewControllers addObject:viewController];
     [self setViewControllers:newViewControllers animated:animated];
 }
 
@@ -61,6 +64,7 @@
             }
         }];
     }];
+    [newViewControllers addObject:viewController];
     [self setViewControllers:newViewControllers animated:animated];
 }
 

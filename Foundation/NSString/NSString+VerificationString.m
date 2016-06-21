@@ -20,13 +20,6 @@
     return NO;
 }
 
-- (BOOL)verificationIsAllNumber
-{
-    
-    NSPredicate *predicate = [NSPredicate createPredicateSelfMatchesWithString:@"\\d{1,}"];
-    return [predicate evaluateWithObject:self];
-}
-
 - (BOOL)verificationIsChineseCharacter
 {
     //(unicode中文编码范围是0x4e00~0x9fa5)
@@ -53,4 +46,23 @@
 //    
 //    return isResult;
 //}
+
+#pragma mark - 正则表达式判断
+- (BOOL)verificationIsAllNumber
+{
+    NSString *predicateString   = [NSString stringWithFormat:@"\\d{1,}"];
+    return [self verifyWithPredicate:predicateString];
+}
+
+- (BOOL)verifyNumberWithCount:(NSInteger)count
+{
+    NSString *predicateString   = [NSString stringWithFormat:@"\\d{%li}", (long)count];
+    return [self verifyWithPredicate:predicateString];
+}
+
+- (BOOL)verifyWithPredicate:(NSString *)predicateString
+{
+    NSPredicate *predicate = [NSPredicate createPredicateSelfMatchesWithString:predicateString];
+    return [predicate evaluateWithObject:self];
+}
 @end

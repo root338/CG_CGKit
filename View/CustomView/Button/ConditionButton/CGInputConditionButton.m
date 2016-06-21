@@ -14,72 +14,47 @@
     
 }
 
-@property (nonatomic, assign) BOOL isOpenTextFieldDidChangeNotification;
-@property (nonatomic, assign) BOOL isOpenTextViewDidChangeNotification;
-
 @end
 
 @implementation CGInputConditionButton
 
-- (void)cg_setupInputChangeNotificationWithIsOpenNote:(BOOL)isOpenNote
+- (void)handleInputControlsTextDidChangeNotification:(NSNotification *)note
 {
-    if (isOpenNote == self.isOpenTextViewDidChangeNotification && isOpenNote == self.isOpenTextFieldDidChangeNotification) {
-        //当已设置过后直接返回
+    if (!note.object || ![self.inputControls containsObject:note.object]) {
         return;
     }
-    if (self.inputControls.count) {
+    
+    [self handleTextDidChangeWithObject:note.object];
+}
+
+- (void)handleTextDidChangeWithObject:(id)object
+{
+    __block BOOL isFlag = NO;
+    if (self.textDidChangeCallback) {
         
-        __block BOOL isFlagForTextField = NO;
-        __block BOOL isFlagForTextView  = NO;
+        isFlag  = self.textDidChangeCallback(object);
+    }else {
+        
         [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            
+            NSString *inputText = nil;
             if ([obj isKindOfClass:[UITextField class]]) {
-                self.isOpenTextFieldDidChangeNotification = isOpenNote;
-                isFlagForTextField = YES;
+                inputText   = [(UITextField *)obj text];
             }
             if ([obj isKindOfClass:[UITextView class]]) {
-                self.isOpenTextViewDidChangeNotification = isOpenNote;
-                isFlagForTextView = YES;
+                inputText   = [(UITextView *)obj text];
             }
             
-            if (isFlagForTextView && isFlagForTextField) {
+            if (!inputText.length) {
+                
+                isFlag = NO;
                 *stop = YES;
+            }else {
+                isFlag = YES;
             }
         }];
     }
-}
-
-- (void)handleInputControlsTextDidChangeNotification:(NSNotification *)note
-{
-    __block BOOL isFlag = NO;
-    [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *inputText = nil;
-        if ([obj isKindOfClass:[UITextField class]]) {
-            inputText   = [(UITextField *)obj text];
-        }
-        if ([obj isKindOfClass:[UITextView class]]) {
-            inputText   = [(UITextView *)obj text];
-        }
-        
-        if (!inputText.length) {
-            
-            isFlag = NO;
-            *stop = YES;
-        }else {
-            isFlag = YES;
-        }
-    }];
     
     self.enabled = isFlag;
-}
-
-#pragma mark - 重写系统方法
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-    
-    BOOL isOpenNote = newWindow ? YES : NO;
-    [self cg_setupInputChangeNotificationWithIsOpenNote:isOpenNote];
 }
 
 #pragma mark - 设置属性
@@ -87,14 +62,16 @@
 {
     if (_isOpenTextFieldDidChangeNotification != isOpenTextFieldDidChangeNotification) {
         
+        NSString *noteName  = UITextFieldTextDidChangeNotification;
         if (isOpenTextFieldDidChangeNotification) {
             
-            [NSNotificationCenter addObserver:self selector:@selector(handleInputControlsTextDidChangeNotification:) name:UITextFieldTextDidChangeNotification];
+            [NSNotificationCenter addObserver:self selector:@selector(handleInputControlsTextDidChangeNotification:) name:noteName];
         }else {
             
-            [NSNotificationCenter removeObserver:self name:UITextFieldTextDidChangeNotification];
+            [NSNotificationCenter removeObserver:self name:noteName];
         }
         
+        _isOpenTextFieldDidChangeNotification   = isOpenTextFieldDidChangeNotification;
     }
 }
 
@@ -102,21 +79,30 @@
 {
     if (_isOpenTextViewDidChangeNotification != isOpenTextViewDidChangeNotification) {
         
+        NSString *noteName  = UITextViewTextDidChangeNotification;
         if (isOpenTextViewDidChangeNotification) {
             
-            [NSNotificationCenter addObserver:self selector:@selector(handleInputControlsTextDidChangeNotification:) name:UITextViewTextDidChangeNotification];
+            [NSNotificationCenter addObserver:self selector:@selector(handleInputControlsTextDidChangeNotification:) name:noteName];
         }else {
             
-            [NSNotificationCenter removeObserver:self name:UITextViewTextDidChangeNotification];
+            [NSNotificationCenter removeObserver:self name:noteName];
         }
+        _isOpenTextViewDidChangeNotification    = isOpenTextViewDidChangeNotification;
     }
 }
 
 - (void)setInputControls:(NSArray *)inputControls
 {
-    _inputControls = inputControls;
-    if (self.window) {
-        [self cg_setupInputChangeNotificationWithIsOpenNote:YES];
+    if (_inputControls != inputControls) {
+        
+        _inputControls  = inputControls;
+        [self handleTextDidChangeWithObject:nil];
     }
+}
+
+- (void)dealloc
+{
+    self.isOpenTextViewDidChangeNotification    = NO;
+    self.isOpenTextFieldDidChangeNotification   = NO;
 }
 @end

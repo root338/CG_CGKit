@@ -99,6 +99,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置与指定视图的对齐，并设置偏移的间距 */
 - (NSLayoutConstraint *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView withOffset:(CGFloat)offset;
 
+/** 设置与父视图中心对齐 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSuperview;
+
 /** 设置与指定视图中心对齐 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSameAxisOfView:(UIView *)otherView;
 
@@ -121,6 +124,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 设置视图与指定视图大小相等 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)view;
+
+/** 设置视图宽高与指定视图相等 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoDimensionEqualView:(UIView *)view;
 
 /** 设置视图与指定视图大小的关系 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation;

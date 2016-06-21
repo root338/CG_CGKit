@@ -12,7 +12,7 @@
 @class CGBorderObject;
 NS_ASSUME_NONNULL_BEGIN
 
-UIKIT_EXTERN const CGFloat __K_Button_AutoBorderWidth;
+//UIKIT_EXTERN const CGFloat __K_Button_AutoBorderWidth;
 @interface CGBaseButton : UIButton<CGViewInitializationProtocol>
 
 /** 
@@ -22,8 +22,8 @@ UIKIT_EXTERN const CGFloat __K_Button_AutoBorderWidth;
 @property (nonatomic, assign) BOOL isBorderColorSyncTitle;
 
 /** 
- *  全局设置边框宽度
- *  @warning 当使用单独设置宽度方法时设置为__K_Button_AutoBorderWidth会自动替换为该值 
+ *  全局设置边框宽度，使用时需要提前设置
+ *  @warning 暂时取消掉使用__K_Button_AutoBorderWidth值 (当使用单独设置宽度方法时设置为__K_Button_AutoBorderWidth会自动替换为该值)
  */
 @property (nonatomic, assign) CGFloat borderWidth;
 

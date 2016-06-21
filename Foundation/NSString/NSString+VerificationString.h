@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 验证字符串是否由纯数字组成 */
 - (BOOL)verificationIsAllNumber;
 
+/** 验证字符串是否有指定位数的数字组成 */
+- (BOOL)verifyNumberWithCount:(NSInteger)count;
+
 /** 验证字符串是否是中文字符 */
 - (BOOL)verificationIsChineseCharacter;
 

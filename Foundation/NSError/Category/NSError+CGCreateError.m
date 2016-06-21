@@ -12,7 +12,7 @@
 
 + (NSError *)cg_createWithCode:(NSInteger)code errorMessage:(NSString *)errorMessage
 {
-    if (errorMessage) {
+    if (!errorMessage) {
         errorMessage = @"";
     }
     NSDictionary *errorInfo = @{

@@ -41,7 +41,13 @@ typedef NSLayoutRelation (^CGSetupSubviewLayoutRelation) (UIView *view, CGLayout
  *  设置约束  父视图 垂直
  *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
  */
-- (NSArray<NSLayoutConstraint *> *)cg_autoSetupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
+
+/**
+ *  设置约束  父视图 水平
+ *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock;
 
 /** 
  *  设置约束  父视图
@@ -78,6 +84,20 @@ typedef NSLayoutRelation (^CGSetupSubviewLayoutRelation) (UIView *view, CGLayout
  *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
  */
 - (NSArray<NSLayoutConstraint *> *)cg_autoViewController:(UIViewController *)viewController arrangementType:(CGSubviewsArrangementType)arrangementType marginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
+
+#pragma mark - 视图大小
+/**
+ *  设置宽高约束
+ *  @param  dimension   视图的宽或高
+ *  @param  fixedLength 设置宽或高的大小
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength;
+/**
+ *  设置宽高与指定视图相等的约束
+ *  @param  dimension   视图的宽或高
+ *  @param  equalView   指定视图
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)equalView;
 
 @end
 

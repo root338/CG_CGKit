@@ -24,9 +24,14 @@
     return [self cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewsSpace:nil];
 }
 
-- (NSArray<NSLayoutConstraint *> *)cg_autoSetupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
 {
     return [self cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewsSpace:setupSubviewsSpaceBlock];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
+{
+    return [self cg_autoArrangementType:CGSubviewsArrangementTypeHorizontal marginInsets:UIEdgeInsetsZero setupSubviewsSpace:setupSubviewsSpaceBlock];
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType marginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
@@ -174,6 +179,26 @@
         }
     }];
     
+    return constraints;
+}
+
+#pragma mark - 视图大小
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength
+{
+    NSMutableArray *constraints = [NSMutableArray array];
+    [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [constraints addObject:[obj cg_autoDimension:dimension fixedLength:fixedLength]];
+    }];
+    return constraints;
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)equalView
+{
+    NSMutableArray *constraints = [NSMutableArray array];
+    [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [constraints addObject:[obj cg_autoDimension:dimension equalView:equalView]];
+    }];
     return constraints;
 }
 

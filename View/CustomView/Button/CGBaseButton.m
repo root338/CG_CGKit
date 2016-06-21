@@ -14,7 +14,7 @@
 
 #import "CGPrintLogHeader.h"
 
-const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
+//const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
 
 @interface CGBaseButton ()
 {
@@ -162,7 +162,7 @@ const CGFloat __K_Button_AutoBorderWidth = FLT_MAX;
 
 - (void)cg_setupBorderWithColor:(UIColor *)borderColor state:(UIControlState)state
 {
-    [self cg_setupBorderWithColor:borderColor width:__K_Button_AutoBorderWidth state:state];
+    [self cg_setupBorderWithColor:borderColor width:self.borderWidth state:state];
 }
 
 - (void)cg_setupBorderWithColor:(UIColor *)borderColor width:(CGFloat)width state:(UIControlState)state

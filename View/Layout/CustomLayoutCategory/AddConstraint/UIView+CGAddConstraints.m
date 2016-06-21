@@ -147,6 +147,11 @@
     return [self cg_attribute:(NSLayoutAttribute)axis toItem:otherView constant:offset];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSuperview
+{
+    return [self cg_autoCenterToSameAxisOfView:self.superview];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSameAxisOfView:(UIView *)otherView
 {
     return [self cg_autoCenterToSameAxisOfView:otherView withOffset:CGPointZero];
@@ -195,6 +200,14 @@
     return [self cg_autoDimension:dimension view:view relatedBy:NSLayoutRelationEqual];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoDimensionEqualView:(UIView *)view
+{
+    NSMutableArray *array   = [NSMutableArray arrayWithCapacity:2];
+    [array addObject:[self cg_autoDimension:CGDimensionWidth equalView:view]];
+    [array addObject:[self cg_autoDimension:CGDimensionHeight equalView:view]];
+    return array;
+}
+
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation
 {
     return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:0];
@@ -217,6 +230,7 @@
 
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
+    CGDebugAssert(self.superview == viewController.view, @"self视图父视图必须是viewController.view");
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *layoutConstraint    = [self cg_createTopLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
     [viewController.view addConstraint:layoutConstraint];
@@ -235,6 +249,7 @@
 
 - (NSLayoutConstraint *)cg_bottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
+    CGDebugAssert(self.superview == viewController.view, @"self视图父视图必须是viewController.view");
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *layoutConstraint    = [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
     [viewController.view addConstraint:layoutConstraint];
