@@ -47,7 +47,7 @@
     self.font           = font;
     self.textColor      = textColor;
     self.textAlignment  = textAlignment;
-    
+    self.frame          = frame;
     /** 当不设置背景色时，使用系统默认的背景色 */
     !backgroundColor ? nil : (self.backgroundColor = backgroundColor);
 }
