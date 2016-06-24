@@ -63,4 +63,9 @@
 {
     return inputString;
 }
+
+- (void)dealloc
+{
+    [self closeTextFieldTextDidChangeNotification];
+}
 @end

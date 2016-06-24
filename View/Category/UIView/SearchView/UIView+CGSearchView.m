@@ -55,6 +55,31 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
     return paramSuperview;
 }
 
++ (nullable __kindof UIView *)cg_searchFirstResponder
+{
+    UIWindow *window = [[UIApplication sharedApplication].delegate window];
+    
+    return [window cg_searchFirstResponder];
+}
+
+- (nullable __kindof UIView *)cg_searchFirstResponder
+{
+    UIView *firstResponder  = nil;
+    
+    if (self.isFirstResponder) {
+        return self;
+    }
+    
+    for (UIView *obj in self.subviews) {
+        
+        firstResponder  = [obj cg_searchFirstResponder];
+        if (firstResponder) {
+            break;
+        }
+    }
+    
+    return firstResponder;
+}
 @end
 
 @implementation UIView (CGSearchNextInputView)

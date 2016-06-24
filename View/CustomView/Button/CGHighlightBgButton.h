@@ -14,4 +14,7 @@
 - (void)setBackgroundColor:(nullable UIColor *)backgroundColor forState:(UIControlState)state;
 
 - (nullable UIColor *)backgroundColorForState:(UIControlState)state;
+
+/** 清除所有保存的按钮背景色 */
+- (void)clearAllBackgroundColor;
 @end
