@@ -74,11 +74,11 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
         
         firstResponder  = [obj cg_searchFirstResponder];
         if (firstResponder) {
-            break;
+            return firstResponder;
         }
     }
     
-    return firstResponder;
+    return nil;
 }
 @end
 

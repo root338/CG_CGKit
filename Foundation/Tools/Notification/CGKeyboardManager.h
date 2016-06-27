@@ -7,20 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CGKeyboardManagerHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGKeyboardManager;
-
-/** 键盘的通知类型 */
-typedef NS_ENUM(NSInteger, CGKeyboardNotificationType) {
-    
-    CGKeyboardNotificationTypeNone,
-    CGKeyboardNotificationTypeWillShow,
-    CGKeyboardNotificationTypeDidShow,
-    CGKeyboardNotificationTypeWillHide,
-    CGKeyboardNotificationTypeDidHide,
-};
 
 @protocol CGKeyboardManagerDelegate <NSObject>
 
@@ -40,13 +31,64 @@ typedef NS_ENUM(NSInteger, CGKeyboardNotificationType) {
 - (BOOL)keyboardManager:(CGKeyboardManager *)keyboardManager didHideKeyboardDealWithNotification:(NSNotification *)note;
 
 #pragma mark - 返回键盘的一些参数
-/** 设置keyboardFrameDidChangeNeedView 的显示区域，返回keyboardRect键盘的显示区域 */
-- (CGRect)targetViewFrameWithKeyboardManager:(CGKeyboardManager *)keyboardManager keyboardRect:(CGRect)keyboardRect;
+
 /** 执行动画时设置的回调 */
 - (void)keyboardManager:(CGKeyboardManager *)keyboardManager animationsNotification:(NSNotification *)note;
 /** 动画执行完毕的回调 */
 - (void)keyboardManager:(CGKeyboardManager *)keyboardManager animationCompletionNotification:(NSNotification *)note;
 
+#pragma mark - 不使用默认设置，直接设置参数代理
+//-----设置视图--------------------------------
+/** 
+ *  设置第一响应者
+ *  @param 不使用属性firstResponderView
+ */
+- (nullable UIView *)firstResponderViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification;
+
+/** 
+ *  设置第一响应者所在的滑动视图
+ *  @param 和属性scrollView一样
+ */
+- (nullable UIScrollView *)scrollViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification;
+
+/** 
+ *  设置需要改变frame的视图
+ *  @param  和属性keyboardFrameDidChangeTheNeedToChangeFrameTheView一样，表示当弹起或隐藏键盘时需要改变的视图frame
+ */
+- (UIView *)needChangeFrameTheViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification;
+
+
+//-----设置显示区域------------------------------
+
+/**
+ *  设置keyboardFrameDidChangeTheNeedToChangeFrameTheView 的显示区域
+ *  @param  keyboardRect            键盘的显示区域
+ *  @param  needChangeFrameTheView  需要改变frame的视图
+ *  @return  返回keyboardFrameDidChangeNeedView的显示区域
+ */
+- (CGRect)targetViewFrameWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification keyboardRect:(CGRect)keyboardRect needChangeFrameTheView:(UIView *)needChangeFrameTheView;
+
+//-----约束相关---------------------------------
+
+/**
+ *  设置 keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint constant的值
+ *  @param  keyboardRect            键盘的显示区域
+ *  @param  needChangeFrameTheView  需要改变frame的视图
+ *  @return  返回keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint constant的值
+ */
+- (CGFloat)targetViewBottomConstraintConstantWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification keyboardRect:(CGRect)keyboardRect needChangeFrameTheView:(UIView *)needChangeFrameTheView;
+
+/** 
+ *  设置目标的约束
+ *  @param 和属性keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint一样
+ */
+- (NSLayoutConstraint *)targetViewBottomConstraintWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification needChangeFrameTheView:(UIView *)needChangeFrameTheView;
+
+/** 
+ *  使用约束时返回偏移的距离
+ *  @param constant 偏移的距离
+ */
+- (void)keyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification constant:(CGFloat)constant;
 @end
 
 /** 键盘通知管理 */
@@ -69,11 +111,16 @@ typedef NS_ENUM(NSInteger, CGKeyboardNotificationType) {
  */
 
 /** 当有键盘通知改变视图大小时改变其滑动视图contentOffset */
-@property (nullable, nonatomic, strong) UIScrollView *scrollView;
+@property (nullable, nonatomic, weak) UIScrollView *scrollView;
 /** 第一响应者 */
-@property (nullable, nonatomic, strong) UIView *firstResponderView;
+@property (nullable, nonatomic, weak) UIView *firstResponderView;
 /** 键盘显示区域发生改变时需要改变的view  @warning 改变该视图的显示区域 */
-@property (nullable, nonatomic, strong) UIView *keyboardFrameDidChangeNeedTargetView;
+@property (nullable, nonatomic, weak) UIView *keyboardFrameDidChangeTheNeedToChangeFrameTheView;
+/** 键盘显示区域发生改变时需要改变的view的底部约束  @warning 改变该视图的显示区域 */
+@property (nullable, nonatomic, weak) NSLayoutConstraint *keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint;
+
+/** 修改frame的类型 @param 默认为CGKeyboardChangeFrameTypeSize */
+@property (nonatomic, assign) CGKeyboardChangeFrameType keyboardChangeFrameType;
 
 #pragma mark - 自定义处理回调
 
