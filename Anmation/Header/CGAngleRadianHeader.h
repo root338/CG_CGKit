@@ -15,4 +15,12 @@
 /** 弧度转角度 */
 #define _CG_AngleForRadian(radian)   ((radian) * 180.0 / M_PI)
 
+/** 动画执行的方式 */
+typedef NS_ENUM(NSInteger, CGAnimationDealWithTheWay) {
+    /** 显示 */
+    CGAnimationDealWithTheWayShow,
+    /** 隐藏 */
+    CGAnimationDealWithTheWayHide,
+};
+
 #endif /* CGAngleRadianHeader_h */
