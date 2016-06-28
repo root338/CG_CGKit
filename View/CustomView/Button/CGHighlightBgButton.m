@@ -26,6 +26,11 @@
 }
 */
 
+- (void)clearAllBackgroundColor
+{
+    [self.backgroundColorDic removeAllObjects];
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
     
