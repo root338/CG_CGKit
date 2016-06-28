@@ -7,13 +7,12 @@
 //
 
 #import "CGKeyboardManager.h"
+#import "CGKeyboardCacheModel.h"
 
 #import "NSNotification+CGKeyboardUserInfo.h"
 #import "NSNotificationCenter+CGCreateNotification.h"
 
-
 #import "UIView+CGSearchView.h"
-
 
 
 @interface CGKeyboardManager ()
@@ -22,7 +21,7 @@
  *  缓存目标视图的布局数据
  *  @param 键盘的显示和隐藏是成对的
  */
-@property (nullable, nonatomic, strong) NSMutableDictionary *targetViewLayoutCache;
+@property (nullable, nonatomic, strong) NSMutableDictionary<NSString *, CGKeyboardCacheModel *> *targetViewLayoutCache;
 
 @end
 
@@ -49,26 +48,61 @@
         return;
     }
     
+    BOOL isShowKeyboardMark;
     NSString *noteName  = note.name;
     if ([noteName isEqualToString:UIKeyboardWillShowNotification] || [noteName isEqualToString:UIKeyboardDidShowNotification]) {
         
         if (![self handleKeyboardShowNotification:note]) {
             return;
         }
-        
+        isShowKeyboardMark  = YES;
     }else if ([noteName isEqualToString:UIKeyboardWillHideNotification] || [noteName isEqualToString:UIKeyboardDidHideNotification]) {
         
         if (![self handleKeyboardHideNotification:note]) {
             return;
         }
+        isShowKeyboardMark  = NO;
     }
     
     //设置需要改变frame的视图
-    UIView *theNeedChangeFrameTheView   = [self setupNeedChangeFrameTheViewWithNotification:note];
-    
-    CGFloat bottomConstraintConstant;
+    UIView *theNeedChangeFrameTheView   = nil;
+    CGFloat bottomConstraintConstant    = 0;
     //设置需要改变的frame值
-    CGRect keyboardFrameDidChangeNeedChangeViewFrame    = [self setupFrameWithNeedChangeFrameTheView:theNeedChangeFrameTheView notification:note bottomConstraintConstant:&bottomConstraintConstant];
+    CGRect keyboardFrameDidChangeNeedChangeViewFrame    = CGRectZero;
+    if (isShowKeyboardMark) {
+        //显示时
+        theNeedChangeFrameTheView   = [self setupNeedChangeFrameTheViewWithNotification:note];
+        keyboardFrameDidChangeNeedChangeViewFrame   = [self setupFrameWithNeedChangeFrameTheView:theNeedChangeFrameTheView notification:note bottomConstraintConstant:&bottomConstraintConstant];
+        CGKeyboardCacheModel *cacheModel    = [[CGKeyboardCacheModel alloc] init];
+        cacheModel.targetView               = theNeedChangeFrameTheView;
+        cacheModel.originalConstant         = self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant;
+        cacheModel.originalFrame            = theNeedChangeFrameTheView.frame;
+        if (self.targetViewLayoutCache) {
+            
+            [self.targetViewLayoutCache setObject:cacheModel forKey:note.name];
+        }else {
+            
+            self.targetViewLayoutCache  = [NSMutableDictionary dictionaryWithObject:cacheModel forKey:note.name];
+        }
+    }else {
+        
+        NSString *key   = nil;
+        if ([note.name isEqualToString:UIKeyboardWillHideNotification]) {
+            key = UIKeyboardWillShowNotification;
+        }else if ([note.name isEqualToString:UIKeyboardDidHideNotification]) {
+            key = UIKeyboardDidShowNotification;
+        }
+        
+        if (key) {
+            
+            //隐藏时
+            CGKeyboardCacheModel *cacheModel    = [self.targetViewLayoutCache objectForKey:key];
+            theNeedChangeFrameTheView   = cacheModel.targetView;
+            bottomConstraintConstant    = cacheModel.originalConstant;
+            keyboardFrameDidChangeNeedChangeViewFrame   = cacheModel.originalFrame;
+            [self.targetViewLayoutCache removeObjectForKey:key];
+        }
+    }
     
     NSTimeInterval duration;
     if (self.duration < 0.0001) {
@@ -81,7 +115,7 @@
     
     if (self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint) {
         
-        self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant  = -(bottomConstraintConstant);
+        self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant  =bottomConstraintConstant;
         [theNeedChangeFrameTheView setNeedsUpdateConstraints];
     }
     [UIView animateWithDuration:duration delay:0 options:curve animations:^{
@@ -172,6 +206,8 @@
 {
     CGRect keyboardRect = note.keyboardFrame;
     CGRect keyboardFrameDidChangeNeedChangeViewFrame;
+    
+    
     if ([self.delegate respondsToSelector:@selector(targetViewFrameWithKeyboardManager:notification:keyboardRect:needChangeFrameTheView:)]) {
         
         keyboardFrameDidChangeNeedChangeViewFrame   = [self.delegate targetViewFrameWithKeyboardManager:self notification:note keyboardRect:keyboardRect needChangeFrameTheView:theNeedChangeFrameTheView];
@@ -188,7 +224,10 @@
         if (bottomSpace > 0) {
             
             theNeedChangeFrame.size.height  -= bottomSpace;
-            *bottomConstraintConstant       = bottomSpace;
+            if (self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint) {
+                
+                *bottomConstraintConstant       = -(bottomSpace) + self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant;
+            }
         }
         keyboardFrameDidChangeNeedChangeViewFrame   = theNeedChangeFrame;
     }
