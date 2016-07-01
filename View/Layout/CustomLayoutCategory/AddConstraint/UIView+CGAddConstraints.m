@@ -16,7 +16,18 @@
 #import "CGPrintLogHeader.h"
 #pragma mark - 添加多个约束
 
+@implementation UIView (CGViewAndViewConstraints)
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeEqualWithViews:(NSArray<UIView *> *)views layoutAttribute:(NSLayoutAttribute)layoutAttribute
+{
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:views.count];
+    [views enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [constraints addObject:[self cg_attribute:layoutAttribute toItem:obj]];
+    }];
+    return constraints;
+}
+
+@end
 
 @implementation UIView (CGViewControllerConstraints)
 

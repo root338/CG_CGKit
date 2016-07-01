@@ -14,7 +14,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark - 设置视图与视图四周的约束
 
+@interface UIView (CGViewAndViewConstraints)
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeEqualWithViews:(NSArray<UIView *> *)views layoutAttribute:(NSLayoutAttribute)layoutAttribute;
+
+
+@end
 
 #pragma mark - 设置与视图控制器视图的四周约束
 
