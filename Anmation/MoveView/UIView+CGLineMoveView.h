@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "CGMoveViewTypeHeader.h"
+#import "CGBlockHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^CGLineMoveViewBlock) (UIView *paramView);
 
 /** 线性动画 */
 @interface UIView (CGLineMoveView)
@@ -37,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completion  动画执行完毕回调
  */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration completion:(void(^ __nullable)(void))completion;
+
+- (void)cg_showLineMoveWithType:(CGLineMoveViewType)type overlayView:(UIView *)overlayView overlayView:(CGLineMoveViewType)overlayView;
 
 /** 移动视图，可设置更多视图属性 */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration beforeAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))beforeAnimationBlock afterAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))afterAnimationBlock completion:(nonnull void (^)(void))completion;
