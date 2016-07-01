@@ -82,16 +82,41 @@ NS_ASSUME_NONNULL_BEGIN
  *  设置目标的约束
  *  @param 和属性keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint一样
  */
-- (NSLayoutConstraint *)targetViewBottomConstraintWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification needChangeFrameTheView:(UIView *)needChangeFrameTheView;
+- (NSLayoutConstraint *)targetViewBottomConstraintWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification needChangeFrameTheView:(nullable UIView *)needChangeFrameTheView;
 
 /** 
  *  使用约束时返回偏移的距离
  *  @param constant 偏移的距离
  */
-- (void)keyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification constant:(CGFloat)constant;
+//- (void)keyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification constant:(CGFloat)constant;
+
+//-----设置输入视图------------------------------
+- (BOOL)keyboardManager:(CGKeyboardManager *)keyboardManager shouldScrollingWithTextField:(UITextField *)textField;
+//- (BOOL)keyboardManager:(CGKeyboardManager *)keyboardManager shouldScrollingWithTextView:(UITextView *)textView;
+
+//-----计算键盘与需要改变显示区域的视图之间的重复区域------------------------------
+/** 
+ *  设置此视图来计算键盘在其上的显示区域，和需要改变视图在其上的显示区域。来获取是否有覆盖且覆盖多少距离 
+ *  @param 默认使用needChangeFrameTheView的父视图
+ */
+- (UIView *)overlayViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager needChangeFrameTheView:(UIView *)needChangeFrameTheView;
+
+/** 
+ *  自动布局改变frame时，以哪种方式来改变frame 
+ *  @param  和keyboardChangeFrameType属性值功能一样
+ */
+- (CGKeyboardChangeFrameType)changeFrameTypeWithKeyboardManager:(CGKeyboardManager *)keyboardManager needChangeFrameTheView:(UIView *)needChangeFrameTheView;
+
 @end
 
-/** 键盘通知管理 */
+/** 
+ *  键盘通知管理
+ *  @param 管理当键盘弹入或弹出时改变视图frame，并将第一响应者滑动到可视区域
+ *  @param 简单使用
+ *              1.使用约束时，开启键盘键盘将要弹入弹出通知 openKeyboardWillNotification;
+ *              设置keyboardFrameDidChangeTheNeedToChangeFrameTheView 属性值
+ *              设置keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint 属性值
+ */
 @interface CGKeyboardManager : NSObject
 
 #pragma mark - 键盘通知
@@ -107,13 +132,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 改变视图
 /**
-    !当设置delegate时，并实现显示，隐藏代理方法时，设置的scrollView不进行处理
+    !当设置delegate时，并实现自定义键盘显示／隐藏方法时，且不向下进行处理，设置的scrollView不进行处理
  */
+
+/** 处理的类型以自动布局或AutoLayout进行处理 
+ ＊  @warning 自动处理原理当设置约束时优先处理约束，否则处理自动布局
+ */
+//@property (nonatomic, assign) CGKeyboardLayoutType keyboardLayoutType;
 
 /** 当有键盘通知改变视图大小时改变其滑动视图contentOffset */
 @property (nullable, nonatomic, weak) UIScrollView *scrollView;
 /** 第一响应者 */
 @property (nullable, nonatomic, weak) UIView *firstResponderView;
+
+/** 是否隐藏滑动动画 */
+@property (nonatomic, assign) BOOL hideScrollAnimated;
+/** 
+ *  禁止自动搜索滑动视图
+ *  @param 当第一响应者不为nil且scrollView为空时，当为 NO 时，自动尝试搜索第一响应者的父视图中是否存在scrollView，当存在时执行滑动，默认为NO
+ */
+@property (nonatomic, assign) BOOL disableAutoSearchScrollView;
+
 /** 键盘显示区域发生改变时需要改变的view  @warning 改变该视图的显示区域 */
 @property (nullable, nonatomic, weak) UIView *keyboardFrameDidChangeTheNeedToChangeFrameTheView;
 /** 键盘显示区域发生改变时需要改变的view的底部约束  @warning 改变该视图的显示区域 */
@@ -121,6 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 修改frame的类型 @param 默认为CGKeyboardChangeFrameTypeSize */
 @property (nonatomic, assign) CGKeyboardChangeFrameType keyboardChangeFrameType;
+
 
 #pragma mark - 自定义处理回调
 
@@ -140,5 +180,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 键盘在指定view的显示区域 */
 //- (CGRect)keyboardRectToView:(UIView *)paramView;
+
+#pragma mark - 输入内容时的处理
+
+/** 开启UITextFieldTextDidChangeNotification通知 */
+@property (nonatomic, assign) BOOL openTextFieldTextDidChangeNotification;
+/** 开启UITextViewTextDidChangeNotification通知 */
+//@property (nonatomic, assign) BOOL openTextViewTextDidChangeNotification;
+
 @end
 NS_ASSUME_NONNULL_END

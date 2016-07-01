@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface UIWebView (CGValue)
 
 //////////////////////////////////////////////////////////////////
 
 //**
-//*注意：该属性只能在web完全加载好之后进行设置(即:webViewDidFinishLoad代理方法中设置)
+//*注意：
+//*     1.该属性只能在web完全加载好之后进行设置(即:webViewDidFinishLoad代理方法中设置)
+//*     2.当相关js加载好之后也可以调用
 //**
 
 /** //禁止长按弹出选择框 */
@@ -22,6 +25,11 @@
 /** //禁止用户选择 */
 @property (assign, nonatomic) BOOL isDisableUserSelect;
 
-//////////////////////////////////////////////////////////////////
+@property (nullable, nonatomic, strong, readonly) NSString *title;
 
+@property (nullable, nonatomic, strong, readonly) NSString *HTML;
+
+//////////////////////////////////////////////////////////////////
 @end
+
+NS_ASSUME_NONNULL_END

@@ -13,7 +13,9 @@
 #import "NSNotificationCenter+CGCreateNotification.h"
 
 #import "UIView+CGSearchView.h"
+#import "UIScrollView+CGSetupScrollProperty.h"
 
+#import "CGPrintLogHeader.h"
 
 @interface CGKeyboardManager ()
 
@@ -65,24 +67,36 @@
     }
     
     //设置需要改变frame的视图
-    UIView *theNeedChangeFrameTheView   = nil;
-    CGFloat bottomConstraintConstant    = 0;
+    UIView *theNeedChangeFrameTheView                   = nil;
+    NSLayoutConstraint *bottomLayoutConstraint          = nil;
+    CGFloat bottomConstraintConstant                    = 0;
     //设置需要改变的frame值
     CGRect keyboardFrameDidChangeNeedChangeViewFrame    = CGRectZero;
     if (isShowKeyboardMark) {
+        
         //显示时
         theNeedChangeFrameTheView   = [self setupNeedChangeFrameTheViewWithNotification:note];
-        keyboardFrameDidChangeNeedChangeViewFrame   = [self setupFrameWithNeedChangeFrameTheView:theNeedChangeFrameTheView notification:note bottomConstraintConstant:&bottomConstraintConstant];
-        CGKeyboardCacheModel *cacheModel    = [[CGKeyboardCacheModel alloc] init];
-        cacheModel.targetView               = theNeedChangeFrameTheView;
-        cacheModel.originalConstant         = self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant;
-        cacheModel.originalFrame            = theNeedChangeFrameTheView.frame;
-        if (self.targetViewLayoutCache) {
+        bottomLayoutConstraint      = [self setupBottomLayoutConstraintWithNotification:note needChangeFrameView:theNeedChangeFrameTheView];
+        keyboardFrameDidChangeNeedChangeViewFrame   = [self setupFrameWithNeedChangeFrameTheView:theNeedChangeFrameTheView notification:note];
+        bottomConstraintConstant    = [self setupBottomLayoutConstraintConstantWithNeedChangeFrameTheView:theNeedChangeFrameTheView notification:note bottomConstraint:bottomLayoutConstraint];
+        CGKeyboardCacheModel *cacheModel    = [self.targetViewLayoutCache objectForKey:note.name];
+        
+        if (!cacheModel) {
+            //当键盘显示时，且没有纪录过当前view时纪录下这个view原始的状态
+            cacheModel  = [[CGKeyboardCacheModel alloc] init];
+            cacheModel.targetView               = theNeedChangeFrameTheView;
+            cacheModel.targetLayoutConstraint   = bottomLayoutConstraint;
+            cacheModel.originalConstant         = bottomLayoutConstraint.constant;
+            cacheModel.originalFrame            = theNeedChangeFrameTheView.frame;
+            cacheModel.keyboardNotificationType = [self typeForNotificationName:note.name];
             
-            [self.targetViewLayoutCache setObject:cacheModel forKey:note.name];
-        }else {
-            
-            self.targetViewLayoutCache  = [NSMutableDictionary dictionaryWithObject:cacheModel forKey:note.name];
+            if (self.targetViewLayoutCache) {
+                
+                [self.targetViewLayoutCache setObject:cacheModel forKey:note.name];
+            }else {
+                
+                self.targetViewLayoutCache  = [NSMutableDictionary dictionaryWithObject:cacheModel forKey:note.name];
+            }
         }
     }else {
         
@@ -99,6 +113,7 @@
             CGKeyboardCacheModel *cacheModel    = [self.targetViewLayoutCache objectForKey:key];
             theNeedChangeFrameTheView   = cacheModel.targetView;
             bottomConstraintConstant    = cacheModel.originalConstant;
+            bottomLayoutConstraint      = cacheModel.targetLayoutConstraint;
             keyboardFrameDidChangeNeedChangeViewFrame   = cacheModel.originalFrame;
             [self.targetViewLayoutCache removeObjectForKey:key];
         }
@@ -113,14 +128,15 @@
     
     NSUInteger curve    = note.keyboardCurve;
     
-    if (self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint) {
+    if (bottomLayoutConstraint) {
         
-        self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant  =bottomConstraintConstant;
+        bottomLayoutConstraint.constant  =  bottomConstraintConstant;
         [theNeedChangeFrameTheView setNeedsUpdateConstraints];
     }
+    
     [UIView animateWithDuration:duration delay:0 options:curve animations:^{
         
-        if (!self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint) {
+        if (!bottomLayoutConstraint) {
             
             theNeedChangeFrameTheView.frame = keyboardFrameDidChangeNeedChangeViewFrame;
         }else {
@@ -134,6 +150,7 @@
         
     } completion:^(BOOL finished) {
         
+        [self scrollingToTargetViewWithNotification:note];
         if ([self.delegate respondsToSelector:@selector(keyboardManager:animationCompletionNotification:)]) {
             [self.delegate keyboardManager:self animationCompletionNotification:note];
         }
@@ -190,6 +207,21 @@
     return notificationType;
 }
 
+//- (CGKeyboardLayoutType)layoutType
+//{
+//    CGKeyboardLayoutType layoutType = self.keyboardLayoutType;
+//    
+//    if (layoutType == CGKeyboardLayoutTypeAuto) {
+//        
+//        if (self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint || [self.delegate respondsToSelector:@selector(targetViewBottomConstraintWithKeyboardManager:notification:needChangeFrameTheView:)]) {
+//            layoutType  = CGKeyboardLayoutTypeLayout;
+//        }else {
+//            layoutType  = CGKeyboardLayoutTypeAutomaticLayout;
+//        }
+//    }
+//    return layoutType;
+//}
+
 #pragma mark - 通知处理过程中的设置
 - (UIView *)setupNeedChangeFrameTheViewWithNotification:(NSNotification *)note
 {
@@ -202,11 +234,21 @@
     return theNeedChangeFrameTheView;
 }
 
-- (CGRect)setupFrameWithNeedChangeFrameTheView:(UIView *)theNeedChangeFrameTheView notification:(NSNotification *)note bottomConstraintConstant:(CGFloat *)bottomConstraintConstant
+- (NSLayoutConstraint *)setupBottomLayoutConstraintWithNotification:(NSNotification *)note needChangeFrameView:(UIView *)needChangeFrameView
+{
+    NSLayoutConstraint *bottomLayoutConstraint  = nil;
+    if ([self.delegate respondsToSelector:@selector(targetViewBottomConstraintConstantWithKeyboardManager:notification:keyboardRect:needChangeFrameTheView:)]) {
+        bottomLayoutConstraint  = [self.delegate targetViewBottomConstraintWithKeyboardManager:self notification:note needChangeFrameTheView:needChangeFrameView];
+    }else {
+        bottomLayoutConstraint  = self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint;
+    }
+    return bottomLayoutConstraint;
+}
+
+- (CGRect)setupFrameWithNeedChangeFrameTheView:(UIView *)theNeedChangeFrameTheView notification:(NSNotification *)note
 {
     CGRect keyboardRect = note.keyboardFrame;
-    CGRect keyboardFrameDidChangeNeedChangeViewFrame;
-    
+    CGRect keyboardFrameDidChangeNeedChangeViewFrame    = theNeedChangeFrameTheView.frame;
     
     if ([self.delegate respondsToSelector:@selector(targetViewFrameWithKeyboardManager:notification:keyboardRect:needChangeFrameTheView:)]) {
         
@@ -214,24 +256,77 @@
     }else {
         
         //键盘显示区域在需要改变的视图的父视图中的区域
-        CGRect  keyboardToTargetViewFrame           = [theNeedChangeFrameTheView.superview convertRect:keyboardRect fromView:nil];
-        CGRect  theNeedChangeFrame                  = theNeedChangeFrameTheView.frame;
         
-        CGFloat targetViewMaxY              = CGRectGetMaxY(theNeedChangeFrame);
-        CGFloat keyboardMinY                = CGRectGetMinY(keyboardToTargetViewFrame);
+        CGFloat bottomSpace = [self setupTargetViewBottomSpaceWithView:theNeedChangeFrameTheView notification:note];
         
-        CGFloat bottomSpace                 = targetViewMaxY - keyboardMinY;
-        if (bottomSpace > 0) {
-            
-            theNeedChangeFrame.size.height  -= bottomSpace;
-            if (self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint) {
-                
-                *bottomConstraintConstant       = -(bottomSpace) + self.keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint.constant;
-            }
+        CGKeyboardChangeFrameType keyboardChangeFrameType;
+        if ([self.delegate respondsToSelector:@selector(changeFrameTypeWithKeyboardManager:needChangeFrameTheView:)]) {
+            keyboardChangeFrameType = [self.delegate changeFrameTypeWithKeyboardManager:self needChangeFrameTheView:theNeedChangeFrameTheView];
+        }else {
+            keyboardChangeFrameType = self.keyboardChangeFrameType;
         }
-        keyboardFrameDidChangeNeedChangeViewFrame   = theNeedChangeFrame;
+        switch (keyboardChangeFrameType) {
+            case CGKeyboardChangeFrameTypeSize:
+                keyboardFrameDidChangeNeedChangeViewFrame.size.height   -= bottomSpace;
+                break;
+            case CGKeyboardChangeFrameTypeOrigin:
+                keyboardFrameDidChangeNeedChangeViewFrame.origin.y      -= bottomSpace;
+                break;
+            default:
+                break;
+        }
     }
+    
     return keyboardFrameDidChangeNeedChangeViewFrame;
+}
+
+- (CGFloat)setupBottomLayoutConstraintConstantWithNeedChangeFrameTheView:(UIView *)theNeedChangeFrameTheView notification:(NSNotification *)note bottomConstraint:(NSLayoutConstraint *)bottomConstraint
+{
+    CGRect keyboardRect = note.keyboardFrame;
+    
+    CGFloat bottomConstraintConstant    = bottomConstraint.constant;
+    
+    if ([self.delegate respondsToSelector:@selector(targetViewBottomConstraintConstantWithKeyboardManager:notification:keyboardRect:needChangeFrameTheView:)]) {
+        bottomConstraintConstant    = [self.delegate targetViewBottomConstraintConstantWithKeyboardManager:self notification:note keyboardRect:keyboardRect needChangeFrameTheView:theNeedChangeFrameTheView];
+    }else {
+        
+        CGFloat bottomSpace = [self setupTargetViewBottomSpaceWithView:theNeedChangeFrameTheView notification:note];
+        
+        bottomConstraintConstant    += -(bottomSpace);
+    }
+    return bottomConstraintConstant;
+}
+
+/** 计算键盘与指定视图的底部之间的间距 */
+- (CGFloat)setupTargetViewBottomSpaceWithView:(UIView *)theNeedChangeFrameTheView notification:(NSNotification *)note
+{
+    CGRect keyboardRect = note.keyboardFrame;
+    
+    //键盘显示区域在需要改变的视图的父视图中的区域
+    
+    UIView *overlayView = nil;
+    if ([self.delegate respondsToSelector:@selector(overlayViewWithKeyboardManager:needChangeFrameTheView:)]) {
+        overlayView = [self.delegate overlayViewWithKeyboardManager:self needChangeFrameTheView:theNeedChangeFrameTheView];
+    }else {
+        overlayView = theNeedChangeFrameTheView.superview;
+    }
+    
+    CGRect  keyboardToTargetViewFrame           = [overlayView convertRect:keyboardRect fromView:nil];
+    CGRect  theNeedChangeFrame;
+    if (overlayView == theNeedChangeFrameTheView.superview) {
+        
+        theNeedChangeFrame  = theNeedChangeFrameTheView.frame;
+    }else {
+        
+        theNeedChangeFrame  = [theNeedChangeFrameTheView.superview convertRect:theNeedChangeFrameTheView.frame toView:overlayView];
+    }
+    
+    CGFloat targetViewMaxY              = CGRectGetMaxY(theNeedChangeFrame);
+    CGFloat keyboardMinY                = CGRectGetMinY(keyboardToTargetViewFrame);
+    
+    CGFloat bottomSpace                 = targetViewMaxY - keyboardMinY;
+    
+    return bottomSpace;
 }
 
 #pragma mark - 设置键盘通知
@@ -245,13 +340,73 @@
     [NSNotificationCenter removeObserver:target names:keyboardNotificationNameArray object:object];
 }
 
+#pragma mark - 输入文本通知
+
+- (void)handleTextFieldTextDidChangeNotification:(NSNotification *)note
+{
+    BOOL isShouldScrolling  = YES;
+    if ([self.delegate respondsToSelector:@selector(keyboardManager:shouldScrollingWithTextField:)]) {
+        isShouldScrolling   = [self.delegate keyboardManager:self shouldScrollingWithTextField:note.object];
+    }
+    
+    if (isShouldScrolling) {
+        [self scrollingWithFirstResponderView:note.object note:note];
+    }
+}
+
+- (void)handleTextViewTextDidChangeNotification:(NSNotification *)note
+{
+    [self scrollingToTargetViewWithNotification:note];
+}
+
+#pragma mark - 滑动处理
+- (void)scrollingToTargetViewWithNotification:(NSNotification *)note
+{
+    UIView  *firstResponderView = nil;
+    if ([self.delegate respondsToSelector:@selector(firstResponderViewWithKeyboardManager:notification:)]) {
+        firstResponderView  = [self.delegate firstResponderViewWithKeyboardManager:self notification:note];
+    }else {
+        firstResponderView  = self.firstResponderView;
+    }
+    
+    if (!firstResponderView) {
+        return;
+    }
+    
+    [self scrollingWithFirstResponderView:firstResponderView note:note];
+}
+
+- (void)scrollingWithFirstResponderView:(UIView *)firstResponderView note:(NSNotification *)note
+{
+    UIScrollView *scrollView    = nil;
+    
+    if ([self.delegate respondsToSelector:@selector(scrollViewWithKeyboardManager:notification:)]) {
+        scrollView  = [self.delegate scrollViewWithKeyboardManager:self notification:note];
+    }else {
+        scrollView  = self.scrollView;
+    }
+    
+    if (!self.disableAutoSearchScrollView && !scrollView && firstResponderView) {
+        
+        scrollView  = [firstResponderView searchSuperViewWithClass:[UIScrollView class]];
+    }
+    
+    if (scrollView && firstResponderView) {
+        [scrollView scrollingWithTargetView:firstResponderView animated:!self.hideScrollAnimated];
+    }
+}
+
 #pragma mark - 设置属性
 - (void)setOpenKeyboardWillNotification:(BOOL)openKeyboardWillNotification
 {
     if (_openKeyboardWillNotification != openKeyboardWillNotification) {
         
         _openKeyboardWillNotification   = openKeyboardWillNotification;
-        [NSNotificationCenter cg_addWillKeyboardObserver:self selector:@selector(handleKeyboardShowHideNotification:)];
+        if (openKeyboardWillNotification) {
+            [NSNotificationCenter cg_addWillKeyboardObserver:self selector:@selector(handleKeyboardShowHideNotification:)];
+        }else {
+            [NSNotificationCenter cg_removeWillKeyboardObserver:self];
+        }
     }
 }
 
@@ -260,7 +415,12 @@
     if (_openKeyboardDidNotification != openKeyboardDidNotification) {
         
         _openKeyboardDidNotification    = openKeyboardDidNotification;
-        [NSNotificationCenter cg_addKeyboardObserver:self selector:@selector(handleKeyboardShowHideNotification:)];
+        if (openKeyboardDidNotification) {
+            [NSNotificationCenter cg_addKeyboardObserver:self selector:@selector(handleKeyboardShowHideNotification:)];
+        }else {
+            [NSNotificationCenter cg_removeKeyboardObserver:self];
+        }
+        
     }
 }
 
@@ -274,9 +434,41 @@
     return _firstResponderView;
 }
 
+- (void)setOpenTextFieldTextDidChangeNotification:(BOOL)openTextFieldTextDidChangeNotification
+{
+    if (_openTextFieldTextDidChangeNotification != openTextFieldTextDidChangeNotification) {
+        
+        _openTextFieldTextDidChangeNotification = openTextFieldTextDidChangeNotification;
+        
+        NSString *noteName  = UITextFieldTextDidChangeNotification;
+        if (openTextFieldTextDidChangeNotification) {
+            [NSNotificationCenter addObserver:self selector:@selector(handleTextFieldTextDidChangeNotification:) name:noteName];
+        }else {
+            [NSNotificationCenter removeObserver:self name:noteName];
+        }
+        
+    }
+}
+
+//- (void)setOpenTextViewTextDidChangeNotification:(BOOL)openTextViewTextDidChangeNotification
+//{
+//    if (_openTextViewTextDidChangeNotification != openTextViewTextDidChangeNotification) {
+//        
+//        _openTextViewTextDidChangeNotification  = openTextViewTextDidChangeNotification;
+//        
+//        NSString *noteName  = UITextViewTextDidChangeNotification;
+//        if (openTextViewTextDidChangeNotification) {
+//            [NSNotificationCenter addObserver:self selector:@selector(handleTextViewTextDidChangeNotification:) name:noteName];
+//        }else {
+//            [NSNotificationCenter removeObserver:self name:noteName];
+//        }
+//    }
+//}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    CGPrintClassNameLog()
 }
 
 @end

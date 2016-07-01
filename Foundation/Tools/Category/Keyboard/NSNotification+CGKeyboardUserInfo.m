@@ -15,7 +15,7 @@
 - (CGRect)keyboardFrame
 {
     CGRect keyboardFrame;
-    [[self.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
+    keyboardFrame   = [[self.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     return keyboardFrame;
 }
 

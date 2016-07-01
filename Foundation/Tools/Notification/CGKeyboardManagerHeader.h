@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, CGKeyboardChangeFrameType) {
     /** 修改CGPoint */
     CGKeyboardChangeFrameTypeOrigin,
     /** 修改视图的中心坐标 */
-    CGKeyboardChangeFrameTypeCenter,
+//    CGKeyboardChangeFrameTypeCenter,
 };
 
 /** 键盘布局的类型 */

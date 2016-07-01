@@ -14,6 +14,7 @@
 
 @property (nonatomic, assign) CGKeyboardLayoutType  layoutType;
 
+/** 纪录下的状态 */
 @property (nonatomic, assign) CGKeyboardNotificationType    keyboardNotificationType;
 
 @property (nullable, nonatomic, weak) UIView *targetView;

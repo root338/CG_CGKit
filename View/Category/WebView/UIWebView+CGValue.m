@@ -19,7 +19,7 @@
         NSString *statusStr = disable ? @"none" : @"yes";
         NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
         
-        [self stringByEvaluatingJavaScriptFromString:jsString];
+        [self dealWithWebViewJS:jsString];
         objc_setAssociatedObject(self, @selector(isDisableTouchCallout), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 //    }
 }
@@ -36,8 +36,9 @@
     
         NSString *statusStr = disable ? @"none" : @"yes";
         NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitUserSelect='%@';", statusStr];
-        
-        [self stringByEvaluatingJavaScriptFromString:jsString];
+    
+        [self dealWithWebViewJS:jsString];
+    
         objc_setAssociatedObject(self, @selector(isDisableUserSelect), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 //    }
 }
@@ -47,4 +48,20 @@
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
+- (NSString *)title
+{
+    NSString *title = [self dealWithWebViewJS:@"document.title"];
+    return title;
+}
+
+- (NSString *)HTML
+{
+    NSString *HTML  = [self dealWithWebViewJS:@"document.innerHTML"];
+    return HTML;
+}
+
+- (nullable NSString *)dealWithWebViewJS:(NSString *)jsStr
+{
+    return [self stringByEvaluatingJavaScriptFromString:jsStr];
+}
 @end
