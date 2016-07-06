@@ -18,7 +18,9 @@
 #import "CGPrintLogHeader.h"
 
 @interface CGKeyboardManager ()
-
+{
+    
+}
 /** 
  *  缓存目标视图的布局数据
  *  @param 键盘的显示和隐藏是成对的
@@ -130,8 +132,16 @@
     
     if (bottomLayoutConstraint) {
         
+        CGFloat constant    = bottomLayoutConstraint.constant - bottomConstraintConstant;
+        if (constant > -0.0001 && constant < 0.0001) {
+            return;
+        }
         bottomLayoutConstraint.constant  =  bottomConstraintConstant;
         [theNeedChangeFrameTheView setNeedsUpdateConstraints];
+    }else {
+        if (CGRectEqualToRect(theNeedChangeFrameTheView.frame, keyboardFrameDidChangeNeedChangeViewFrame)) {
+            return;
+        }
     }
     
     [UIView animateWithDuration:duration delay:0 options:curve animations:^{
@@ -150,10 +160,14 @@
         
     } completion:^(BOOL finished) {
         
-        [self scrollingToTargetViewWithNotification:note];
+        if ([note.name isEqualToString:UIKeyboardWillShowNotification] || [note.name isEqualToString:UIKeyboardDidShowNotification]) {
+            [self scrollingToTargetViewWithNotification:note];
+        }
+        
         if ([self.delegate respondsToSelector:@selector(keyboardManager:animationCompletionNotification:)]) {
             [self.delegate keyboardManager:self animationCompletionNotification:note];
         }
+        
     }];
 }
 

@@ -18,6 +18,7 @@
 /**
  *  对输入文本框进行输入监听，当输入的条件不满足时按钮为disable状态
  *  @param 默认只对是否为空进行判断，其它判断在textDidChangeCallback中进行（inputTextView 表示当前文本正在改变的输入文本框）
+ *  @warning 若直接设置输入文本框的text属性，UITextFieldTextDidChangeNotification通知是收不到消息的！！！
  */
 @interface CGInputConditionButton : CGBaseButton
 
@@ -31,4 +32,7 @@
 
 /** 文本发生变化时的回调，返回按钮是否可以点击 */
 @property (nonatomic, copy) BOOL (^textDidChangeCallback) (id inputTextView);
+
+- (void)updateVerifyAllInputControl;
+- (void)updateVerifyWithTargetInputControl:(id)inputControl;
 @end

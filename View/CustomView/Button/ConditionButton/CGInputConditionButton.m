@@ -27,6 +27,16 @@
     [self handleTextDidChangeWithObject:note.object];
 }
 
+- (void)updateVerifyAllInputControl
+{
+    [self handleTextDidChangeWithObject:nil];
+}
+
+- (void)updateVerifyWithTargetInputControl:(id)inputControl
+{
+    [self handleTextDidChangeWithObject:inputControl];
+}
+
 - (void)handleTextDidChangeWithObject:(id)object
 {
     __block BOOL isFlag = NO;
