@@ -19,30 +19,33 @@
 }
 */
 
-- (void)awakeFromNib
-{
-    self.marginEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-}
-
 - (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
 {
-    CGRect rect = UIEdgeInsetsInsetRect(bounds, self.marginEdgeInsets);
+    CGRect textRect     = [super textRectForBounds:bounds limitedToNumberOfLines:numberOfLines];
+    CGRect tempTextRect = textRect;
+    switch (self.textVerticalAlignment) {
+        case CGLabelTextVerticalAlignmentTop:
+            textRect.origin.y   = self.textVerticalAlignmentOffsetLength;
+            break;
+        case CGLabelTextVerticalAlignmentBottom:
+            textRect.origin.y   = CGRectGetHeight(bounds) - (CGRectGetHeight(textRect) + self.textVerticalAlignment);
+            break;
+        default:
+            break;
+    }
     
-    return rect;
-}
-
-
-
-- (void)setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
-    self.preferredMaxLayoutWidth = CGRectGetWidth(bounds);//MAX(0, bounds.size.width - (self.marginEdgeInsets.left + self.marginEdgeInsets.right));
+    if (!CGRectContainsRect(bounds, textRect)) {
+        return tempTextRect;
+    }
+    
+    return textRect;
 }
 
 
 - (void)drawTextInRect:(CGRect)rect
 {
-    [super drawTextInRect:UIEdgeInsetsInsetRect(self.bounds, self.marginEdgeInsets)];
+    CGRect textRect = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];
+    [super drawTextInRect:textRect];
 }
 
 @end
