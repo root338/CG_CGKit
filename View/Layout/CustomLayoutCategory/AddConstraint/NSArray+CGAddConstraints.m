@@ -202,6 +202,196 @@
     return constraints;
 }
 
+#pragma mark - 视图对齐
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSuperviewWithAxis:(CGAxis)axis
+{
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:self.count];
+    [self enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [constraints addObject:[obj cg_autoCenterToSuperviewWithAxis:axis]];
+    }];
+    return constraints;
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView
+{
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:self.count];
+    [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [constraints addObject:[obj cg_autoAxis:axis toSameAxisOfView:otherView]];
+    }];
+    return constraints;
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view
+{
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:self.count];
+    [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [constraints addObject:[obj cg_attribute:attribute toItem:view]];
+    }];
+    return constraints;
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutAxisHorizontalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
+{
+    return [self cg_autoSetupHorizontalSubviewsLayoutAxisHorizontalWithMarginInsets:marginInsets
+                                                                 setupSubviewsSpace:setupSubviewsSpaceBlock
+                                                        setupSubviewsLayoutRelation:nil
+                                                         setupSubviewLayoutRelation:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutAxisHorizontalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation
+{
+    return [self cg_autoSetupSubviewsLayoutAxisWithArrangementType:CGSubviewsArrangementTypeHorizontal
+                                                      marginInsets:marginInsets
+                                                setupSubviewsSpace:setupSubviewsSpaceBlock
+                                       setupSubviewsLayoutRelation:setupSubviewsLayoutRelation
+                                        setupSubviewLayoutRelation:setupSubviewLayoutRelation];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutAxisVerticalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
+{
+    return [self cg_autoSetupVerticalSubviewsLayoutAxisVerticalWithMarginInsets:marginInsets
+                                                             setupSubviewsSpace:setupSubviewsSpaceBlock
+                                                    setupSubviewsLayoutRelation:nil
+                                                     setupSubviewLayoutRelation:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutAxisVerticalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation
+{
+    return [self cg_autoSetupSubviewsLayoutAxisWithArrangementType:CGSubviewsArrangementTypeVertical
+                                                      marginInsets:marginInsets
+                                                setupSubviewsSpace:setupSubviewsSpaceBlock
+                                       setupSubviewsLayoutRelation:setupSubviewsLayoutRelation
+                                        setupSubviewLayoutRelation:setupSubviewLayoutRelation];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupSubviewsLayoutAxisWithArrangementType:(CGSubviewsArrangementType)arrangementType marginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation
+{
+    CGSetupSubviewSpace subviewsSpaceBlock  = ^(UIView *view1, UIView *view2) {
+        
+        CGFloat subviewsSpace;
+        if (setupSubviewsSpaceBlock) {
+            subviewsSpace   = setupSubviewsSpaceBlock(view1, view2);
+        }else {
+            subviewsSpace   = self.subviewsSpaceValue;
+        }
+        return subviewsSpace;
+    };
+    
+    CGSetupSubviewLayoutRelation marginInsetsRelationBlock  = ^(UIView *view, CGLayoutEdge layoutEdge){
+        
+        if (setupSubviewLayoutRelation) {
+            return setupSubviewLayoutRelation(view, layoutEdge);
+        }else {
+            return NSLayoutRelationEqual;
+        }
+    };
+    
+    CGSetupSubviewsLayoutRelation subviewsLayoutRelationBlock   = ^(UIView *view1, CGLayoutEdge view1LayoutEdge, UIView *view2, CGLayoutEdge view2LayoutEdge) {
+        
+        if (setupSubviewsLayoutRelation) {
+            return setupSubviewsLayoutRelation(view1, view1LayoutEdge, view2, view2LayoutEdge);
+        }else {
+            return NSLayoutRelationEqual;
+        }
+    };
+    
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:self.count];
+    [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if (idx == 0) {
+            //第一个视图
+            
+            CGFloat             offset;
+            NSLayoutAttribute   att;
+            CGLayoutEdge        edge;
+            if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+                
+                offset  = marginInsets.left;
+                att     = NSLayoutAttributeLeading;
+                edge    = CGLayoutEdgeLeading;
+            }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+                
+                offset  = marginInsets.top;
+                att     = NSLayoutAttributeTop;
+                edge    = CGLayoutEdgeTop;
+            }
+            
+            [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:att
+                                                                  withOffset:offset
+                                                                    relation:marginInsetsRelationBlock(obj, edge)]];
+        }
+        if (idx == self.count - 1) {
+            //最后一个视图
+            
+            CGFloat             offset;
+            NSLayoutAttribute   att;
+            CGLayoutEdge        edge;
+            if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+             
+                offset  = marginInsets.right;
+                att     = NSLayoutAttributeTrailing;
+                edge    = CGLayoutEdgeTrailing;
+            }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+                
+                offset  = marginInsets.bottom;
+                att     = NSLayoutAttributeBottom;
+                edge    = CGLayoutEdgeBottom;
+            }
+            
+            [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:att
+                                                                  withOffset:offset
+                                                                    relation:marginInsetsRelationBlock(obj, edge)]];
+        }
+        
+        if (idx + 1 < self.count) {
+            
+            NSLayoutAttribute att1, att2;
+            CGLayoutEdge edge1, edge2;
+            id item1, item2;
+            
+            item1   = self;
+            item2   = self[idx + 1];
+            if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+                
+                att1    = NSLayoutAttributeTrailing;
+                att2    = NSLayoutAttributeLeading;
+                
+                edge1   = CGLayoutEdgeTrailing;
+                edge2   = CGLayoutEdgeLeading;
+            }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+                
+                att1    = NSLayoutAttributeBottom;
+                att2    = NSLayoutAttributeTop;
+                
+                edge1   = CGLayoutEdgeBottom;
+                edge2   = CGLayoutEdgeTop;
+            }
+            
+            //后面还有视图
+            [constraints addObject:[obj cg_attribute:att1
+                                           relatedBy:subviewsLayoutRelationBlock(item1, edge1, item2, edge2)
+                                              toItem:item2
+                                           attribute:att2
+                                            constant:subviewsSpaceBlock(item1, item2)]];
+        }
+        
+        //设置对齐
+        
+        CGAxis axis;
+        if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+            
+            axis    = CGAxisHorizontal;
+        }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+            
+            axis    = CGAxisVertical;
+        }
+        
+        [constraints addObject:[obj cg_autoCenterToSuperviewWithAxis:axis]];
+    }];
+    
+    return constraints;
+}
+
 #pragma mark - 设置属性值
 
 - (void)setSubviewsSpaceValue:(CGFloat)space

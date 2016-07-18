@@ -39,6 +39,7 @@ typedef /**NS_OPTIONS*/NS_ENUM(NSInteger, CGLayoutAttribute) {
 
 typedef NS_ENUM(NSInteger, CGLayoutEdge) {
     
+    CGLayoutEdgeNone        = 0,
     CGLayoutEdgeLeft        = CGLayoutAttributeLeft,
     CGLayoutEdgeRight       = CGLayoutAttributeRight,
     CGLayoutEdgeTop         = CGLayoutAttributeTop,

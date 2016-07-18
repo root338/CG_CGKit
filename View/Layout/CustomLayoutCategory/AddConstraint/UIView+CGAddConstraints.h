@@ -36,8 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置与视图控制器视图的四周约束 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets;
 
+/** 
+ *  设置与视图控制器视图的四周约束
+ *  @param key为 @(NSLayoutAttribute) 类型
+ */
+- (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets;
+
 /** 设置与视图控制器视图的四周约束，并忽略指定边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets exculdingEdge:(CGLayoutEdge)edge;
+
+/** 
+ *  设置与视图控制器视图的四周约束，并忽略指定边
+ *  @param key为 @(NSLayoutAttribute) 类型
+ */
+- (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets exculdingEdge:(CGLayoutEdge)edge;
 
 @end
 
@@ -49,8 +61,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperview;
 /** 设置与父视图四周的间距 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
+/** 设置与父视图四周的间距 */
+- (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
+
 /** 设置与父视图四周的间距，并忽略哪边边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge;
+
+/** 设置与父视图四周的间距，并忽略哪边边 */
+- (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge;
 
 @end
 
@@ -105,6 +123,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 设置与指定视图的对齐，并设置偏移的间距 */
 - (NSLayoutConstraint *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView withOffset:(CGFloat)offset;
+
+/** 设置与父视图对齐的边 */
+- (NSLayoutConstraint *)cg_autoCenterToSuperviewWithAxis:(CGAxis)axis;
 
 /** 设置与父视图中心对齐 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSuperview;

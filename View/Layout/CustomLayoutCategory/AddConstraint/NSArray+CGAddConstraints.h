@@ -99,6 +99,54 @@ typedef NSLayoutRelation (^CGSetupSubviewLayoutRelation) (UIView *view, CGLayout
  */
 - (NSArray<NSLayoutConstraint *> *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)equalView;
 
+
+#pragma mark - 视图对齐
+/** 
+ *  UIView与父视图之间的对齐
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoCenterToSuperviewWithAxis:(CGAxis)axis;
+/** 
+ *  UIView与指定视图之间的对齐
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoAxis:(CGAxis)axis toSameAxisOfView:(UIView *)otherView;
+
+/** 
+ *  UIView与指定view之间边对齐
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view;
+
+/**
+ *  子视图水平排列，且与父视图的 X 对齐
+ *  @param  marginInsets                设置边界间距
+ *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距 为nil 间距值为subviewsSpaceValue
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutAxisHorizontalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
+
+/**
+ *  子视图水平排列，且与父视图的 X 对齐
+ *  @param  marginInsets                设置边界间距
+ *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距 为nil 间距值为subviewsSpaceValue
+ *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
+ *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutAxisHorizontalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation;
+
+/**
+ *  子视图垂直排列，且与父视图的 Y 对齐
+ *  @param  marginInsets                设置边界间距
+ *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距 为nil 间距值为subviewsSpaceValue
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutAxisVerticalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
+
+/**
+ *  子视图垂直排列，且与父视图的 Y 对齐
+ *  @param  marginInsets                设置边界间距
+ *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距 为nil 间距值为subviewsSpaceValue
+ *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
+ *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutAxisVerticalWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation;
+
 @end
 
 NS_ASSUME_NONNULL_END

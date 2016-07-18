@@ -28,7 +28,7 @@
             textRect.origin.y   = self.textVerticalAlignmentOffsetLength;
             break;
         case CGLabelTextVerticalAlignmentBottom:
-            textRect.origin.y   = CGRectGetHeight(bounds) - (CGRectGetHeight(textRect) + self.textVerticalAlignment);
+            textRect.origin.y   = CGRectGetHeight(bounds) - (CGRectGetHeight(textRect) + self.textVerticalAlignmentOffsetLength);
             break;
         default:
             break;
