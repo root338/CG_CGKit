@@ -161,7 +161,10 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 /** 设置单个内容视图之间的间距 */
 @property (assign, nonatomic) CGFloat subviewSpace;
 
-/** 是否分页 */
+/** 
+ *  是否分页
+ *  @warning 当单个视图之间的间距为 0 时可以直接设置 cycleScrollView的pagingEnabled属性为YES，这样滑动的行为就是系统默认的动画样式
+ */
 @property (assign, nonatomic) BOOL pagingEnabled;
 
 /** 滑动视图的滑动方向 */
