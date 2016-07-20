@@ -14,35 +14,77 @@
 
 - (NSDictionary *)cg_objectToDictionary
 {
+    
+    return [self cg_objectToDictionaryWithTargetClass:[self class]];
+}
+
+- (NSDictionary *)cg_allObjectToDictionary
+{
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
-    unsigned int propertyListCount;
-    
-    objc_property_t *propertysList = class_copyPropertyList([self class], &propertyListCount);
-    
-    for (int i = 0; i < propertyListCount; i++) {
+    Class targetClass     = [self class];
+    while (targetClass) {
         
-        objc_property_t property = propertysList[i];
-        
-        NSString *propertyName      = [NSString stringWithUTF8String:property_getName(property)];
-        
-        id value                    = [self valueForKey:propertyName];
-        
-        if (value == nil || value == [NSNull null]) {
-            continue;
+        NSDictionary *targetClassPropertyDictionary = [self cg_objectToDictionaryWithTargetClass:targetClass];
+        if (targetClassPropertyDictionary) {
+            [dic setDictionary:targetClassPropertyDictionary];
         }
-        
-        BOOL isFlag = [self cg_objectToDictionaryFilterWithKey:propertyName value:value];
-        
-        if (isFlag) {
-            [dic setObject:value forKey:propertyName];
-        }
+        targetClass = [targetClass superclass];
     }
     
     return dic;
 }
 
+- (nullable NSDictionary *)cg_objectToDictionaryWithTargetClass:(Class)targetClass
+{
+    if ([self cg_objectToDictionaryFilterWithClass:targetClass]) {
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        
+        unsigned int propertyListCount;
+        
+        objc_property_t *propertysList = class_copyPropertyList(targetClass, &propertyListCount);
+        
+        for (int i = 0; i < propertyListCount; i++) {
+            
+            objc_property_t property = propertysList[i];
+            
+            NSString *propertyName      = [NSString stringWithUTF8String:property_getName(property)];
+            
+            id value                    = nil;
+            
+            @try {
+                
+                value   = [self valueForKey:propertyName];
+            } @catch (NSException *exception) {
+                
+            } @finally {
+                
+            }
+            
+            if (value == nil || value == [NSNull null]) {
+                continue;
+            }
+            
+            BOOL isFlag = [self cg_objectToDictionaryFilterWithKey:propertyName value:value];
+            
+            if (isFlag) {
+                [dic setObject:value forKey:propertyName];
+            }
+        }
+        
+        return dic;
+    }else {
+        return nil;
+    }
+}
+
 - (BOOL)cg_objectToDictionaryFilterWithKey:(NSString *)key value:(id)value
+{
+    return YES;
+}
+
+- (BOOL)cg_objectToDictionaryFilterWithClass:(Class)targetClass
 {
     return YES;
 }
