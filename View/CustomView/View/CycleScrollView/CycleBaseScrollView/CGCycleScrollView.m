@@ -113,6 +113,13 @@
 }
 
 #pragma mark - 计时器
+- (void)scrollingHandleTimer
+{
+    if (autoScrollTimer) {
+        [self startAutoScroll];
+    }
+}
+
 - (void)startAutoScroll
 {
     
@@ -583,7 +590,6 @@
     if (nextIndex) {
         
         self.currentIndex = nextIndex.integerValue;
-        [self setupScrollContentView];
     }
     
 }
@@ -597,7 +603,6 @@
     if (previousIndex) {
         
         self.currentIndex = previousIndex.integerValue;
-        [self setupScrollContentView];
     }
 }
 
@@ -613,7 +618,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (isDraggerPauseTimerMark) {
-        [self startAutoScroll];
+        [self scrollingHandleTimer];
         isDraggerPauseTimerMark = NO;
     }
     
@@ -625,7 +630,7 @@
     isDraggerScrollSubviewMark  = NO;
     if (!decelerate) {
         //手指离开没有减速效果时
-        [self startAutoScroll];
+        [self scrollingHandleTimer];
         isDraggerPauseTimerMark         = NO;
     }
 }
@@ -822,6 +827,8 @@
 {
     if (currentIndex != _currentIndex) {
         _currentIndex = currentIndex;
+        
+        [self setupScrollContentView];
         if ([self.delegate respondsToSelector:@selector(cycleScrollView:didChangeCurrentIndex:)]) {
             [self.delegate cycleScrollView:self didChangeCurrentIndex:self.currentIndex];
         }

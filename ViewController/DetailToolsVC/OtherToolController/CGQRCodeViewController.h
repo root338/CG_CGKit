@@ -8,7 +8,6 @@
 
 #import "CGBaseViewController.h"
 
-
 /**
  *  扫二维码
  */

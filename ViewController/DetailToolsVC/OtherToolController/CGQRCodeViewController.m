@@ -10,9 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CGPrintLogHeader.h"
 
-#import "NSString+QRCodeURL.h"
-#import "QRCodeURLModel.h"
-
 @interface CGQRCodeViewController ()<AVCaptureMetadataOutputObjectsDelegate>
 {
     BOOL _isMark;

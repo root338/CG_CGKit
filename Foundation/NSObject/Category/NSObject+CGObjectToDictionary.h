@@ -15,8 +15,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** 
  *  对象转字典主体方法
  *  @param 自动过滤掉nil值和 NSNull对象
+ *  @warning    仅会将当前类的属性值转化为字典，父类属性不包含
  */
 - (nullable NSDictionary *)cg_objectToDictionary;
+
+- (nullable NSDictionary *)cg_objectToDictionaryWithTargetClass:(Class)targetClass;
+
+/**
+ *  对象转字典主体方法
+ *  @param 自动过滤掉nil值和 NSNull对象
+ */
+- (nullable NSDictionary *)cg_allObjectToDictionary;
 
 /**
  *  转换过程中的过滤方法
@@ -28,6 +37,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return 返回是否添加该key值 YES（添加）
  */
 - (BOOL)cg_objectToDictionaryFilterWithKey:(NSString *)key value:(id)value;
+
+/**
+ *  转换过程中的过滤方法
+ *  @warning 子类可以重写该方法过滤不必要的key值
+ *
+ *  @param targetClass  对象类的名称
+ *
+ *  @return 返回是否添加该key值 YES（添加）
+ */
+- (BOOL)cg_objectToDictionaryFilterWithClass:(Class)targetClass;
 @end
 
 NS_ASSUME_NONNULL_END
