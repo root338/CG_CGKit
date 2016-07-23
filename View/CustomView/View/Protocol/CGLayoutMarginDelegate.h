@@ -31,6 +31,10 @@
 @property (nonatomic, assign) UIEdgeInsets firstTargetViewEdgeInsets;
 /** 第二个视图的外边距 */
 @property (nonatomic, assign) UIEdgeInsets secondTargetViewEdgeInsets;
+/** 设置第一个视图的大小 */
+@property (nonatomic, assign) CGSize firstItemSize;
+/** 设置第二个视图的大小 */
+@property (nonatomic, assign) CGSize secondItemSize;
 
 /** 第一个视图 */
 - (UIView *)cg_layoutFirstTargetView;

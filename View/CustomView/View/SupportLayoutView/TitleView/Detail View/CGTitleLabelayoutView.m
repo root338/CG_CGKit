@@ -12,7 +12,7 @@
 
 @interface CGTitleLabelayoutView ()
 
-@property (nonatomic, strong, readwrite) UILabel *label;
+@property (nonatomic, strong, readwrite) UILabel *titleLabel;
 
 @end
 
@@ -20,7 +20,7 @@
 
 - (instancetype)initWithMarginEdgeInstes:(UIEdgeInsets)marginEdgeInstes
 {
-    self = [super initWithFrame:CGRectZero];
+    self = [self initWithFrame:CGRectZero];
     if (self) {
         [self setMarginEdgeInsets:marginEdgeInstes];
     }
@@ -32,16 +32,22 @@
     self   = [super initWithFrame:frame];
     if (self) {
         
-        _label  = [[UILabel alloc] init];
-        [self addSubview:_label];
+        _titleLabel  = [[UILabel alloc] init];
+        [self addSubview:_titleLabel];
     }
     return self;
+}
+
+#pragma mark - CGLayoutMarginDelegate
+- (UIView *)cg_layoutMarginTargetView
+{
+    return self.titleLabel;
 }
 
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    self.label.preferredMaxLayoutWidth = CG_CGWidthWithMaxWidth(CGRectGetWidth(bounds), self.marginEdgeInsets);
+    self.titleLabel.preferredMaxLayoutWidth = CG_CGWidthWithMaxWidth(CGRectGetWidth(bounds), self.marginEdgeInsets);
 }
 
 @end

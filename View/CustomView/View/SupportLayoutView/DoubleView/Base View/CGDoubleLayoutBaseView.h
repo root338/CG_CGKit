@@ -27,8 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIEdgeInsets firstTargetViewEdgeInsets;
 /** 第二个视图的外边距 */
 @property (nonatomic, assign) UIEdgeInsets secondTargetViewEdgeInsets;
+
+/** 设置第一个视图的大小 */
+@property (nonatomic, assign) CGSize firstItemSize;
+/** 设置第二个视图的大小 */
+@property (nonatomic, assign) CGSize secondItemSize;
+
 /** 两个视图之间的对齐方式 */
 @property (nonatomic, assign) CGAlignmentType alignment;
+
+
 
 /** 关闭延迟0s后设置约束 */
 @property (nonatomic, assign) BOOL disableRunLoopSetupConstraints;

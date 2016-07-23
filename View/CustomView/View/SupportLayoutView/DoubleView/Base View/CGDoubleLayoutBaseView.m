@@ -76,6 +76,14 @@
         secondExcludingEdge = CGLayoutEdgeTop;
     }
     
+    if (!CGSizeEqualToSize(CGSizeZero, self.firstItemSize)) {
+        [firstTargetView cg_autoSetupViewSize:self.firstItemSize];
+    }
+    
+    if (!CGSizeEqualToSize(CGSizeZero, self.secondItemSize)) {
+        [secondTargetView cg_autoSetupViewSize:self.secondItemSize];
+    }
+    
     [firstTargetView cg_attribute:(NSLayoutAttribute)firstExcludingEdge
                            toItem:secondTargetView
                         attribute:(NSLayoutAttribute)secondExcludingEdge

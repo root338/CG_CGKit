@@ -24,6 +24,22 @@
     return [self cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewsSpace:nil];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithViewController:(UIViewController *)viewController
+{
+    return [self cg_autoViewController:viewController
+                       arrangementType:CGSubviewsArrangementTypeHorizontal
+                          marginInsets:UIEdgeInsetsZero
+                    setupSubviewsSpace:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutWithViewController:(UIViewController *)viewController
+{
+    return [self cg_autoViewController:viewController
+                       arrangementType:CGSubviewsArrangementTypeVertical
+                          marginInsets:UIEdgeInsetsZero
+                    setupSubviewsSpace:nil];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
 {
     return [self cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewsSpace:setupSubviewsSpaceBlock];

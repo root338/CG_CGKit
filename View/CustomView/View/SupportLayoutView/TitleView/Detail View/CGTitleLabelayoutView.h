@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 带约束的标签标题  */
 @interface CGTitleLabelayoutView : CGLayoutMarginBaseView
 
-@property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
 
 - (instancetype)initWithMarginEdgeInstes:(UIEdgeInsets)marginEdgeInstes;
 
