@@ -41,7 +41,7 @@ typedef void (^CGLineMoveViewBlock) (UIView *paramView);
  */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration completion:(void(^ __nullable)(void))completion;
 
-- (void)cg_showLineMoveWithType:(CGLineMoveViewType)type overlayView:(UIView *)overlayView overlayView:(CGLineMoveViewType)overlayView;
+//- (void)cg_showLineMoveWithType:(CGLineMoveViewType)type overlayView:(UIView *)overlayView overlayView:(CGLineMoveViewType)overlayView;
 
 /** 移动视图，可设置更多视图属性 */
 - (void)cg_showLineMoveWithOverlayView:(UIView *)overlayView type:(CGLineMoveViewType)type animation:(BOOL)animation duration:(NSTimeInterval)duration beforeAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))beforeAnimationBlock afterAnimationBlock:(void (^ _Nullable)(UIView * _Nonnull))afterAnimationBlock completion:(nonnull void (^)(void))completion;

@@ -7,14 +7,64 @@
 //
 
 
-
 #import "NSPredicate+CreatePredicate.h"
+
+#import "CGPrintLogHeader.h"
 
 @implementation NSPredicate (CreatePredicate)
 
 + (instancetype)createPredicateSelfMatchesWithString:(NSString *)string
 {
     NSPredicate *predicate = [self predicateWithFormat:@"SELF MATCHES %@", string];
+    return predicate;
+}
+
++ (instancetype)createPredicateSelfHasPrefixWithString:(NSString *)string
+{
+    NSPredicate *predicate  = [self predicateWithFormat:@"SELF BEGINSWITH[c] %@", string];
+    return predicate;
+}
+
++ (instancetype)createPredicateWithType:(CGPredicateCreateType)createType string:(NSString *)string
+{
+    return [self createPredicateWithType:createType string:string error:nil];
+}
+
++ (instancetype)createPredicateWithType:(CGPredicateCreateType)createType string:(NSString *)string error:(NSError *__autoreleasing  _Nullable * _Nullable)error
+{
+    NSString *prefixStr = nil;
+    switch (createType) {
+        case CGPredicateCreateTypeIgnoreCaseMatches:
+            prefixStr   = @"SELF MATCHES[c] %@";
+            break;
+        case CGPredicateCreateTypeMatches:
+            prefixStr   = @"SELF MATCHES %@";
+            break;
+        default:
+            break;
+    }
+    
+    NSPredicate *predicate  = nil;
+    NSError *err            = nil;
+    @try {
+        predicate   = [NSPredicate predicateWithFormat:prefixStr, string];
+    }
+    @catch (NSException *exception) {
+        
+        CGErrorLog(@"%@, %@", exception.name, exception.reason);
+        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:exception.userInfo];
+        !exception.reason ?: [userInfo setObject:exception.reason forKey:NSLocalizedDescriptionKey];
+        err = [NSError errorWithDomain:exception.name code:-1 userInfo:userInfo];
+        
+        if (error != NULL) {
+            *error   = err;
+        }
+        
+        CGDebugAssert(!err, @"创建NSPredicate失败");
+    }
+    @finally {
+        
+    }
     return predicate;
 }
 

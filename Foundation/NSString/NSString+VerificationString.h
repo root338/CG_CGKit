@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 验证字符串是否是中文字符 */
 - (BOOL)verificationIsChineseCharacter;
 
+/** 验证字符串是否是邮箱 */
+- (BOOL)verificationIsEmailWithError:(NSError **)error;
+
 /** 验证字符串是否是手机号 */
 //- (BOOL)verificationIsPhone;
 

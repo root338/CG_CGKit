@@ -201,8 +201,17 @@
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength relation:(NSLayoutRelation)relation
 {
     self.translatesAutoresizingMaskIntoConstraints  = NO;
-    NSLayoutConstraint *constraint  = [self cg_createDimension:dimension fixedLength:fixedLength relation:relation];
-    [self addConstraint:constraint];
+    NSLayoutConstraint *constraint  = nil;
+    
+    if (self.isUpdateAddConstraint) {
+        constraint  = [self cg_updateConstraintWithAtt1:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil att2:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fixedLength commonSuperview:self];
+    }
+    
+    if (!constraint) {
+        
+        constraint  = [self cg_createDimension:dimension fixedLength:fixedLength relation:relation];
+        [self addConstraint:constraint];
+    }
     
     return constraint;
 }
@@ -242,10 +251,26 @@
 
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
-    CGDebugAssert(self.superview == viewController.view, @"self视图父视图必须是viewController.view");
+    return [self cg_topLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation multiplier:1.0];
+}
+
+- (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier
+{
+    UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:viewController.view];
+    CGDebugAssert(commonSuperview, @"self视图父视图必须是viewController.view");
     self.translatesAutoresizingMaskIntoConstraints  = NO;
-    NSLayoutConstraint *layoutConstraint    = [self cg_createTopLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
-    [viewController.view addConstraint:layoutConstraint];
+    NSLayoutConstraint *layoutConstraint    = nil;
+    
+    if (self.isUpdateAddConstraint) {
+        
+        layoutConstraint    = [self cg_updateConstraintWithAtt1:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide att2:NSLayoutAttributeBottom multiplier:multiplier constant:inset commonSuperview:commonSuperview];
+    }
+    
+    if (!layoutConstraint) {
+        layoutConstraint    = [self cg_createTopLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
+        [viewController.view addConstraint:layoutConstraint];
+    }
+    
     return layoutConstraint;
 }
 
@@ -261,10 +286,27 @@
 
 - (NSLayoutConstraint *)cg_bottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
-    CGDebugAssert(self.superview == viewController.view, @"self视图父视图必须是viewController.view");
+    return [self cg_bottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation multiplier:1.0];
+}
+
+- (NSLayoutConstraint *)cg_bottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier
+{
+    UIView *commonSuperview = [self cg_searchCommonSuperviewWithView:viewController.view];
+    CGDebugAssert(commonSuperview, @"self视图父视图必须是viewController.view");
     self.translatesAutoresizingMaskIntoConstraints  = NO;
-    NSLayoutConstraint *layoutConstraint    = [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
-    [viewController.view addConstraint:layoutConstraint];
+    NSLayoutConstraint *layoutConstraint    = nil;
+    
+    if (self.isUpdateAddConstraint) {
+        
+        layoutConstraint    = [self cg_updateConstraintWithAtt1:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide att2:NSLayoutAttributeTop multiplier:multiplier constant:inset commonSuperview:commonSuperview];
+    }
+    
+    if (!layoutConstraint) {
+        
+        layoutConstraint    = [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
+        [viewController.view addConstraint:layoutConstraint];
+    }
+    
     return layoutConstraint;
 }
 
@@ -332,13 +374,20 @@
     UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:view2];
     NSAssert(commonSuperview, @"添加约束的两视图没有共同父视图");
     
-    NSLayoutConstraint *layoutConstraint    = [self cg_createAttribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
-    [commonSuperview addConstraint:layoutConstraint];
+    NSLayoutConstraint *layoutConstraint    = nil;
+    
+    if (self.isUpdateAddConstraint) {
+        
+        layoutConstraint    = [self cg_updateConstraintWithAtt1:attr1 relatedBy:relation toItem:view2 att2:attr2 multiplier:multiplier constant:c commonSuperview:commonSuperview];
+    }
+    
+    if (!layoutConstraint) {
+        
+        layoutConstraint    = [self cg_createAttribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
+        [commonSuperview addConstraint:layoutConstraint];
+    }
     
     return layoutConstraint;
 }
 
 @end
-
-
-
