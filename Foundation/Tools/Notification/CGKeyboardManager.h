@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CGKeyboardManagerHeader.h"
 
+@import UIKit;
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGKeyboardManager;

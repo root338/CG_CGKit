@@ -20,12 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  全局设置添加约束的优先值 (0, 1000]
- *  @warning    创建约束的优先级只能在创建阶段进行设置，当添加到视图后无法进行设置，会发生运行错误
+ *  @warning    创建约束的优先级只能在创建阶段进行设置，当添加到视图后无法进行设置，会发生运行错误，当值在(0, 1000]之外时，无效
  */
 @property (nonatomic, assign) UILayoutPriority layoutPriorityForConstraint;
 
+/** 是否保存添加的约束 */
+//@property (nonatomic, assign) BOOL isSaveAddConstraint;
+
 /** 更新约束 */
 - (nullable NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c commonSuperview:(nullable UIView *)commonSuperview;
+
+
 @end
 
 @interface UIView (CGSearchConstraint)

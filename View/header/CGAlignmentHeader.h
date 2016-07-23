@@ -13,6 +13,14 @@
 
 #import <UIKit/UIKit.h>
 
+/** 对齐类型 */
+typedef NS_ENUM(NSInteger, CGAlignmentType) {
+    /** 水平对齐 */
+    CGAlignmentTypeHorizontal,
+    /** 垂直对齐 */
+    CGAlignmentTypeVertical,
+};
+
 /**
  *  水平对齐模式
  */

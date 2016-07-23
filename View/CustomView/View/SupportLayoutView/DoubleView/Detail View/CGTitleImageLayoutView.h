@@ -6,16 +6,17 @@
 //  Copyright © 2016年 ym. All rights reserved.
 //
 
-#import "CGBaseView.h"
+#import "CGDoubleLayoutBaseView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-
-@interface CGTitleImageLayoutView : CGBaseView
+@interface CGTitleImageLayoutView : CGDoubleLayoutBaseView
 
 @property (nonatomic, strong, readonly) UIImageView * imageView;
-
 @property (nonatomic, strong, readonly) UILabel     * titleLabel;
+
+/** 第一个视图为图像， 默认为NO */
+@property (nonatomic, assign) BOOL firstItemIsImageView;
 
 @end
 

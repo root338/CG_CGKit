@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置与外边界有边距的视图 */
 @interface CGLayoutMarginBaseView : CGBaseView<CGLayoutMarginDelegate>
 
-
+/** 边界距 */
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
 
-/** 目标视图 */
-@property (nullable, nonatomic, weak) UIView *targetView;
+/** 关闭延迟0s后设置约束 */
+@property (nonatomic, assign) BOOL disableRunLoopSetupConstraints;
 
 - (UIView *)cg_layoutMarginTargetView;
 @end

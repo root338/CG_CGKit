@@ -379,15 +379,6 @@
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c
 {
-    if (attr1 == NSLayoutAttributeTrailing || attr1 == NSLayoutAttributeRight || attr1 == NSLayoutAttributeBottom) {
-        c = -c;
-        
-        if (relation == NSLayoutRelationGreaterThanOrEqual) {
-            relation    = NSLayoutRelationLessThanOrEqual;
-        }else if (relation == NSLayoutRelationLessThanOrEqual) {
-            relation    = NSLayoutRelationGreaterThanOrEqual;
-        }
-    }
     
     NSAssert(self.superview, @"请添加到父视图中再添加约束");
     

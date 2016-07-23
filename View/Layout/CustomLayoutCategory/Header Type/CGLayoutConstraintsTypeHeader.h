@@ -9,6 +9,8 @@
 #ifndef CGLayoutConstraintsTypeHeader_h
 #define CGLayoutConstraintsTypeHeader_h
 
+@import UIKit;
+
 typedef /**NS_OPTIONS*/NS_ENUM(NSInteger, CGLayoutAttribute) {
     
     CGLayoutAttributeLeft       = NSLayoutAttributeLeft,

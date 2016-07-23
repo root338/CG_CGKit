@@ -10,6 +10,8 @@
 
 #import "UIView+CGAddConstraints.h"
 
+#import "CGPrintLogHeader.h"
+
 @interface CGLayoutMarginBaseView ()
 {
     BOOL didSetupConstraints;
@@ -18,9 +20,32 @@
 
 @implementation CGLayoutMarginBaseView
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        [self performSelector:@selector(delaySetupConstraints)
+                   withObject:nil
+                   afterDelay:0];
+    }
+    return self;
+}
+
+- (void)delaySetupConstraints
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    if (self.disableRunLoopSetupConstraints) {
+        return;
+    }
+    [self setupConstraints];
+}
+
 - (void)setupConstraints
 {
     UIView *targetView  = [self cg_layoutMarginTargetView];
+    CGDebugAssert(targetView != self, @"目标视图不能为self自身");
+    
     if (!targetView || targetView == self || !targetView.superview) {
         return;
     }
@@ -41,13 +66,5 @@
 }
 
 #pragma mark - 设置属性
-- (void)setMarginEdgeInsets:(UIEdgeInsets)marginEdgeInsets
-{
-    if (!UIEdgeInsetsEqualToEdgeInsets(_marginEdgeInsets, marginEdgeInsets)) {
-        
-        _marginEdgeInsets   = marginEdgeInsets;
-        [self setupConstraints];
-    }
-}
 
 @end

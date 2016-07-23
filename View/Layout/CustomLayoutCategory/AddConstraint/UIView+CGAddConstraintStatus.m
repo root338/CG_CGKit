@@ -17,6 +17,16 @@
 
 - (NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c commonSuperview:(nullable UIView *)commonSuperview
 {
+    if (att1 == NSLayoutAttributeTrailing || att1 == NSLayoutAttributeRight || att1 == NSLayoutAttributeBottom) {
+        c = -c;
+        
+        if (relation == NSLayoutRelationGreaterThanOrEqual) {
+            relation    = NSLayoutRelationLessThanOrEqual;
+        }else if (relation == NSLayoutRelationLessThanOrEqual) {
+            relation    = NSLayoutRelationGreaterThanOrEqual;
+        }
+    }
+    
     NSLayoutConstraint *layoutConstraint    = nil;
     
     layoutConstraint    = [self cg_searchAttribute:att1 relatedBy:relation toItem:item2 attribute:att2 commonSuperview:commonSuperview];
