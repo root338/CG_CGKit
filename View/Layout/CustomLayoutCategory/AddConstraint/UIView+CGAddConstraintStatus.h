@@ -14,13 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  是否在添加中更新约束
- *  @param 当设置为YES时，在添加约束前会检查添加约束是否存在，如果存在更新约束值 默认为NO
+ *  @param  当设置为YES时，在添加约束前会检查添加约束是否存在，如果存在更新约束值 默认为NO
+ *  @see    在UIView+CGAddConstraints扩展中使用
  */
 @property (nonatomic, assign) BOOL isUpdateAddConstraint;
 
 /**
  *  全局设置添加约束的优先值 (0, 1000]
  *  @warning    创建约束的优先级只能在创建阶段进行设置，当添加到视图后无法进行设置，会发生运行错误，当值在(0, 1000]之外时，无效
+ *  @see        在UIView+CGCreateConstraint扩展中使用
  */
 @property (nonatomic, assign) UILayoutPriority layoutPriorityForConstraint;
 

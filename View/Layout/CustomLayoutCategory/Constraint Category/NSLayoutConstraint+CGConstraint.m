@@ -43,7 +43,7 @@
     }
     
     //由于其他状况为 与UIViewController 的topLayoutGuide或bottomLayoutGuide的约束，这样无法获取其父视图对象
-    //所有就获取其中一个视图对象来循环遍历吧
+    //所以就获取其中一个视图对象来循环遍历吧
     if (firstItemIsView || secondItemIsView) {
         
         UIView *tempTargetView  = nil;
