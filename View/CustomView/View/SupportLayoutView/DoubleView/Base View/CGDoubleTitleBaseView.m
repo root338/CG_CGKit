@@ -7,7 +7,8 @@
 //
 
 #import "CGDoubleTitleBaseView.h"
-#import "Masonry.h"
+
+#import "UIView+CGAddConstraints.h"
 
 @interface CGDoubleTitleBaseView ()
 {
@@ -26,9 +27,9 @@
     // Drawing code
 }
 */
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         
         [self setRightViewPriority:250];
@@ -58,38 +59,43 @@
 {
     if (!didSetupConstraints) {
         
-        [self.leftView mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (self.leftView.superview) {
             
-            if (self.rightView) {
-//                make.top.leading.and.bottom.equalTo(self).with.insets(self.edgeInsetView);
-                make.top.equalTo(self.mas_top).offset(self.edgeInsetView.top);
-                make.leading.equalTo(self.mas_leading).with.offset(self.edgeInsetView.left);
-                make.bottom.equalTo(self.mas_bottom).with.offset(-self.edgeInsetView.bottom);
+            if (self.rightView.superview) {
+                
+                [self.leftView cg_autoEdgesToSuperviewEdgesWithInsets:self.edgeInsetView excludingEdge:CGLayoutEdgeTrailing];
+                
+                CGFloat viewsBetweenSpace;
+                NSLayoutRelation relation;
                 if (self.viewSpace == FLT_MAX) {
-                    make.trailing.lessThanOrEqualTo(self.rightView.mas_leading);
+                    
+                    viewsBetweenSpace   = 0;
+                    relation            = NSLayoutRelationGreaterThanOrEqual;
                 }else {
-                    make.trailing.equalTo(self.rightView.mas_leading).offset(-self.viewSpace);
+                    
+                    viewsBetweenSpace   = self.viewSpace;
+                    relation            = NSLayoutRelationEqual;
                 }
+                
+                [self.leftView cg_attribute:NSLayoutAttributeTrailing
+                                  relatedBy:relation
+                                     toItem:self.rightView
+                                  attribute:NSLayoutAttributeLeading
+                                   constant:self.viewSpace];
             }else {
-                make.edges.equalTo(self).insets(self.edgeInsetView);
+                [self.leftView cg_autoEdgesToSuperviewEdgesWithInsets:self.edgeInsetView];
             }
-            
-        }];
+        }
         
-        if (self.rightView) {
-            [self.rightView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.trailing.and.bottom.equalTo(self).insets(self.edgeInsetView);
-                make.top.equalTo(self).with.offset(self.edgeInsetView.top);
-                make.bottom.equalTo(self).with.offset(-self.edgeInsetView.bottom);
-                make.trailing.equalTo(self).with.offset(-self.edgeInsetView.right);
-            }];
+        if (self.rightView.superview) {
+            
+            [self.rightView cg_autoEdgesToSuperviewEdgesWithInsets:self.edgeInsetView excludingEdge:CGLayoutEdgeLeading];
             [self.rightView setContentHuggingPriority:self.rightViewPriority forAxis:UILayoutConstraintAxisHorizontal];
         }
         
         if (self.fixedHeight != 0) {
-            [self mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.height.equalTo(@(self.fixedHeight));
-            }];
+            
+            [self cg_autoDimension:CGDimensionHeight fixedLength:self.fixedHeight];
         }
         
         didSetupConstraints = YES;
