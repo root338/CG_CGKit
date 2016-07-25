@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 计算视图的移动坐标 */
 @interface UIView (CGSetupAnimationArea)
 
-- (void)cg_setupLineMovePointWithType:(CGLineMoveViewType)type overlayView:(UIView *)overlayView startPoint:(nullable CGPoint *)paramStartPoint endPoint:(nullable CGPoint *)paramEndPoint type:(CGLineMoveViewType)overlayViewType isShow:(CGAnimationDealWithTheWay)isShow;
+//- (void)cg_setupLineMovePointWithType:(CGLineMoveViewType)type overlayView:(UIView *)overlayView startPoint:(nullable CGPoint *)paramStartPoint endPoint:(nullable CGPoint *)paramEndPoint type:(CGLineMoveViewType)overlayViewType isShow:(CGAnimationDealWithTheWay)isShow;
 
 - (void)cg_setupLineMovePointWithOverlayView:(UIView *)overlayView startPoint:(nullable CGPoint *)paramStartPoint endPoint:(nullable CGPoint *)paramEndPoint type:(CGLineMoveViewType)type isShow:(BOOL)isShow;
 

@@ -113,6 +113,13 @@
 }
 
 #pragma mark - 计时器
+- (void)scrollingHandleTimer
+{
+    if (autoScrollTimer) {
+        [self startAutoScroll];
+    }
+}
+
 - (void)startAutoScroll
 {
     
@@ -611,7 +618,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (isDraggerPauseTimerMark) {
-        [self startAutoScroll];
+        [self scrollingHandleTimer];
         isDraggerPauseTimerMark = NO;
     }
     
@@ -623,7 +630,7 @@
     isDraggerScrollSubviewMark  = NO;
     if (!decelerate) {
         //手指离开没有减速效果时
-        [self startAutoScroll];
+        [self scrollingHandleTimer];
         isDraggerPauseTimerMark         = NO;
     }
 }

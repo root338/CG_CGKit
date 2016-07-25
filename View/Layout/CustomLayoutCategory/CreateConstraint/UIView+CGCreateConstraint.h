@@ -42,6 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置 topLayoutGuide 与视图顶部的约束(间距，约束类型) */
 - (NSLayoutConstraint *)cg_createTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation;
 
+/** 设置 topLayoutGuide 与视图顶部的约束 */
+- (NSLayoutConstraint *)cg_createTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier;
+
 /** 设置 bottomLayoutGuide 与视图顶部的约束 */
 - (NSLayoutConstraint *)cg_createBottomLayoutGuideOfViewController:(UIViewController *)viewController;
 
@@ -51,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置 bottomLayoutGuide 与视图顶部的约束(间距，约束类型) */
 - (NSLayoutConstraint *)cg_createBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation;
 
+/** 设置 bottomLayoutGuide 与视图顶部的约束 */
+- (NSLayoutConstraint *)cg_createBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier;
 @end
 
 @interface UIView (CGCreateViewAxisConstraint)
@@ -103,6 +108,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 设置两对象之间的约束(边值类型，约束类型，间距，比例值) */
 - (NSLayoutConstraint *)cg_createAttribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c;
+
+
 
 @end
 NS_ASSUME_NONNULL_END

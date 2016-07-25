@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@import UIKit;
 NS_ASSUME_NONNULL_BEGIN
 
 /** 传入的数组中的对象必须是NSLayoutConstraint类型 */

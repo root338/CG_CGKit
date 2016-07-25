@@ -8,6 +8,18 @@
 
 #import "CGLayoutManager.h"
 
+
+
+#import "NSError+CGCreateError.h"
+
+@interface CGLayoutManager ()
+
+
+
+@end
+
 @implementation CGLayoutManager
+
+
 
 @end

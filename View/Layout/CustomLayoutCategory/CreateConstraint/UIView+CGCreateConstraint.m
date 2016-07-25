@@ -7,6 +7,8 @@
 //
 
 #import "UIView+CGCreateConstraint.h"
+#import "UIView+CGAddConstraintStatus.h"
+#import "NSLayoutConstraint+CGConstraint.h"
 
 @implementation UIView (CGCreateSuperviewConstranint)
 
@@ -46,8 +48,15 @@
 
 - (NSLayoutConstraint *)cg_createTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
+    return [self cg_createTopLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation multiplier:1.0];
+}
+
+- (NSLayoutConstraint *)cg_createTopLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier
+{
+    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:multiplier constant:inset];
     
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:inset];
+    [layoutConstraint setupLayoutPriority:self.layoutPriorityForConstraint];
+    
     return layoutConstraint;
 }
 
@@ -63,13 +72,21 @@
 
 - (NSLayoutConstraint *)cg_createBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
+    return [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation multiplier:1.0];
+}
+
+- (NSLayoutConstraint *)cg_createBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier
+{
     inset   = -inset;
     if (NSLayoutRelationGreaterThanOrEqual == relation) {
         relation    = NSLayoutRelationLessThanOrEqual;
     }else if (NSLayoutRelationLessThanOrEqual == relation) {
         relation    = NSLayoutRelationGreaterThanOrEqual;
     }
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.0 constant:inset];
+    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:multiplier constant:inset];
+    
+    [layoutConstraint setupLayoutPriority:self.layoutPriorityForConstraint];
+    
     return layoutConstraint;
 }
 
@@ -99,6 +116,8 @@
 - (NSLayoutConstraint *)cg_createDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength relation:(NSLayoutRelation)relation
 {
     NSLayoutConstraint *constraint  = [NSLayoutConstraint constraintWithItem:self attribute:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:fixedLength];
+    
+    [constraint setupLayoutPriority:self.layoutPriorityForConstraint];
     return constraint;
 }
 
@@ -128,15 +147,6 @@
 
 - (NSLayoutConstraint *)cg_createAttribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c
 {
-    if (attribute == NSLayoutAttributeTrailing || attribute == NSLayoutAttributeRight || attribute == NSLayoutAttributeBottom) {
-        c = -c;
-        
-        if (relation == NSLayoutRelationGreaterThanOrEqual) {
-            relation    = NSLayoutRelationLessThanOrEqual;
-        }else if (relation == NSLayoutRelationLessThanOrEqual) {
-            relation    = NSLayoutRelationGreaterThanOrEqual;
-        }
-    }
     
     NSLayoutAttribute att2 = attribute;
     return [self cg_createAttribute:attribute relatedBy:relation toItem:view2 attribute:att2 multiplier:1.0 constant:c];
@@ -164,9 +174,20 @@
 
 - (NSLayoutConstraint *)cg_createAttribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c
 {
+    if (attr1 == NSLayoutAttributeTrailing || attr1 == NSLayoutAttributeRight || attr1 == NSLayoutAttributeBottom) {
+        c = -c;
+        
+        if (relation == NSLayoutRelationGreaterThanOrEqual) {
+            relation    = NSLayoutRelationLessThanOrEqual;
+        }else if (relation == NSLayoutRelationLessThanOrEqual) {
+            relation    = NSLayoutRelationGreaterThanOrEqual;
+        }
+    }
+    
     NSAssert(self.superview, @"请添加到父视图中再添加约束");
     
     NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
+    [layoutConstraint setupLayoutPriority:self.layoutPriorityForConstraint];
     
     return layoutConstraint;
 }

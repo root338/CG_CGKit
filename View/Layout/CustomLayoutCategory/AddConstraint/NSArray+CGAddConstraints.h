@@ -37,6 +37,9 @@ typedef NSLayoutRelation (^CGSetupSubviewLayoutRelation) (UIView *view, CGLayout
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayout;
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayout;
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithViewController:(UIViewController *)viewController;
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutWithViewController:(UIViewController *)viewController;
+
 /**
  *  设置约束  父视图 垂直
  *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束

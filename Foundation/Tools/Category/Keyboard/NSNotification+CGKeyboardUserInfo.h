@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@import UIKit;
 NS_ASSUME_NONNULL_BEGIN
 
 /** 键盘通知时使用，获取键盘的参数值 */
