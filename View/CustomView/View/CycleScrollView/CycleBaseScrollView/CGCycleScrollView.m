@@ -9,20 +9,20 @@
 #import "CGCycleScrollView.h"
 
 #import "CGScrollView.h"
-/** CGCycleContentView的子类 */
-#import "CGCycleContentView.h"
+#import "CGCycleScrollViewCellManager.h"
 
 //创建视图
 #import "UIScrollView+CGCreate.h"
 
 //设置属性
-#import "NSTimer+ChangeTimerStatus.h"
-#import "UIView+CGSetupFrame.h"
-#import "UIView+CG_CGAreaCalculate.h"
 #import "UIView+CGCreate.h"
+#import "UIView+CGSetupFrame.h"
+#import "UIScrollView+CGProperty.h"
+#import "UIView+CG_CGAreaCalculate.h"
 
 #import "CGPrintLogHeader.h"
 #import "NSArray+CGArray.h"
+#import "NSTimer+ChangeTimerStatus.h"
 
 //功能相关扩展
 #import "CGCycleScrollView+CGBuildView.h"
@@ -30,42 +30,14 @@
 
 @interface CGCycleScrollView ()<UIScrollViewDelegate>
 {
-    ///当前总的加载数
-    NSInteger _totalViews;
-    
-    CGCycleContentView *_previousView;
-    CGCycleContentView *_currentView;
-    CGCycleContentView *_nextView;
-    
-    /** 左边辅助视图 */
-    CGCycleContentView *_leftAideView;
-    /** 右边辅助视图 */
-    CGCycleContentView *_rightAideView;
-    
     ///计时器
     NSTimer *autoScrollTimer;
-    
-    ///手指拖动滑动时暂停计时器标识
-    BOOL isDraggerPauseTimerMark;
-    
-    /**
-     *  手指拖动滑动时的标识
-     *  添加标识的原因：再循环滑动的条件下,在代理方法scrollViewWillEndDragging:withVelocity:targetContentOffset:中设置偏移量{0,0}时，由于有反弹效果索引，在代理方法scrollViewDidScroll:到偏移量小于0时就会更新导致偏移量变为滑动视图宽度+视图间距，但是滑动没有停止所以还会继续滑动，导致分页效果出现问题
-     */
-    BOOL isDraggerScrollSubviewMark;
 }
-
-/** 滑动视图添加的视图集 */
-//@property (nonatomic, strong) NSMutableDictionary *cycleContentViews;
 
 ///加载的滑动视图
 @property (nonatomic, strong, readwrite) UIScrollView *cycleScrollView;
-
-/** 被缓存的视图 */
-@property (strong, nonatomic, readwrite) NSMutableDictionary *cacheViews;
-
-/** 分页视图的容器 */
-@property (strong, nonatomic) UIView *pageContentView;
+/** 添加到视图的索引集合 */
+@property (nonatomic, strong) NSMutableArray *addToViewIndexArray;
 @end
 
 @implementation CGCycleScrollView
@@ -205,7 +177,6 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadAllView) object:nil];
     
     [self setupTotalNumberWithForced:YES];
-    [self removeAllCacheViews];
     [self setupScrollContentView];
     [self reloadPageView];
     
@@ -240,24 +211,6 @@
     }
 }
 
-- (void)removeAllCacheViews
-{
-    [self.cacheViews removeAllObjects];
-}
-
-///设置滑动视图总数量(isForced是否强制获取，即不使用历史数据)
-- (void)setupTotalNumberWithForced:(BOOL)isForced
-{
-    if (isForced) {
-        _totalViews = 0;
-    }
-    
-    if (!_totalViews) {
-        _totalViews = [self.dataSource numberCycleScrollView:self];
-        !self.isCycle ?: [self updateScrollViewContentSize];
-    }
-}
-
 #pragma mark - 系统视图设置
 - (void)addSubview:(UIView *)view
 {
@@ -268,141 +221,22 @@
     }
 }
 
-#pragma mark - 创建、获取子视图
-/** 获取缓存的视图 */
-- (CGCycleContentView *)cycleContentViewAtIndex:(NSInteger)index
+#pragma mark - 添加子视图
+/** 设置需要添加的索引 */
+- (void)setupNeedAddViewIndex
 {
+    if (!self.addToViewIndexArray) {
+        self.addToViewIndexArray    = [NSMutableArray array];
+    }
     
-    return [self.cacheViews objectForKey:@(index)];
+    CGRect scrollVisibleRect    = self.cycleScrollView.scrollVisibleRect;
+    
 }
 
-/** 保存创建的视图 */
-- (void)saveCycleContentView:(CGCycleContentView *)paramCycleContentView
+- (void)setupScrollContentView
 {
+    CGRect scrollVisibleRect    = self.cycleScrollView.scrollVisibleRect;
     
-    if (self.maxCacheCountForViews > 0 && self.isCacheViews) {
-        
-        CGDebugAssert([paramCycleContentView isKindOfClass:[CGCycleContentView class]], @"若使用缓存功能必须使用CGCycleContentView类或其子类来创建滑动内容视图");
-        
-        if (!self.cacheViews) {
-            self.cacheViews = [NSMutableDictionary dictionaryWithCapacity:self.maxCacheCountForViews];
-        }
-        
-        if (paramCycleContentView) {
-            
-            if ([self cycleContentViewAtIndex:paramCycleContentView.viewIndex]) {
-                //当缓存的视图已存在
-                return;
-            }
-            
-            if (self.maxCacheCountForViews > self.cacheViews.count) {
-                //当缓存还有空余时
-                [self.cacheViews setObject:paramCycleContentView forKey:@(paramCycleContentView.viewIndex)];
-                CGInfoLog(@"添加缓存视图：%@, 视图索引：%li", paramCycleContentView, paramCycleContentView.viewIndex);
-            }else {
-                
-                __block NSInteger removeViewIndex;
-                if (self.cacheViews.count > 3) {
-                    //当缓存的视图数大于显示的视图数
-                    NSArray *indexsArr = self.cacheViews.allValues;
-                    [indexsArr enumerateObjectsUsingBlock:^(CGCycleContentView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        
-                        if ([obj isKindOfClass:[CGCycleContentView class]]) {
-                            
-                            NSInteger viewIndex = obj.viewIndex;
-                            if (viewIndex != _previousView.viewIndex && viewIndex != _currentView.viewIndex && viewIndex != _nextView.viewIndex) {
-                                //查找不是当前加载的视图索引
-                                removeViewIndex = viewIndex;
-                                *stop = YES;
-                            }
-                        }
-                        
-                    }];
-                }else {
-                    //当缓存的视图小于或等于显示的视图数时
-                    
-                    if ([self cycleContentViewAtIndex:_previousView.viewIndex]) {
-                        removeViewIndex = _previousView.viewIndex;
-                    }else if ([self cycleContentViewAtIndex:_nextView.viewIndex]) {
-                        removeViewIndex = _nextView.viewIndex;
-                    }else if ([self cycleContentViewAtIndex:_currentView.viewIndex]) {
-                        removeViewIndex = _currentView.viewIndex;
-                    }
-                }
-                
-                CGInfoLog(@"移除缓存视图：%@, 视图索引：%li", self.cacheViews[@(removeViewIndex)], removeViewIndex);
-                //移除已缓存视图
-                [self.cacheViews removeObjectForKey:@(removeViewIndex)];
-                
-                //添加新视图
-                [self.cacheViews setObject:paramCycleContentView forKey:@(paramCycleContentView.viewIndex)];
-                CGInfoLog(@"添加缓存视图：%@, 视图索引：%li", paramCycleContentView, paramCycleContentView.viewIndex);
-            }
-        }
-    }
-}
-
-/** 创建单个滑动视图 */
-- (CGCycleContentView *)createCycleContentViewAtIndex:(NSInteger)index
-{
-    CGCycleContentView *contentView = [self cycleContentViewAtIndex:index];
-    
-    NSMutableArray *didUseViewArr = [NSMutableArray arrayWithCapacity:5];
-    [didUseViewArr cg_addObject:_currentView];
-    [didUseViewArr cg_addObject:_previousView];
-    [didUseViewArr cg_addObject:_leftAideView];
-    [didUseViewArr cg_addObject:_rightAideView];
-    
-    __block BOOL  isDidUseViewMark = NO;
-    [didUseViewArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (obj == contentView) {
-            //当视图被使用时，添加标识
-            isDidUseViewMark = YES;
-            *stop   = YES;
-        }
-    }];
-    if (isDidUseViewMark) {
-        //视图无法复制，那就重新创建个
-        contentView = nil;
-    }
-    
-    if (!contentView) {
-        
-        UIView *view = [self.dataSource cycleScrollView:self viewAtIndex:index];
-        
-        CGDebugAssert(view, @"显示的视图为nil，允许的话就注释这句代码吧-_-");
-        
-        contentView = [CGCycleContentView cg_createCycleContentViewWithContentView:view index:index marginEdgeInsets:self.marginEdgeInsetForSubviews];
-        [self saveCycleContentView:contentView];
-    }else {
-        
-        //复制视图暂没有实现
-//        
-//        CGCycleContentView *newContentView;
-//        if (contentView == _currentView || contentView == _previousView || contentView == _aideView) {
-//            
-//        }
-//        //因为_nextView是最后赋值的，所以新视图不会与其相等
-//        
-//        CGInfoLog(@"复制视图：%@，视图索引：%li  --> 复制后视图：%@", contentView, contentView.viewIndex, newContentView);
-//        contentView = newContentView;
-    }
-    
-    return contentView;
-}
-
-/** 获取将要将要显示的内容视图 */
-- (CGCycleContentView *)getWillShowCycleContentViewWithType:(_CGCycleSubviewType)type
-{
-    CGCycleContentView *willCurrentCycleContentView = nil;
-    if (type == _CGCycleSubviewTypePreviousIndex) {
-        
-        willCurrentCycleContentView = _previousView;
-    }else {
-        
-        willCurrentCycleContentView = _nextView;
-    }
-    return willCurrentCycleContentView;
 }
 
 #pragma mark - 更新布局
@@ -437,91 +271,6 @@
     }
 }
 
-///更新显示视图的显示区域
-- (void)updateCycleScrollViewLayoutSubviews
-{
-    if (_previousView && !_previousView.superview) {
-        [self.cycleScrollView addSubview:_previousView];
-    }
-    if (_currentView && !_currentView.superview) {
-        [self.cycleScrollView addSubview:_currentView];
-    }
-    if (_nextView && !_nextView.superview) {
-        [self.cycleScrollView addSubview:_nextView];
-    }
-    if (_leftAideView && !_leftAideView.superview) {
-        [self.cycleScrollView addSubview:_leftAideView];
-    }
-    if (_rightAideView && !_rightAideView.superview) {
-        [self.cycleScrollView addSubview:_rightAideView];
-    }
-    
-    NSArray *cycleScrollViewSubviews = self.cycleScrollView.subviews;
-    
-    [cycleScrollViewSubviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isKindOfClass:[CGCycleContentView class]]) {
-            if (_previousView != obj && _currentView != obj && _nextView != obj && _leftAideView != obj && _rightAideView != obj) {
-                //当显示的视图不是CGCycleContentView类型且不等显示的视图时判定为多余视图，移除!!!
-                [obj removeFromSuperview];
-            }
-        }
-    }];
-    
-    CGFloat currentViewSpace    = _previousView ? self.subviewSpace : 0;
-    
-    //只要有数据_currentView就肯定不为空，为了计算scrollView.contentSize不会出现偏差
-    CGFloat nextViewSpace       = _nextView ? self.subviewSpace : 0;
-    
-    CGPoint contentOffset       = CGPointZero;
-    CGSize scrollViewSize       = self.cycleScrollView.size;
-    
-    CGRect leftAideViewFrame    = CGRectMake(0, 0, _leftAideView ? scrollViewSize.width : 0, _leftAideView ? scrollViewSize.height : 0);
-    CGRect previousViewFrame    = CGRectMake(0, 0, _previousView ? scrollViewSize.width : 0, _previousView ? scrollViewSize.height : 0);
-    
-    CGRect currentViewFrame     = CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height);
-    CGRect nextViewFrame        = CGRectMake(0, 0, _nextView ? scrollViewSize.width : 0, _nextView ? scrollViewSize.height : 0);
-    CGRect rightAideViewFrame   = CGRectMake(0, 0, _rightAideView ? scrollViewSize.width : 0, _rightAideView ? scrollViewSize.height : 0);
-    
-    if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
-        
-        leftAideViewFrame.origin.x  = -(scrollViewSize.width + currentViewSpace);
-        currentViewFrame.origin.x   = CGRectGetMaxX(previousViewFrame) + currentViewSpace;
-        nextViewFrame.origin.x      = CGRectGetMaxX(currentViewFrame) + nextViewSpace;
-        rightAideViewFrame.origin.x = CGRectGetMaxX(nextViewFrame) + nextViewSpace;
-        
-        contentOffset               = CGPointMake(CGRectGetMinX(currentViewFrame), 0);
-        
-    }else {
-        
-        leftAideViewFrame.origin.y  = - (scrollViewSize.height + currentViewSpace);
-        currentViewFrame.origin.y   = CGRectGetMaxY(previousViewFrame) + currentViewSpace;
-        nextViewFrame.origin.y      = CGRectGetMaxY(currentViewFrame) + nextViewSpace;
-        rightAideViewFrame.origin.y = CGRectGetMaxY(nextViewFrame) + nextViewSpace;
-        
-        contentOffset               = CGPointMake(0, CGRectGetMinY(currentViewFrame));
-    }
-    
-    _leftAideView.frame         = leftAideViewFrame;
-    _previousView.frame         = previousViewFrame;
-    _currentView.frame          = currentViewFrame;
-    _nextView.frame             = nextViewFrame;
-    _rightAideView.frame        = rightAideViewFrame;
-    
-    [self.cycleScrollView setContentOffset:contentOffset];
-    
-    CGInfoLog(@"更新视图内容，设置滑动视图偏移量:%@", NSStringFromCGPoint(self.cycleScrollView.contentOffset));
-    if (!self.isCycle) {
-        
-        CGSize contentSize;
-        if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
-            contentSize = CGSizeMake(CGRectGetMaxX(nextViewFrame), self.cycleScrollView.height);
-        }else {
-            contentSize = CGSizeMake(self.cycleScrollView.width, CGRectGetMaxY(nextViewFrame));
-        }
-        [self setupScrollViewConentSize:contentSize];
-    }
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -531,54 +280,6 @@
     [self updateScrollViewContentSize];
     [self updateCycleScrollViewLayoutSubviews];
     
-}
-
-///设置滑动内容视图
-- (void)setupScrollContentView
-{
-    [self setupTotalNumberWithForced:NO];
-    
-    if (_totalViews <= 0) {
-        
-        CGLog(@"没有任何需要加载的视图");
-        return;
-    }
-    NSNumber * leftAideIndex    = [self getViewIndexForType:_CGCycleSubviewTypePreviousAideView];
-    NSNumber * previousIndex    = [self getViewIndexForType:_CGCycleSubviewTypePreviousIndex];
-    NSNumber * currentIndex     = [self getViewIndexForType:_CGCycleSubviewTypeCurrentIndex];
-    NSNumber * nextIndex        = [self getViewIndexForType:_CGCycleSubviewTypeNextIndex];
-    NSNumber * rightAideIndex   = [self getViewIndexForType:_CGCycleSubviewTypeNextAideView];
-    
-    //重置视图
-    _leftAideView   = nil;
-    _previousView   = nil;
-    _currentView    = nil;
-    _nextView       = nil;
-    _rightAideView  = nil;
-    
-    if (leftAideIndex) {
-        //当存在左边辅助视图时
-        _leftAideView   = [self createCycleContentViewAtIndex:leftAideIndex.integerValue];
-    }
-    
-    if (previousIndex) {
-        //当不满足不循环滑动且上一视图的索引比当前视图索引不小于时执行
-        _previousView   = [self createCycleContentViewAtIndex:previousIndex.integerValue];
-    }
-    
-    _currentView        = [self createCycleContentViewAtIndex:currentIndex.integerValue];
-    
-    if (nextIndex) {
-        //当不满足不循环滑动且下一视图的索引比当前视图索引不大于时执行
-        _nextView       = [self createCycleContentViewAtIndex:nextIndex.integerValue];
-    }
-    
-    if (rightAideIndex) {
-        //当存在右边辅助视图时
-        _rightAideView  = [self createCycleContentViewAtIndex:rightAideIndex.integerValue];
-    }
-    
-    [self updateCycleScrollViewLayoutSubviews];
 }
 
 ///滑动到下一视图
@@ -591,7 +292,6 @@
         
         self.currentIndex = nextIndex.integerValue;
     }
-    
 }
 
 //滑动到上一视图
@@ -849,16 +549,6 @@
     _cycleScrollView = [CGScrollView cg_createWithScrollViewWithShowScrollIndicator:NO pagingEnabled:NO];
     _cycleScrollView.delegate = self;
     return _cycleScrollView;
-}
-
-- (UIView *)pageContentView
-{
-    if (_pageContentView) {
-        return _pageContentView;
-    }
-    
-    _pageContentView = [UIView cg_createView];
-    return _pageContentView;
 }
 
 - (void)setClipsToBounds:(BOOL)clipsToBounds

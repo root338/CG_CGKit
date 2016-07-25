@@ -10,6 +10,7 @@
 
 #import "CGScrollViewDirectionHeader.h"
 
+@class CGCycleScrollViewCell;
 @class CGCycleScrollView;
 
 /**
@@ -52,7 +53,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  *
  *  @return 返回设置的当前的滑动视图
  */
-- (UIView *)cycleScrollView:(CGCycleScrollView *)cycleScrollView viewAtIndex:(NSInteger)index;
+- (__kindof CGCycleScrollViewCell *)cycleScrollView:(CGCycleScrollView *)cycleScrollView cellAtIndex:(NSInteger)index;
 
 @optional
 /**
@@ -71,6 +72,10 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 @protocol CGCycleScrollViewDelegate <NSObject>
 
 @optional
+
+/** 设置加载cell的大小 */
+- (CGSize)cycleScrollView:(CGCycleScrollView *)cycleScrollView sizeAtIndex:(NSInteger)index;
+
 /**
  *  已选择时的视图
  *
@@ -142,9 +147,6 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 /** 滑动时，子视图的显示样式 */
 @property (nonatomic, assign) CGCycleViewScrollAnimationStyle animationStyle;
 
-///加载的滑动视图
-@property (nonatomic, strong, readonly) UIScrollView *cycleScrollView;
-
 #pragma mark - 内容设置
 /**
  *  当前显示视图的索引 
@@ -154,9 +156,6 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 
 ///滑动视图相对父视图的四周边距
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForScrollView;
-
-///滑动视图内部子视图内容的四周边距
-@property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForSubviews;
 
 /** 设置单个内容视图之间的间距 */
 @property (assign, nonatomic) CGFloat subviewSpace;
@@ -183,19 +182,6 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  */
 @property (assign, nonatomic) BOOL isCloseDefaultTimerSetting;
 
-#pragma mark - 缓存设置
-/**
- *  是否缓存已创建的视图
- *  当设值为YES时，maxCacheCountForViews属性为0时，默认设置为 5
- */
-@property (assign, nonatomic) BOOL isCacheViews;
-
-/** 缓存的最大数 */
-@property (assign, nonatomic) NSUInteger maxCacheCountForViews;
-
-/** 被缓存的视图 */
-@property (strong, nonatomic, readonly) NSMutableDictionary *cacheViews;
-
 /**
  *  刷新视图
  */
@@ -205,11 +191,6 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  *  刷新分页视图 
  */
 - (void)reloadPageView;
-
-/**
- *  清除缓存
- */
-- (void)removeAllCacheViews;
 
 /**
  *  创建循环滑动视图
