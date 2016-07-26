@@ -10,8 +10,7 @@
 
 @import UIKit;
 
-@class CGCycleScrollViewCell;
-@protocol CGCycleScrollView;
+@class CGCycleScrollViewCell, CGCycleScrollView;
 NS_ASSUME_NONNULL_BEGIN
 
 /** 循环滑动视图的cell的管理类 */

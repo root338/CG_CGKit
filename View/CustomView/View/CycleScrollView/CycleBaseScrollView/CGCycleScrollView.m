@@ -12,6 +12,7 @@
 #import "CGCycleScrollViewCellManager.h"
 
 //创建视图
+#import "CGCycleCellConfigModel.h"
 #import "UIScrollView+CGCreate.h"
 
 //设置属性
@@ -36,8 +37,8 @@
 
 ///加载的滑动视图
 @property (nonatomic, strong, readwrite) UIScrollView *cycleScrollView;
-/** 添加到视图的索引集合 */
-@property (nonatomic, strong) NSMutableArray *addToViewIndexArray;
+/** 加载cell的配置集合 */
+@property (nonatomic, strong) NSMutableArray<CGCycleCellConfigModel *> *cellsConfigArray;
 @end
 
 @implementation CGCycleScrollView
@@ -225,11 +226,49 @@
 /** 设置需要添加的索引 */
 - (void)setupNeedAddViewIndex
 {
-    if (!self.addToViewIndexArray) {
-        self.addToViewIndexArray    = [NSMutableArray array];
+    if (!self.cellsConfigArray) {
+        self.cellsConfigArray   = [NSMutableArray array];
+    }else {
+        [self.cellsConfigArray removeAllObjects];
     }
     
+    NSInteger totalIndex        = [self.dataSource numberCycleScrollView:self];
     CGRect scrollVisibleRect    = self.cycleScrollView.scrollVisibleRect;
+    
+    NSInteger firstIndex        = self.currentIndex;
+    
+    while (firstIndex < totalIndex) {
+        
+        CGCycleCellConfigModel *config = [[CGCycleCellConfigModel alloc] initWithIndex:firstIndex];
+        
+    }
+}
+
+- (CGRect)cycleCellFrameAtIndex:(NSInteger)index
+{
+    CGPoint point;
+    CGSize  size;
+    CGFloat length;
+    CGCycleCellPosition cellPosition;
+    
+    //设置坐标
+    if ([self.delegate respondsToSelector:@selector(cycleScrollView:pointAtIndex:)]) {
+        point   = [self.delegate cycleScrollView:self pointAtIndex:index];
+    }else if ([self.delegate respondsToSelector:@selector(cycleScrollView:postitionAtIndex:)]) {
+        cellPosition    = [self.delegate cycleScrollView:self postitionAtIndex:index];
+    }else {
+        cellPosition    = self.cellPosition;
+    }
+    
+    //设置大小
+    if ([self.delegate respondsToSelector:@selector(cycleScrollView:sizeAtIndex:)]) {
+        size    = [self.delegate cycleScrollView:self sizeAtIndex:index];
+    }else if ([self.delegate respondsToSelector:@selector(cycleScrollView:lenghtAtIndex:)]) {
+        length  = [self.delegate cycleScrollView:self lenghtAtIndex:index];
+    }else {
+        length  = self.cellLength;
+    }
+    
     
 }
 

@@ -27,6 +27,18 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
     CGCycleViewScrollDirectionVertical,
 };
 
+/** cell的位置 */
+typedef NS_ENUM(NSInteger, CGCycleCellPosition) {
+    /** 空 */
+    CGCycleCellPositionNone,
+    /** 顶部 */
+    CGCycleCellPositionTop,
+    /** 中间 */
+    CGCycleCellPositionMiddle,
+    /** 底部 */
+    CGCycleCellPositionBottom,
+};
+
 /** 滑动时视图根据滑动时的样式变化 */
 typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
     
@@ -73,8 +85,26 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 
 @optional
 
+/** 
+ *  设置cell的边长 
+ *  @param 当横向滑动时，该值表示宽度，高度和滑动视图相同
+ *  @param 当纵向滑动时，该值表示高度，宽度和滑动视图相同
+ *  @param 当实现代理方法cycleScrollView:sizeAtIndex:时，此方法被忽略
+ */
+- (CGFloat)cycleScrollView:(CGCycleScrollView *)cycleScrollView lenghtAtIndex:(NSInteger)index;
+
 /** 设置加载cell的大小 */
 - (CGSize)cycleScrollView:(CGCycleScrollView *)cycleScrollView sizeAtIndex:(NSInteger)index;
+
+/**
+ *  设置cell坐标的显示位置
+ *
+ *  @param 当实现代理方法cycleScrollView:pointAtIndex:时，此方法被忽略
+ */
+- (CGCycleCellPosition)cycleScrollView:(CGCycleScrollView *)cycleScrollView postitionAtIndex:(NSInteger)index;
+
+/** 设置加载cell的坐标 */
+- (CGPoint)cycleScrollView:(CGCycleScrollView *)cycleScrollView pointAtIndex:(NSInteger)index;
 
 /**
  *  已选择时的视图
@@ -154,11 +184,20 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  */
 @property (nonatomic, assign) NSInteger currentIndex;
 
-///滑动视图相对父视图的四周边距
-@property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForScrollView;
+/////滑动视图相对父视图的四周边距
+//@property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForScrollView;
 
 /** 设置单个内容视图之间的间距 */
-@property (assign, nonatomic) CGFloat subviewSpace;
+//@property (assign, nonatomic) CGFloat subviewSpace;
+
+/** cell 中间的间距 */
+@property (nonatomic, assign) CGFloat cellbetweenSpace;
+
+/** cell 的边长 */
+@property (nonatomic, assign) CGFloat cellLength;
+
+/** cell 的位置 */
+@property (nonatomic, assign) CGCycleCellPosition cellPosition;
 
 /** 
  *  是否分页
