@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CGCycleCellConfigModel : NSObject
 
 /** 索引 */
-@property (nonatomic, assign, readonly) NSInteger index;
+@property (nonatomic, assign) NSInteger index;
 
 /** 显示区域 */
 @property (nonatomic, assign) CGRect    frame;
@@ -25,5 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) CGCycleScrollViewCell *cell;
 
 - (instancetype)initWithIndex:(NSInteger)index;
+
+- (void)clearAllValue;
 @end
 NS_ASSUME_NONNULL_END

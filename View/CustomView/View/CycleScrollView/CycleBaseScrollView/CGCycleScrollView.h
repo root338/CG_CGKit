@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 
 #pragma mark - 只读
 /** 加载的视图总数 */
-@property (assign, nonatomic, readonly) NSInteger totalViewNumber;
+//@property (assign, nonatomic, readonly) NSInteger totalViewNumber;
 
 #pragma mark - 代理
 /**
@@ -225,11 +225,6 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  *  刷新视图
  */
 - (void)reloadAllView;
-
-/**
- *  刷新分页视图 
- */
-- (void)reloadPageView;
 
 /**
  *  创建循环滑动视图

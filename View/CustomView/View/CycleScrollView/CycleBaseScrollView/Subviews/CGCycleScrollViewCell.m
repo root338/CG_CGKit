@@ -39,11 +39,13 @@
     if (self) {
         
         _contentView    = [[UIView alloc] init];
-        [_contentView cg_autoEdgesInsetsZeroToSuperview];
+        [self addSubview:_contentView];
         
         _cellClickButton    = [UIButton buttonWithType:UIButtonTypeSystem];
         [_contentView addSubview:_cellClickButton];
         [_cellClickButton addTarget:self action:@selector(handleClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_contentView cg_autoEdgesInsetsZeroToSuperview];
         [_cellClickButton cg_autoEdgesInsetsZeroToSuperview];
     }
     return self;

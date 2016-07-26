@@ -10,8 +10,6 @@
 
 @interface CGCycleCellConfigModel ()
 
-@property (nonatomic, assign, readwrite) NSInteger index;
-
 @end
 
 @implementation CGCycleCellConfigModel
@@ -23,6 +21,13 @@
         _index  = index;
     }
     return self;
+}
+
+- (void)clearAllValue
+{
+    self.frame  = CGRectZero;
+    self.index  = 0;
+    self.cell   = nil;
 }
 
 @end

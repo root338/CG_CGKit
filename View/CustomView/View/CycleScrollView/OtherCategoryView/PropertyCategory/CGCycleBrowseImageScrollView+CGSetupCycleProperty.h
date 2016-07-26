@@ -6,11 +6,11 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "CGCycleBrowseImageScrollView.h"
-
-/** 对滑动视图的属性进行设置 */
-@interface CGCycleBrowseImageScrollView (CGSetupCycleProperty)
-
-
-
-@end
+//#import "CGCycleBrowseImageScrollView.h"
+//
+///** 对滑动视图的属性进行设置 */
+//@interface CGCycleBrowseImageScrollView (CGSetupCycleProperty)
+//
+//
+//
+//@end
