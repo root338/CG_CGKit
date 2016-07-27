@@ -93,4 +93,11 @@
     }
 }
 
+- (void)cg_insertObject:(id)anObject atIndex:(NSUInteger)index
+{
+    if (anObject) {
+        [self insertObject:anObject atIndex:index];
+    }
+}
+
 @end

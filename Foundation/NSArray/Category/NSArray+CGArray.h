@@ -29,5 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_removeObjectAtIndex:(NSUInteger)index;
 
 - (void)cg_addObject:(ObjectType)anObject;
+
+- (void)cg_insertObject:(ObjectType)anObject atIndex:(NSUInteger)index;
 @end
 NS_ASSUME_NONNULL_END

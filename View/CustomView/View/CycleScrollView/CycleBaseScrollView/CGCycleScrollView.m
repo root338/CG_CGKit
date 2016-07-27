@@ -10,6 +10,7 @@
 
 #import "CGScrollView.h"
 #import "CGCycleScrollViewCell.h"
+#import "CGCycleScrollViewBuildLayout.h"
 #import "CGCycleScrollViewCellManager.h"
 
 //创建视图
@@ -41,8 +42,8 @@
 @property (nonatomic, strong, readwrite) UIScrollView *cycleScrollView;
 
 @property (nonatomic, strong) CGCycleScrollViewCellManager *cellManager;
-/** 加载cell的配置集合 */
-@property (nonatomic, strong) NSMutableArray<CGCycleCellConfigModel *> *cellsConfigArray;
+@property (nonatomic, strong) CGCycleScrollViewBuildLayout *cellBuildLayout;
+
 @end
 
 @implementation CGCycleScrollView
@@ -197,158 +198,45 @@
 #pragma mark - 系统视图设置
 
 #pragma mark - 添加子视图
-/** 设置需要添加的索引 */
-- (void)setupNeedAddViewIndex
-{
-    if (CGSizeEqualToSize(self.size, CGSizeZero)) {
-        [self.cellsConfigArray removeAllObjects];
-        return;
-    }
-    if (!self.cellsConfigArray) {
-        self.cellsConfigArray   = [NSMutableArray array];
-    }
-    
-    NSInteger totalIndex        = [self.dataSource numberCycleScrollView:self];
-    
-    if (totalIndex <= 0) {
-        return;
-    }
-    CGRect scrollVisibleRect    = self.cycleScrollView.scrollVisibleRect;
-    
-    NSInteger firstIndex        = self.currentIndex;
-    
-    CGPoint cellPoint           = CGPointZero;
-    CGSize  cellSize            = CGSizeZero;
-    NSInteger loadIndex         = firstIndex;
-    if (self.isCycle) {
-        loadIndex   -= 1;
-        if (loadIndex < 0) {
-            loadIndex   = totalIndex - 1;
-        }
-    }
-    
-    NSInteger i                 = 0;
-    for (;;) {
-        
-        CGCycleCellConfigModel *config = [self.cellsConfigArray cg_objectAtIndex:i];
-        if (config == nil) {
-            config  = [[CGCycleCellConfigModel alloc] initWithIndex:firstIndex];
-            [self.cellsConfigArray addObject:config];
-        }
-        
-        cellSize  = [self cycleCellFrameAtIndex:loadIndex];
-        
-        config.index    = loadIndex;
-        config.frame    = (CGRect){cellPoint, cellSize};
-        
-        if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
-            
-            cellPoint   = CGPointMake(cellPoint.x + cellSize.width, cellPoint.y);
-        }else {
-            
-            cellPoint   = CGPointMake(cellPoint.x, cellSize.height + cellPoint.y);
-        }
-        i++;
-        
-        if (!CGRectContainsRect(scrollVisibleRect, config.frame)) {
-            
-            break;
-        }
-        
-        loadIndex += 1;
-        if (self.isCycle) {
-            if (loadIndex >= totalIndex) {
-                loadIndex   = 0;
-            }
-        }else {
-            if (loadIndex >= totalIndex) {
-                break;
-            }
-        }
-    }
-    
-    if (self.cellsConfigArray.count > i) {
-        [self.cellsConfigArray removeObjectsInRange:NSMakeRange(0, self.cellsConfigArray.count - i)];
-    }
-}
 
-/** 计算指定索引视图的大小 */
-- (CGSize)cycleCellFrameAtIndex:(NSInteger)index
-{
-//    CGPoint point;
-    CGSize  size    = CGSizeZero;
-    CGFloat length  = 0.0;
-//    CGCycleCellPosition cellPosition    = CGCycleCellPositionNone;
-    
-//    //设置坐标
-//    if ([self.delegate respondsToSelector:@selector(cycleScrollView:pointAtIndex:)]) {
-//        point   = [self.delegate cycleScrollView:self pointAtIndex:index];
-//    }else if ([self.delegate respondsToSelector:@selector(cycleScrollView:postitionAtIndex:)]) {
-//        cellPosition    = [self.delegate cycleScrollView:self postitionAtIndex:index];
-//    }else {
-//        cellPosition    = self.cellPosition;
-//    }
-    
-    //设置大小
-//    if ([self.delegate respondsToSelector:@selector(cycleScrollView:sizeAtIndex:)]) {
-//        size    = [self.delegate cycleScrollView:self sizeAtIndex:index];
-//    }else
-    if ([self.delegate respondsToSelector:@selector(cycleScrollView:lenghtAtIndex:)]) {
-        length  = [self.delegate cycleScrollView:self lenghtAtIndex:index];
-    }else {
-        length  = self.cellLength;
-    }
-    
-    if (CGSizeEqualToSize(size, CGSizeZero)) {
-        
-        if (length > 0) {
-            if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
-                size    = CGSizeMake(length, self.height);
-            }else if (self.scrollDirection == CGCycleViewScrollDirectionVertical) {
-                size    = CGSizeMake(self.width, length);
-            }
-        }else {
-            
-            //当size为{0,0}时，设置cell大小等于循环视图大小
-            size    = self.size;
-        }
-    }
-    
-//    if (CGPointEqualToPoint(point, CGPointZero)) {
-//        
-//        switch (cellPosition) {
-//            case CGCycleCellPositionMiddle:
-//                point   = CG_CGCenterOriginWith(self.size, size);
-//                break;
-//            case CGCycleCellPositionBottom:
-//                point   = CGPointMake(0, self.height - size.height);
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//    
-//    return (CGRect){point, size};
-    return size;
-}
-
-- (void)setupVisibleRectInCells
+- (void)setupVisibleRectInCells:(NSArray<CGCycleCellConfigModel *> *)cellsConfigArray
 {
     [self.cycleScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.cellsConfigArray enumerateObjectsUsingBlock:^(CGCycleCellConfigModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [cellsConfigArray enumerateObjectsUsingBlock:^(CGCycleCellConfigModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        obj.cell    = [self.dataSource cycleScrollView:self cellAtIndex:obj.index];
-        obj.cell.frame  = obj.frame;
-        [self.cycleScrollView addSubview:obj.cell];
+        if (CGSizeEqualToSize(obj.frame.size, CGSizeZero)) {
+            obj.cell    = nil;
+        }else {
+            
+            obj.cell    = [self.dataSource cycleScrollView:self cellAtIndex:obj.index];
+            obj.cell.frame  = obj.frame;
+            [self.cycleScrollView addSubview:obj.cell];
+        }
     }];
 }
 
 - (void)setupScrollContentView
 {
-    [self setupNeedAddViewIndex];
-    if (self.cellsConfigArray) {
-        [self setupVisibleRectInCells];
+    if (!self.cellBuildLayout) {
+        self.cellBuildLayout    = [[CGCycleScrollViewBuildLayout alloc] init];
+        self.cellBuildLayout.cycleScrollView    = self;
+        self.cellBuildLayout.scrollView         = self.cycleScrollView;
     }
+    NSArray<CGCycleCellConfigModel *> *cellsConfigArr = [self.cellBuildLayout setupBuildLayoutCells];
+    if (cellsConfigArr.count) {
+        [self setupVisibleRectInCells:cellsConfigArr];
+    }
+    
+    CGSize contentSize = [self.cellBuildLayout setupScrollViewDidReloadContentSize];
+    if (!CGSizeEqualToSize(self.cycleScrollView.contentSize, contentSize)) {
+        self.cycleScrollView.contentSize    = contentSize;
+    }
+    
+    CGPoint contentOffset   = [self.cellBuildLayout setupScrollViewDidReloadContentOffset];
+    if (!CGPointEqualToPoint(self.cycleScrollView.contentOffset, contentOffset)) {
+        [self.cycleScrollView setContentOffset:contentOffset];
+    }
+    
 }
 
 #pragma mark - 更新布局
