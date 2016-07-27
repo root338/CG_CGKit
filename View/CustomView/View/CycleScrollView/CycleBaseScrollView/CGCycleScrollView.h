@@ -94,17 +94,17 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 - (CGFloat)cycleScrollView:(CGCycleScrollView *)cycleScrollView lenghtAtIndex:(NSInteger)index;
 
 /** 设置加载cell的大小 */
-- (CGSize)cycleScrollView:(CGCycleScrollView *)cycleScrollView sizeAtIndex:(NSInteger)index;
+//- (CGSize)cycleScrollView:(CGCycleScrollView *)cycleScrollView sizeAtIndex:(NSInteger)index;
 
 /**
  *  设置cell坐标的显示位置
  *
  *  @param 当实现代理方法cycleScrollView:pointAtIndex:时，此方法被忽略
  */
-- (CGCycleCellPosition)cycleScrollView:(CGCycleScrollView *)cycleScrollView postitionAtIndex:(NSInteger)index;
+//- (CGCycleCellPosition)cycleScrollView:(CGCycleScrollView *)cycleScrollView postitionAtIndex:(NSInteger)index;
 
 /** 设置加载cell的坐标 */
-- (CGPoint)cycleScrollView:(CGCycleScrollView *)cycleScrollView pointAtIndex:(NSInteger)index;
+//- (CGPoint)cycleScrollView:(CGCycleScrollView *)cycleScrollView pointAtIndex:(NSInteger)index;
 
 /**
  *  已选择时的视图
@@ -197,7 +197,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 @property (nonatomic, assign) CGFloat cellLength;
 
 /** cell 的位置 */
-@property (nonatomic, assign) CGCycleCellPosition cellPosition;
+//@property (nonatomic, assign) CGCycleCellPosition cellPosition;
 
 /** 
  *  是否分页

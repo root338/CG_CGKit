@@ -89,7 +89,7 @@
     _cellLength         = 0;
     _currentIndex       = 0;
     _cellbetweenSpace   = 0;
-    _cellPosition       = CGCycleCellPositionNone;
+//    _cellPosition       = CGCycleCellPositionNone;
     
     _cycleScrollView = [CGScrollView cg_createWithScrollViewWithShowScrollIndicator:NO pagingEnabled:NO];
     _cycleScrollView.delegate = self;
@@ -209,6 +209,10 @@
     }
     
     NSInteger totalIndex        = [self.dataSource numberCycleScrollView:self];
+    
+    if (totalIndex <= 0) {
+        return;
+    }
     CGRect scrollVisibleRect    = self.cycleScrollView.scrollVisibleRect;
     
     NSInteger firstIndex        = self.currentIndex;
@@ -216,8 +220,15 @@
     CGPoint cellPoint           = CGPointZero;
     CGSize  cellSize            = CGSizeZero;
     NSInteger loadIndex         = firstIndex;
+    if (self.isCycle) {
+        loadIndex   -= 1;
+        if (loadIndex < 0) {
+            loadIndex   = totalIndex - 1;
+        }
+    }
+    
     NSInteger i                 = 0;
-    for (; ;) {
+    for (;;) {
         
         CGCycleCellConfigModel *config = [self.cellsConfigArray cg_objectAtIndex:i];
         if (config == nil) {
@@ -279,9 +290,10 @@
 //    }
     
     //设置大小
-    if ([self.delegate respondsToSelector:@selector(cycleScrollView:sizeAtIndex:)]) {
-        size    = [self.delegate cycleScrollView:self sizeAtIndex:index];
-    }else if ([self.delegate respondsToSelector:@selector(cycleScrollView:lenghtAtIndex:)]) {
+//    if ([self.delegate respondsToSelector:@selector(cycleScrollView:sizeAtIndex:)]) {
+//        size    = [self.delegate cycleScrollView:self sizeAtIndex:index];
+//    }else
+    if ([self.delegate respondsToSelector:@selector(cycleScrollView:lenghtAtIndex:)]) {
         length  = [self.delegate cycleScrollView:self lenghtAtIndex:index];
     }else {
         length  = self.cellLength;
