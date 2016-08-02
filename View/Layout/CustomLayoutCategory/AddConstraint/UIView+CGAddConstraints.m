@@ -257,6 +257,16 @@
     return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:0];
 }
 
+- (NSLayoutConstraint *)cg_autoDimensionScale:(CGFloat)scale
+{
+    return [self cg_attribute:NSLayoutAttributeWidth
+                    relatedBy:NSLayoutRelationEqual
+                       toItem:self
+                    attribute:NSLayoutAttributeHeight
+                   multiplier:scale
+                     constant:0];
+}
+
 @end
 
 @implementation UIView (CGViewControllerConstraint)

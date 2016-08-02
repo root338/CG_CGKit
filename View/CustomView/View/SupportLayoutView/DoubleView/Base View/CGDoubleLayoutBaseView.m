@@ -27,6 +27,15 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        _marginEdgeInsets           = UIEdgeInsetsZero;
+        _firstTargetViewEdgeInsets  = UIEdgeInsetsZero;
+        _secondTargetViewEdgeInsets = UIEdgeInsetsZero;
+        _targetViewsBetweenSapce    = 0;
+        
+        _firstItemSize              = CGSizeZero;
+        _secondItemSize             = CGSizeZero;
+        
         _contentView    = [[UIView alloc] init];
         [self addSubview:_contentView];
         
@@ -76,13 +85,8 @@
         secondExcludingEdge = CGLayoutEdgeTop;
     }
     
-    if (!CGSizeEqualToSize(CGSizeZero, self.firstItemSize)) {
-        [firstTargetView cg_autoSetupViewSize:self.firstItemSize];
-    }
-    
-    if (!CGSizeEqualToSize(CGSizeZero, self.secondItemSize)) {
-        [secondTargetView cg_autoSetupViewSize:self.secondItemSize];
-    }
+    [self setupTargetView:firstTargetView size:self.firstItemSize];
+    [self setupTargetView:secondTargetView size:self.secondItemSize];
     
     [firstTargetView cg_attribute:(NSLayoutAttribute)firstExcludingEdge
                            toItem:secondTargetView
@@ -90,6 +94,17 @@
                          constant:self.targetViewsBetweenSapce];
     [firstTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.firstTargetViewEdgeInsets excludingEdge:firstExcludingEdge];
     [secondTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.secondTargetViewEdgeInsets excludingEdge:secondExcludingEdge];
+}
+
+- (void)setupTargetView:(UIView *)targetView size:(CGSize)size
+{
+    if (size.width > 0.00001) {
+        [targetView cg_autoDimension:CGDimensionWidth fixedLength:size.width];
+    }
+    
+    if (size.height > 0.00001) {
+        [targetView cg_autoDimension:CGDimensionHeight fixedLength:size.height];
+    }
 }
 
 #pragma mark - CGDoubleLayoutDelegate

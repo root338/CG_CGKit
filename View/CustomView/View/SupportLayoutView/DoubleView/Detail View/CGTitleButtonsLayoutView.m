@@ -29,8 +29,8 @@
         _firstButton    = [UIButton buttonWithType:UIButtonTypeSystem];
         _secondButton     = [UIButton buttonWithType:UIButtonTypeSystem];
         
-        [self addSubview:_firstButton];
-        [self addSubview:_secondButton];
+        [self.contentView addSubview:_firstButton];
+        [self.contentView addSubview:_secondButton];
     }
     
     return self;
