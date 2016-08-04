@@ -90,6 +90,13 @@
     }
 }
 
+- (void)setupLineType:(LineBoxType)lineType color:(UIColor *)lineColor length:(CGFloat)length
+{
+    self.rectCorner = lineType;
+    self.lineColor  = lineColor;
+    self.lineWidth  = length;
+}
+
 #pragma mark 设置属性
 - (void)setLineColor:(UIColor *)lineColor
 {

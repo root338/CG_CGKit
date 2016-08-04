@@ -47,4 +47,6 @@
  */
 @property (strong, nonatomic) UIImage *lineHorizontalImage;
 @property (strong, nonatomic) UIImage *lineVerticalImage;
+
+- (void)setupLineType:(LineBoxType)lineType color:(UIColor *)lineColor length:(CGFloat)length;
 @end
