@@ -301,40 +301,40 @@
 //    }
 //}
 //
-///** 分页时重置滑动停止坐标 */
-//- (CGPoint)nearestTargetOffsetForOffset:(CGPoint)offset
-//{
-//    CGFloat     pageSize;
-//    NSInteger   page;
-//    CGFloat     targetSpace;
-//    CGPoint     targetOffset;
-//    
-//    if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
-//        
-//        pageSize = self.cycleScrollView.width + self.subviewSpace;
-//        page = roundf(offset.x / pageSize);
-//        targetSpace = pageSize * page;
-//        targetOffset    = CGPointMake(targetSpace, offset.y);
-//    }else {
-//        
-//        pageSize = self.cycleScrollView.height + self.subviewSpace;
-//        page = roundf(offset.y / pageSize);
-//        targetSpace = pageSize * page;
-//        targetOffset    = CGPointMake(offset.x, targetSpace);
-//    }
-//    
-//    CGInfoLog(@"重置滑动停止坐标：%@, page:%li, 原停止坐标：%@",NSStringFromCGPoint(targetOffset), page, NSStringFromCGPoint(offset));
-//    return targetOffset;
-//}
-//
-//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-//{
-//    if (self.pagingEnabled) {
-//        CGPoint targetOffset = [self nearestTargetOffsetForOffset:*targetContentOffset];
-//        targetContentOffset->x = targetOffset.x;
-//        targetContentOffset->y = targetOffset.y;
-//    }
-//}
+/** 分页时重置滑动停止坐标 */
+- (CGPoint)nearestTargetOffsetForOffset:(CGPoint)offset
+{
+    CGFloat     pageSize;
+    NSInteger   page;
+    CGFloat     targetSpace;
+    CGPoint     targetOffset;
+    
+    if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
+        
+        pageSize = self.cycleScrollView.width;
+        page = roundf(offset.x / pageSize);
+        targetSpace = pageSize * page;
+        targetOffset    = CGPointMake(targetSpace, offset.y);
+    }else {
+        
+        pageSize = self.cycleScrollView.height;
+        page = roundf(offset.y / pageSize);
+        targetSpace = pageSize * page;
+        targetOffset    = CGPointMake(offset.x, targetSpace);
+    }
+    
+    CGInfoLog(@"重置滑动停止坐标：%@, page:%li, 原停止坐标：%@",NSStringFromCGPoint(targetOffset), page, NSStringFromCGPoint(offset));
+    return targetOffset;
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if (self.pagingEnabled) {
+        CGPoint targetOffset = [self nearestTargetOffsetForOffset:*targetContentOffset];
+        targetContentOffset->x = targetOffset.x;
+        targetContentOffset->y = targetOffset.y;
+    }
+}
 //
 //- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 //{

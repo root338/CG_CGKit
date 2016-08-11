@@ -99,7 +99,7 @@
             
             [self.cellsConfigArray addObject:config];
             index   = [self nextWithTargetIndex:index];
-            if (!CGRectContainsPoint(scrollVisibleRect, <#CGPoint point#>)) {
+            if (!CGRectContainsRect(scrollVisibleRect, config.frame)) {
                 break;
             }
             
