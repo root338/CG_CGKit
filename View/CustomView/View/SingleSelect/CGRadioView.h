@@ -58,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, weak) id<CGRadioViewDataSource> dataSource;
 @property (nullable, nonatomic, weak) id<CGRadioViewDelegate> delegate;
 
+/** 是否已经有选择的索引 */
+@property (nonatomic, assign, readonly) BOOL didSelectedIndexFlag;
 /** 当前选择索引 */
 @property (nonatomic, assign) NSInteger currentSelectedIndex;
 

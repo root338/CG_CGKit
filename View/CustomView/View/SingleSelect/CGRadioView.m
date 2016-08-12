@@ -129,12 +129,9 @@
 }
 
 #pragma mark - setup Slider View
-- (void)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
+/** 更新滑块，返回更新是否成功 */
+- (BOOL)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
-    
-    if (![_collectionView.indexPathsForSelectedItems containsObject:currentSelectedIndexPath]) {
-        [_collectionView selectItemAtIndexPath:currentSelectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-    }
     
     UIView *sliderView = self.sliderView;
     //    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
@@ -142,7 +139,7 @@
     //    }
     
     if (!self.sliderView) {
-        return;
+        return NO;
     }
     
     UICollectionViewCell *beforeSelctedCell     = nil;
@@ -153,6 +150,10 @@
     }
     if (currentSelectedIndexPath) {
         currentSelectedCell = [_collectionView cellForItemAtIndexPath:currentSelectedIndexPath];
+    }
+    
+    if (!currentSelectedCell) {
+        return NO;
     }
     
     CGRect sliderViewFrame  = CGRectZero;
@@ -166,7 +167,7 @@
     }
     
     if (CGSizeEqualToSize(sliderViewFrame.size, CGSizeZero)) {
-        return;
+        return NO;
     }
     
     if (!sliderView.superview) {
@@ -176,6 +177,12 @@
     [UIView animateWithDuration:0.3 animations:^{
         sliderView.frame    = sliderViewFrame;
     }];
+    
+    if (![_collectionView.indexPathsForSelectedItems containsObject:currentSelectedIndexPath]) {
+        [_collectionView selectItemAtIndexPath:currentSelectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+    }
+    
+    return NO;
 }
 
 #pragma mark - 设置属性
@@ -183,9 +190,19 @@
 {
     if (_currentSelectedIndex != currentSelectedIndex || !_currentSelectedIndexPath) {
         
-        _currentSelectedIndex   = currentSelectedIndex;
         [self setCurrentSelectedIndexPath:[NSIndexPath indexPathForRow:currentSelectedIndex inSection:0]];
+        if (self.currentSelectedIndexPath.row == currentSelectedIndex) {
+            //更新成功后，row == currentSelectedIndex
+            //否则失败，失败不进行赋值
+            
+            _currentSelectedIndex   = currentSelectedIndex;
+        }
     }
+}
+
+- (BOOL)didSelectedIndexFlag
+{
+    return self.currentSelectedIndexPath;
 }
 
 - (NSInteger)currentSelectedIndex
@@ -197,9 +214,11 @@
 {
     if (_currentSelectedIndexPath != currentSelectedIndexPath) {
         
-        [self setupSliderViewFrameWithCurrentSelectedIndexPath:currentSelectedIndexPath beforeSelectedIndexPath:_currentSelectedIndexPath];
+        BOOL isResult   = [self setupSliderViewFrameWithCurrentSelectedIndexPath:currentSelectedIndexPath beforeSelectedIndexPath:_currentSelectedIndexPath];
         
-        _currentSelectedIndexPath   = currentSelectedIndexPath;
+        if (isResult) {
+            _currentSelectedIndexPath   = currentSelectedIndexPath;
+        }
     }
 }
 

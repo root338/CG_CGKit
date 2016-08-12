@@ -9,7 +9,6 @@
 #import "CGLineView.h"
 
 #import "UIView+CGAddConstraints.h"
-#import "UIView+CGAddConstraintStatus.h"
 
 @interface CGLineView ()
 {
@@ -27,9 +26,10 @@
         
         _contentView    = [[UIView alloc] initWithFrame:frame];
         [self addSubview:_contentView];
-        _contentView.layoutPriorityForConstraint    = 999;
-        [_contentView cg_autoEdgesInsetsZeroToSuperview];
-        _contentView.layoutPriorityForConstraint    = UILayoutPriorityRequired;
+        
+        [_contentView cg_autoSetPriority:999 forConstraints:^(UIView * _Nonnull makeView) {
+            [makeView cg_autoEdgesInsetsZeroToSuperview];
+        }];
     }
     return self;
 }

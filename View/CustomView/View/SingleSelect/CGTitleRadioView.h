@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class CGRadioViewAppearance;
 
 typedef NSString  * _Nonnull  (^CGTitleRadioGetTitleBlock) (NSInteger index, id obj);
+typedef void (^CGTitleRadioSelectedBlock) (NSInteger index, id obj);
 
 @interface CGTitleRadioView : CGBaseView
 
@@ -25,7 +26,7 @@ typedef NSString  * _Nonnull  (^CGTitleRadioGetTitleBlock) (NSInteger index, id 
 @property (nullable, nonatomic, strong, readonly) CGRadioViewAppearance *appearance;
 
 /** 已选择block */
-@property (nullable, nonatomic, copy) CGTitleRadioGetTitleBlock didSelectedCallback;
+@property (nullable, nonatomic, copy) CGTitleRadioSelectedBlock didSelectedCallback;
 
 - (instancetype)initWithTitles:(nullable NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance;
 

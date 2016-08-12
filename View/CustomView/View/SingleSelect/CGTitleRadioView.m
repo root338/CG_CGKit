@@ -17,6 +17,8 @@
 #import "UIView+CGSetupAppearance.h"
 #import "UIView+CG_CGAreaCalculate.h"
 
+#import "CGDispathMethod.h"
+
 @interface CGTitleRadioView ()<CGRadioViewDataSource, CGRadioViewDelegate>
 {
     CGRadioViewAppearance   *_appearance;
@@ -111,6 +113,14 @@
     [cell setupCollectionViewCellContentWithData:_appearance];
     [cell.titleLabel setText:[self getTitleAtIndex:indexPath.row]];
     
+    if (!radioView.didSelectedIndexFlag && indexPath.row == self.currentSelectedTitleIndex) {
+        
+        cg_dispath_after_second(0, ^{
+            
+            [self setupSelectedTitleIndex:self.currentSelectedTitleIndex];
+        });
+    }
+    
     return cell;
 }
 
@@ -192,6 +202,11 @@
 - (CGRadioViewAppearance *)appearance
 {
     return _appearance;
+}
+
+- (void)dealloc
+{
+    
 }
 
 @end

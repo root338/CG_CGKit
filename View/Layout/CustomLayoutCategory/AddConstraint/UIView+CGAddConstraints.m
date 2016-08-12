@@ -347,6 +347,15 @@
 
 @implementation UIView (CGAddConstraint)
 
+- (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(nonnull CGSetupConstraintsForChangePriority)constraints
+{
+    self.layoutPriorityForConstraint    = priority;
+    if (constraints) {
+        constraints(self);
+    }
+    self.layoutPriorityForConstraint    = UILayoutPriorityRequired;
+}
+
 //- (NSLayoutConstraint *)cg_attributeBy:(CGLayoutAttribute)layoutAttribute
 //{
 //    
