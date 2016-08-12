@@ -37,10 +37,23 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)           CGFloat             sliderViewCornerRadius;
 @property (nullable, nonatomic, strong) UIColor         *   sliderViewBorderColor;
 @property (nonatomic, assign)           CGFloat             sliderViewBorderWidth;
+@property (nonatomic, assign)           CGFloat             sliderViewHeight;
+@property (nonatomic, assign)           CGFloat             sliderViewWidth;
 
 /** 移动滑块是否动画执行 */
 @property (nonatomic, assign)           BOOL                moveSliderViewIsAnimation;
 
+/** 获取子视图与父视图的边距，为绘制的线提供显示区域 */
+- (UIEdgeInsets)getSubviewEdgeInsets;
+
+/** 获取垂直条件下所有设置的间距 */
+- (CGFloat)getVerticalAllSpace;
+
+/** 设置外边线 */
+- (void)setupLineBoxType:(LineBoxType)type color:(UIColor *)color width:(CGFloat)width;
+
+/** 设置滑块边框／圆角 */
+- (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius;
 @end
 
 NS_ASSUME_NONNULL_END

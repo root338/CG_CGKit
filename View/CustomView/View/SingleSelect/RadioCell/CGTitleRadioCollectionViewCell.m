@@ -60,7 +60,7 @@
         titleColor  = _appearance.titleNormalColor;
     }
     
-    if (self.titleLabel.textColor != titleColor) {
+    if (titleColor && self.titleLabel.textColor != titleColor) {
         self.titleLabel.textColor   = titleColor;
     }
 }

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  线框视图
- *
+ *  @warning 在绘制线时，如果该视图存在子视图，需要设置子视图的显示区域，以留出线的显示区域
  */
 @interface CGLineBoxView : UIView
 

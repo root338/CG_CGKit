@@ -42,10 +42,22 @@
         _collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:flowLayout];
         _collectionView.delegate    = self;
         _collectionView.dataSource  = self;
+        _collectionView.showsHorizontalScrollIndicator  = NO;
+        
         [self addSubview:_collectionView];
-        [_collectionView cg_autoEdgesInsetsZeroToSuperview];
+        
+        [_collectionView cg_autoEdgesToSuperviewEdgesWithInsets:[appearance getSubviewEdgeInsets]];
+        
+        self.backgroundColor            = appearance.backgroundColor;
+        _collectionView.backgroundColor = appearance.backgroundColor;
     }
     return self;
+}
+
+- (void)reloadData
+{
+    [_collectionView reloadData];
+    
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -84,6 +96,7 @@
     }
 }
 
+#pragma mark - 注册/重用
 - (void)registerClassForCellWithReuseIdentifierClass:(Class)cellClass
 {
     [self registerClass:cellClass forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
@@ -118,11 +131,16 @@
 #pragma mark - setup Slider View
 - (void)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
-    UIView *sliderView = self.sliderView;
     
-//    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
-//        sliderView  = [self.dataSource radioView:self sliderViewForIndex:currentSelectedIndexPath.row];
-//    }
+    if (![_collectionView.indexPathsForSelectedItems containsObject:currentSelectedIndexPath]) {
+        [_collectionView selectItemAtIndexPath:currentSelectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+    }
+    
+    UIView *sliderView = self.sliderView;
+    //    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
+    //        sliderView  = [self.dataSource radioView:self sliderViewForIndex:currentSelectedIndexPath.row];
+    //    }
+    
     if (!self.sliderView) {
         return;
     }
@@ -151,7 +169,7 @@
         return;
     }
     
-    if (sliderView.superview) {
+    if (!sliderView.superview) {
         [_collectionView addSubview:sliderView];
     }
     
@@ -177,7 +195,7 @@
 
 - (void)setCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath
 {
-    if (!_currentSelectedIndexPath || (currentSelectedIndexPath.row != _currentSelectedIndexPath.row && currentSelectedIndexPath.section != currentSelectedIndexPath.section)) {
+    if (_currentSelectedIndexPath != currentSelectedIndexPath) {
         
         [self setupSliderViewFrameWithCurrentSelectedIndexPath:currentSelectedIndexPath beforeSelectedIndexPath:_currentSelectedIndexPath];
         

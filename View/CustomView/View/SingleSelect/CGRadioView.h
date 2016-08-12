@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(nonnull NSIndexPath *)indexPath;
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifierClass:(Class)identifierClass forIndexPath:(nonnull NSIndexPath *)indexPath;
 
+- (void)reloadData;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,11 +12,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class CGRadioViewAppearance;
 
+typedef NSString  * _Nonnull  (^CGTitleRadioGetTitleBlock) (NSInteger index, id obj);
+
 @interface CGTitleRadioView : CGBaseView
 
-- (instancetype)initWithTitles:(NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance;
+@property (nonatomic, strong) NSArray<NSString *>     *titles;
+@property (nonatomic, assign) NSInteger currentSelectedTitleIndex;
 
+/** 是否缓存大小 默认YES */
+@property (nonatomic, assign) BOOL isCacheCellsSize;
 
+@property (nullable, nonatomic, strong, readonly) CGRadioViewAppearance *appearance;
+
+/** 已选择block */
+@property (nullable, nonatomic, copy) CGTitleRadioGetTitleBlock didSelectedCallback;
+
+- (instancetype)initWithTitles:(nullable NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance;
+
+/** 设置标题 */
+- (void)setupTitlesWithDataSouce:(NSArray *)dataSource getTitleBlock:(CGTitleRadioGetTitleBlock)titleBlock;
+
+/** 选择指定的标题索引 */
+- (void)setupSelectedTitleIndex:(NSInteger)index;
 @end
 
 NS_ASSUME_NONNULL_END
