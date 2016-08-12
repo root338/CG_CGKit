@@ -174,6 +174,25 @@ typedef void (^CGSetupConstraintsForChangePriority) (UIView *makeView);
 - (NSLayoutConstraint *)cg_autoDimensionScale:(CGFloat)scale;
 @end
 
+
+@interface UIView (CGAddConstraintForInverse)
+
+/** 设置两视图之间的约束 */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2;
+
+/** 设置两视图之间的约束，间距 */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 constant:(CGFloat)c;
+
+/** 设置两对象之间的约束(边值类型(单个)，约束类型, 间距) */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation;
+
+/** 设置两对象之间的约束(边值类型(单个)，约束类型, 间距) */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c;
+
+
+
+@end
+
 #pragma mark - 与对象设置的单个约束
 @interface UIView (CGAddConstraint)
 
