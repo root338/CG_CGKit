@@ -12,8 +12,11 @@
 
 @interface CGLineView ()
 {
-    NSMutableDictionary<NSNumber *, UIView *> *lineViews;
+    
+    NSMutableDictionary<NSNumber *, UIView *> *_lineViews;
 }
+
+@property (nonatomic, strong) NSArray<NSNumber *> *lineTypeKeys;
 
 @end
 
@@ -36,22 +39,104 @@
 
 - (void)setupLineView
 {
-    if (self.lineType & LineBoxTypeTop) {
+    if (!self.lineType && !_lineViews.count) {
+        return;
+    }
+    
+    [self.lineTypeKeys enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
+        LineBoxType lineType    = obj.integerValue;
+        if (self.lineType & lineType) {
+            [self addLineViewWithType:lineType key:obj];
+        }else {
+            [self removeLineViewWithType:lineType key:obj];
+        }
+    }];
+    
+    [self layoutIfNeeded];
+}
+
+- (void)addLineViewWithType:(LineBoxType)type key:(NSNumber *)key
+{
+    
+    UIView *lineView    = [_lineViews objectForKey:key];
+    if (lineView) {
+        return;
+    }
+    
+    lineView    = [[UIView alloc] init];
+    lineView.backgroundColor    = self.lineColor;
+    [self addSubview:lineView];
+    
+    CGDimension dimension;
+    CGLayoutEdge lineViewEdge;
+    CGLayoutEdge contentViewEdge;
+    
+    switch (type) {
+        case LineBoxTypeTop:
+        {
+            dimension       = CGDimensionHeight;
+            lineViewEdge    = CGLayoutEdgeBottom;
+            contentViewEdge = CGLayoutEdgeTop;
+        }
+            break;
+        case LineBoxTypeLeft:
+        {
+            dimension       = CGDimensionWidth;
+            lineViewEdge    = CGLayoutEdgeTrailing;
+            contentViewEdge = CGLayoutEdgeLeading;
+        }
+            break;
+        case LineBoxTypeBottom:
+        {
+            dimension       = CGDimensionHeight;
+            lineViewEdge    = CGLayoutEdgeTop;
+            contentViewEdge = CGLayoutEdgeBottom;
+        }
+            break;
+        case LineBoxTypeRight:
+        {
+            dimension       = CGDimensionWidth;
+            lineViewEdge    = CGLayoutEdgeLeading;
+            contentViewEdge = CGLayoutEdgeTrailing;
+        }
+            break;
+        default:
+            break;
+    }
+    
+    [lineView cg_autoDimension:dimension fixedLength:self.lineWidth];
+    [lineView cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero
+                                       excludingEdge:lineViewEdge];
+    [lineView cg_attribute:(NSLayoutAttribute)lineViewEdge toItem:self.contentView attribute:(NSLayoutAttribute)contentViewEdge];
+}
+
+- (void)removeLineViewWithType:(LineBoxType)type key:(NSNumber *)key
+{
+    UIView *lineView    = [_lineViews objectForKey:key];
+    if (lineView) {
+        [lineView removeFromSuperview];
+        [_lineViews removeObjectForKey:key];
     }
 }
 
-- (void)addLineViewWithType:(LineBoxType)type
-{
-    
-}
-
-- (void)removeLineViewWithType:(LineBoxType)type
-{
-    
-}
-
 #pragma mark - 设置属性
+
+- (NSArray<NSNumber *> *)lineTypeKeys
+{
+    if (_lineTypeKeys) {
+        return _lineTypeKeys;
+    }
+    
+    _lineTypeKeys = @[
+                      @(LineBoxTypeTop),
+                      @(LineBoxTypeLeft),
+                      @(LineBoxTypeBottom),
+                      @(LineBoxTypeRight),
+                      ];
+    
+    return _lineTypeKeys;
+}
 
 - (void)setLineType:(LineBoxType)lineType
 {

@@ -11,6 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** 
+ *  线框视图
+ */
 @interface CGLineView : CGBaseView
 
 @property (nonatomic, assign) LineBoxType lineType;

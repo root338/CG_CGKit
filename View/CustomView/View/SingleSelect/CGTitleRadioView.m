@@ -180,11 +180,16 @@
 - (void)radioView:(CGRadioView *)radioView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.didSelectedCallback) {
-        self.didSelectedCallback(indexPath.row, _titles ? _titles[indexPath.row] : _dataSource[indexPath.row]);
+        self.didSelectedCallback(indexPath.row, self.currentDataSouce[indexPath.row]);
     }
 }
 
 #pragma mark - 设置属性
+- (NSArray *)currentDataSouce
+{
+    return _titles ? _titles : _dataSource;
+}
+
 - (void)setTitles:(NSArray<NSString *> *)titles
 {
     _dataSource     = nil;
@@ -202,11 +207,6 @@
 - (CGRadioViewAppearance *)appearance
 {
     return _appearance;
-}
-
-- (void)dealloc
-{
-    
 }
 
 @end
