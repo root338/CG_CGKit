@@ -1,5 +1,5 @@
 //
-//  DispathMethod.m
+//  CGDispathMethod.m
 //  QuickAskCommunity
 //
 //  Created by DY on 15/8/4.

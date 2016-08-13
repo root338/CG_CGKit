@@ -17,6 +17,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^CGSetupConstraints) (UIView *makeView);
+
 #pragma mark - 设置视图与视图四周的约束
 
 @interface UIView (CGViewAndViewConstraints)
@@ -168,10 +170,36 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置视图与指定视图大小的关系 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation;
 
+/** 设置视图宽 : 高 的值 */
+- (NSLayoutConstraint *)cg_autoDimensionScale:(CGFloat)scale;
+@end
+
+
+@interface UIView (CGAddConstraintForInverse)
+
+/** 设置两视图之间的约束 */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2;
+
+/** 设置两视图之间的约束，间距 */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 constant:(CGFloat)c;
+
+/** 设置两对象之间的约束(边值类型(单个)，约束类型, 间距) */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation;
+
+/** 设置两对象之间的约束(边值类型(单个)，约束类型, 间距) */
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c;
+
+
+
 @end
 
 #pragma mark - 与对象设置的单个约束
 @interface UIView (CGAddConstraint)
+
+
+- (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(CGSetupConstraints)constraints;
+
+- (void)cg_autoUpdateConstraints:(CGSetupConstraints)constraints;
 
 ///** 设置两对象之间的约束(边值类型，约束类型，间距) */
 //- (NSLayoutConstraint *)cg_autoConstrainAttribute:(NSLayoutAttribute)attribute toAttribute:(NSLayoutAttribute)toAttribute ofView:(__kindof UIView *)otherView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;
@@ -202,6 +230,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 设置两对象之间的约束(边值类型，约束类型，间距，比例值) */
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c;
+
+
 
 @end
 

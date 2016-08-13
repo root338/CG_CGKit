@@ -12,5 +12,3 @@
 UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin;
 
 UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
-
-UIKIT_EXTERN const CGFloat CGOnePixles;

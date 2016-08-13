@@ -257,6 +257,16 @@
     return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:0];
 }
 
+- (NSLayoutConstraint *)cg_autoDimensionScale:(CGFloat)scale
+{
+    return [self cg_attribute:NSLayoutAttributeWidth
+                    relatedBy:NSLayoutRelationEqual
+                       toItem:self
+                    attribute:NSLayoutAttributeHeight
+                   multiplier:scale
+                     constant:0];
+}
+
 @end
 
 @implementation UIView (CGViewControllerConstraint)
@@ -335,7 +345,74 @@
 
 @end
 
+@implementation UIView (CGAddConstraintForInverse)
+
+- (CGLayoutEdge)inverseAttribute:(CGLayoutEdge)attribute
+{
+    CGLayoutEdge layoutEdge;
+    switch (attribute) {
+        case CGLayoutEdgeTop:
+            layoutEdge  = CGLayoutEdgeBottom;
+            break;
+        case CGLayoutEdgeLeft:
+        case CGLayoutEdgeLeading:
+            layoutEdge  = CGLayoutEdgeTrailing;
+            break;
+        case CGLayoutEdgeBottom:
+            layoutEdge  = CGLayoutEdgeTop;
+            break;
+        case CGLayoutEdgeTrailing:
+        case CGLayoutEdgeRight:
+            layoutEdge  = CGLayoutEdgeLeading;
+            break;
+        default:
+            layoutEdge  = CGLayoutEdgeTop;
+            break;
+    }
+    return layoutEdge;
+}
+
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2
+{
+    return [self cg_autoInverseAttribute:attribute toItem:view2 constant:0];
+}
+
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 constant:(CGFloat)c
+{
+    return [self cg_autoInverseAttribute:attribute toItem:view2 relatedBy:NSLayoutRelationEqual constant:c];
+}
+
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation
+{
+    return [self cg_autoInverseAttribute:attribute toItem:view2 relatedBy:relation constant:0];
+}
+
+- (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c
+{
+    return [self cg_attribute:(NSLayoutAttribute)attribute relatedBy:relation toItem:view2 attribute:(NSLayoutAttribute)[self inverseAttribute:attribute] constant:c];
+}
+
+@end
+
 @implementation UIView (CGAddConstraint)
+
+- (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(nonnull CGSetupConstraints)constraints
+{
+    self.layoutPriorityForConstraint    = priority;
+    if (constraints) {
+        constraints(self);
+    }
+    self.layoutPriorityForConstraint    = UILayoutPriorityRequired;
+}
+
+- (void)cg_autoUpdateConstraints:(CGSetupConstraints)constraints
+{
+    self.isUpdateAddConstraint  = YES;
+    if (constraints) {
+        constraints(self);
+    }
+    self.isUpdateAddConstraint  = NO;
+}
 
 //- (NSLayoutConstraint *)cg_attributeBy:(CGLayoutAttribute)layoutAttribute
 //{

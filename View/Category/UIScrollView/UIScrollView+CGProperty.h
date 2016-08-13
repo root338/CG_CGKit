@@ -20,5 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @warning 不适用于有间距的UICollectionView
  */
 - (NSInteger)cg_calculateScrollPageWithScale:(CGFloat)scale;
+
 @end
 NS_ASSUME_NONNULL_END
