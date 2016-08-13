@@ -8,120 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CGScrollViewDirectionHeader.h"
+#import "CGScrollViewDefineHeader.h"
+#import "CGCycleScrollViewDefineHeader.h"
+#import "CGCycleScrollViewProxyProtocol.h"
 
-@class CGCycleScrollViewCell;
-@class CGCycleScrollView;
+NS_ASSUME_NONNULL_BEGIN
 
-/**
- *  循环滑动视图的滑动方向
- */
-typedef NS_ENUM(NSInteger, CGCycleViewScrollDirection) {
-    /**
-     *  水平滑动
-     */
-    CGCycleViewScrollDirectionHorizontal,
-    /**
-     *  垂直滑动
-     */
-    CGCycleViewScrollDirectionVertical,
-};
-
-/** cell的位置 */
-typedef NS_ENUM(NSInteger, CGCycleCellPosition) {
-    /** 空 */
-    CGCycleCellPositionNone,
-    /** 顶部 */
-    CGCycleCellPositionTop,
-    /** 中间 */
-    CGCycleCellPositionMiddle,
-    /** 底部 */
-    CGCycleCellPositionBottom,
-};
-
-/** 滑动时视图根据滑动时的样式变化 */
-typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
-    
-    CGCycleViewScrollAnimationStyleNone,
-    CGCycleViewScrollAnimationStyleAnimation1,
-};
-
-@protocol CGCycleScrollViewDataSource <NSObject>
-
-/**
- *  设置滑动视图有多少个视图
- *
- *  @param cycleScrollView 当前循环滑动视图
- *
- *  @return 添加多少个子视图
- */
-- (NSInteger)numberCycleScrollView:(CGCycleScrollView *)cycleScrollView;
-
-/**
- *  设置每个自定义的滑动视图
- *
- *  @param cycleScrollView 当前循环滑动视图
- *  @param index           设置滑动视图的索引
- *
- *  @return 返回设置的当前的滑动视图
- */
-- (__kindof CGCycleScrollViewCell *)cycleScrollView:(CGCycleScrollView *)cycleScrollView cellAtIndex:(NSInteger)index;
-
-@optional
-/**
- *  添加分页视图
- *  @warning 需要用户设置分页视图相对于滑动视图的坐标
- *
- *  @param cycleScrollView 当前循环滑动视图
- *
- *  @return 返回需要添加的分页视图
- */
-- (UIView *)cycleScrollViewAddPageView:(CGCycleScrollView *)cycleScrollView;
-
-@end
-
-
-@protocol CGCycleScrollViewDelegate <NSObject>
-
-@optional
-
-/** 
- *  设置cell的边长 
- *  @param 当横向滑动时，该值表示宽度，高度和滑动视图相同
- *  @param 当纵向滑动时，该值表示高度，宽度和滑动视图相同
- *  @param 当实现代理方法cycleScrollView:sizeAtIndex:时，此方法被忽略
- */
-- (CGFloat)cycleScrollView:(CGCycleScrollView *)cycleScrollView lenghtAtIndex:(NSInteger)index;
-
-/** 设置加载cell的大小 */
-//- (CGSize)cycleScrollView:(CGCycleScrollView *)cycleScrollView sizeAtIndex:(NSInteger)index;
-
-/**
- *  设置cell坐标的显示位置
- *
- *  @param 当实现代理方法cycleScrollView:pointAtIndex:时，此方法被忽略
- */
-//- (CGCycleCellPosition)cycleScrollView:(CGCycleScrollView *)cycleScrollView postitionAtIndex:(NSInteger)index;
-
-/** 设置加载cell的坐标 */
-//- (CGPoint)cycleScrollView:(CGCycleScrollView *)cycleScrollView pointAtIndex:(NSInteger)index;
-
-/**
- *  已选择时的视图
- *
- *  @param cycleScrollView 当前循环滑动视图
- *  @param index           视图的索引
- */
-- (void)cycleScrollView:(CGCycleScrollView *)cycleScrollView didSelectRowAtIndex:(NSInteger)index;
-
-/**
- *  当前显示索引改变时回调
- *
- *  @param cycleScrollView 当前循环滑动视图
- *  @param currentIndex    当前显示索引
- */
-- (void)cycleScrollView:(CGCycleScrollView *)cycleScrollView didChangeCurrentIndex:(NSInteger)currentIndex;
-@end
+@class CGCycleScrollViewCell, CGCycleScrollAppearance;
 
 /**
  *  循环滑动视图基类
@@ -135,115 +28,24 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  */
 @interface CGCycleScrollView : UIView
 
-#pragma mark - 只读
-/** 加载的视图总数 */
-//@property (assign, nonatomic, readonly) NSInteger totalViewNumber;
+@property (nullable, weak, nonatomic) id<CGCycleScrollViewDataSource> dataSource;
 
-#pragma mark - 代理
-/**
- 添加数据代理
- */
+@property (nullable, weak, nonatomic) id<CGCycleScrollViewDelegate> delegate;
 
+@property (nonatomic, assign) CGScrollDirectionType scrollDirection;
 
-@property (weak, nonatomic) id<CGCycleScrollViewDataSource> dataSource;
+@property (nullable, nonatomic, strong) CGCycleScrollAppearance *appearance;
 
-@property (weak, nonatomic) id<CGCycleScrollViewDelegate> delegate;
-
-#pragma mark - 滑动设置
-/**
- 是否循环滑动视图 默认为YES
- */
-@property (assign, nonatomic) BOOL isCycle;
-
-//暂时不进行设置，取消该属性定义后需要在getViewIndexForType:方法下添加相应条件，现在就以这种方式实现
-///** 当不循环滑动时当前索引大于最大索引时重置索引等于最大索引 */
-//@property (assign, nonatomic) BOOL isGreaterThanMaxIndexResetForNotCycle;
-//
-///** 当不循环滑动时当前索引小于最小索引时重置索引等于最小索引 */
-//@property (assign, nonatomic) BOOL isLessThanMinIndexResetForNotCycle;
-
-/**
- 是否自动滑动，默认为NO
- 当设值为YES时，delayTimeInterval属性为 2
- */
-@property (assign, nonatomic) BOOL isAutoScrollView;
-
-/**
- 每隔多少秒滑动一次
- 必须设置isAutoScrollView为YES，才能启动自动滑动
- */
-@property (assign, nonatomic) NSTimeInterval delayTimeInterval;
-
-/** 滑动时，子视图的显示样式 */
-@property (nonatomic, assign) CGCycleViewScrollAnimationStyle animationStyle;
-
-#pragma mark - 内容设置
-/**
- *  当前显示视图的索引 
- *  @warning 在不分页或滑动时获取将不准确，建议使用cycleScrollView:didSelectRowAtIndex:方法获取
- */
-@property (nonatomic, assign) NSInteger currentIndex;
-
-/////滑动视图相对父视图的四周边距
-//@property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForScrollView;
-
-/** 设置单个内容视图之间的间距 */
-//@property (assign, nonatomic) CGFloat subviewSpace;
-
-/** cell 中间的间距 */
-@property (nonatomic, assign) CGFloat cellbetweenSpace;
-
-/** cell 的边长 */
-@property (nonatomic, assign) CGFloat cellLength;
-
-/** cell 的位置 */
-//@property (nonatomic, assign) CGCycleCellPosition cellPosition;
 
 /** 
- *  是否分页
- *  @warning 当单个视图之间的间距为 0 时可以直接设置 cycleScrollView的pagingEnabled属性为YES，这样滑动的行为就是系统默认的动画样式
+ *  设置开始的cell索引并设置该cell的位置 
+ *  @param 循环视图加载视图时需要一个标识的cell来确定滑动区域中显示哪些索引视图
  */
-@property (assign, nonatomic) BOOL pagingEnabled;
+- (void)setupIndex:(NSInteger)index position:(CGCycleCellPosition)position;
 
-/** 滑动视图的滑动方向 */
-@property (assign, nonatomic) CGCycleViewScrollDirection scrollDirection;
-
-/** 是否开启滑动视图滑动方向的监听 */
-//@property (nonatomic, assign) BOOL enableScrollDirectionMonitor;
-
-/** 滑动视图滑动的方向 */
-//@property (nonatomic, assign, readonly) CGScrollDirectionType scrollDirectionType;
-
-/** 
- *  关闭默认计时器设定(默认为NO)
- *  开启后CGCycleScrollView不对计时器进行管理，需要使用者自行管理，
- *  不包含滑动过程中的控制，仅控制加入离开屏幕和移除父视图的控制
- */
-@property (assign, nonatomic) BOOL isCloseDefaultTimerSetting;
-
-/**
- *  刷新视图
- */
+/** 刷新视图 */
 - (void)reloadAllView;
 
-/**
- *  创建循环滑动视图
- *
- *  @param frame             滑动视图的区域
- *  @param delayTimeInterval 自动滑动延长的时间
- */
-- (instancetype)initWithFrame:(CGRect)frame delayTimeInterval:(NSTimeInterval)delayTimeInterval;
-
-#pragma mark - 计时器控制
-/**
- *  计时器在默认情况下，加入屏幕开启，离开屏幕暂停，移除父视图时停止
- *
- */
-
-/** 开始计时器 */
-- (void)startAutoScroll;
-/** 暂停计时器 */
-- (void)pasueAutoScroll;
-/** 暂停计时器 */
-- (void)stopAutoScroll;
 @end
+
+NS_ASSUME_NONNULL_END
