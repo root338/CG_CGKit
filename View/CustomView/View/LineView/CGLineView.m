@@ -12,7 +12,9 @@
 
 @interface CGLineView ()
 {
-    
+    //线视图的边距
+    NSMutableDictionary<NSNumber *, NSValue *> *_lineViewsEdgeInsets;
+    //线视图
     NSMutableDictionary<NSNumber *, UIView *> *_lineViews;
 }
 
@@ -37,6 +39,28 @@
     return self;
 }
 
+#pragma mark - 设置样式
+- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets lineType:(LineBoxType)lineType
+{
+    if (!lineType) {
+        return;
+    }
+    
+    if (!_lineViewsEdgeInsets) {
+        _lineViewsEdgeInsets    = [NSMutableDictionary dictionary];
+    }
+    
+    NSValue *edgeInsetsValue    = [NSValue valueWithUIEdgeInsets:edgeInsets];
+    [self.lineTypeKeys enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        LineBoxType lineBoxType = obj.integerValue;
+        if (lineType & lineBoxType) {
+            [_lineViewsEdgeInsets setObject:edgeInsetsValue forKey:obj];
+        }
+    }];
+}
+
+#pragma mark - 设置 线视图
 - (void)setupLineView
 {
     if (!self.lineType && !_lineViews.count) {
@@ -52,8 +76,6 @@
             [self removeLineViewWithType:lineType key:obj];
         }
     }];
-    
-    [self layoutIfNeeded];
 }
 
 - (void)addLineViewWithType:(LineBoxType)type key:(NSNumber *)key
@@ -67,38 +89,51 @@
     lineView    = [[UIView alloc] init];
     lineView.backgroundColor    = self.lineColor;
     [self addSubview:lineView];
+    if (!_lineViews) {
+        _lineViews  = [NSMutableDictionary dictionaryWithObject:lineView forKey:key];
+    }else {
+        [_lineViews setObject:lineView forKey:key];
+    }
     
-    CGDimension dimension;
-    CGLayoutEdge lineViewEdge;
-    CGLayoutEdge contentViewEdge;
+    CGDimension     dimension;
+    CGLayoutEdge    lineViewEdge;
+    CGFloat         constant;
+    
+    NSValue *edgeInsetsValue  = [_lineViewsEdgeInsets objectForKey:key];
+    UIEdgeInsets edgeInsets;
+    if (edgeInsetsValue) {
+        edgeInsets  = [edgeInsetsValue UIEdgeInsetsValue];
+    }else {
+        edgeInsets  = UIEdgeInsetsZero;
+    }
     
     switch (type) {
         case LineBoxTypeTop:
         {
             dimension       = CGDimensionHeight;
             lineViewEdge    = CGLayoutEdgeBottom;
-            contentViewEdge = CGLayoutEdgeTop;
+            constant        = edgeInsets.bottom;
         }
             break;
         case LineBoxTypeLeft:
         {
             dimension       = CGDimensionWidth;
             lineViewEdge    = CGLayoutEdgeTrailing;
-            contentViewEdge = CGLayoutEdgeLeading;
+            constant        = edgeInsets.right;
         }
             break;
         case LineBoxTypeBottom:
         {
             dimension       = CGDimensionHeight;
             lineViewEdge    = CGLayoutEdgeTop;
-            contentViewEdge = CGLayoutEdgeBottom;
+            constant        = edgeInsets.top;
         }
             break;
         case LineBoxTypeRight:
         {
             dimension       = CGDimensionWidth;
             lineViewEdge    = CGLayoutEdgeLeading;
-            contentViewEdge = CGLayoutEdgeTrailing;
+            constant        = edgeInsets.left;
         }
             break;
         default:
@@ -106,9 +141,11 @@
     }
     
     [lineView cg_autoDimension:dimension fixedLength:self.lineWidth];
-    [lineView cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero
+    [lineView cg_autoEdgesToSuperviewEdgesWithInsets:edgeInsets
                                        excludingEdge:lineViewEdge];
-    [lineView cg_attribute:(NSLayoutAttribute)lineViewEdge toItem:self.contentView attribute:(NSLayoutAttribute)contentViewEdge];
+    [lineView cg_autoInverseAttribute:lineViewEdge
+                               toItem:self.contentView
+                             constant:constant];
 }
 
 - (void)removeLineViewWithType:(LineBoxType)type key:(NSNumber *)key
