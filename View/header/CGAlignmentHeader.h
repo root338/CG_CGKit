@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, CGAlignmentType) {
  *  水平对齐模式
  */
 typedef NS_ENUM(NSInteger, CGViewHorizontalAlignment){
+    
     /**
      *  水平左对齐
      */

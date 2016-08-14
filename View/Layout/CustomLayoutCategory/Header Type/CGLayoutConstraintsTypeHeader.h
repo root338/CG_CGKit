@@ -50,6 +50,28 @@ typedef NS_ENUM(NSInteger, CGLayoutEdge) {
     CGLayoutEdgeTrailing    = CGLayoutAttributeTrailing,
 };
 
+typedef NS_OPTIONS(NSInteger, CGLayoutOptionEdge) {
+    
+    CGLayoutOptionEdgeNone      = 0,
+    CGLayoutOptionEdgeLeft      = 1 << 0,
+    CGLayoutOptionEdgeRight     = 1 << 1,
+    CGLayoutOptionEdgeTop       = 1 << 2,
+    CGLayoutOptionEdgeLeading   = 1 << 3,
+    CGLayoutOptionEdgeBottom    = 1 << 4,
+    CGLayoutOptionEdgeTrailing  = 1 << 5,
+    
+    CGLayoutOptionEdgeVertical      = CGLayoutOptionEdgeTop | CGLayoutOptionEdgeBottom,
+    CGLayoutOptionEdgeHorizontal    = CGLayoutOptionEdgeLeading | CGLayoutOptionEdgeTrailing,
+    CGLayoutOptionEdgeHorizontal2   = CGLayoutOptionEdgeLeft | CGLayoutOptionEdgeRight,
+    
+    CGLayoutOptionEdgeLeftTop       = CGLayoutOptionEdgeLeading | CGLayoutOptionEdgeTop,
+    CGLayoutOptionEdgeLeftBottom    = CGLayoutOptionEdgeLeading | CGLayoutOptionEdgeBottom,
+    CGLayoutOptionEdgeRightTop      = CGLayoutOptionEdgeTop | CGLayoutOptionEdgeTrailing,
+    CGLayoutOptionEdgeRightBottom   = CGLayoutOptionEdgeTrailing | CGLayoutOptionEdgeBottom,
+    
+    CGLayoutOptionEdgeAll           = CGLayoutOptionEdgeVertical | CGLayoutOptionEdgeHorizontal,
+};
+
 typedef NS_ENUM(NSInteger, CGDimension) {
     
     CGDimensionWidth        = CGLayoutAttributeWidth,

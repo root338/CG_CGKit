@@ -56,6 +56,34 @@
     return [[self cg_d_autoEdgesToViewController:viewController withInsets:insets exculdingEdge:edge] allValues];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets edge:(CGLayoutOptionEdge)edge
+{
+    return [self cg_autoEdgesToViewController:viewController withInsets:insets edge:edge relation:NSLayoutRelationEqual];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets edge:(CGLayoutOptionEdge)edge relation:(NSLayoutRelation)relation
+{
+    NSMutableArray *constraints   = [NSMutableArray array];
+    
+    if (edge & CGLayoutOptionEdgeTop) {
+        [constraints addObject:[self cg_topLayoutGuideOfViewController:viewController withInset:insets.top relatedBy:relation]];
+    }
+    
+    if (edge & CGLayoutOptionEdgeLeft || edge & CGLayoutOptionEdgeLeading) {
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeLeading withOffset:insets.left relation:relation]];
+    }
+    
+    if (edge & CGLayoutOptionEdgeBottom) {
+        [constraints addObject:[self cg_bottomLayoutGuideOfViewController:viewController withInset:insets.bottom relatedBy:relation]];
+    }
+    
+    if (edge & CGLayoutOptionEdgeRight || edge & CGLayoutOptionEdgeTrailing) {
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTrailing withOffset:insets.right relation:relation]];
+    }
+    
+    return constraints;
+}
+
 - (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets exculdingEdge:(CGLayoutEdge)edge
 {
     NSMutableDictionary *constraints    = [NSMutableDictionary dictionaryWithCapacity:3];
@@ -109,6 +137,34 @@
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge
 {
     return [[self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:edge] allValues];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithEdge:(CGLayoutOptionEdge)edge insets:(UIEdgeInsets)insets
+{
+    return [self cg_autoEdgesToSuperviewEdgesWithEdge:edge insets:insets relation:NSLayoutRelationEqual];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithEdge:(CGLayoutOptionEdge)edge insets:(UIEdgeInsets)insets relation:(NSLayoutRelation)relation
+{
+    NSMutableArray *constraints   = [NSMutableArray array];
+    
+    if (edge & CGLayoutOptionEdgeTop) {
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTop withOffset:insets.top relation:relation]];
+    }
+    
+    if (edge & CGLayoutOptionEdgeLeft || edge & CGLayoutOptionEdgeLeading) {
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeLeading withOffset:insets.left relation:relation]];
+    }
+    
+    if (edge & CGLayoutOptionEdgeBottom) {
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom withOffset:insets.bottom relation:relation]];
+    }
+    
+    if (edge & CGLayoutOptionEdgeRight || edge & CGLayoutOptionEdgeTrailing) {
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTrailing withOffset:insets.right relation:relation]];
+    }
+    
+    return constraints;
 }
 
 - (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge
