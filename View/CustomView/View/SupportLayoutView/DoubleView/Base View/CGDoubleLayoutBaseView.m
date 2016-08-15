@@ -88,10 +88,10 @@
     [self setupTargetView:firstTargetView size:self.firstItemSize];
     [self setupTargetView:secondTargetView size:self.secondItemSize];
     
-    [firstTargetView cg_attribute:(NSLayoutAttribute)firstExcludingEdge
-                           toItem:secondTargetView
-                        attribute:(NSLayoutAttribute)secondExcludingEdge
-                         constant:self.targetViewsBetweenSapce];
+    [firstTargetView cg_autoInverseAttribute:firstExcludingEdge
+                                      toItem:secondTargetView
+                                   relatedBy:self.betweenSpaceRelation
+                                    constant:self.targetViewsBetweenSapce];
     [firstTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.firstTargetViewEdgeInsets excludingEdge:firstExcludingEdge];
     [secondTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.secondTargetViewEdgeInsets excludingEdge:secondExcludingEdge];
 }

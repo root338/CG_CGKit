@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 两个视图之间的间距 */
 @property (nonatomic, assign) CGFloat targetViewsBetweenSapce;
+
+/** 两个视图之间的间距关系，默认 NSLayoutRelationEqual */
+@property (nonatomic, assign) NSLayoutRelation  betweenSpaceRelation;
 /** 外边距 */
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
 /** 第一个视图的外边距 */

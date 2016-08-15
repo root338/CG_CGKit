@@ -81,7 +81,7 @@
                                   relatedBy:relation
                                      toItem:self.rightView
                                   attribute:NSLayoutAttributeLeading
-                                   constant:self.viewSpace];
+                                   constant:viewsBetweenSpace];
             }else {
                 [self.leftView cg_autoEdgesToSuperviewEdgesWithInsets:self.edgeInsetView];
             }
