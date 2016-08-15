@@ -80,8 +80,9 @@
     if (!UIEdgeInsetsEqualToEdgeInsets(marginEdgeInsets, _marginEdgeInsets)) {
         
         _marginEdgeInsets   = marginEdgeInsets;
-        _titleLabel.isUpdateAddConstraint   = YES;
-        [_titleLabel cg_autoEdgesToSuperviewEdgesWithInsets:marginEdgeInsets];
+        [UIView cg_autoSetUpdate:YES forConstraints:^{
+            [_titleLabel cg_autoEdgesToSuperviewEdgesWithInsets:marginEdgeInsets];
+        }];
     }
 }
 

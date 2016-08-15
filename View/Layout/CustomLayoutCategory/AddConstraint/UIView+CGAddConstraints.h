@@ -14,10 +14,9 @@
 #import "UIView+CGAddConstraintStatus.h"
 #import "UIView+CreateAutoLayoutTypeView.h"
 
-
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^CGSetupConstraints) (UIView *makeView);
+typedef void (^CGSetupConstraints) (void);
 
 #pragma mark - 设置视图与视图四周的约束
 
@@ -209,9 +208,10 @@ typedef void (^CGSetupConstraints) (UIView *makeView);
 @interface UIView (CGAddConstraint)
 
 
-- (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(CGSetupConstraints)constraints;
++ (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(CGSetupConstraints)constraints;
 
-- (void)cg_autoUpdateConstraints:(CGSetupConstraints)constraints;
++ (void)cg_autoUpdateConstraints:(CGSetupConstraints)constraints;
++ (void)cg_autoSetUpdate:(BOOL)updateConstraints forConstraints:(CGSetupConstraints)constraints;
 
 ///** 设置两对象之间的约束(边值类型，约束类型，间距) */
 //- (NSLayoutConstraint *)cg_autoConstrainAttribute:(NSLayoutAttribute)attribute toAttribute:(NSLayoutAttribute)toAttribute ofView:(__kindof UIView *)otherView withOffset:(CGFloat)offset relation:(NSLayoutRelation)relation;

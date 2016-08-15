@@ -13,7 +13,78 @@
 #import "UIView+CGCreateConstraint.h"
 #import "NSLayoutConstraint+CGVerifyConstraint.h"
 
+#import "NSLayoutConstraint+CGConstraint.h"
+
 #import "CGPrintLogHeader.h"
+
+/** 存储约束优先级的数组 */
+static NSMutableArray<NSNumber *> *cg_constraintsLayoutPriority;
+static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
+
+@interface UIView (CGSetupGlobalConstraintsPriority)
+
++ (NSMutableArray<NSNumber *> *)cg_constraintsLayoutPriority;
+
++ (CGFloat)cg_currentConstraintsLayoutPriority;
+
++ (BOOL)cg_isExecutingPriorityConstraintsBlock;
+
++ (NSMutableArray<NSNumber *> *)cg_constraintsLayoutIsUpdate;
+
++ (BOOL)cg_currentConstraintsLayoutIsUpdate;
+
++ (BOOL)cg_isExecutingConstraintsLayoutIsUpdate;
+@end
+
+@implementation UIView (CGSetupGlobalConstraintsPriority)
+
++ (NSMutableArray<NSNumber *> *)cg_constraintsLayoutPriority
+{
+    if (!cg_constraintsLayoutPriority) {
+        cg_constraintsLayoutPriority    = [NSMutableArray array];
+    }
+    return cg_constraintsLayoutPriority;
+}
+
++ (CGFloat)cg_currentConstraintsLayoutPriority
+{
+    NSMutableArray *globalConstraintsPriority   = [self cg_constraintsLayoutPriority];
+    if (globalConstraintsPriority.count == 0) {
+        return UILayoutPriorityRequired;
+    }
+    
+    return [[globalConstraintsPriority lastObject] floatValue];
+}
+
++ (BOOL)cg_isExecutingPriorityConstraintsBlock
+{
+    return [[self cg_constraintsLayoutPriority] count] > 0;
+}
+
++ (NSMutableArray<NSNumber *> *)cg_constraintsLayoutIsUpdate
+{
+    if (!cg_constraintsLayoutIsUpdate) {
+        cg_constraintsLayoutIsUpdate    = [NSMutableArray array];
+    }
+    return cg_constraintsLayoutIsUpdate;
+}
+
++ (BOOL)cg_currentConstraintsLayoutIsUpdate
+{
+    NSMutableArray *globalConstraintsIsUpdate   = [self cg_constraintsLayoutIsUpdate];
+    if (globalConstraintsIsUpdate.count == 0) {
+        return NO;
+    }
+    return [[globalConstraintsIsUpdate lastObject] boolValue];
+}
+
++ (BOOL)cg_isExecutingConstraintsLayoutIsUpdate
+{
+    return [[self cg_constraintsLayoutIsUpdate] count] > 0;
+}
+
+@end
+
 #pragma mark - 添加多个约束
 
 @implementation UIView (CGViewAndViewConstraints)
@@ -282,13 +353,15 @@
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *constraint  = nil;
     
-    if (self.isUpdateAddConstraint) {
-        constraint  = [self cg_updateConstraintWithAtt1:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil att2:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fixedLength commonSuperview:self];
+    UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
+    if ([UIView cg_currentConstraintsLayoutIsUpdate]) {
+        constraint  = [self cg_updateConstraintWithAtt1:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil att2:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fixedLength layoutPriority:layoutPriority commonSuperview:self];
     }
     
     if (!constraint) {
         
         constraint  = [self cg_createDimension:dimension fixedLength:fixedLength relation:relation];
+        [constraint setupLayoutPriority:layoutPriority];
         [self addConstraint:constraint];
     }
     
@@ -350,13 +423,15 @@
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *layoutConstraint    = nil;
     
-    if (self.isUpdateAddConstraint) {
+    UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
+    if ([UIView cg_currentConstraintsLayoutIsUpdate]) {
         
-        layoutConstraint    = [self cg_updateConstraintWithAtt1:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide att2:NSLayoutAttributeBottom multiplier:multiplier constant:inset commonSuperview:commonSuperview];
+        layoutConstraint    = [self cg_updateConstraintWithAtt1:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide att2:NSLayoutAttributeBottom multiplier:multiplier constant:inset layoutPriority:layoutPriority commonSuperview:commonSuperview];
     }
     
     if (!layoutConstraint) {
         layoutConstraint    = [self cg_createTopLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
+        [layoutConstraint setupLayoutPriority:layoutPriority];
         [viewController.view addConstraint:layoutConstraint];
     }
     
@@ -385,14 +460,16 @@
     self.translatesAutoresizingMaskIntoConstraints  = NO;
     NSLayoutConstraint *layoutConstraint    = nil;
     
-    if (self.isUpdateAddConstraint) {
+    UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
+    if ([UIView cg_currentConstraintsLayoutIsUpdate]) {
         
-        layoutConstraint    = [self cg_updateConstraintWithAtt1:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide att2:NSLayoutAttributeTop multiplier:multiplier constant:inset commonSuperview:commonSuperview];
+        layoutConstraint    = [self cg_updateConstraintWithAtt1:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide att2:NSLayoutAttributeTop multiplier:multiplier constant:inset layoutPriority:layoutPriority commonSuperview:commonSuperview];
     }
     
     if (!layoutConstraint) {
         
         layoutConstraint    = [self cg_createBottomLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation];
+        [layoutConstraint setupLayoutPriority:layoutPriority];
         [viewController.view addConstraint:layoutConstraint];
     }
     
@@ -452,28 +529,28 @@
 
 @implementation UIView (CGAddConstraint)
 
-- (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(nonnull CGSetupConstraints)constraints
++ (void)cg_autoSetPriority:(UILayoutPriority)priority forConstraints:(nonnull CGSetupConstraints)constraints
 {
-    self.layoutPriorityForConstraint    = priority;
+    [[self cg_constraintsLayoutPriority] addObject:@(priority)];
     if (constraints) {
-        constraints(self);
+        constraints();
     }
-    self.layoutPriorityForConstraint    = UILayoutPriorityRequired;
+    [[self cg_constraintsLayoutPriority] removeLastObject];
 }
 
-- (void)cg_autoUpdateConstraints:(CGSetupConstraints)constraints
++ (void)cg_autoUpdateConstraints:(CGSetupConstraints)constraints
 {
-    self.isUpdateAddConstraint  = YES;
-    if (constraints) {
-        constraints(self);
-    }
-    self.isUpdateAddConstraint  = NO;
+    [self cg_autoSetUpdate:YES forConstraints:constraints];
 }
 
-//- (NSLayoutConstraint *)cg_attributeBy:(CGLayoutAttribute)layoutAttribute
-//{
-//    
-//}
++ (void)cg_autoSetUpdate:(BOOL)updateConstraints forConstraints:(CGSetupConstraints)constraints
+{
+    [[self cg_constraintsLayoutIsUpdate] addObject:@(updateConstraints)];
+    if (constraints) {
+        constraints();
+    }
+    [[self cg_constraintsLayoutIsUpdate] removeLastObject];
+}
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(nonnull UIView *)view2
 {
@@ -523,14 +600,16 @@
     
     NSLayoutConstraint *layoutConstraint    = nil;
     
-    if (self.isUpdateAddConstraint) {
+    UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
+    if ([UIView cg_currentConstraintsLayoutIsUpdate]) {
         
-        layoutConstraint    = [self cg_updateConstraintWithAtt1:attr1 relatedBy:relation toItem:view2 att2:attr2 multiplier:multiplier constant:c commonSuperview:commonSuperview];
+        layoutConstraint    = [self cg_updateConstraintWithAtt1:attr1 relatedBy:relation toItem:view2 att2:attr2 multiplier:multiplier constant:c layoutPriority:layoutPriority commonSuperview:commonSuperview];
     }
     
     if (!layoutConstraint) {
         
         layoutConstraint    = [self cg_createAttribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
+        [layoutConstraint setupLayoutPriority:layoutPriority];
         [commonSuperview addConstraint:layoutConstraint];
     }
     

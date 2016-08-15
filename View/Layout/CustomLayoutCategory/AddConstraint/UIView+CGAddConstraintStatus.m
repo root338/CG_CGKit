@@ -15,7 +15,7 @@
 
 @implementation UIView (CGAddConstraintStatus)
 
-- (NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c commonSuperview:(nullable UIView *)commonSuperview
+- (NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c layoutPriority:(UILayoutPriority)layoutPriority commonSuperview:(nullable UIView *)commonSuperview
 {
     if (att1 == NSLayoutAttributeTrailing || att1 == NSLayoutAttributeRight || att1 == NSLayoutAttributeBottom) {
         c = -c;
@@ -33,7 +33,7 @@
     
     if (layoutConstraint) {
         
-        if (layoutConstraint.multiplier != multiplier) {
+        if (layoutConstraint.multiplier != multiplier || layoutPriority != layoutConstraint.priority) {
             
             [commonSuperview removeConstraint:layoutConstraint];
             layoutConstraint    = nil;
@@ -45,26 +45,26 @@
     return layoutConstraint;
 }
 
-#pragma mark - 设置属性
-- (void)setIsUpdateAddConstraint:(BOOL)isUpdate
-{
-    objc_setAssociatedObject(self, @selector(isUpdateAddConstraint), @(isUpdate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (BOOL)isUpdateAddConstraint
-{
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
-}
-
-- (void)setLayoutPriorityForConstraint:(UILayoutPriority)layoutPriority
-{
-    objc_setAssociatedObject(self, @selector(layoutPriorityForConstraint), @(layoutPriority), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UILayoutPriority)layoutPriorityForConstraint
-{
-    return [objc_getAssociatedObject(self, _cmd) floatValue];
-}
+//#pragma mark - 设置属性
+//- (void)setIsUpdateAddConstraint:(BOOL)isUpdate
+//{
+//    objc_setAssociatedObject(self, @selector(isUpdateAddConstraint), @(isUpdate), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//}
+//
+//- (BOOL)isUpdateAddConstraint
+//{
+//    return [objc_getAssociatedObject(self, _cmd) boolValue];
+//}
+//
+//- (void)setLayoutPriorityForConstraint:(UILayoutPriority)layoutPriority
+//{
+//    objc_setAssociatedObject(self, @selector(layoutPriorityForConstraint), @(layoutPriority), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//}
+//
+//- (UILayoutPriority)layoutPriorityForConstraint
+//{
+//    return [objc_getAssociatedObject(self, _cmd) floatValue];
+//}
 
 @end
 

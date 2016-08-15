@@ -55,8 +55,6 @@
 {
     NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:relation toItem:viewController.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:multiplier constant:inset];
     
-    [layoutConstraint setupLayoutPriority:self.layoutPriorityForConstraint];
-    
     return layoutConstraint;
 }
 
@@ -84,8 +82,6 @@
         relation    = NSLayoutRelationGreaterThanOrEqual;
     }
     NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:multiplier constant:inset];
-    
-    [layoutConstraint setupLayoutPriority:self.layoutPriorityForConstraint];
     
     return layoutConstraint;
 }
@@ -117,7 +113,6 @@
 {
     NSLayoutConstraint *constraint  = [NSLayoutConstraint constraintWithItem:self attribute:(NSLayoutAttribute)dimension relatedBy:relation toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:fixedLength];
     
-    [constraint setupLayoutPriority:self.layoutPriorityForConstraint];
     return constraint;
 }
 
@@ -187,7 +182,6 @@
     NSAssert(self.superview, @"请添加到父视图中再添加约束");
     
     NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
-    [layoutConstraint setupLayoutPriority:self.layoutPriorityForConstraint];
     
     return layoutConstraint;
 }

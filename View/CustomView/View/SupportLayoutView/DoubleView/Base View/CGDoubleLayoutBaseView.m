@@ -66,34 +66,33 @@
         return;
     }
     
+    [UIView cg_autoSetUpdate:didSetupConstraints forConstraints:^{
+        [self.contentView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
+        CGLayoutEdge firstExcludingEdge, secondExcludingEdge;
+        if (self.alignment == CGAlignmentTypeHorizontal) {
+            
+            firstExcludingEdge  = CGLayoutEdgeTrailing;
+            secondExcludingEdge = CGLayoutEdgeLeading;
+        }else  {
+            
+            firstExcludingEdge  = CGLayoutEdgeBottom;
+            secondExcludingEdge = CGLayoutEdgeTop;
+        }
+        
+        [self setupTargetView:firstTargetView size:self.firstItemSize];
+        [self setupTargetView:secondTargetView size:self.secondItemSize];
+        
+        [firstTargetView cg_autoInverseAttribute:firstExcludingEdge
+                                          toItem:secondTargetView
+                                       relatedBy:self.betweenSpaceRelation
+                                        constant:self.targetViewsBetweenSapce];
+        [firstTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.firstTargetViewEdgeInsets excludingEdge:firstExcludingEdge];
+        [secondTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.secondTargetViewEdgeInsets excludingEdge:secondExcludingEdge];
+    }];
+    
     if (!didSetupConstraints) {
         didSetupConstraints = YES;
-    }else {
-        firstTargetView.isUpdateAddConstraint   = YES;
-        secondTargetView.isUpdateAddConstraint  = YES;
     }
-    
-    [self.contentView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
-    CGLayoutEdge firstExcludingEdge, secondExcludingEdge;
-    if (self.alignment == CGAlignmentTypeHorizontal) {
-        
-        firstExcludingEdge  = CGLayoutEdgeTrailing;
-        secondExcludingEdge = CGLayoutEdgeLeading;
-    }else  {
-        
-        firstExcludingEdge  = CGLayoutEdgeBottom;
-        secondExcludingEdge = CGLayoutEdgeTop;
-    }
-    
-    [self setupTargetView:firstTargetView size:self.firstItemSize];
-    [self setupTargetView:secondTargetView size:self.secondItemSize];
-    
-    [firstTargetView cg_autoInverseAttribute:firstExcludingEdge
-                                      toItem:secondTargetView
-                                   relatedBy:self.betweenSpaceRelation
-                                    constant:self.targetViewsBetweenSapce];
-    [firstTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.firstTargetViewEdgeInsets excludingEdge:firstExcludingEdge];
-    [secondTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.secondTargetViewEdgeInsets excludingEdge:secondExcludingEdge];
 }
 
 - (void)setupTargetView:(UIView *)targetView size:(CGSize)size

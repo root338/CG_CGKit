@@ -32,8 +32,8 @@
         _contentView    = [[UIView alloc] initWithFrame:frame];
         [self addSubview:_contentView];
         
-        [_contentView cg_autoSetPriority:999 forConstraints:^(UIView * _Nonnull makeView) {
-            [makeView cg_autoEdgesInsetsZeroToSuperview];
+        [UIView cg_autoSetPriority:999 forConstraints:^{
+            [_contentView cg_autoEdgesInsetsZeroToSuperview];
         }];
     }
     return self;

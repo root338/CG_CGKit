@@ -12,28 +12,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (CGAddConstraintStatus)
 
-/**
- *  是否在添加中更新约束
- *  @param  当设置为YES时，在添加约束前会检查添加约束是否存在，如果存在更新约束值 默认为NO
- *  @see    在UIView+CGAddConstraints扩展中使用
- */
-@property (nonatomic, assign) BOOL isUpdateAddConstraint;
-
-/**
- *  全局设置添加约束的优先值 (0, 1000]
- *  @warning    创建约束的优先级只能在创建阶段进行设置，当添加到视图后无法进行设置，会发生运行错误，当值在(0, 1000]之外时，无效
- *  @warning    建议使用 UIView (CGAddConstraint) 扩展 cg_autoSetPriority:forConstraints:方法设置UIView的约束优先级
- *
- *  @warning    否则当设置优先级后，视图没有释放，且在后续添加的约束都会为之前设置的优先级
- *  @see        在UIView+CGCreateConstraint扩展中使用
- */
-@property (nonatomic, assign) UILayoutPriority layoutPriorityForConstraint;
+///**
+// *  是否在添加中更新约束
+// *  @param  当设置为YES时，在添加约束前会检查添加约束是否存在，如果存在更新约束值 默认为NO
+// *  @see    在UIView+CGAddConstraints扩展中使用
+// */
+//@property (nonatomic, assign) BOOL isUpdateAddConstraint;
+//
+///**
+// *  全局设置添加约束的优先值 (0, 1000]
+// *  @warning    创建约束的优先级只能在创建阶段进行设置，当添加到视图后无法进行设置，会发生运行错误，当值在(0, 1000]之外时，无效
+// *  @warning    建议使用 UIView (CGAddConstraint) 扩展 cg_autoSetPriority:forConstraints:方法设置UIView的约束优先级
+// *
+// *  @warning    否则当设置优先级后，视图没有释放，且在后续添加的约束都会为之前设置的优先级
+// *  @see        在UIView+CGCreateConstraint扩展中使用
+// */
+//@property (nonatomic, assign) UILayoutPriority layoutPriorityForConstraint;
 
 /** 是否保存添加的约束 */
 //@property (nonatomic, assign) BOOL isSaveAddConstraint;
 
 /** 更新约束 */
-- (nullable NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c commonSuperview:(nullable UIView *)commonSuperview;
+- (nullable NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c layoutPriority:(UILayoutPriority)layoutPriority commonSuperview:(nullable UIView *)commonSuperview;
 
 
 @end

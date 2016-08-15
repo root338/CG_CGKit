@@ -50,13 +50,14 @@
         return;
     }
     
-    if (didSetupConstraints) {
-        targetView.isUpdateAddConstraint  = YES;
-    }else {
+    [UIView cg_autoSetUpdate:didSetupConstraints forConstraints:^{
+        [targetView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
+    }];
+    
+    if (!didSetupConstraints) {
+        
         didSetupConstraints         = YES;
     }
-    
-    [targetView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
 }
 
 #pragma mark - CGLayoutMarginDelegate
