@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "CGLineBoxTypeHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 #define _LINE_WIDTH_SINGLE           (1.0 / [UIScreen mainScreen].scale)
 
 /**
  *  线框视图
- *
+ *  @warning 在绘制线时，如果该视图存在子视图，需要设置子视图的显示区域，以留出线的显示区域
  */
 @interface CGLineBoxView : UIView
 
@@ -30,7 +31,7 @@
 /**
  *  绘制的线的颜色
  */
-@property (strong, nonatomic) UIColor *lineColor;
+@property (nullable, strong, nonatomic) UIColor *lineColor;
 
 /**
  *  线的宽度
@@ -47,4 +48,8 @@
  */
 @property (strong, nonatomic) UIImage *lineHorizontalImage;
 @property (strong, nonatomic) UIImage *lineVerticalImage;
+
+- (void)setupLineType:(LineBoxType)lineType color:(nullable UIColor *)lineColor length:(CGFloat)length;
 @end
+
+NS_ASSUME_NONNULL_END

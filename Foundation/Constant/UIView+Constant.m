@@ -12,5 +12,3 @@
 const UIViewAutoresizing    UIViewAutoresizingFlexibleAllMargin = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 
 const UIViewAutoresizing    UIViewAutoresizingFlexibleSize = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-

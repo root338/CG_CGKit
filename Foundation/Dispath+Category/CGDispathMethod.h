@@ -1,5 +1,5 @@
 //
-//  DispathMethod.h
+//  CGDispathMethod.h
 //  QuickAskCommunity
 //
 //  Created by DY on 15/8/4.

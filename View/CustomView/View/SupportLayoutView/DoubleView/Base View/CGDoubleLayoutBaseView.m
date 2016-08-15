@@ -27,6 +27,15 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        _marginEdgeInsets           = UIEdgeInsetsZero;
+        _firstTargetViewEdgeInsets  = UIEdgeInsetsZero;
+        _secondTargetViewEdgeInsets = UIEdgeInsetsZero;
+        _targetViewsBetweenSapce    = 0;
+        
+        _firstItemSize              = CGSizeZero;
+        _secondItemSize             = CGSizeZero;
+        
         _contentView    = [[UIView alloc] init];
         [self addSubview:_contentView];
         
@@ -76,20 +85,26 @@
         secondExcludingEdge = CGLayoutEdgeTop;
     }
     
-    if (!CGSizeEqualToSize(CGSizeZero, self.firstItemSize)) {
-        [firstTargetView cg_autoSetupViewSize:self.firstItemSize];
-    }
+    [self setupTargetView:firstTargetView size:self.firstItemSize];
+    [self setupTargetView:secondTargetView size:self.secondItemSize];
     
-    if (!CGSizeEqualToSize(CGSizeZero, self.secondItemSize)) {
-        [secondTargetView cg_autoSetupViewSize:self.secondItemSize];
-    }
-    
-    [firstTargetView cg_attribute:(NSLayoutAttribute)firstExcludingEdge
-                           toItem:secondTargetView
-                        attribute:(NSLayoutAttribute)secondExcludingEdge
-                         constant:self.targetViewsBetweenSapce];
+    [firstTargetView cg_autoInverseAttribute:firstExcludingEdge
+                                      toItem:secondTargetView
+                                   relatedBy:self.betweenSpaceRelation
+                                    constant:self.targetViewsBetweenSapce];
     [firstTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.firstTargetViewEdgeInsets excludingEdge:firstExcludingEdge];
     [secondTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.secondTargetViewEdgeInsets excludingEdge:secondExcludingEdge];
+}
+
+- (void)setupTargetView:(UIView *)targetView size:(CGSize)size
+{
+    if (size.width > 0.00001) {
+        [targetView cg_autoDimension:CGDimensionWidth fixedLength:size.width];
+    }
+    
+    if (size.height > 0.00001) {
+        [targetView cg_autoDimension:CGDimensionHeight fixedLength:size.height];
+    }
 }
 
 #pragma mark - CGDoubleLayoutDelegate

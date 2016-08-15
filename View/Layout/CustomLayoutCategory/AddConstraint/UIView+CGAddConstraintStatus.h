@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  全局设置添加约束的优先值 (0, 1000]
  *  @warning    创建约束的优先级只能在创建阶段进行设置，当添加到视图后无法进行设置，会发生运行错误，当值在(0, 1000]之外时，无效
+ *  @warning    建议使用 UIView (CGAddConstraint) 扩展 cg_autoSetPriority:forConstraints:方法设置UIView的约束优先级
+ *
+ *  @warning    否则当设置优先级后，视图没有释放，且在后续添加的约束都会为之前设置的优先级
  *  @see        在UIView+CGCreateConstraint扩展中使用
  */
 @property (nonatomic, assign) UILayoutPriority layoutPriorityForConstraint;

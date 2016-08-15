@@ -135,3 +135,9 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectWithMake(CGPoint position, CGSize size)
 {
     return CGRectMake(position.x, position.y, size.width, size.height);
 }
+
+/** 计算 { {center.x - width / 2, centr.y - height / 2 }, size } */
+UIKIT_STATIC_INLINE CGRect CG_CGRectWithCenterMake(CGPoint center, CGSize size)
+{
+    return CGRectMake(center.x - size.width / 2.0, center.y - size.height / 2.0, size.width, size.height);
+}

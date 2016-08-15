@@ -160,12 +160,8 @@
 
 - (void)setupPageControlShowArea
 {
-    if (!_pageControl) {
+    if (!_pageControl || _pageControl.hidden || !_pageControl.superview) {
         return;
-    }
-    
-    if (CGRectEqualToRect(self.pageControl.frame, CGRectZero) && self.pageControl.numberOfPages) {
-        [self.pageControl sizeToFit];
     }
     
     if (self.setupPageControlFrame) {
@@ -175,6 +171,10 @@
             self.pageControl.frame = frame;
         }
     }else {
+        
+        if (CGRectEqualToRect(self.pageControl.frame, CGRectZero) && self.pageControl.numberOfPages) {
+            [self.pageControl sizeToFit];
+        }
         
         CGPoint origin = CGPointMake((self.width - self.pageControl.width) / 2, 0);
         if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionBottom) {
