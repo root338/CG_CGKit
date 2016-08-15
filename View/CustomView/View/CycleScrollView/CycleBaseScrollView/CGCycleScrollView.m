@@ -79,12 +79,33 @@
     _totalCount                 = [self.dataSource numberCycleScrollView:self];
     CGSize currentIndexCellSize = [self getCellSizeWithIndex:_currentIndex];
     CGSize contentSize          = [self contentSize];
-    NSInteger startIndex        = _currentIndex;
+    NSInteger startIndex        = [self getPreviousCellIndexWithIndex:_currentIndex];
     
-    //设置标示
+    CGRect makeCellFrame        = [self getMakeCellFrameWithSize:currentIndexCellSize position:_currentIndexPosition];
+    CGPoint startOrigin         = makeCellFrame.origin;
+    
     for (;;) {
         
+        CGSize cellSize = [self getCellSizeWithIndex:startIndex];
+        
+        CGCycleCellConfigModel *configModel = [self createCellConfigModelWithIndex:startIndex];
+        if (!configModel) {
+            break;
+        }
+        
+        [self.contentCellConfigSet addObject:configModel];
+        
     }
+}
+
+- (CGCycleCellConfigModel *)createCellConfigModelWithIndex:(NSInteger)index
+{
+    if (index < 0 || index >= _totalCount) {
+        return nil;
+    }
+    
+    CGCycleCellConfigModel *cellConfigModel = [[CGCycleCellConfigModel alloc] initWithIndex:index];
+    return cellConfigModel;
 }
 
 //获取下一个索引
