@@ -85,6 +85,40 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
 @end
 
+@interface UIView (CGViewCategoryPrivateMethod)
+
+/** 通过不包含的边值，获取包含的边值 */
+- (CGLayoutOptionEdge)getNeedOptionEdgeWithExcludingOptionEdge:(CGLayoutOptionEdge)edge;
+
+@end
+
+@implementation UIView (CGViewCategoryPrivateMethod)
+
+/** 通过不包含的边值，获取包含的边值 */
+- (CGLayoutOptionEdge)getNeedOptionEdgeWithExcludingOptionEdge:(CGLayoutOptionEdge)edge
+{
+    CGLayoutOptionEdge optionEdge   = CGLayoutOptionEdgeAll;
+    if (edge & CGLayoutOptionEdgeLeft || edge & CGLayoutOptionEdgeLeading) {
+        optionEdge -= CGLayoutOptionEdgeLeading;
+    }
+    
+    if (edge & CGLayoutOptionEdgeTop) {
+        optionEdge -= CGLayoutOptionEdgeTop;
+    }
+    
+    if (edge & CGLayoutOptionEdgeRight || edge & CGLayoutOptionEdgeTrailing) {
+        optionEdge -= CGLayoutOptionEdgeTrailing;
+    }
+    
+    if (edge & CGLayoutOptionEdgeBottom) {
+        optionEdge -= CGLayoutOptionEdgeBottom;
+    }
+    
+    return optionEdge;
+}
+
+@end
+
 #pragma mark - 添加多个约束
 
 @implementation UIView (CGViewAndViewConstraints)
@@ -208,6 +242,13 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge
 {
     return [[self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:edge] allValues];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingOptionEdge:(CGLayoutOptionEdge)edge
+{
+    CGLayoutOptionEdge optionEdge = [self getNeedOptionEdgeWithExcludingOptionEdge:edge];
+    
+    return [self cg_autoEdgesToSuperviewEdgesWithEdge:optionEdge insets:insets];
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithEdge:(CGLayoutOptionEdge)edge insets:(UIEdgeInsets)insets

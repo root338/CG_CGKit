@@ -15,6 +15,8 @@
 @interface CGLayoutMarginBaseView ()
 {
     BOOL didSetupConstraints;
+    //首次添加约束后，标识为YES，之后更新约束
+    BOOL isUpdateConstraints;
 }
 @end
 
@@ -25,20 +27,18 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        [self performSelector:@selector(delaySetupConstraints)
-                   withObject:nil
-                   afterDelay:0];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
 
-- (void)delaySetupConstraints
+- (void)updateConstraints
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    if (self.disableRunLoopSetupConstraints) {
-        return;
+    if (!didSetupConstraints) {
+        [self setupConstraints];
+        didSetupConstraints         = YES;
     }
-    [self setupConstraints];
+    [super updateConstraints];
 }
 
 - (void)setupConstraints
@@ -50,13 +50,12 @@
         return;
     }
     
-    [UIView cg_autoSetUpdate:didSetupConstraints forConstraints:^{
+    [UIView cg_autoSetUpdate:isUpdateConstraints forConstraints:^{
         [targetView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
     }];
     
-    if (!didSetupConstraints) {
-        
-        didSetupConstraints         = YES;
+    if (!isUpdateConstraints) {
+        isUpdateConstraints = YES;
     }
 }
 
@@ -67,5 +66,14 @@
 }
 
 #pragma mark - 设置属性
-
+- (void)setMarginEdgeInsets:(UIEdgeInsets)marginEdgeInsets
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(marginEdgeInsets, _marginEdgeInsets)) {
+        
+        _marginEdgeInsets   = marginEdgeInsets;
+        didSetupConstraints = NO;
+        
+        [self setNeedsUpdateConstraints];
+    }
+}
 @end

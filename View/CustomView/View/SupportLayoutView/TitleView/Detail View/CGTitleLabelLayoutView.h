@@ -1,5 +1,5 @@
 //
-//  CGTitleLabelayoutView.h
+//  CGTitleLabelLayoutView.h
 //  TestCG_CGKit
 //
 //  Created by apple on 16/7/23.
@@ -7,12 +7,13 @@
 //
 
 #import "CGLayoutMarginBaseView.h"
+#import "CGMultilineLabel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 /** 带约束的标签标题  */
-@interface CGTitleLabelayoutView : CGLayoutMarginBaseView
+@interface CGTitleLabelLayoutView : CGLayoutMarginBaseView
 
-@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, strong, readonly) CGMultilineLabel *titleLabel;
 
 - (instancetype)initWithMarginEdgeInstes:(UIEdgeInsets)marginEdgeInstes;
 

@@ -17,9 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 边界距 */
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
 
-/** 关闭延迟0s后设置约束 */
-@property (nonatomic, assign) BOOL disableRunLoopSetupConstraints;
-
 - (UIView *)cg_layoutMarginTargetView;
 @end
 

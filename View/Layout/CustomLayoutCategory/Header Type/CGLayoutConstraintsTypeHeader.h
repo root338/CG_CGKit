@@ -70,6 +70,8 @@ typedef NS_OPTIONS(NSInteger, CGLayoutOptionEdge) {
     CGLayoutOptionEdgeRightBottom   = CGLayoutOptionEdgeTrailing | CGLayoutOptionEdgeBottom,
     
     CGLayoutOptionEdgeAll           = CGLayoutOptionEdgeVertical | CGLayoutOptionEdgeHorizontal,
+    
+    
 };
 
 typedef NS_ENUM(NSInteger, CGDimension) {
