@@ -229,6 +229,11 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewExcludingEdge:(CGLayoutEdge)layoutEdge
+{
+    return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:layoutEdge];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets
 {
     return [[self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets] allValues];
