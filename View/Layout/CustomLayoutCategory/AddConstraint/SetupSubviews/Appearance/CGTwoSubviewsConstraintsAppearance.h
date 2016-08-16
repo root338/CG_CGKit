@@ -11,6 +11,7 @@
 #import "CGLayoutConstraintsTypeHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
 /** 两个视图的配置 */
 @interface CGTwoSubviewsConstraintsAppearance : CGBaseObject
 
@@ -21,8 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 //当firstView为空时 默认为 subviews 第一个视图
 //当secondView为空时 默认为 subviews 第二个视图
 
-@property (nullable, nonatomic, strong) UIView *firstView;
-@property (nullable, nonatomic, strong) UIView *secondView;
+@property (nullable, nonatomic, weak) UIView *firstView;
+@property (nullable, nonatomic, weak) UIView *secondView;
 
 //设置两个视图的对齐方式
 //当水平对齐时 firstView 在左边 ，垂直对齐时 firstView 在上边 默认水平
@@ -34,7 +35,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) UIEdgeInsets firstViewEdgeInsets;
 @property (nonatomic, assign) UIEdgeInsets secondViewEdgeInsets;
-@property (nonatomic, assign, readwrite) UIEdgeInsets edgeInsets;
+@property (nonatomic, readwrite) UIEdgeInsets edgeInsets;
+
+//两个视图需要忽略的边界值
+
+@property (nonatomic, assign) CGLayoutOptionEdge firstViewExcludingOptionEdge;
+@property (nonatomic, assign) CGLayoutOptionEdge secondViewExcludingOptionEdge;
 
 //两个视图之间的间距
 @property (nonatomic, assign) CGFloat firstViewToSecondViewSpace;
@@ -48,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL firstViewCenter;
 @property (nonatomic, assign) BOOL secondViewCenter;
-@property (nonatomic, assign, readwrite) BOOL center;
+@property (nonatomic, readwrite) BOOL center;
 
 //设置两个视图的大小
 
@@ -57,14 +63,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat secondViewWidth;
 @property (nonatomic, assign) CGFloat secondViewHeight;
 
-@property (nonatomic, assign, readwrite) CGSize firstViewSize;
-@property (nonatomic, assign, readwrite) CGSize secondViewSize;
-@property (nonatomic, assign, readwrite) CGSize size;
+@property (nonatomic, readwrite) CGSize firstViewSize;
+@property (nonatomic, readwrite) CGSize secondViewSize;
+@property (nonatomic, readwrite) CGSize size;
 
 @property (nonatomic, assign) BOOL widthEqual;
 @property (nonatomic, assign) BOOL heightEqual;
 //两个子视图的大小是否相等
-@property (nonatomic, assign, readwrite) BOOL sizeEqual;
+@property (nonatomic, readwrite) BOOL sizeEqual;
 
 //两者的赋值必须按照约束约定进行赋值
 //在alignmentType    = CGAlignmentTypeHorizontal情况下 只有CGLayoutOptionEdgeTop／CGLayoutOptionEdgeBottom值有效
@@ -77,6 +83,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGLayoutOptionEdge secondViewEqualFirstViewEdge;
 
 + (instancetype)createConfigWithSuperview:(UIView *)superview;
+
+/** 设置两个子视图大小相等 */
+- (instancetype)initWithTwoSubviewsEqualSize;
 
 /** 
  *  获取指定视图的两个子视图数组

@@ -9,16 +9,22 @@
 #import "CGDoubleLayoutBaseView.h"
 
 #import "UIView+CGAddConstraints.h"
+#import "UIView+CGAddConstraintsForSubviews.h"
+
+#import "CGTwoSubviewsConstraintsAppearance.h"
 
 #import "CGPrintLogHeader.h"
 
 @interface CGDoubleLayoutBaseView ()
 {
     BOOL didSetupConstraints;
+    //首次添加约束后，标识为YES，之后更新约束
+    BOOL isUpdateConstraints;
+    
+    CGTwoSubviewsConstraintsAppearance *config;
 }
 
 @property (nonatomic, strong, readwrite) UIView *contentView;
-
 @end
 
 @implementation CGDoubleLayoutBaseView
@@ -36,74 +42,43 @@
         _firstItemSize              = CGSizeZero;
         _secondItemSize             = CGSizeZero;
         
+        config          = [[CGTwoSubviewsConstraintsAppearance alloc] init];
         _contentView    = [[UIView alloc] init];
         [self addSubview:_contentView];
         
-        [self performSelector:@selector(delaySetupConstraints)
-                   withObject:nil
-                   afterDelay:0];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
 
-- (void)delaySetupConstraints
+- (void)updateConstraints
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    if (self.disableRunLoopSetupConstraints) {
-        return;
+    if (!didSetupConstraints) {
+        [self setupViewConstraints];
+        didSetupConstraints = YES;
     }
-    [self setupViewConstraints];
+    [super updateConstraints];
 }
 
 - (void)setupViewConstraints
 {
-    UIView *firstTargetView     = [self cg_layoutFirstTargetView];
-    UIView *secondTargetView    = [self cg_layoutSecondTargetView];
-    
-    BOOL firstItemAvailable     = firstTargetView.superview && firstTargetView != self;
-    BOOL secondItemAvailable    = secondTargetView.superview && secondTargetView != self;
-    if (!firstItemAvailable || !secondItemAvailable) {
-        return;
-    }
-    
-    [UIView cg_autoSetUpdate:didSetupConstraints forConstraints:^{
+    config.firstView    = [self cg_layoutFirstTargetView];
+    config.secondView   = [self cg_layoutSecondTargetView];
+    [UIView cg_autoSetUpdate:isUpdateConstraints forConstraints:^{
+        
         [self.contentView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
-        CGLayoutEdge firstExcludingEdge, secondExcludingEdge;
-        if (self.alignment == CGAlignmentTypeHorizontal) {
-            
-            firstExcludingEdge  = CGLayoutEdgeTrailing;
-            secondExcludingEdge = CGLayoutEdgeLeading;
-        }else  {
-            
-            firstExcludingEdge  = CGLayoutEdgeBottom;
-            secondExcludingEdge = CGLayoutEdgeTop;
-        }
-        
-        [self setupTargetView:firstTargetView size:self.firstItemSize];
-        [self setupTargetView:secondTargetView size:self.secondItemSize];
-        
-        [firstTargetView cg_autoInverseAttribute:firstExcludingEdge
-                                          toItem:secondTargetView
-                                       relatedBy:self.betweenSpaceRelation
-                                        constant:self.targetViewsBetweenSapce];
-        [firstTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.firstTargetViewEdgeInsets excludingEdge:firstExcludingEdge];
-        [secondTargetView cg_autoEdgesToSuperviewEdgesWithInsets:self.secondTargetViewEdgeInsets excludingEdge:secondExcludingEdge];
+        [self.contentView cg_autoTwoSubviewsWithConfig:config];
     }];
     
-    if (!didSetupConstraints) {
-        didSetupConstraints = YES;
+    if (!isUpdateConstraints) {
+        isUpdateConstraints = YES;
     }
 }
 
-- (void)setupTargetView:(UIView *)targetView size:(CGSize)size
+- (void)setupUpdateConstraints
 {
-    if (size.width > 0.00001) {
-        [targetView cg_autoDimension:CGDimensionWidth fixedLength:size.width];
-    }
-    
-    if (size.height > 0.00001) {
-        [targetView cg_autoDimension:CGDimensionHeight fixedLength:size.height];
-    }
+    didSetupConstraints = NO;
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - CGDoubleLayoutDelegate
@@ -118,6 +93,81 @@
 }
 
 #pragma mark - 设置属性
+- (void)setTargetViewsBetweenSapce:(CGFloat)targetViewsBetweenSapce
+{
+    if (_targetViewsBetweenSapce != targetViewsBetweenSapce) {
+        
+        _targetViewsBetweenSapce    = targetViewsBetweenSapce;
+        config.firstViewToSecondViewSpace   = targetViewsBetweenSapce;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setBetweenSpaceRelation:(NSLayoutRelation)betweenSpaceRelation
+{
+    if (_betweenSpaceRelation != betweenSpaceRelation) {
+        
+        _betweenSpaceRelation   = betweenSpaceRelation;
+        config.betweenSpaceLayoutRelation   = betweenSpaceRelation;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setMarginEdgeInsets:(UIEdgeInsets)marginEdgeInsets
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(marginEdgeInsets, _marginEdgeInsets)) {
+        _marginEdgeInsets   = marginEdgeInsets;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setFirstTargetViewEdgeInsets:(UIEdgeInsets)firstTargetViewEdgeInsets
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(firstTargetViewEdgeInsets, _firstTargetViewEdgeInsets)) {
+        _firstTargetViewEdgeInsets  = firstTargetViewEdgeInsets;
+        config.firstViewEdgeInsets  = firstTargetViewEdgeInsets;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setSecondTargetViewEdgeInsets:(UIEdgeInsets)secondTargetViewEdgeInsets
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(secondTargetViewEdgeInsets, _secondTargetViewEdgeInsets)) {
+        _secondTargetViewEdgeInsets = secondTargetViewEdgeInsets;
+        config.secondViewEdgeInsets = secondTargetViewEdgeInsets;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setFirstItemSize:(CGSize)firstItemSize
+{
+    if (!CGSizeEqualToSize(firstItemSize, _firstItemSize)) {
+        _firstItemSize          = firstItemSize;
+        config.firstViewSize    = firstItemSize;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setSecondItemSize:(CGSize)secondItemSize
+{
+    if (!CGSizeEqualToSize(secondItemSize, _secondItemSize)) {
+        _secondItemSize         = secondItemSize;
+        config.secondViewSize   = secondItemSize;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setAlignment:(CGAlignmentType)alignment
+{
+    if (_alignment != alignment) {
+        _alignment  = alignment;
+        config.alignmentType    = alignment;
+        
+        [self.contentView removeConstraints:self.contentView.constraints];
+        [self setupUpdateConstraints];
+    }
+}
+
 
 
 @end

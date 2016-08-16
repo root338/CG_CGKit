@@ -30,8 +30,10 @@
     
     CGAxis  axis;
     CGLayoutEdge        firstViewExcludingLayoutEdge;
+    CGLayoutEdge        secondViewExcludingEdge;
+    
     CGLayoutOptionEdge  firstViewExcludingOptionEdge;
-    CGLayoutOptionEdge  secondViewExcludingEdge;
+    CGLayoutOptionEdge  secondViewExcludingOptionEdge;
     
     //设置指定对齐方式后，第一个视图与第二个视图之间可以对齐的边
     CGLayoutOptionEdge (^equalOptionEqual)(CGAlignmentType, CGLayoutOptionEdge) = ^(CGAlignmentType alignmentType, CGLayoutOptionEdge equalEdge) {
@@ -39,16 +41,16 @@
         CGLayoutOptionEdge edge = 0;
         if (alignmentType == CGAlignmentTypeHorizontal) {
             if (equalEdge & CGLayoutOptionEdgeTop) {
-                edge    += CGLayoutOptionEdgeTop;
+                edge    |= CGLayoutOptionEdgeTop;
             }
             if (equalEdge & CGLayoutOptionEdgeBottom) {
-                edge    += CGLayoutOptionEdgeBottom;
+                edge    |= CGLayoutOptionEdgeBottom;
             }
         }else {
             if (equalEdge & CGLayoutOptionEdgeLeading || equalEdge & CGLayoutOptionEdgeLeft) {
-                edge    += CGLayoutOptionEdgeLeading;
+                edge    |= CGLayoutOptionEdgeLeading;
             }else if (equalEdge & CGLayoutOptionEdgeTrailing || equalEdge & CGLayoutOptionEdgeRight) {
-                edge    += CGLayoutOptionEdgeTrailing;
+                edge    |= CGLayoutOptionEdgeTrailing;
             }
         }
         return edge;
@@ -64,12 +66,25 @@
     CGLayoutOptionEdge (^centerOptionEdge) (CGAlignmentType, CGLayoutOptionEdge) = ^(CGAlignmentType alignmentType, CGLayoutOptionEdge optionEdge) {
         
         CGLayoutOptionEdge centerOptionEdge = 0;
-        if (!(optionEdge & CGLayoutOptionEdgeTop)) {
-            centerOptionEdge   = CGLayoutOptionEdgeTop;
+        
+        if (alignmentType == CGAlignmentTypeHorizontal) {
+            
+            if (!(optionEdge & CGLayoutOptionEdgeTop)) {
+                centerOptionEdge   |= CGLayoutOptionEdgeTop;
+            }
+            if (!(optionEdge & CGLayoutOptionEdgeBottom)) {
+                centerOptionEdge   |= CGLayoutOptionEdgeBottom;
+            }
+        }else {
+            
+            if (!(optionEdge & CGLayoutOptionEdgeLeft) && !(optionEdge & CGLayoutOptionEdgeLeading)) {
+                centerOptionEdge    |= CGLayoutOptionEdgeLeading;
+            }
+            if (!(optionEdge & CGLayoutOptionEdgeRight) && !(optionEdge & CGLayoutOptionEdgeTrailing)) {
+                centerOptionEdge    |= CGLayoutOptionEdgeTrailing;
+            }
         }
-        if (!(optionEdge & CGLayoutOptionEdgeBottom)) {
-            centerOptionEdge   = CGLayoutOptionEdgeBottom;
-        }
+        
         return centerOptionEdge;
     };
     
@@ -79,16 +94,12 @@
     if (config.alignmentType == CGAlignmentTypeHorizontal) {
         
         firstViewExcludingLayoutEdge    = CGLayoutEdgeTrailing;
-        firstViewExcludingOptionEdge    = CGLayoutOptionEdgeTrailing;
-        secondViewExcludingEdge         = CGLayoutOptionEdgeLeading;
+        secondViewExcludingEdge         = CGLayoutEdgeLeading;
         
-        axis                    = CGAxisHorizontal;
-        if (!(firstViewEqualSecondViewEdge & CGLayoutOptionEdgeTop)) {
-            firstViewCenterOptionEdge   = CGLayoutOptionEdgeTop;
-        }
-        if (!(firstViewEqualSecondViewEdge & CGLayoutOptionEdgeBottom)) {
-            firstViewCenterOptionEdge   = CGLayoutOptionEdgeBottom;
-        }
+        firstViewExcludingOptionEdge    = CGLayoutOptionEdgeTrailing;
+        secondViewExcludingOptionEdge   = CGLayoutOptionEdgeLeading;
+        
+        axis                            = CGAxisHorizontal;
         
         firstViewExcludingOffset    = config.firstViewEdgeInsets.left;
         secondViewExcludingOffset   = config.secondViewEdgeInsets.right;
@@ -96,10 +107,12 @@
     }else {
         
         firstViewExcludingLayoutEdge    = CGLayoutEdgeBottom;
-        firstViewExcludingOptionEdge    = CGLayoutOptionEdgeBottom;
-        secondViewExcludingEdge         = CGLayoutOptionEdgeTop;
+        secondViewExcludingEdge         = CGLayoutEdgeTop;
         
-        axis                    = CGAxisVertical;
+        firstViewExcludingOptionEdge    = CGLayoutOptionEdgeBottom;
+        secondViewExcludingOptionEdge   = CGLayoutOptionEdgeTop;
+        
+        axis                            = CGAxisVertical;
         
         firstViewExcludingOffset    = config.firstViewEdgeInsets.top;
         secondViewExcludingOffset   = config.secondViewEdgeInsets.bottom;
@@ -117,20 +130,23 @@
         
         [firstView cg_autoAxis:axis toSameAxisOfView:superview];
         [firstView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)secondViewExcludingEdge withOffset:firstViewExcludingOffset];
-        [firstView cg_autoEdgesToSuperviewEdgesWithEdge:firstViewCenterOptionEdge insets:config.firstViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
+        
+        [firstView cg_autoEdgesToSuperviewEdgesWithEdge:firstViewCenterOptionEdge | config.firstViewExcludingOptionEdge insets:config.firstViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
     }else {
         
-        [firstView cg_autoEdgesToSuperviewEdgesWithInsets:config.firstViewEdgeInsets excludingOptionEdge:firstViewEqualSecondViewEdge];
+        CGLayoutOptionEdge optionEdge = firstViewEqualSecondViewEdge | firstViewExcludingOptionEdge | config.firstViewExcludingOptionEdge;
+        [firstView cg_autoEdgesToSuperviewEdgesWithInsets:config.firstViewEdgeInsets excludingOptionEdge:optionEdge];
     }
     
     if (config.secondViewCenter) {
         
         [secondView cg_autoAxis:axis toSameAxisOfView:superview];
-        [secondView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)firstViewExcludingOptionEdge withOffset:secondViewExcludingOffset];
+        [secondView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)firstViewExcludingLayoutEdge withOffset:secondViewExcludingOffset];
         [secondView cg_autoEdgesToSuperviewEdgesWithEdge:secondViewCenterOptionEdge insets:config.secondViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
     }else {
         
-        [secondView cg_autoEdgesToSuperviewEdgesWithInsets:config.secondViewEdgeInsets excludingOptionEdge:secondViewEqualFirstViewEdge];
+        CGLayoutOptionEdge optionEdge   = secondViewEqualFirstViewEdge | secondViewExcludingOptionEdge | config.secondViewExcludingOptionEdge;
+        [secondView cg_autoEdgesToSuperviewEdgesWithInsets:config.secondViewEdgeInsets excludingOptionEdge:optionEdge];
     }
     
     [firstView cg_autoInverseAttribute:firstViewExcludingLayoutEdge toItem:secondView relatedBy:config.betweenSpaceLayoutRelation constant:config.firstViewToSecondViewSpace];
@@ -139,7 +155,7 @@
     if (config.firstViewWidth > minSize) {
         [firstView cg_autoDimension:CGDimensionWidth fixedLength:config.firstViewWidth];
     }
-    if (config.firstViewWidth > minSize) {
+    if (config.firstViewHeight > minSize) {
         [firstView cg_autoDimension:CGDimensionHeight fixedLength:config.firstViewHeight];
     }
     if (config.secondViewWidth > minSize) {
@@ -153,7 +169,7 @@
         [firstView cg_autoDimension:CGDimensionWidth equalView:secondView];
     }
     if (config.heightEqual) {
-        [secondView cg_autoDimension:CGDimensionHeight equalView:secondView];
+        [firstView cg_autoDimension:CGDimensionHeight equalView:secondView];
     }
     
     return constraints;

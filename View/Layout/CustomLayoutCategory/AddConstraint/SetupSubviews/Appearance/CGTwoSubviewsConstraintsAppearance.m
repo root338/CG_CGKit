@@ -24,17 +24,29 @@
     self    = [super init];
     if (self) {
         
-        _alignmentType  = CGAlignmentTypeHorizontal;
-        _firstViewEdgeInsets    = UIEdgeInsetsZero;
-        _secondViewEdgeInsets   = UIEdgeInsetsZero;
+        UIEdgeInsets zeroInsets     = UIEdgeInsetsZero;
+        _alignmentType              = CGAlignmentTypeHorizontal;
+        _firstViewEdgeInsets        = zeroInsets;
+        _secondViewEdgeInsets       = zeroInsets;
         _betweenSpaceLayoutRelation = NSLayoutRelationEqual;
         
         _firstViewToSecondViewSpace = 0;
         
-        _firstViewWidth     = 0;
-        _firstViewHeight    = 0;
-        _secondViewWidth    = 0;
-        _secondViewHeight   = 0;
+        _firstViewWidth             = 0;
+        _firstViewHeight            = 0;
+        _secondViewWidth            = 0;
+        _secondViewHeight           = 0;
+    }
+    return self;
+}
+
+- (instancetype)initWithTwoSubviewsEqualSize
+{
+    self = [self init];
+    if (self) {
+        
+        _widthEqual     = YES;
+        _heightEqual    = YES;
     }
     return self;
 }

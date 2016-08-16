@@ -16,5 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) UIButton *secondButton;
 
+- (instancetype)initwithButtonType:(UIButtonType)buttonType;
 @end
 NS_ASSUME_NONNULL_END

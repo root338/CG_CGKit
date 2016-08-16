@@ -11,7 +11,9 @@
 #import "UIView+CGAddConstraints.h"
 
 @interface CGTitleButtonsLayoutView ()
-
+{
+    UIButtonType _buttonType;
+}
 @property (nonatomic, strong, readwrite) UIButton *firstButton;
 
 @property (nonatomic, strong, readwrite) UIButton *secondButton;
@@ -26,14 +28,25 @@
     
     if (self) {
         
-        _firstButton    = [UIButton buttonWithType:UIButtonTypeSystem];
-        _secondButton     = [UIButton buttonWithType:UIButtonTypeSystem];
-        
-        [self.contentView addSubview:_firstButton];
-        [self.contentView addSubview:_secondButton];
+        [self setupCreateButtonsWithType:_buttonType];
     }
     
     return self;
+}
+
+- (instancetype)initwithButtonType:(UIButtonType)buttonType
+{
+    _buttonType = buttonType;
+    return [self initWithFrame:CGRectZero];
+}
+
+- (void)setupCreateButtonsWithType:(UIButtonType)buttonType
+{
+    _firstButton    = [UIButton buttonWithType:buttonType];
+    _secondButton   = [UIButton buttonWithType:buttonType];
+    
+    [self.contentView addSubview:_firstButton];
+    [self.contentView addSubview:_secondButton];
 }
 
 #pragma mark - CGDoubleLayoutDelegate
