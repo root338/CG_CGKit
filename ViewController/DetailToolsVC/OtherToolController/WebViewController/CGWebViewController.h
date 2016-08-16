@@ -45,7 +45,7 @@ NS_CLASS_AVAILABLE(10_10, 8_0) @interface CGWebViewController : CGBaseViewContro
 @property (nonatomic, assign) BOOL isHiddenWebViewLoadingProgress;
 /** 隐藏底部视图工具条 */
 @property (nonatomic, assign) BOOL isHiddenWebBottomView;
-
+/** 设置底部视图的高度 */
 @property (nonatomic, assign) CGFloat bottomViewHeight;
 @end
 NS_ASSUME_NONNULL_END

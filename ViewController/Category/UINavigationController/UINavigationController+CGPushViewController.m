@@ -24,7 +24,7 @@
 
 - (void)cg_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSMutableArray *newViewControllers  = [NSMutableArray arrayWithArray:self.viewControllers];
+    NSMutableArray *newViewControllers  = [self.viewControllers mutableCopy];
     [newViewControllers removeLastObject];
     [newViewControllers addObject:viewController];
     [self setViewControllers:newViewControllers animated:animated];
