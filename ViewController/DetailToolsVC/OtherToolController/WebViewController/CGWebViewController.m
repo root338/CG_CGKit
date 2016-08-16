@@ -14,6 +14,8 @@
 
 #import "UIView+CGAddConstraints.h"
 
+#import "Value+Constant.h"
+
 @interface CGWebViewController ()
 {
     UIBarButtonItem *goBackItem;
@@ -48,7 +50,7 @@
 - (void)setupContentView
 {
     if (!self.webView.superview) {
-        <#statements#>
+        
     }
 }
 
