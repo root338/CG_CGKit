@@ -598,14 +598,43 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_attribute:attribute toItem:view2 constant:0];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoAttributeOptionEqual:(CGLayoutOptionEdge)optionEdge toItem:(UIView *)view2
+{
+    return [self cg_autoAttributeOptionEqual:optionEdge toItem:view2 constant:0];
+}
+
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(nonnull UIView *)view2 constant:(CGFloat)c
 {
     return [self cg_attribute:attribute toItem:view2 relatedBy:NSLayoutRelationEqual constant:c];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoAttributeOptionEqual:(CGLayoutOptionEdge)optionEdge toItem:(UIView *)view2 constant:(CGFloat)c
+{
+    return [self cg_autoAttributeOptionEqual:optionEdge toItem:view2 relatedBy:NSLayoutRelationEqual constant:c];
+}
+
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c
 {
     return [self cg_attribute:attribute relatedBy:relation toItem:view2 attribute:attribute multiplier:1.0 constant:c];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoAttributeOptionEqual:(CGLayoutOptionEdge)optionEdge toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c
+{
+    NSMutableArray *constraints = [NSMutableArray array];
+    if (optionEdge & CGLayoutOptionEdgeTop) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeTop toItem:view2 relatedBy:relation constant:c]];
+    }
+    if (optionEdge & CGLayoutOptionEdgeLeading || optionEdge & CGLayoutOptionEdgeLeft) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeLeading toItem:view2 relatedBy:relation constant:c]];
+    }
+    if (optionEdge & CGLayoutOptionEdgeBottom) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeBottom toItem:view2 relatedBy:relation constant:c]];
+    }
+    if (optionEdge & CGLayoutOptionEdgeTrailing || optionEdge & CGLayoutOptionEdgeRight) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeTrailing toItem:view2 relatedBy:relation constant:c]];
+    }
+    
+    return constraints;
 }
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2

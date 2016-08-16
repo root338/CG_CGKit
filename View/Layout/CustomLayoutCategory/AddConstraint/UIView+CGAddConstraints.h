@@ -207,7 +207,7 @@ typedef void (^CGSetupConstraints) (void);
 
 @end
 
-#pragma mark - 与对象设置的单个约束
+#pragma mark - 设置视图与指定视图之间的约束
 @interface UIView (CGAddConstraint)
 
 
@@ -225,11 +225,20 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置两对象之间的约束(边值类型，约束类型) */
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2;
 
+/** 设置两对象之间的约束(边值类型，约束类型) */
+- (NSArray<NSLayoutConstraint *> *)cg_autoAttributeOptionEqual:(CGLayoutOptionEdge)optionEdge toItem:(UIView *)view2;
+
 /** 设置两对象之间的约束(边值类型，约束类型, 间距) */
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 constant:(CGFloat)c;
 
+/** 设置两对象之间的约束(边值类型，约束类型) */
+- (NSArray<NSLayoutConstraint *> *)cg_autoAttributeOptionEqual:(CGLayoutOptionEdge)optionEdge toItem:(UIView *)view2 constant:(CGFloat)c;
+
 /** 设置两对象之间的约束(边值类型(单个)，约束类型, 间距) */
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c;
+
+/** 设置两对象之间的约束(边值类型，约束类型) */
+- (NSArray<NSLayoutConstraint *> *)cg_autoAttributeOptionEqual:(CGLayoutOptionEdge)optionEdge toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c;
 
 /** 设置两对象之间的约束(边值类型) */
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2;

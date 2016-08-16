@@ -27,6 +27,7 @@
         _alignmentType  = CGAlignmentTypeHorizontal;
         _firstViewEdgeInsets    = UIEdgeInsetsZero;
         _secondViewEdgeInsets   = UIEdgeInsetsZero;
+        _betweenSpaceLayoutRelation = NSLayoutRelationEqual;
         
         _firstViewToSecondViewSpace = 0;
         

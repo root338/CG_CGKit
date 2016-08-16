@@ -29,74 +29,111 @@
     NSMutableArray  *constraints    = [NSMutableArray array];
     
     CGAxis  axis;
-    CGLayoutEdge firstViewExcludingEdge;
-    CGLayoutEdge secondViewExcludingEdge;
-    CGLayoutEdge firstViewEqualSecondViewEdge   = 0;
+    CGLayoutEdge        firstViewExcludingLayoutEdge;
+    CGLayoutOptionEdge  firstViewExcludingOptionEdge;
+    CGLayoutOptionEdge  secondViewExcludingEdge;
+    
+    //设置指定对齐方式后，第一个视图与第二个视图之间可以对齐的边
+    CGLayoutOptionEdge (^equalOptionEqual)(CGAlignmentType, CGLayoutOptionEdge) = ^(CGAlignmentType alignmentType, CGLayoutOptionEdge equalEdge) {
+        
+        CGLayoutOptionEdge edge = 0;
+        if (alignmentType == CGAlignmentTypeHorizontal) {
+            if (equalEdge & CGLayoutOptionEdgeTop) {
+                edge    += CGLayoutOptionEdgeTop;
+            }
+            if (equalEdge & CGLayoutOptionEdgeBottom) {
+                edge    += CGLayoutOptionEdgeBottom;
+            }
+        }else {
+            if (equalEdge & CGLayoutOptionEdgeLeading || equalEdge & CGLayoutOptionEdgeLeft) {
+                edge    += CGLayoutOptionEdgeLeading;
+            }else if (equalEdge & CGLayoutOptionEdgeTrailing || equalEdge & CGLayoutOptionEdgeRight) {
+                edge    += CGLayoutOptionEdgeTrailing;
+            }
+        }
+        return edge;
+    };
+    
+    CGLayoutOptionEdge  firstViewEqualSecondViewEdge    = equalOptionEqual(config.alignmentType, config.firstViewEqualSecondViewEdge);
+    CGLayoutOptionEdge  secondViewEqualFirstViewEdge    = equalOptionEqual(config.alignmentType, config.secondViewEqualFirstViewEdge);
     
     CGFloat firstViewExcludingOffset;
     CGFloat secondViewExcludingOffset;
     
-    CGLayoutOptionEdge subviewsOptionEdge;
+    //计算指定对齐时，并设置两子视图有对齐之后，与父视图之间的约束边值设置
+    CGLayoutOptionEdge (^centerOptionEdge) (CGAlignmentType, CGLayoutOptionEdge) = ^(CGAlignmentType alignmentType, CGLayoutOptionEdge optionEdge) {
+        
+        CGLayoutOptionEdge centerOptionEdge = 0;
+        if (!(optionEdge & CGLayoutOptionEdgeTop)) {
+            centerOptionEdge   = CGLayoutOptionEdgeTop;
+        }
+        if (!(optionEdge & CGLayoutOptionEdgeBottom)) {
+            centerOptionEdge   = CGLayoutOptionEdgeBottom;
+        }
+        return centerOptionEdge;
+    };
+    
+    CGLayoutOptionEdge firstViewCenterOptionEdge    = centerOptionEdge(config.alignmentType, firstViewEqualSecondViewEdge);
+    CGLayoutOptionEdge secondViewCenterOptionEdge   = centerOptionEdge(config.alignmentType, secondViewEqualFirstViewEdge);
     
     if (config.alignmentType == CGAlignmentTypeHorizontal) {
         
-        firstViewExcludingEdge  = CGLayoutEdgeTrailing;
-        secondViewExcludingEdge = CGLayoutEdgeLeading;
+        firstViewExcludingLayoutEdge    = CGLayoutEdgeTrailing;
+        firstViewExcludingOptionEdge    = CGLayoutOptionEdgeTrailing;
+        secondViewExcludingEdge         = CGLayoutOptionEdgeLeading;
         
         axis                    = CGAxisHorizontal;
-        subviewsOptionEdge      = CGLayoutOptionEdgeVertical;
+        if (!(firstViewEqualSecondViewEdge & CGLayoutOptionEdgeTop)) {
+            firstViewCenterOptionEdge   = CGLayoutOptionEdgeTop;
+        }
+        if (!(firstViewEqualSecondViewEdge & CGLayoutOptionEdgeBottom)) {
+            firstViewCenterOptionEdge   = CGLayoutOptionEdgeBottom;
+        }
         
         firstViewExcludingOffset    = config.firstViewEdgeInsets.left;
         secondViewExcludingOffset   = config.secondViewEdgeInsets.right;
         
-        if (config.firstViewEqualSecondViewEdge == CGLayoutEdgeTop || config.firstViewEqualSecondViewEdge == CGLayoutEdgeBottom) {
-            firstViewEqualSecondViewEdge    = config.firstViewEqualSecondViewEdge;
-        }
     }else {
         
-        firstViewExcludingEdge  = CGLayoutEdgeBottom;
-        secondViewExcludingEdge = CGLayoutEdgeTop;
+        firstViewExcludingLayoutEdge    = CGLayoutEdgeBottom;
+        firstViewExcludingOptionEdge    = CGLayoutOptionEdgeBottom;
+        secondViewExcludingEdge         = CGLayoutOptionEdgeTop;
         
         axis                    = CGAxisVertical;
-        subviewsOptionEdge      = CGLayoutOptionEdgeHorizontal;
         
         firstViewExcludingOffset    = config.firstViewEdgeInsets.top;
         secondViewExcludingOffset   = config.secondViewEdgeInsets.bottom;
         
-        if (config.firstViewEqualSecondViewEdge == CGLayoutEdgeLeading || config.firstViewEqualSecondViewEdge == CGLayoutEdgeLeft || config.firstViewEqualSecondViewEdge == CGLayoutEdgeTrailing || config.firstViewEqualSecondViewEdge == CGLayoutEdgeRight) {
-            firstViewEqualSecondViewEdge    = config.firstViewEqualSecondViewEdge;
-        }
     }
     
-    if (config.firstViewCenter || firstViewEqualSecondViewEdge) {
+    if (firstViewEqualSecondViewEdge) {
+        [firstView cg_autoAttributeOptionEqual:firstViewEqualSecondViewEdge toItem:secondView];
+    }
+    if (secondViewEqualFirstViewEdge) {
+        [secondView cg_autoAttributeOptionEqual:secondViewEqualFirstViewEdge toItem:firstView];
+    }
+    
+    if (config.firstViewCenter) {
         
-        if (config.firstViewCenter) {
-            [firstView cg_autoAxis:axis toSameAxisOfView:superview];
-        }else {
-            [firstView cg_attribute:(NSLayoutAttribute)firstViewEqualSecondViewEdge toItem:secondView];
-        }
-        
+        [firstView cg_autoAxis:axis toSameAxisOfView:superview];
         [firstView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)secondViewExcludingEdge withOffset:firstViewExcludingOffset];
-        [firstView cg_autoEdgesToSuperviewEdgesWithEdge:subviewsOptionEdge insets:config.firstViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
+        [firstView cg_autoEdgesToSuperviewEdgesWithEdge:firstViewCenterOptionEdge insets:config.firstViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
     }else {
         
-        [firstView cg_autoEdgesToSuperviewEdgesWithInsets:config.firstViewEdgeInsets excludingEdge:firstViewExcludingEdge];
+        [firstView cg_autoEdgesToSuperviewEdgesWithInsets:config.firstViewEdgeInsets excludingOptionEdge:firstViewEqualSecondViewEdge];
     }
     
-    if (config.secondViewCenter || firstViewEqualSecondViewEdge) {
+    if (config.secondViewCenter) {
         
-        if (config.secondViewCenter) {
-            [secondView cg_autoAxis:axis toSameAxisOfView:superview];
-        }
-        
-        [secondView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)firstViewExcludingEdge withOffset:secondViewExcludingOffset];
-        [secondView cg_autoEdgesToSuperviewEdgesWithEdge:subviewsOptionEdge insets:config.secondViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
+        [secondView cg_autoAxis:axis toSameAxisOfView:superview];
+        [secondView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)firstViewExcludingOptionEdge withOffset:secondViewExcludingOffset];
+        [secondView cg_autoEdgesToSuperviewEdgesWithEdge:secondViewCenterOptionEdge insets:config.secondViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
     }else {
         
-        [secondView cg_autoEdgesToSuperviewEdgesWithInsets:config.secondViewEdgeInsets excludingEdge:secondViewExcludingEdge];
+        [secondView cg_autoEdgesToSuperviewEdgesWithInsets:config.secondViewEdgeInsets excludingOptionEdge:secondViewEqualFirstViewEdge];
     }
     
-    [firstView cg_autoInverseAttribute:firstViewExcludingEdge toItem:secondView constant:config.firstViewToSecondViewSpace];
+    [firstView cg_autoInverseAttribute:firstViewExcludingLayoutEdge toItem:secondView relatedBy:config.betweenSpaceLayoutRelation constant:config.firstViewToSecondViewSpace];
     
     CGFloat minSize = 0.0001;
     if (config.firstViewWidth > minSize) {

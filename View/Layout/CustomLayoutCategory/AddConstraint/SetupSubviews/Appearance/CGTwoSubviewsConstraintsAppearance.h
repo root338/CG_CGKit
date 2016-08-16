@@ -38,13 +38,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 //两个视图之间的间距
 @property (nonatomic, assign) CGFloat firstViewToSecondViewSpace;
+//两个视图之间的约束类型，默认NSLayoutRelationEqual
+@property (nonatomic, assign) NSLayoutRelation betweenSpaceLayoutRelation;
+
 
 //设置两个视图是否居中显示
 //当水平对齐时，居中代表垂直居中
 //当垂直对齐时，居中代表水平居中
-
-
-@property (nonatomic, assign) CGLayoutEdge firstViewEqualSecondViewEdge;
 
 @property (nonatomic, assign) BOOL firstViewCenter;
 @property (nonatomic, assign) BOOL secondViewCenter;
@@ -66,6 +66,15 @@ NS_ASSUME_NONNULL_BEGIN
 //两个子视图的大小是否相等
 @property (nonatomic, assign, readwrite) BOOL sizeEqual;
 
+//两者的赋值必须按照约束约定进行赋值
+//在alignmentType    = CGAlignmentTypeHorizontal情况下 只有CGLayoutOptionEdgeTop／CGLayoutOptionEdgeBottom值有效
+//在alignmentType    = CGAlignmentTypeVertical下，只有CGLayoutOptionEdgeLeading/CGLayoutOptionEdgeTrailing有效
+
+//第一个视图的边距等于第二个视图的边距，第一个视图的相应于父视图的边距会被忽略
+@property (nonatomic, assign) CGLayoutOptionEdge firstViewEqualSecondViewEdge;
+
+//第二个视图的边距等于第一个视图的边距，第二个视图的相应于父视图的边距会被忽略
+@property (nonatomic, assign) CGLayoutOptionEdge secondViewEqualFirstViewEdge;
 
 + (instancetype)createConfigWithSuperview:(UIView *)superview;
 
