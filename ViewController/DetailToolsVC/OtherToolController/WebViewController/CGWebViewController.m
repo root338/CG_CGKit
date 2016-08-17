@@ -11,12 +11,13 @@
 #import "CGWebViewController.h"
 
 #import "CGWebView.h"
+#import "CGWebPrivateView.h"
 
 #import "UIView+CGAddConstraints.h"
 
 #import "Value+Constant.h"
 
-@interface CGWebViewController ()
+@interface CGWebViewController ()<CGWebPrivateViewDelegate>
 {
     UIBarButtonItem *goBackItem;
     UIBarButtonItem *goForwardItem;
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) UIProgressView *progressDefultView;
 @property (nonatomic, strong) UIToolbar *toolbar;
+@property (nonatomic, readonly) CGWebPrivateView *privateView;
 @end
 
 @implementation CGWebViewController
@@ -33,6 +35,15 @@
 - (void)handleWebViewBack:(UIBarButtonItem *)sender
 {
     
+}
+
+- (instancetype)init
+{
+    self    = [super init];
+    if (self) {
+        self.view   = [[CGWebPrivateView alloc] initWithDelegate:self];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
