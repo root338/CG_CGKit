@@ -22,4 +22,15 @@ typedef NS_ENUM(NSInteger, CGRadioSliderWidthType) {
     CGRadioSliderWidthTypeCustom,
 };
 
+/** 滑块的位置类型 */
+typedef NS_ENUM(NSInteger, CGSliderViewPositionType) {
+    
+    CGSliderViewPositionTypeNone,
+    //在视图顶部
+    CGSliderViewPositionTypeTop,
+    //在视图底部
+    CGSliderViewPositionTypeBottom,
+    
+};
+
 #endif /* CGRadioSliderViewHeader_h */
