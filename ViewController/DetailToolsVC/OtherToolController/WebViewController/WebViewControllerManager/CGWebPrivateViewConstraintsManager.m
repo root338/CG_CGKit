@@ -20,6 +20,7 @@
     BOOL didSetupConstraints;
     
     __weak NSLayoutConstraint *_bottomViewBottomConstraint;
+    __weak NSLayoutConstraint *_bottomViewTopConstraint;
     __weak NSLayoutConstraint *_bottomViewHeightConstraint;
     __weak NSLayoutConstraint *_progressViewHeightConstraint;
 }
@@ -61,8 +62,8 @@
             [self.view.webView cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:CGLayoutEdgeBottom];
             [self.view.webView cg_autoInverseAttribute:CGLayoutEdgeBottom toItem:self.view.bottomView];
             [self.view.bottomView cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingOptionEdge:CGLayoutOptionEdgeHorizontal];
-            _bottomViewBottomConstraint = [self.view.bottomView cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
             
+            [self setupBottomViewEdgeWithHidden:[self hiddenBottomView]];
         }];
         
         didSetupConstraints = YES;
@@ -114,24 +115,46 @@
     return layotConstraint;
 }
 
+- (void)setupBottomViewEdgeWithHidden:(BOOL)isHidden
+{
+    if (isHidden) {
+        
+        if (_bottomViewBottomConstraint) {
+            [self.view removeConstraint:_bottomViewBottomConstraint];
+        }
+        _bottomViewTopConstraint    = [self.view.bottomView cg_autoInverseAttribute:CGLayoutEdgeTop toItem:self.view.bottomView.superview];
+    }else {
+        
+        if (_bottomViewTopConstraint) {
+            [self.view removeConstraint:_bottomViewTopConstraint];
+        }
+        _bottomViewBottomConstraint = [self.view.bottomView cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
+    }
+}
+
 - (void)bottomViewIsHidden:(BOOL)isHidden animated:(BOOL)animated
 {
-    if (!_bottomViewBottomConstraint) {
-        return;
-    }
     
-    if (isHidden) {
-        _bottomViewBottomConstraint.constant    = self.view.bottomView.height;
+    [self setupBottomViewEdgeWithHidden:isHidden];
+    [self.view setNeedsUpdateConstraints];
+    
+    if (animated) {
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            
+            if (isHidden != self.view.bottomView.hidden) {
+                self.view.bottomView.hidden = isHidden;
+            }
+        }];
     }else {
-        _bottomViewBottomConstraint.constant    = 0;
-    }
-    [UIView animateWithDuration:0.3 animations:^{
         
         [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        
-        self.view.bottomView.hidden = isHidden;
-    }];
+        if (isHidden != self.view.bottomView.hidden) {
+            self.view.bottomView.hidden = isHidden;
+        }
+    }
 }
 
 - (void)setupViewHeight:(CGFloat)height type:(CGWebPrivateViewType)type animated:(BOOL)animated
