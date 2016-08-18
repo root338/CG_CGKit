@@ -7,7 +7,9 @@
 //
 
 #import "CGTitleRadioCellAppearance.h"
+
 #import "CGLineBoxTypeHeader.h"
+#import "CGRadioSliderViewHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)           CGFloat             sliderViewBorderWidth;
 @property (nonatomic, assign)           CGFloat             sliderViewHeight;
 @property (nonatomic, assign)           CGFloat             sliderViewWidth;
+
+@property (nonatomic, assign)           CGSliderViewPositionType sliderViewPositionType;
 
 /** 移动滑块是否动画执行 */
 @property (nonatomic, assign)           BOOL                moveSliderViewIsAnimation;

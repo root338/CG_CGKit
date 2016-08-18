@@ -9,12 +9,11 @@
 #import "CGRadioView.h"
 #import "CGRadioSliderView.h"
 
-
 #import "UIView+CGAddConstraints.h"
 
 @interface CGRadioView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {
-    UICollectionView    *   _collectionView;
+    UICollectionView        *   _collectionView;
 }
 
 /** 当前选择的标题索引 */
@@ -68,7 +67,28 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.dataSource radioView:self cellForIndexPath:indexPath];
+    UICollectionViewCell *cell  = [self.dataSource radioView:self cellForIndexPath:indexPath];
+    
+    BOOL isSelected = NO;
+    if (indexPath.row == self.currentSelectedIndex) {
+        isSelected  = YES;
+    }
+    if (cell.selected != isSelected) {
+        [cell setSelected:isSelected];
+    }
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    if (cell.selected && indexPath != _currentSelectedIndexPath) {
+        
+        NSIndexPath *beforeIndexPath    = _currentSelectedIndexPath;
+        _currentSelectedIndexPath       = indexPath;
+        _currentSelectedIndex           = indexPath.row;
+        [self setupSliderViewFrameWithCurrentSelectedCell:cell currentSelectedIndexPath:indexPath beforeSelectedCell:[collectionView cellForItemAtIndexPath:beforeIndexPath] beforeSelectedIndexPath:beforeIndexPath];
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -88,9 +108,18 @@
 }
 
 #pragma mark - UICollectionViewDelegate
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    BOOL isShouldSelectedItem   = YES;
+    if ([self.delegate respondsToSelector:@selector(radioView:shouldSelectedIndexPath:)]) {
+        isShouldSelectedItem    = [self.delegate radioView:self shouldSelectedIndexPath:indexPath];
+    }
+    return isShouldSelectedItem;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.currentSelectedIndexPath   = indexPath;
+    [self setupCurrentIndexPath:indexPath];
     if ([self.delegate respondsToSelector:@selector(radioView:didSelectItemAtIndexPath:)]) {
         [self.delegate radioView:self didSelectItemAtIndexPath:indexPath];
     }
@@ -133,20 +162,11 @@
 - (BOOL)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
     
-    UIView *sliderView = self.sliderView;
-    //    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
-    //        sliderView  = [self.dataSource radioView:self sliderViewForIndex:currentSelectedIndexPath.row];
-    //    }
-    
-    if (!self.sliderView) {
-        return NO;
-    }
-    
-    UICollectionViewCell *beforeSelctedCell     = nil;
+    UICollectionViewCell *beforeSelectedCell     = nil;
     UICollectionViewCell *currentSelectedCell   = nil;
     
     if (beforeSelectedIndexPath) {
-        beforeSelctedCell   = [_collectionView cellForItemAtIndexPath:beforeSelectedIndexPath];
+        beforeSelectedCell   = [_collectionView cellForItemAtIndexPath:beforeSelectedIndexPath];
     }
     if (currentSelectedIndexPath) {
         currentSelectedCell = [_collectionView cellForItemAtIndexPath:currentSelectedIndexPath];
@@ -156,9 +176,49 @@
         return NO;
     }
     
+    return [self setupSliderViewFrameWithCurrentSelectedCell:currentSelectedCell currentSelectedIndexPath:currentSelectedIndexPath beforeSelectedCell:beforeSelectedCell beforeSelectedIndexPath:beforeSelectedIndexPath];
+}
+
+- (BOOL)setupSliderViewFrameWithCurrentSelectedCell:(UICollectionViewCell *)currentSelectedCell currentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedCell:(UICollectionViewCell *)beforeSelectedCell beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
+{
+    CGRadioSliderView *sliderView = self.sliderView;
+//    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
+//        sliderView  = [self.dataSource radioView:self sliderViewForIndex:currentSelectedIndexPath.row];
+//    }
+    
+    if (!self.sliderView) {
+        return NO;
+    }
+    
+    if (!sliderView.superview) {
+        
+        CGRect frame            = sliderView.frame;
+        if ([self.delegate respondsToSelector:@selector(radioView:frameWithSliderView:)]) {
+            frame   = [self.delegate radioView:self frameWithSliderView:sliderView];
+        }else if (sliderView.positionType) {
+            
+            switch (sliderView.positionType) {
+                case CGSliderViewPositionTypeTop:
+                    frame.origin.y = 0;
+                    break;
+                case CGSliderViewPositionTypeBottom:
+                    frame.origin.y  = _collectionView.height - CGRectGetHeight(frame);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        if (!CGRectEqualToRect(frame, sliderView.frame)) {
+            sliderView.frame    =   frame;
+        }
+        
+        [_collectionView addSubview:sliderView];
+    }
+    
     CGRect sliderViewFrame  = CGRectZero;
     if ([self.delegate respondsToSelector:@selector(radioView:sliderViewFrameBeforeSelectedCell:currentSelectedCell:)]) {
-        sliderViewFrame = [self.delegate radioView:self sliderViewFrameBeforeSelectedCell:beforeSelctedCell currentSelectedCell:currentSelectedCell];
+        sliderViewFrame = [self.delegate radioView:self sliderViewFrameBeforeSelectedCell:beforeSelectedCell currentSelectedCell:currentSelectedCell];
     }
     
     BOOL isAnimation        = self.moveSliderViewIsAnimation;
@@ -166,23 +226,24 @@
         isAnimation = [self.delegate radioView:self moveSliderViewFrameShouldAnimationWithBeforeSelectedIndex:beforeSelectedIndexPath.row currentSelectedIndex:currentSelectedIndexPath.row];
     }
     
-    if (CGSizeEqualToSize(sliderViewFrame.size, CGSizeZero)) {
-        return NO;
-    }
-    
-    if (!sliderView.superview) {
-        [_collectionView addSubview:sliderView];
-    }
-    
     [UIView animateWithDuration:0.3 animations:^{
         sliderView.frame    = sliderViewFrame;
     }];
     
-    if (![_collectionView.indexPathsForSelectedItems containsObject:currentSelectedIndexPath]) {
-        [_collectionView selectItemAtIndexPath:currentSelectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+    if (!currentSelectedCell.isSelected) {
+        [currentSelectedCell setSelected:YES];
+    }
+    if (beforeSelectedCell.isSelected) {
+        [beforeSelectedCell setSelected:NO];
     }
     
-    return NO;
+    return YES;
+}
+
+- (void)setupCurrentIndexPath:(NSIndexPath *)indexPath
+{
+    self.currentSelectedIndexPath   = indexPath;
+    _currentSelectedIndex           = indexPath.row;
 }
 
 #pragma mark - 设置属性
@@ -190,12 +251,10 @@
 {
     if (_currentSelectedIndex != currentSelectedIndex || !_currentSelectedIndexPath) {
         
-        [self setCurrentSelectedIndexPath:[NSIndexPath indexPathForRow:currentSelectedIndex inSection:0]];
-        if (self.currentSelectedIndexPath.row == currentSelectedIndex) {
-            //更新成功后，row == currentSelectedIndex
-            //否则失败，失败不进行赋值
-            
-            _currentSelectedIndex   = currentSelectedIndex;
+        _currentSelectedIndex   = currentSelectedIndex;
+        
+        if ([_collectionView numberOfItemsInSection:0] > _currentSelectedIndex) {
+            [self setCurrentSelectedIndexPath:[NSIndexPath indexPathForRow:currentSelectedIndex inSection:0]];
         }
     }
 }
@@ -203,11 +262,6 @@
 - (BOOL)didSelectedIndexFlag
 {
     return self.currentSelectedIndexPath;
-}
-
-- (NSInteger)currentSelectedIndex
-{
-    return self.currentSelectedIndexPath.row;
 }
 
 - (void)setCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath

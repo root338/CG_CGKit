@@ -38,10 +38,19 @@
 
 @implementation CGTitleRadioView
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self    = [super initWithFrame:frame];
+    if (self) {
+        
+    }
+    return self;
+}
+
 - (instancetype)initWithTitles:(NSArray<NSString *> *)titles appearance:(nonnull CGRadioViewAppearance *)appearance
 {
     CGRect frame  = CGRectZero;
-    self    = [super initWithFrame:frame];
+    self    = [self initWithFrame:frame];
     if (self) {
         
         _titles = titles;
@@ -49,6 +58,7 @@
         _currentSelectedTitleIndex  = 0;
         
         CGRadioSliderView *sliderView   = [[CGRadioSliderView alloc] init];
+        sliderView.positionType         = appearance.sliderViewPositionType;
         sliderView.backgroundColor      = appearance.sliderViewBackgroundColor;
         [sliderView cg_setupBorderWithWidth:appearance.sliderViewBorderWidth color:appearance.sliderViewBorderColor cornerRadius:appearance.sliderViewCornerRadius];
         
@@ -113,14 +123,6 @@
     [cell setupCollectionViewCellContentWithData:_appearance];
     [cell.titleLabel setText:[self getTitleAtIndex:indexPath.row]];
     
-    if (!radioView.didSelectedIndexFlag && indexPath.row == self.currentSelectedTitleIndex) {
-        
-        cg_dispath_after_second(0, ^{
-            
-            [self setupSelectedTitleIndex:self.currentSelectedTitleIndex];
-        });
-    }
-    
     return cell;
 }
 
@@ -179,6 +181,7 @@
 
 - (void)radioView:(CGRadioView *)radioView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.currentSelectedTitleIndex  = indexPath.row;
     if (self.didSelectedCallback) {
         self.didSelectedCallback(indexPath.row, self.currentDataSouce[indexPath.row]);
     }
@@ -200,6 +203,7 @@
 
 - (void)setCurrentSelectedTitleIndex:(NSInteger)currentSelectedTitleIndex
 {
+    
     _currentSelectedTitleIndex  = currentSelectedTitleIndex;
     [self setupSelectedTitleIndex:currentSelectedTitleIndex];
 }

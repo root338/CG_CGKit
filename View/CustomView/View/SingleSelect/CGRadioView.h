@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)radioView:(CGRadioView *)radioView sizeForIndexPath:(NSIndexPath *)indexPath;
 
 /** 标题视图索引下的滑块视图 */
-//- (UIView *)radioView:(CGRadioView *)radioView sliderViewForIndex:(NSInteger)index;
+//- (CGRadioSliderView *)radioView:(CGRadioView *)radioView sliderViewForIndex:(NSInteger)index;
 
 @end
 
@@ -35,6 +35,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void)radioView:(CGRadioView *)radioView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/** 设置滑块显示区域 */
+- (CGRect)radioView:(CGRadioView *)radioView frameWithSliderView:(UIView *)sliderView;
+
+/** 是否应该选择指定 indexPath */
+- (BOOL)radioView:(CGRadioView *)radioView shouldSelectedIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  设置滑块的显示区域
