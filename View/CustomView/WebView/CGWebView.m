@@ -41,13 +41,12 @@
 - (void)setupProgressView
 {
     if (self.isHiddeProgressView) {
+        
         if (_progressView.superview) {
+            
             [_progressView removeFromSuperview];
         }
-        return;
-    }
-    
-    if (!self.progressView.superview) {
+    }else if (!self.progressView.superview) {
         
         [self addSubview:self.progressView];
         [self.progressView cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:CGLayoutEdgeBottom];
