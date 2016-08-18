@@ -8,6 +8,7 @@
 
 #import "CGWebPrivateView.h"
 #import "CGWebView.h"
+#import "CGWebBottomView.h"
 
 #import "UIView+CGAddConstraints.h"
 #import "NSArray+CGAddConstraints.h"
@@ -19,8 +20,8 @@
     __weak NSLayoutConstraint *_bottomViewTopConstraint;
 }
 
-@property (nonatomic, strong, readwrite) CGWebView * webView;
-@property (nonatomic, strong, readwrite) UIView    * bottomView;
+@property (nonatomic, strong, readwrite) CGWebView          * webView;
+@property (nonatomic, strong, readwrite) CGWebBottomView    * bottomView;
 
 @end
 
@@ -32,7 +33,7 @@
     if (self) {
         
         _webView    = [[CGWebView alloc] init];
-        _bottomView = [[UIView alloc] init];
+        _bottomView = [[CGWebBottomView alloc] init];
         
         [self addSubview:_webView];
         [self addSubview:_bottomView];

@@ -70,7 +70,7 @@
     }
 }
 
-- (void)cg_setupURLForString:(NSString *)paramString
+- (void)setupURLForString:(NSString *)paramString
 {
     NSURL *url              = [NSURL URLWithString:paramString];
     NSURLRequest *request   = [NSURLRequest requestWithURL:url];

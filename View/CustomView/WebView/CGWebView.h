@@ -30,7 +30,7 @@ NS_CLASS_AVAILABLE(10_10, 8_0) @interface CGWebView : CGBaseView
 /** 网页加载进度的改变回调 */
 @property (nullable, nonatomic, copy) void (^webViewProgressChangeCallback) (CGFloat progress);
 
-- (void)cg_setupURLForString:(NSString *)paramString;
+- (void)setupURLForString:(NSString *)paramString;
 
 @end
 NS_ASSUME_NONNULL_END

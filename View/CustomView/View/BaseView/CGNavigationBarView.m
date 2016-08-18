@@ -9,6 +9,7 @@
 #import "CGNavigationBarView.h"
 
 #import "UIView+CGAddSubview.h"
+#import "UIView+CGOrientation.h"
 
 @interface CGNavigationBarView ()
 
@@ -21,19 +22,23 @@
 
 - (instancetype)initWithFrame:(CGRect)frame delegate:(id<CGNavigationBarViewDelegate>)pDelegate
 {
-    self = [super initWithFrame:frame];
+    self = [self initWithFrame:frame];
     if (self) {
+        
         _delegate   = pDelegate;
-        [self cg_initialization];
+        
     }
     return self;
 }
 
-- (void)cg_initialization
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    [self createNavigationBar];
-//    [self addNavigationBarAndContentViewSubviews];
-    
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        [self createNavigationBar];
+    }
+    return self;
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
@@ -72,7 +77,7 @@
 
 - (void)createNavigationBar
 {
-    self.navigationBar  = [[UINavigationBar alloc] initWithFrame:CGRectZero];
+    _navigationBar  = [[UINavigationBar alloc] initWithFrame:CGRectZero];
     //对导航栏进行设置
     [self cg_setupNavigationBarAppearance];
     
@@ -89,7 +94,15 @@
 - (void)setupSubviewsLayout
 {
     
-    CGRect navigationBarFrame   = [self.delegate cg_navigationBarFrame];
+    CGRect navigationBarFrame;
+    if (self.delegate) {
+        
+        navigationBarFrame  = [self.delegate cg_navigationBarFrame];
+    }else {
+        
+        navigationBarFrame  = CGRectMake(0, 0, self.width, 64);
+    }
+    
     CGRect contentViewFrame;
     if (self.isContentViewFullScreen) {
         
@@ -156,7 +169,5 @@
         [self setNavigationBarHidden:isNavigationBarHidden animated:NO];
     }
 }
-
-
 
 @end
