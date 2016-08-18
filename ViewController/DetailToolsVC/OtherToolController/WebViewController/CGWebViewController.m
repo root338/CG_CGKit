@@ -17,7 +17,7 @@
 
 #import "Value+Constant.h"
 
-@interface CGWebViewController ()<CGWebPrivateViewDelegate>
+@interface CGWebViewController ()
 {
     UIBarButtonItem *goBackItem;
     UIBarButtonItem *goForwardItem;
@@ -34,15 +34,6 @@
 - (void)handleWebViewBack:(UIBarButtonItem *)sender
 {
     
-}
-
-- (instancetype)init
-{
-    self    = [super init];
-    if (self) {
-        self.view   = [[CGWebPrivateView alloc] initWithDelegate:self];
-    }
-    return self;
 }
 
 - (void)viewDidLoad
