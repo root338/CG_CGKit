@@ -11,18 +11,22 @@
 #import "CGWebViewController.h"
 
 #import "CGWebView.h"
+#import "CGWebPrivateView.h"
 
 #import "UIView+CGAddConstraints.h"
 
-@interface CGWebViewController ()
+#import "Value+Constant.h"
+
+@interface CGWebViewController ()<CGWebPrivateViewDelegate>
 {
     UIBarButtonItem *goBackItem;
     UIBarButtonItem *goForwardItem;
 }
 @property (nonatomic, strong, readwrite) CGWebView *webView;
-@property (nonatomic, strong, readwrite) UIProgressView *progressView;
 
+@property (nonatomic, strong) UIProgressView *progressDefultView;
 @property (nonatomic, strong) UIToolbar *toolbar;
+@property (nonatomic, readonly) CGWebPrivateView *privateView;
 @end
 
 @implementation CGWebViewController
@@ -33,6 +37,14 @@
     
 }
 
+- (instancetype)init
+{
+    self    = [super init];
+    if (self) {
+        self.view   = [[CGWebPrivateView alloc] initWithDelegate:self];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -46,13 +58,20 @@
 }
 
 #pragma mark - 设置页面内容
+- (void)setupContentView
+{
+    if (!self.webView.superview) {
+        
+    }
+}
+
 /** 设置进度条 */
 - (void)setupProgressView
 {
     if (!self.isHiddenWebViewLoadingProgress) {
         if (!self.progressView.superview) {
-            [self.view addSubview:self.progressView];
-            [self.progressView cg_autoEdgesToViewController:self withInsets:UIEdgeInsetsZero exculdingEdge:CGLayoutEdgeBottom];
+            [self.navigationController.navigationBar addSubview:self.progressView];
+            [self.progressView cg_autoEdgesInsetsZeroToSuperviewExcludingEdge:CGLayoutEdgeTop];
         }
     }
 }
@@ -64,11 +83,9 @@
         [self.view addSubview:self.webView];
         [self.webView cg_autoEdgesInsetsZeroToViewController:self exculdingEdge:CGLayoutEdgeBottom];
         
-//      //约束添加到视图之后不能设置优先级，当UIView+CGAddConstraints扩展完善再使用吧
-        //[self.webView cg_bottomLayoutGuideOfViewController:self];
-        NSLayoutConstraint *bottomLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.webView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-        bottomLayoutConstraint.priority = 900;
-        [self.webView.superview addConstraint:bottomLayoutConstraint];
+        [UIView cg_autoSetPriority:999 forConstraints:^{
+            [self.webView cg_bottomLayoutGuideOfViewController:self];
+        }];
     }
     
     __weak typeof(self) weakSelf    = self;
@@ -88,7 +105,7 @@
 /** 设置工具栏 */
 - (void)setupToolBar
 {
-    if (!self.isHiddenToolBar) {
+    if (!self.isHiddenWebBottomView) {
         
         if (!self.toolbar.superview) {
             
@@ -98,6 +115,12 @@
             [self.toolbar cg_autoDimension:CGDimensionHeight fixedLength:44];
         }
     }
+}
+
+- (void)updateViewConstraints
+{
+    
+    [super updateViewConstraints];
 }
 
 #pragma mark - 设置属性
@@ -141,5 +164,16 @@
     [_toolbar setItems:items];
     
     return _toolbar;
+}
+
+- (UIView *)bottomView
+{
+    if (_bottomView) {
+        return _bottomView;
+    }
+    
+    _bottomView = self.toolbar;
+    
+    return _bottomView;
 }
 @end
