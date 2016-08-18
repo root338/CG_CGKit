@@ -149,18 +149,29 @@
         
         _bottomViewHeight   = bottomViewHeight;
         
-        _bottomViewHeight   = bottomViewHeight;
-        BOOL animated       = self.animatedChangeViewStatus;
-        if ([self.delegate respondsToSelector:@selector(shouldAnimatedChangeBottomHeightWithWebView:)]) {
-            animated    = [self.delegate shouldAnimatedChangeBottomHeightWithWebView:self];
-        }
-        [_constraintsManager setupBottomViewHeight:bottomViewHeight animated:animated];
+        
     }
 }
 
 - (void)setProgressViewHeight:(CGFloat)progressViewHeight
 {
     
+}
+
+- (void)setViewHeight:(CGFloat)viewHeight type:(CGWebPrivateViewType)type
+{
+    BOOL animated       = self.animatedChangeViewStatus;
+    if (type == CGWebPrivateViewTypeBottomViewHeight) {
+        if ([self.delegate respondsToSelector:@selector(shouldAnimatedChangeBottomHeightWithWebView:)]) {
+            animated    = [self.delegate shouldAnimatedChangeBottomHeightWithWebView:self];
+        }
+    }else if (type == CGWebPrivateViewTypeProgressViewHeight) {
+        if ([self.delegate respondsToSelector:@selector(shouldAnimated)]) {
+            <#statements#>
+        }
+    }
+    
+    [_constraintsManager setupViewHeight:viewHeight type:type animated:animated];
 }
 
 @end
