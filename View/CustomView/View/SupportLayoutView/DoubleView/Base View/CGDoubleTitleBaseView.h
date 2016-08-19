@@ -14,7 +14,7 @@
  通过继承该类，创建两个任意UIView的视图，并赋值给 属性 leftView 和 rightView，当更新视图约束时自动设置leftView和rightView视图的约束
  */
 
-__deprecated_msg("应使用CGDoubleLayoutBaseView来替换")
+__deprecated_msg("CGDoubleTitleBaseView已放弃使用, 使用CGDoubleLayoutBaseView来替换")
 @interface CGDoubleTitleBaseView : UIView
 
 /**
