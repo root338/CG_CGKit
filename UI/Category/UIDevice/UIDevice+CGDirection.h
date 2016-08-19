@@ -10,4 +10,8 @@
 
 @interface UIDevice (CGDirection)
 
+//+ (BOOL)isDeviceOrientationPortrait;
+//
+//+ (BOOL)isDeviceOrientationLandscape;
+
 @end

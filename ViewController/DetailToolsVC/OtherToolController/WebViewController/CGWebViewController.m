@@ -17,40 +17,46 @@
 
 #import "Value+Constant.h"
 
-@interface CGWebViewController ()<CGWebPrivateViewDelegate>
+@interface CGWebViewController ()
 {
-    UIBarButtonItem *goBackItem;
-    UIBarButtonItem *goForwardItem;
+    
 }
 
 @property (nonatomic, strong) UIProgressView *progressDefultView;
 
-@property (nonatomic, readonly) CGWebPrivateView *privateView;
+@property (nonatomic, strong) CGWebPrivateView *privateView;
 @end
 
 @implementation CGWebViewController
 
 #pragma mark - 事件
-- (void)handleWebViewBack:(UIBarButtonItem *)sender
-{
-    
-}
-
-- (instancetype)init
-{
-    self    = [super init];
-    if (self) {
-        self.view   = [[CGWebPrivateView alloc] initWithDelegate:self];
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (!self.privateView.superview) {
+        [self.view addSubview:self.privateView];
+        [self.privateView cg_autoEdgesInsetsZeroToSuperview];
+    }
 }
 
-#pragma mark - 设置页面内容
-
 #pragma mark - 设置属性
+
+- (CGWebPrivateView *)privateView
+{
+    if (_privateView) {
+        return _privateView;
+    }
+    
+    _privateView = [[CGWebPrivateView alloc] init];
+    
+    return _privateView;
+}
+
+- (CGWebView *)webView
+{
+    return self.privateView.webView;
+}
+
 @end

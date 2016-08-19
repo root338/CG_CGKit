@@ -7,17 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-/** 设备方向——简易版 */
-typedef NS_ENUM(NSInteger, CGDeivceDirection) {
-    
-    /** 未知 */
-    CGDeivceDirectionUnknown,
-    /** 竖屏 */
-    CGDeivceDirectionPortrait,
-    /** 横屏 */
-    CGDeivceDirectionLandscape,
-};
+#import "CGDeviceOrientationHeader.h"
 
 /** 验证设备方向 */
 @interface UIApplication (CGVerifyDeviceDirection)

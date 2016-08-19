@@ -53,7 +53,7 @@
         !leftItems  ?:  [navigationItem setLeftBarButtonItems:leftItems];
         !rightItems ?:  [navigationItem setRightBarButtonItems:rightItems];
         
-        if (self.backItemTitle) {
+        if (backItem) {
             
             UINavigationItem *backNavigationItem    = [[UINavigationItem alloc] init];
             backNavigationItem.backBarButtonItem    = backItem;
@@ -120,16 +120,17 @@
 
 - (UIBarButtonItem *)setupBackItemButton
 {
+    if (self.navigationController == nil || self.navigationController.viewControllers.count <= 1) {
+        return nil;
+    }
     UIBarButtonItem *backItem   = nil;
     id target                   = self;
     SEL action                  = @selector(handleBackItemAction:);
     //设置触发的方法不管用，现在在navigationBar:shouldPopItem:代理方法中POP当前视图
-    if (self.backItemTitle) {
-        backItem    = [[UIBarButtonItem alloc] initWithTitle:self.backItemTitle style:UIBarButtonItemStylePlain target:target action:action];
-        [self.backItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary<NSString *,id> * _Nonnull obj, BOOL * _Nonnull stop) {
-            [backItem setTitleTextAttributes:obj forState:key.integerValue];
-        }];
-    }
+    backItem    = [[UIBarButtonItem alloc] initWithTitle:self.backItemTitle ? self.backItemTitle : @"" style:UIBarButtonItemStylePlain target:target action:action];
+    [self.backItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary<NSString *,id> * _Nonnull obj, BOOL * _Nonnull stop) {
+        [backItem setTitleTextAttributes:obj forState:key.integerValue];
+    }];
     return backItem;
 }
 

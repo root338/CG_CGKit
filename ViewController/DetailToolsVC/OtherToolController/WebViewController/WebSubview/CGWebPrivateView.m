@@ -8,19 +8,20 @@
 
 #import "CGWebPrivateView.h"
 #import "CGWebView.h"
+#import "CGWebBottomView.h"
 
 #import "UIView+CGAddConstraints.h"
-
-#import "CGWebPrivateViewConstraintsManager.h"
-
-#import "NSObject+CGDelaySelector.h"
-#import "CGWebPrivateViewTypeHeader.h"
+#import "NSArray+CGAddConstraints.h"
 
 @interface CGWebPrivateView ()
 {
-    BOOL isUpdateConstraints;
-    CGWebPrivateViewConstraintsManager  *_constraintsManager;
+    __weak NSLayoutConstraint *_bottomViewHeightConstraint;
+    //底部视图顶部与父视图的约束
+    __weak NSLayoutConstraint *_bottomViewTopConstraint;
 }
+
+@property (nonatomic, strong, readwrite) CGWebView          * webView;
+@property (nonatomic, strong, readwrite) CGWebBottomView    * bottomView;
 
 @end
 
@@ -31,147 +32,86 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _bottomViewHeight   = 44;
-        _constraintsManager = [[CGWebPrivateViewConstraintsManager alloc] initWithView:self];
-        [self cg_performAfterZeroDelaySelector:@selector(reloadView)];
-    }
-    return self;
-}
-
-- (instancetype)initWithDelegate:(id<CGWebPrivateViewDelegate>)delegate
-{
-    self = [self initWithFrame:CGRectZero];
-    if (self) {
-        
-        _delegate   = delegate;
-    }
-    return self;
-}
-
-- (void)updateConstraints
-{
-    if (isUpdateConstraints) {
-        [_constraintsManager updateConstraints];
-    }else {
-        [_constraintsManager setupConstraints];
-    }
-    [super updateConstraints];
-}
-
-- (void)reloadView
-{
-    isUpdateConstraints    = NO;
-    
-    if (!_webView) {
         _webView    = [[CGWebView alloc] init];
-    }
-    if (!_webView.superview) {
+        _bottomView = [[CGWebBottomView alloc] init];
+        
         [self addSubview:_webView];
-        isUpdateConstraints = YES;
-    }
-    
-    BOOL isUpdateBottomView = YES;
-    if (self.bottomView) {
-        if ([self.delegate respondsToSelector:@selector(shouldUpdateBottomViewWithWebView:)]) {
-            isUpdateBottomView  = [self.delegate shouldUpdateBottomViewWithWebView:self];
-        }
-    }
-    
-    if (isUpdateBottomView && [self.delegate respondsToSelector:@selector(bottomViewWithWebView:)]) {
-        UIView *bottomView  = [self.delegate bottomViewWithWebView:self];
-        if (bottomView != self.bottomView) {
-            if (self.bottomView.superview) {
-                [self.bottomView removeFromSuperview];
-            }
-            self.bottomView = bottomView;
-        }
-    }
-    
-    if (!self.bottomView.superview) {
+        [self addSubview:_bottomView];
         
-        [self addSubview:self.bottomView];
-        isUpdateConstraints = YES;
+        NSArray *subviews   = @[_webView, _bottomView];
+        [subviews cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewLayoutExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
+            BOOL isExculdingEdge    = NO;
+            if (view == _bottomView && exculdingEdge == CGLayoutEdgeBottom) {
+                isExculdingEdge     = YES;
+            }
+            return isExculdingEdge;
+        }];
+        [UIView cg_autoSetPriority:980 forConstraints:^{
+            [_bottomView cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
+        }];
+    }
+    return self;
+}
+
+- (void)setBottomViewHidden:(BOOL)isHidden animated:(BOOL)animated
+{
+    if (self.bottomView.isHidden == isHidden) {
+        return;
     }
     
-    BOOL isUpdateProgressView   = YES;
-    if (self.progressView) {
-        if ([self.delegate respondsToSelector:@selector(shouldUpdateProgressViewWithWebView:)]) {
-            isUpdateProgressView = [self.delegate shouldUpdateProgressViewWithWebView:self];
-        }
-    }
-    if (isUpdateProgressView && [self.delegate respondsToSelector:@selector(progressViewWithWebView:)]) {
-        UIView *progressView    = [self.delegate progressViewWithWebView:self];
-        if (progressView != self.progressView) {
-            if (self.progressView.superview) {
-                [self.progressView removeFromSuperview];
-            }
-            self.progressView   = progressView;
-        }
-    }
-    if (!self.progressView.superview) {
-        [self addSubview:self.progressView];
-        isUpdateConstraints = YES;
+    _isHiddenBottomView = isHidden;
+    if (isHidden) {
+        _bottomViewTopConstraint    = [self.bottomView cg_autoInverseAttribute:CGLayoutEdgeTop toItem:self.bottomView.superview];
     }else {
-        [self bringSubviewToFront:self.progressView];
+        [self.bottomView.superview removeConstraint:_bottomViewTopConstraint];
     }
     
-    if (isUpdateConstraints) {
-        
-        [self setNeedsUpdateConstraints];
+    [self setupUpdateConstraintsWithAnimated:animated completion:^(BOOL finished) {
+        self.bottomView.hidden  = isHidden;
+    }];
+}
+
+- (void)setBottomViewHeight:(CGFloat)bottomViewHeight animated:(BOOL)animated
+{
+    if (self.bottomView.height == bottomViewHeight) {
+        return;
     }
+    
+    if (self.bottomView.isHidden) {
+        animated    = NO;
+    }
+    
+    _bottomViewHeight   = bottomViewHeight;
+    if (_bottomViewHeightConstraint) {
+        _bottomViewHeightConstraint.constant    = bottomViewHeight;
+    }else {
+        _bottomViewHeightConstraint = [self.bottomView cg_autoDimension:CGDimensionHeight fixedLength:bottomViewHeight];
+    }
+    
+    [self setupUpdateConstraintsWithAnimated:animated completion:nil];
+}
+
+- (void)setupUpdateConstraintsWithAnimated:(BOOL)animated completion:(void (^ __nullable)(BOOL finished))completion
+{
+    [self setNeedsUpdateConstraints];
+    
+    CGFloat duration    = animated ? 0.3 : 0;
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        [self layoutIfNeeded];
+    } completion:completion];
 }
 
 #pragma mark - 设置属性
-- (void)setDelegate:(id<CGWebPrivateViewDelegate>)delegate
+- (void)setBottomViewHeight:(CGFloat)bottomViewHeight
 {
-    if (_delegate != delegate) {
-        _delegate   = delegate;
-        [self cg_performAfterZeroDelaySelector:@selector(reloadView)];
-    }
+    [self setBottomViewHeight:bottomViewHeight animated:!self.disableAnimatedChangeViewStatus];
 }
 
 - (void)setIsHiddenBottomView:(BOOL)isHiddenBottomView
 {
-    if (_isHiddenBottomView != isHiddenBottomView) {
-        
-        _isHiddenBottomView = isHiddenBottomView;
-        BOOL animated       = self.animatedChangeViewStatus;
-        if ([self.delegate respondsToSelector:@selector(shouldAnimatedChangeBottomHiddenWithWebView:)]) {
-            animated    = [self.delegate shouldAnimatedChangeBottomHiddenWithWebView:self];
-        }
-        [_constraintsManager bottomViewIsHidden:isHiddenBottomView animated:animated];
-    }
-}
-
-- (void)setBottomViewHeight:(CGFloat)bottomViewHeight
-{
-    if (_bottomViewHeight != bottomViewHeight) {
-        
-        _bottomViewHeight   = bottomViewHeight;
-        
-        
-    }
-}
-
-- (void)setProgressViewHeight:(CGFloat)progressViewHeight
-{
-    
-}
-
-- (void)setViewHeight:(CGFloat)viewHeight type:(CGWebPrivateViewType)type
-{
-    BOOL animated       = self.animatedChangeViewStatus;
-    if (type == CGWebPrivateViewTypeBottomViewHeight) {
-        if ([self.delegate respondsToSelector:@selector(shouldAnimatedChangeBottomHeightWithWebView:)]) {
-            animated    = [self.delegate shouldAnimatedChangeBottomHeightWithWebView:self];
-        }
-    }else if (type == CGWebPrivateViewTypeProgressViewHeight) {
-        if ([self.delegate respondsToSelector:@selector(shouldAnimated)]) {
-            <#statements#>
-        }
-    }
-    
-    [_constraintsManager setupViewHeight:viewHeight type:type animated:animated];
+    [self setBottomViewHidden:isHiddenBottomView animated:!self.disableAnimatedChangeViewStatus];
 }
 
 @end
