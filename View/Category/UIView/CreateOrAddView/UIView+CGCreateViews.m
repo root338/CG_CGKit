@@ -9,7 +9,6 @@
 #import "UIView+CGCreateViews.h"
 
 #import "CGAddSubviewsAppearance.h"
-#import "CGSubviewsSizeAppearance.h"
 
 #import "Value+Constant.h"
 
@@ -75,66 +74,6 @@
     }
     
     calculateSize   =   CGSizeMake(width, height);
-    
-    return calculateSize;
-}
-
-- (CGSize)cg_createFlowViewsWithRule:(__kindof CGSubviewsSizeAppearance *)viewsRule createSubviewBlock:(nonnull __kindof UIView * _Nonnull (^)(NSInteger))createSubviewBlock setupSubviewSizeBlock:(nullable CGSetupSubviewsSizeBlock)setupSubviewSizeBlock failureBlock:(nullable CGAddSubviewsErrorTypeBlock)failureBlock
-{
-    if (viewsRule.alignmentType == CGAlignmentTypeVertical) {
-        if (self.width < CGZeroFloatValue) {
-            if (failureBlock) {
-                failureBlock(CGAddSubviewsErrorTypeViewWidthZero, nil);
-            }
-            CGDebugAssert(nil, @"垂直铺展子视图时必须设置父视图的宽度");
-        }
-    }
-    CGSize calculateSize    = CGSizeZero;
-    
-    CGFloat maxWidth        = self.width - viewsRule.marginEdgeInsets.left - viewsRule.marginEdgeInsets.right;
-    CGFloat startOriginX    = viewsRule.marginEdgeInsets.left;
-    CGPoint origin          = CGPointMake(viewsRule.marginEdgeInsets.left, viewsRule.marginEdgeInsets.top);
-    CGFloat maxSubviewsHeight   = 0;
-    
-    for (NSInteger index = 0; index < viewsRule.totalCount; index++) {
-        
-        UIView *subview     = createSubviewBlock(index);
-        CGSize sizeForSubview;
-        
-        if (setupSubviewSizeBlock) {
-            sizeForSubview  = setupSubviewSizeBlock(subview, index);
-        }else if (viewsRule.isUseCreateViewSize) {
-            sizeForSubview  = subview.size;
-        }else {
-            sizeForSubview  = viewsRule.itemSize;
-        }
-        
-        subview.frame  = (CGRect){origin, sizeForSubview};
-        maxSubviewsHeight   = MAX(maxSubviewsHeight, sizeForSubview.height);
-        
-        if (viewsRule.alignmentType == CGAlignmentTypeHorizontal) {
-            
-            origin.x        += sizeForSubview.width + viewsRule.interitemSpacing;
-        }else {
-            
-            CGFloat currentMaxWidth = origin.x + sizeForSubview.width;
-            if (currentMaxWidth > maxWidth) {
-                
-                if (sizeForSubview.width - maxWidth > startOriginX) {
-                    
-                    sizeForSubview.width    = maxWidth;
-                }
-                origin          = CGPointMake(startOriginX, origin.y + maxSubviewsHeight + viewsRule.lineSpacing);
-            }else {
-                
-                origin.x        += sizeForSubview.width + viewsRule.interitemSpacing;
-            }
-        }
-        
-        if (index == viewsRule.totalCount - 1) {
-            calculateSize   = CGSizeMake(subview.maxX + viewsRule.marginEdgeInsets.right, subview.maxY + viewsRule.marginEdgeInsets.bottom);
-        }
-    }
     
     return calculateSize;
 }

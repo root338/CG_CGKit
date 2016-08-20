@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CGTitleBarViewController : CGNavigationBarViewController
 
+/** 当回退按钮为空时隐藏 */
+@property (nonatomic, assign) BOOL isHiddenNullBackItemTitle;
+
 /** 回退按钮的标题 */
 @property (nullable, nonatomic, strong) NSString *backItemTitle;
 

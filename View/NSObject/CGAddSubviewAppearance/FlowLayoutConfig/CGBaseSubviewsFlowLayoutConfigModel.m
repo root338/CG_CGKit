@@ -1,25 +1,25 @@
 //
-//  CGSubviewsSizeAppearance.m
+//  CGBaseSubviewsFlowLayoutConfigModel.m
 //  TestCG_CGKit
 //
-//  Created by apple on 16/3/25.
+//  Created by apple on 16/8/20.
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import "CGSubviewsSizeAppearance.h"
+#import "CGBaseSubviewsFlowLayoutConfigModel.h"
 
-@implementation CGSubviewsSizeAppearance
+@implementation CGBaseSubviewsFlowLayoutConfigModel
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         
+        _itemSize           = CGSizeZero;
         _lineSpacing        = 0;
         _interitemSpacing   = 0;
-        _itemSize           = CGSizeZero;
+        _contentMaxWidth    = 0;
         _alignmentType      = CGAlignmentTypeVertical;
-        
     }
     return self;
 }
