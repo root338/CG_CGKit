@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 两个子视图的快速设置
 
 /** 设置两个子视图的约束 */
-- (NSArray<NSLayoutConstraint *> *)cg_autoTwoSubviewsWithConfig:(CGTwoSubviewsConstraintsAppearance *)config;
+- (nullable NSArray<NSLayoutConstraint *> *)cg_autoTwoSubviewsWithConfig:(CGTwoSubviewsConstraintsAppearance *)config;
 
 
 @end

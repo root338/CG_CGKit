@@ -26,8 +26,6 @@
     UIView *secondView  = [twoSubviews objectAtIndex:1];
     UIView *superview   = firstView.superview;
     
-    NSMutableArray  *constraints    = [NSMutableArray array];
-    
     CGAxis  axis;
     CGLayoutEdge        firstViewExcludingLayoutEdge;
     CGLayoutEdge        secondViewExcludingEdge;
@@ -119,57 +117,59 @@
         
     }
     
+    NSMutableArray<NSLayoutConstraint *> *constraints    = [NSMutableArray array];
+    
     if (firstViewEqualSecondViewEdge) {
-        [firstView cg_autoAttributeOptionEqual:firstViewEqualSecondViewEdge toItem:secondView];
+        [constraints addObjectsFromArray:[firstView cg_autoAttributeOptionEqual:firstViewEqualSecondViewEdge toItem:secondView]];
     }
     if (secondViewEqualFirstViewEdge) {
-        [secondView cg_autoAttributeOptionEqual:secondViewEqualFirstViewEdge toItem:firstView];
+        [constraints addObjectsFromArray:[secondView cg_autoAttributeOptionEqual:secondViewEqualFirstViewEdge toItem:firstView]];
     }
     
     if (config.firstViewCenter) {
         
-        [firstView cg_autoAxis:axis toSameAxisOfView:superview];
-        [firstView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)secondViewExcludingEdge withOffset:firstViewExcludingOffset];
+        [constraints addObject:[firstView cg_autoAxis:axis toSameAxisOfView:superview]];
+        [constraints addObject:[firstView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)secondViewExcludingEdge withOffset:firstViewExcludingOffset]];
         
-        [firstView cg_autoEdgesToSuperviewEdgesWithEdge:firstViewCenterOptionEdge | config.firstViewExcludingOptionEdge insets:config.firstViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
+        [constraints addObjectsFromArray:[firstView cg_autoEdgesToSuperviewEdgesWithEdge:firstViewCenterOptionEdge | config.firstViewExcludingOptionEdge insets:config.firstViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual]];
     }else {
         
         CGLayoutOptionEdge optionEdge = firstViewEqualSecondViewEdge | firstViewExcludingOptionEdge | config.firstViewExcludingOptionEdge;
-        [firstView cg_autoEdgesToSuperviewEdgesWithInsets:config.firstViewEdgeInsets excludingOptionEdge:optionEdge];
+        [constraints addObjectsFromArray:[firstView cg_autoEdgesToSuperviewEdgesWithInsets:config.firstViewEdgeInsets excludingOptionEdge:optionEdge]];
     }
     
     if (config.secondViewCenter) {
         
-        [secondView cg_autoAxis:axis toSameAxisOfView:superview];
-        [secondView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)firstViewExcludingLayoutEdge withOffset:secondViewExcludingOffset];
-        [secondView cg_autoEdgesToSuperviewEdgesWithEdge:secondViewCenterOptionEdge insets:config.secondViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual];
+        [constraints addObject:[secondView cg_autoAxis:axis toSameAxisOfView:superview]];
+        [constraints addObject:[secondView cg_autoConstrainToSuperviewAttribute:(NSLayoutAttribute)firstViewExcludingLayoutEdge withOffset:secondViewExcludingOffset]];
+        [constraints addObjectsFromArray:[secondView cg_autoEdgesToSuperviewEdgesWithEdge:secondViewCenterOptionEdge insets:config.secondViewEdgeInsets relation:NSLayoutRelationGreaterThanOrEqual]];
     }else {
         
         CGLayoutOptionEdge optionEdge   = secondViewEqualFirstViewEdge | secondViewExcludingOptionEdge | config.secondViewExcludingOptionEdge;
-        [secondView cg_autoEdgesToSuperviewEdgesWithInsets:config.secondViewEdgeInsets excludingOptionEdge:optionEdge];
+        [constraints addObjectsFromArray:[secondView cg_autoEdgesToSuperviewEdgesWithInsets:config.secondViewEdgeInsets excludingOptionEdge:optionEdge]];
     }
     
-    [firstView cg_autoInverseAttribute:firstViewExcludingLayoutEdge toItem:secondView relatedBy:config.betweenSpaceLayoutRelation constant:config.firstViewToSecondViewSpace];
+    [constraints addObject:[firstView cg_autoInverseAttribute:firstViewExcludingLayoutEdge toItem:secondView relatedBy:config.betweenSpaceLayoutRelation constant:config.firstViewToSecondViewSpace]];
     
     CGFloat minSize = 0.0001;
     if (config.firstViewWidth > minSize) {
-        [firstView cg_autoDimension:CGDimensionWidth fixedLength:config.firstViewWidth];
+        [constraints addObject:[firstView cg_autoDimension:CGDimensionWidth fixedLength:config.firstViewWidth]];
     }
     if (config.firstViewHeight > minSize) {
-        [firstView cg_autoDimension:CGDimensionHeight fixedLength:config.firstViewHeight];
+        [constraints addObject:[firstView cg_autoDimension:CGDimensionHeight fixedLength:config.firstViewHeight]];
     }
     if (config.secondViewWidth > minSize) {
-        [secondView cg_autoDimension:CGDimensionWidth fixedLength:config.secondViewWidth];
+        [constraints addObject:[secondView cg_autoDimension:CGDimensionWidth fixedLength:config.secondViewWidth]];
     }
     if (config.secondViewHeight > minSize) {
-        [secondView cg_autoDimension:CGDimensionHeight fixedLength:config.secondViewHeight];
+        [constraints addObject:[secondView cg_autoDimension:CGDimensionHeight fixedLength:config.secondViewHeight]];
     }
     
     if (config.widthEqual) {
-        [firstView cg_autoDimension:CGDimensionWidth equalView:secondView];
+        [constraints addObject:[firstView cg_autoDimension:CGDimensionWidth equalView:secondView]];
     }
     if (config.heightEqual) {
-        [firstView cg_autoDimension:CGDimensionHeight equalView:secondView];
+        [constraints addObject:[firstView cg_autoDimension:CGDimensionHeight equalView:secondView]];
     }
     
     return constraints;

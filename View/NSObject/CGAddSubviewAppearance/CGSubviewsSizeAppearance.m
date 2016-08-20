@@ -10,4 +10,18 @@
 
 @implementation CGSubviewsSizeAppearance
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        _lineSpacing        = 0;
+        _interitemSpacing   = 0;
+        _itemSize           = CGSizeZero;
+        _alignmentType      = CGAlignmentTypeVertical;
+        
+    }
+    return self;
+}
+
 @end

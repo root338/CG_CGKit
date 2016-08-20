@@ -6,17 +6,31 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import "CGAddSubviewsAppearance.h"
+#import "CGBaseObject.h"
+#import "CGAlignmentHeader.h"
 
 /**
  *  一个视图添加多个相同视图时的全局设置，通过设置子视图大小来设置布局
- *  @param 前提条件：父视图大小确定
- *  @param 实现原理：通过父视图大小，外边距和子视图大小来计算水平，垂直间距。来添加子视图
+ *
  */
-NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "暂时没有任何其他类使用")
-@interface CGSubviewsSizeAppearance : CGAddSubviewsAppearance
+@interface CGSubviewsSizeAppearance : CGBaseObject
+
+/** 子视图的加载方式 默认CGAlignmentTypeVertical */
+@property (nonatomic, assign) CGAlignmentType alignmentType;
+
+/** 需要添加的子视图总数 */
+@property (nonatomic, assign) NSInteger totalCount;
+
+/** 使用创建的视图大小 */
+@property (nonatomic, assign) BOOL isUseCreateViewSize;
 
 /** 子视图的大小 */
 @property (nonatomic, assign) CGSize itemSize;
 
+/** 行间距 */
+@property (nonatomic, assign) CGFloat lineSpacing;
+/** 项目间距 */
+@property (nonatomic, assign) CGFloat interitemSpacing;
+/** 外边距 */
+@property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
 @end
