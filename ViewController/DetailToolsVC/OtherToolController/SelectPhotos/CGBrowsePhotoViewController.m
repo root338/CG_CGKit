@@ -9,6 +9,7 @@
 #import "CGBrowsePhotoViewController.h"
 
 #import "CGCollectionView.h"
+#import "CGNavigationBarView.h"
 #import "CGBrowsePhotoCollectionViewCell.h"
 
 #import "UIView+CGSetupFrame.h"

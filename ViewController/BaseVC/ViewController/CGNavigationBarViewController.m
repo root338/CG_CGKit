@@ -9,6 +9,10 @@
 #import "CGNavigationBarViewController.h"
 
 #import "CGNavigationAppearanceProtocol.h"
+#import "UIViewController+CGOrientation.h"
+#import "UIViewController+CGPropertyValue.h"
+
+#import "CGNavigationBarView.h"
 
 #import "CGPrintLogHeader.h"
 
@@ -33,9 +37,21 @@
 /** 当状态栏高度为0，自动设置状态栏高度为64 */
 - (CGRect)cg_navigationBarFrame
 {
-    CGFloat height  = 64;
-    CGFloat width   = self.navigationController ? self.navigationController.navigationBar.width : self.view.width;
-    return CGRectMake(0, self.isNavigationBarHidden ? -height : 0, width, height);
+    CGRect  frame;
+    if (self.navigationController) {
+        frame   = self.navigationController.navigationBar.bounds;
+    }else {
+        if (self.currentOrientation == CGDeivceDirectionLandscape) {
+            frame   = CGRectMake(0, 0, self.view.width, 32);
+        }else {
+            frame   = CGRectMake(0, 0, self.view.width, 44);
+        }
+    }
+    if (!self.isStatusBarHidden) {
+        frame.size.height += 20;
+    }
+    
+    return frame;
 }
 
 - (void)loadView

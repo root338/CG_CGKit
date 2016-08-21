@@ -7,10 +7,12 @@
 //
 
 #import "CGBaseViewController.h"
-
-#import "CGNavigationBarView.h"
+#import "CGNavigationBarViewDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class CGNavigationBarView;
+
 /** 自定义导航栏的视图控制器 */
 @interface CGNavigationBarViewController : CGBaseViewController<CGNavigationBarViewDelegate>
 

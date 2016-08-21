@@ -12,6 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGAddSubviewsAppearance;
+
+
 @interface UIView (CGCreateViews)
 
 /**
@@ -21,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param setupSubview 返回创建的子视图
  *  @param completion   判断给定的规则是否满足
  */
-- (CGSize)cg_createViewsWithRule:(__kindof CGAddSubviewsAppearance *)viewsRule stopAddSubviews:(BOOL (^ __nullable) (CGAddSubviewsErrorType errorType))stopAddSubviews subview:(__kindof UIView * (^) (NSInteger index))setupSubview;
+- (CGSize)cg_createViewsWithRule:(__kindof CGAddSubviewsAppearance *)viewsRule stopAddSubviews:(BOOL (^ __nullable) (CGAddSubviewsErrorType errorType))stopAddSubviews subview:(__kindof UIView * (^) (NSInteger index))setupSubview __deprecated_msg("该方法已废弃，请使用cg_createFlowViewsWithRule:createSubviewBlock:setupSubviewSizeBlock:failureBlock:方法替换");
 
 @end
 

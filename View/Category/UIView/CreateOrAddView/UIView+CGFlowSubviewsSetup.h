@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CGSize)cg_updateFlowViewsWithRule:(__kindof CGUpdateSubviewsFlowLayoutConfigModel *)viewsRule setupSubviewSizeBlock:(nullable CGSetupSubviewsSizeBlock)setupSubviewSizeBlock failureBlock:(nullable CGAddSubviewsErrorTypeBlock)failureBlock;
 
+
+//- (CGSize)cg_insertFlowViewsWithRule:(__kindof CGCreateSubviewsFlowLayoutConfigModel *)viewsRule createSubviewBlock:(CGCreateSubviewsBlock)createSubviewBlock setupSubviewSizeBlock:(nullable CGSetupSubviewsSizeBlock)setupSubviewSizeBlock failureBlock:(nullable CGAddSubviewsErrorTypeBlock)failureBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

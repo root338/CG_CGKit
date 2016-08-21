@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  一个视图添加多个相同视图时的全局设置
  */
+__deprecated_msg("该类已废弃")
 @interface CGAddSubviewsAppearance : CGBaseObject
 
 #pragma mark - 父视图区域设置

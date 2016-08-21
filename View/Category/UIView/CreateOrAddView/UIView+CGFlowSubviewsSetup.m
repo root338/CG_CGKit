@@ -64,11 +64,11 @@ typedef NS_ENUM(NSInteger, CGFlowSubviewsSetupType) {
     CGPoint origin          = CGPointMake(viewsRule.marginEdgeInsets.left, viewsRule.marginEdgeInsets.top);
     CGFloat maxSubviewsHeight   = 0;
     CGFloat maxSubviewsWidth    = 0;
-    NSInteger startIndex        = 0;
+//    NSInteger startIndex        = 0;
     
-    if (type == CGFlowSubviewsSetupTypeUpdate) {
-        startIndex  = [(CGUpdateSubviewsFlowLayoutConfigModel *)viewsRule startFromIndexUpdate];
-    }
+//    if (type == CGFlowSubviewsSetupTypeUpdate) {
+//        startIndex  = [(CGUpdateSubviewsFlowLayoutConfigModel *)viewsRule startFromIndexUpdate];
+//    }
     
     NSMutableArray<CGAddSubviewsCacheModel *> *subviewsCacheModel  = [NSMutableArray array];
     

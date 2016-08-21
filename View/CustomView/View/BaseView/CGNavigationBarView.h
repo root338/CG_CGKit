@@ -7,20 +7,7 @@
 //
 
 #import "CGBaseView.h"
-
-@protocol CGNavigationBarViewDelegate <NSObject>
-
-@required
-/** 设置自定义导航栏的显示区域 */
-- (CGRect)cg_navigationBarFrame;
-
-@optional
-/** 设置contentView的显示区域 */
-- (CGRect)cg_contentViewFrame;
-
-@optional
-
-@end
+#import "CGNavigationBarViewDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface CGNavigationBarView : CGBaseView

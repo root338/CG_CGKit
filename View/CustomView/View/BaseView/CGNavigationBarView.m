@@ -10,6 +10,7 @@
 
 #import "UIView+CGAddSubview.h"
 #import "UIView+CGOrientation.h"
+#import "UIView+CGPropertyValue.h"
 
 @interface CGNavigationBarView ()
 
@@ -100,7 +101,14 @@
         navigationBarFrame  = [self.delegate cg_navigationBarFrame];
     }else {
         
-        navigationBarFrame  = CGRectMake(0, 0, self.width, 64);
+        if (self.currentOrientation == CGDeivceDirectionLandscape) {
+            navigationBarFrame   = CGRectMake(0, 0, self.width, 32);
+        }else {
+            navigationBarFrame   = CGRectMake(0, 0, self.width, 44);
+        }
+    }
+    if (!self.isStatusBarHidden) {
+        navigationBarFrame.size.height += 20;
     }
     
     CGRect contentViewFrame;
