@@ -35,6 +35,9 @@
 
 + (UIImage *)cg_imageName:(NSString *)imageName
 {
+    if (!imageName) {
+        return nil;
+    }
     UIImage *image = [UIImage imageNamed:imageName];
     image   = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     return image;

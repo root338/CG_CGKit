@@ -9,7 +9,6 @@
 #import "CGNavigationBarViewController.h"
 
 #import "CGNavigationAppearanceProtocol.h"
-#import "UIViewController+CGOrientation.h"
 #import "UIViewController+CGPropertyValue.h"
 
 #import "CGNavigationBarView.h"

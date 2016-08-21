@@ -15,7 +15,7 @@
 
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CGAddConstraints.h"
-#import "CGBaseViewController+CGSetupItem.h"
+#import "UIBarButtonItem+CGCreate.h"
 #import "UICollectionViewFlowLayout+CGCreateLayout.h"
 
 #import "CGAssetsLibraryManager.h"
@@ -112,9 +112,9 @@
 - (void)setupToolView
 {
     self.toolbar    = [[UIToolbar alloc] init];
-    UIBarButtonItem *browseItem = [self cg_createItemWithTitle:@"预览" target:self action:@selector(handleBrowseSelectedImageAction:)];
+    UIBarButtonItem *browseItem = [UIBarButtonItem cg_createItemWithTitle:@"预览" target:self action:@selector(handleBrowseSelectedImageAction:)];
     UIBarButtonItem *middenItem     = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *completionItem = [self cg_createItemWithTitle:@"确定" target:self action:@selector(handleFinishedAction:)];
+    UIBarButtonItem *completionItem = [UIBarButtonItem cg_createItemWithTitle:@"确定" target:self action:@selector(handleFinishedAction:)];
     
     [self.toolbar setItems:@[browseItem, middenItem, completionItem]];
     [self.view addSubview:self.toolbar];

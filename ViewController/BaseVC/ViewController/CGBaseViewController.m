@@ -27,13 +27,11 @@
         UINavigationController *navigationController = self.navigationController;
         
         if (navigationController.viewControllers.count > 1) {
+            
             [self.navigationController popViewControllerAnimated:YES];
-            return;
-        }
-        
-        if (navigationController.presentingViewController) {
+        }else if (navigationController.presentingViewController) {
+            
             [navigationController dismissViewControllerAnimated:YES completion:self.dismissViewControllerCompletion];
-            return;
         }
         
     }else if (self.presentingViewController) {

@@ -8,6 +8,8 @@
 
 #import "CGTitleBarViewController.h"
 
+#import "UIBarButtonItem+CGCreate.h"
+
 @interface CGTitleBarViewController ()<UINavigationBarDelegate>
 {
     BOOL _titleDidAddToNavigationBar;
@@ -76,10 +78,7 @@
     SEL action                  = @selector(handleLeftItemAction:);
     UIBarButtonItemStyle style  = UIBarButtonItemStylePlain;
     if (self.leftItemTitle) {
-        leftItem    = [[UIBarButtonItem alloc] initWithTitle:self.leftItemTitle
-                                                       style:style
-                                                      target:target
-                                                      action:action];
+        leftItem    =  [UIBarButtonItem cg_createItemWithTitle:self.leftItemTitle target:target action:action];
         [self.leftItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
             [leftItem setTitleTextAttributes:obj forState:[key integerValue]];
         }];
@@ -130,14 +129,22 @@
     //设置触发的方法不管用，现在在navigationBar:shouldPopItem:代理方法中POP当前视图
     
     if (self.isHiddenNullBackItemTitle) {
-        if (!self.backItemTitle.length) {
+        if (!self.backItemTitle.length && !self.backItemImage) {
             return nil;
         }
     }
-    backItem    = [[UIBarButtonItem alloc] initWithTitle:self.backItemTitle ? self.backItemTitle : @"" style:UIBarButtonItemStylePlain target:target action:action];
-    [self.backItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary<NSString *,id> * _Nonnull obj, BOOL * _Nonnull stop) {
-        [backItem setTitleTextAttributes:obj forState:key.integerValue];
-    }];
+    
+    if (self.backItemImage) {
+        
+        backItem    = [UIBarButtonItem cg_createItemWithImage:self.backItemImage landscapeImage:nil target:target action:action];
+    }else if (self.backItemTitle || !self.isHiddenNullBackItemTitle) {
+        
+        backItem    = [UIBarButtonItem cg_createItemWithTitle:self.backItemTitle ? self.backItemTitle : @"" target:target action:action];
+        [self.backItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary<NSString *,id> * _Nonnull obj, BOOL * _Nonnull stop) {
+            [backItem setTitleTextAttributes:obj forState:key.integerValue];
+        }];
+    }
+    
     return backItem;
 }
 
@@ -155,6 +162,9 @@
     }
     return YES;
 }
+
+#pragma mark - 屏幕旋转
+
 
 #pragma mark - 设置属性
 - (void)setTitle:(NSString *)title

@@ -8,6 +8,8 @@
 
 #import "UIButton+CGSetupAppearance.h"
 
+#import "UIImage+CGLoadImage.h"
+
 @implementation UIButton (CGSetupAppearance)
 
 - (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
@@ -26,10 +28,10 @@
 
 - (void)cg_setupWithNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
 {
-    UIImage *normalImage = [self loadLocalImageName:normalImageName];
+    UIImage *normalImage = [UIImage cg_imageName:normalImageName];
     !normalImage ?: [self setImage:normalImage forState:UIControlStateNormal];
     
-    UIImage *selectImage = [self loadLocalImageName:selectImageName];
+    UIImage *selectImage = [UIImage cg_imageName:selectImageName];
     !selectImage ?: [self setImage:selectImage forState:UIControlStateNormal];
 }
 
@@ -43,15 +45,5 @@
 {
     [self cg_setupWithTitle:title titleColor:titleColor font:font];
     [self cg_setupBorderWithWidth:borderWidth color:borderColor cornerRadius:radius];
-}
-
-- (nullable UIImage *)loadLocalImageName:(nullable NSString *)imageName
-{
-    UIImage *image = nil;
-    if (imageName) {
-        image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        
-    }
-    return image;
 }
 @end

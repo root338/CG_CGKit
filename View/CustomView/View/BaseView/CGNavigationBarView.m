@@ -9,7 +9,6 @@
 #import "CGNavigationBarView.h"
 
 #import "UIView+CGAddSubview.h"
-#import "UIView+CGOrientation.h"
 #import "UIView+CGPropertyValue.h"
 
 @interface CGNavigationBarView ()
@@ -106,9 +105,10 @@
         }else {
             navigationBarFrame   = CGRectMake(0, 0, self.width, 44);
         }
-    }
-    if (!self.isStatusBarHidden) {
-        navigationBarFrame.size.height += 20;
+        
+        if (!self.isStatusBarHidden) {
+            navigationBarFrame.size.height += 20;
+        }
     }
     
     CGRect contentViewFrame;

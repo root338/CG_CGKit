@@ -7,6 +7,7 @@
 //
 
 #import "UIView+CGPropertyValue.h"
+#import "UIApplication+CGVerifyDeviceDirection.h"
 
 @implementation UIView (CGPropertyValue)
 
@@ -14,6 +15,11 @@
 - (BOOL)isStatusBarHidden
 {
     return [[UIApplication sharedApplication] isStatusBarHidden];
+}
+
+- (CGDeivceDirection)currentOrientation
+{
+    return [UIApplication cg_currentDeviceDirection];
 }
 
 @end

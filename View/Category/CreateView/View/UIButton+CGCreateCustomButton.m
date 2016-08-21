@@ -11,6 +11,9 @@
 #import "UIView+CGSetupFrame.h"
 #import "UIButton+UpdateLocate.h"
 #import "UIView+CGSetupAppearance.h"
+#import "UIButton+CGSetupAppearance.h"
+
+#import "UIImage+CGLoadImage.h"
 
 @implementation UIButton (CGCreateCustomButton)
 
@@ -22,9 +25,7 @@
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
 {
     UIButton *button = [self buttonWithType:type];
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:titleColor forState:UIControlStateNormal];
-    button.titleLabel.font = font;
+    [button cg_setupWithTitle:title titleColor:titleColor font:font];
     return button;
 }
 
@@ -60,13 +61,8 @@
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
 {
-    
-    UIImage *normalImage = !normalImageName ? nil : [self loadLocalImageName:normalImageName];
-    UIImage *selectImage = !selectImageName ? nil : [self loadLocalImageName:selectImageName];
-    
     UIButton *button = [self buttonWithType:type];
-    !normalImage ?: [button setImage:normalImage forState:UIControlStateNormal];
-    !selectImage ?: [button setImage:selectImage forState:UIControlStateSelected];
+    [button cg_setupWithNormalImageName:normalImageName selectImageName:selectImageName];
     
     return button;
 }
@@ -90,16 +86,14 @@
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(NSString *)normalImageName
 {
-    UIImage *normalImage = !normalImageName ? nil : [self loadLocalImageName:normalImageName];
-    UIButton *button = [self cg_createButtonWithButtonType:type normalImage:normalImage];
-    
+    UIButton *button = [self cg_createButtonWithButtonType:type normalImage:[UIImage cg_imageName:normalImageName]];
     
     return button;
 }
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName
 {
-    UIImage *normalImage = !normalImageName ? nil : [self loadLocalImageName:normalImageName];
+    UIImage *normalImage = [UIImage cg_imageName:normalImageName];
     return [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:normalImage];
 }
 
@@ -113,7 +107,7 @@
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font normalImageName:(NSString *)normalImageName space:(CGFloat)space
 {
-    UIImage *image = !normalImageName ? nil :[self loadLocalImageName:normalImageName];
+    UIImage *image = [UIImage cg_imageName:normalImageName];
     return [self cg_createButtonWithButtonType:type title:title titleColor:titleColor font:font normalImage:image space:space];
 }
 
@@ -156,10 +150,5 @@
     button.size         = paramSize;
     [button cg_updateButtonWithStyle:style space:space];
     return button;
-}
-
-+ (UIImage *)loadLocalImageName:(NSString *)imageName
-{
-    return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 @end
