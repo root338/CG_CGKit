@@ -35,6 +35,7 @@
 {
     self = [super init];
     if (self) {
+        _constraintConstantType     = CGKeyboardConstraintConstantTypeLess;
         _keyboardChangeFrameType    = CGKeyboardChangeFrameTypeSize;
     }
     return self;
@@ -306,7 +307,12 @@
         
         CGFloat bottomSpace = [self setupTargetViewBottomSpaceWithView:theNeedChangeFrameTheView notification:note];
         
-        bottomConstraintConstant    += -(bottomSpace);
+        if (self.constraintConstantType == CGKeyboardConstraintConstantTypeLess) {
+            bottomConstraintConstant    -= (bottomSpace);
+        }else if (self.constraintConstantType == CGKeyboardConstraintConstantTypeAdd) {
+            bottomConstraintConstant    += (bottomSpace);
+        }
+        
     }
     return bottomConstraintConstant;
 }

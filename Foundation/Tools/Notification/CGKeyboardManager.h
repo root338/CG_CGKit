@@ -12,6 +12,15 @@
 @import UIKit;
 NS_ASSUME_NONNULL_BEGIN
 
+/** 计算约束常量值时的方式 */
+typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
+    
+    /** 减去获取的常量值 */
+    CGKeyboardConstraintConstantTypeLess,
+    /** 增加获取的常量值 */
+    CGKeyboardConstraintConstantTypeAdd,
+};
+
 @class CGKeyboardManager;
 
 @protocol CGKeyboardManagerDelegate <NSObject>
@@ -108,6 +117,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CGKeyboardChangeFrameType)changeFrameTypeWithKeyboardManager:(CGKeyboardManager *)keyboardManager needChangeFrameTheView:(UIView *)needChangeFrameTheView;
 
+/** 由于约束的第一个对象的边与第二个对象的边的不同对常量的加减也不相同，所以需要指定计算的常量值如何设置 */
+//- (CGKeyboardConstraintConstantType)keyboardManager:(CGKeyboardManager *)keyboardManager targetConstraint:(NSLayoutConstraint *)constraint constantSpace:(CGFloat)constantSpace;
 @end
 
 /** 
@@ -162,7 +173,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 修改frame的类型 @param 默认为CGKeyboardChangeFrameTypeSize */
 @property (nonatomic, assign) CGKeyboardChangeFrameType keyboardChangeFrameType;
 
-
+/** 计算的常量值计算的方式 */
+@property (nonatomic, assign) CGKeyboardConstraintConstantType constraintConstantType;
 #pragma mark - 自定义处理回调
 
 @property (nullable, nonatomic, weak) id<CGKeyboardManagerDelegate> delegate;
