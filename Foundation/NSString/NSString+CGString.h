@@ -13,5 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSString *)cg_stringByAppendingString:(NSString *)aString;
 
+- (nullable NSString *)cg_stringIgnoreWhitespaceAndNewlineCharacterSet;
+
+- (nullable NSString *)cg_stringIgnoreWhitespaceCharacterSet;
 @end
 NS_ASSUME_NONNULL_END

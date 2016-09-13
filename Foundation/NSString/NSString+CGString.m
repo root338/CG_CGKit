@@ -20,4 +20,14 @@
     }
     return newStr;
 }
+
+- (NSString *)cg_stringIgnoreWhitespaceAndNewlineCharacterSet
+{
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (NSString *)cg_stringIgnoreWhitespaceCharacterSet
+{
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
 @end

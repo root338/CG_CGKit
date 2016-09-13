@@ -29,7 +29,9 @@
 
 - (void)updateVerifyAllInputControl
 {
-    [self handleTextDidChangeWithObject:nil];
+    [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self handleTextDidChangeWithObject:obj];
+    }];
 }
 
 - (void)updateVerifyWithTargetInputControl:(id)inputControl
@@ -45,23 +47,23 @@
         isFlag  = self.textDidChangeCallback(object);
     }else {
         
-        [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *inputText = nil;
-            if ([obj isKindOfClass:[UITextField class]]) {
-                inputText   = [(UITextField *)obj text];
+            if ([object isKindOfClass:[UITextField class]]) {
+                inputText   = [(UITextField *)object text];
             }
-            if ([obj isKindOfClass:[UITextView class]]) {
-                inputText   = [(UITextView *)obj text];
+            if ([object isKindOfClass:[UITextView class]]) {
+                inputText   = [(UITextView *)object text];
             }
             
             if (!inputText.length) {
                 
                 isFlag = NO;
-                *stop = YES;
+//                *stop = YES;
             }else {
                 isFlag = YES;
             }
-        }];
+//        }];
     }
     
     self.enabled = isFlag;
