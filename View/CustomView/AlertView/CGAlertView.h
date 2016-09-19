@@ -86,6 +86,9 @@
  */
 + (instancetype)showAlertViewWithNoteMessage:(NSString *)message cancelTitle:(NSString *)cancelTitle;
 
+/** 创建UIAlertView并自动弹出，设置（标题，内容，取消按钮名称） */
++ (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle;
+
 #pragma mark - 仅提示，无标题
 /**
  *  创建UIAlertView并自动弹出，设置（内容）
