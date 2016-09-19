@@ -185,6 +185,10 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 @property (nonatomic, assign) BOOL didHideKeyboardContinueDealWithNotification;
 
 #pragma mark - 动画之行的参数设置
+
+/** 隐藏键盘显示，或隐藏的动画 */
+@property (nonatomic, assign) BOOL hideKeyboardShowHideAnimated;
+
 /** 执行视图动画执行的时间，默认是0，即使用键盘执行的动画时间 */
 @property (nonatomic, assign) NSTimeInterval duration;
 /** 执行动画UIViewAnimationCurve值，默认是0，即使用键盘的速率值 */

@@ -15,10 +15,23 @@
 #import "UIView+CGSearchView.h"
 #import "UIScrollView+CGSetupScrollProperty.h"
 
+#import "Value+Constant.h"
+
 #import "CGPrintLogHeader.h"
+
+
 
 @interface CGKeyboardManager ()
 {
+    //------------------------------------------
+    //oldSendNotificationDate, timeIntervalValue 两变量使用条件 1.默认条件下，2.用约束来设置布局的情况下
+    //上一个通知发送的时间
+    NSDate *oldSendNotificationDate;
+    //当前通知与上一个通知发送的时间间隔。用于判断当前的视图是否需要重新立即更新之后再设置布局。
+    NSTimeInterval  timeIntervalValue;
+    
+    //------------------------------------------
+    
     
 }
 /** 
@@ -44,6 +57,12 @@
 #pragma mark - 键盘通知处理
 - (void)handleKeyboardShowHideNotification:(NSNotification *)note
 {
+    NSDate *currentDate     = [NSDate date];
+    if (oldSendNotificationDate) {
+        timeIntervalValue   = [currentDate timeIntervalSinceDate:oldSendNotificationDate];
+    }
+    oldSendNotificationDate = currentDate;
+    
     BOOL isDealWith     = YES;
     if ([self.delegate respondsToSelector:@selector(keyboardManager:shouldDealWithNotification:)]) {
         isDealWith      = [self.delegate keyboardManager:self shouldDealWithNotification:note];
@@ -122,19 +141,10 @@
         }
     }
     
-    NSTimeInterval duration;
-    if (self.duration < 0.0001) {
-        duration    = note.keyboardDuration;
-    }else {
-        duration    = self.duration;
-    }
-    
-    NSUInteger curve    = note.keyboardCurve;
-    
     if (bottomLayoutConstraint) {
         
         CGFloat constant    = bottomLayoutConstraint.constant - bottomConstraintConstant;
-        if (constant > -0.0001 && constant < 0.0001) {
+        if (constant > -CGZeroFloatValue && constant < CGZeroFloatValue) {
             return;
         }
         bottomLayoutConstraint.constant  =  bottomConstraintConstant;
@@ -145,31 +155,50 @@
         }
     }
     
-    [UIView animateWithDuration:duration delay:0 options:curve animations:^{
+    if (self.hideKeyboardShowHideAnimated) {
         
         if (!bottomLayoutConstraint) {
             
             theNeedChangeFrameTheView.frame = keyboardFrameDidChangeNeedChangeViewFrame;
         }else {
-            
-            [theNeedChangeFrameTheView layoutIfNeeded];
+            //应使用父视图来视图更新结构
+            [theNeedChangeFrameTheView.superview layoutIfNeeded];
         }
-        
-        if ([self.delegate respondsToSelector:@selector(keyboardManager:animationsNotification:)]) {
-            [self.delegate keyboardManager:self animationsNotification:note];
-        }
-        
-    } completion:^(BOOL finished) {
         
         if ([note.name isEqualToString:UIKeyboardWillShowNotification] || [note.name isEqualToString:UIKeyboardDidShowNotification]) {
             [self scrollingToTargetViewWithNotification:note];
         }
+    }else {
         
-        if ([self.delegate respondsToSelector:@selector(keyboardManager:animationCompletionNotification:)]) {
-            [self.delegate keyboardManager:self animationCompletionNotification:note];
-        }
+        NSTimeInterval duration = [self getKeyboardDuration:note];
+        NSUInteger curve        = note.keyboardCurve;
         
-    }];
+        [UIView animateWithDuration:duration delay:0 options:curve animations:^{
+            
+            if (!bottomLayoutConstraint) {
+                
+                theNeedChangeFrameTheView.frame = keyboardFrameDidChangeNeedChangeViewFrame;
+            }else {
+                //应使用父视图来视图更新结构
+                [theNeedChangeFrameTheView.superview layoutIfNeeded];
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(keyboardManager:animationsNotification:)]) {
+                [self.delegate keyboardManager:self animationsNotification:note];
+            }
+            
+        } completion:^(BOOL finished) {
+            
+            if ([note.name isEqualToString:UIKeyboardWillShowNotification] || [note.name isEqualToString:UIKeyboardDidShowNotification]) {
+                [self scrollingToTargetViewWithNotification:note];
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(keyboardManager:animationCompletionNotification:)]) {
+                [self.delegate keyboardManager:self animationCompletionNotification:note];
+            }
+        }];
+    }
+    
 }
 
 //返回是否向下执行 YES向下执行
@@ -305,6 +334,13 @@
         bottomConstraintConstant    = [self.delegate targetViewBottomConstraintConstantWithKeyboardManager:self notification:note keyboardRect:keyboardRect needChangeFrameTheView:theNeedChangeFrameTheView];
     }else {
         
+        if (theNeedChangeFrameTheView.superview && timeIntervalValue < [self getKeyboardDuration:note]) {
+            //更新视图结构说明：
+            //在iOS 10下，切换输入框时will show keyboard 会连续发送两次消息，这时第一次修改的值还没有生效，第二次用和第一次一样的视图结构重新计算一遍，导致设置的约束会出现问题，在这需要立即刷新，注意！这里刷的视图布局应为 指定视图的父视图
+            UIView *view    = theNeedChangeFrameTheView.superview;
+            [view setNeedsUpdateConstraints];
+            [view layoutIfNeeded];
+        }
         CGFloat bottomSpace = [self setupTargetViewBottomSpaceWithView:theNeedChangeFrameTheView notification:note];
         
         if (self.constraintConstantType == CGKeyboardConstraintConstantTypeLess) {
@@ -312,7 +348,6 @@
         }else if (self.constraintConstantType == CGKeyboardConstraintConstantTypeAdd) {
             bottomConstraintConstant    += (bottomSpace);
         }
-        
     }
     return bottomConstraintConstant;
 }
@@ -347,6 +382,18 @@
     CGFloat bottomSpace                 = targetViewMaxY - keyboardMinY;
     
     return bottomSpace;
+}
+
+#pragma mark - 获取动画属性值
+- (NSTimeInterval)getKeyboardDuration:(NSNotification *)note
+{
+    NSTimeInterval duration;
+    if (self.duration < CGZeroFloatValue) {
+        duration    = note.keyboardDuration;
+    }else {
+        duration    = self.duration;
+    }
+    return duration;
 }
 
 #pragma mark - 设置键盘通知

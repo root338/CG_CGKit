@@ -11,6 +11,7 @@
 #import "CGAlertView.h"
 #import "CGAlertController.h"
 
+#import "CGVerifyIOSVersionHeader.h"
 
 @implementation UIViewController (CGAlert)
 
@@ -19,10 +20,14 @@
     
     id targetView   = nil;
     
-    targetView  = [CGAlertView showAlertViewWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
-    
-    UIAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
-    [self presentViewController:alertController animated:YES completion:nil];
+    if (_CG_IOS_8_0_BEFORE) {
+        
+        targetView  = [CGAlertView showAlertViewWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
+    }else {
+        
+        UIAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
     
     return targetView;
 }

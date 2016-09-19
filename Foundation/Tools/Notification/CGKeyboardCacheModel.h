@@ -38,6 +38,5 @@
 //@property (nonatomic, assign) CGPoint   minPoint;
 //@property (nonatomic, assign) CGPoint   maxPoint;
 
-
-
 @end
+

@@ -14,7 +14,7 @@
 {
     return [self createAlertControllerWithTitle:title
                                         message:message
-                                    cancelTitle:@"取消"];
+                                    cancelTitle:@"确定"];
 }
 
 + (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle
@@ -52,6 +52,23 @@
         }];
         [alertController addAction:otherAction];
     }
+    
+    return alertController;
+}
+
++ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction * _Nonnull))resultCallback
+{
+    CGAlertController *alertController  = [CGAlertController alertControllerWithTitle:title message:message preferredStyle:preferredStyle];
+    if (cancelTitle) {
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:resultCallback];
+        [alertController addAction:cancelAction];
+    }
+    
+    [otherButtonTitles enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        UIAlertAction *action   = [UIAlertAction actionWithTitle:obj style:UIAlertActionStyleDefault handler:resultCallback];
+        [alertController addAction:action];
+    }];
     
     return alertController;
 }

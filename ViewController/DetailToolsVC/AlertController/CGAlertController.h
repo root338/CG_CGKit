@@ -12,15 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CGAlertController : UIAlertController
 
-#pragma mark - 仅提升
-
-
+#pragma mark - 仅提示
 
 /** 创建带取消按钮的提示 */
-+ (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message;
++ (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message;
 
 
-+ (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle;
++ (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(NSString *)cancelTitle;
 
 
 /**
@@ -34,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  */
 + (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
+
++ (nullable instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction *alertAction))resultCallback;
 
 @end
 
