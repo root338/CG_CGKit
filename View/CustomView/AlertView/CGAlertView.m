@@ -70,7 +70,7 @@
 {
     return [self showAlertViewWithTitle:@"通知"
                                 message:message
-                            cancelTitle:@"确定"];
+                            cancelTitle:cancelTitle];
 }
 
 + (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle

@@ -14,6 +14,23 @@
 
 - (CGRect)keyboardFrame
 {
+    CGRect keyboardFrame    = self.keyboardFrameEndUserInfoKey;
+    
+    if (keyboardFrame.origin.x < 0) {
+        keyboardFrame.origin.x  = 0;
+    }
+    
+    if (keyboardFrame.origin.y < 0) {
+        
+        CGFloat windowHeight    = CGRectGetHeight([[UIApplication sharedApplication] keyWindow].bounds);
+        keyboardFrame.origin.y  = windowHeight - CGRectGetHeight(keyboardFrame);
+    }
+    
+    return keyboardFrame;
+}
+
+- (CGRect)keyboardFrameEndUserInfoKey
+{
     CGRect keyboardFrame;
     keyboardFrame   = [[self.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     return keyboardFrame;

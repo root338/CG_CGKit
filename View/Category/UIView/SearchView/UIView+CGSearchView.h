@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 当前视图内搜索第一响应者 */
 - (nullable __kindof UIView *)cg_searchFirstResponder;
+
 @end
 
 @interface UIView (CGSearchNextInputView)

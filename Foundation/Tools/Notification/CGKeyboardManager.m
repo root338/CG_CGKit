@@ -57,6 +57,7 @@
 #pragma mark - 键盘通知处理
 - (void)handleKeyboardShowHideNotification:(NSNotification *)note
 {
+    
     NSDate *currentDate     = [NSDate date];
     if (oldSendNotificationDate) {
         timeIntervalValue   = [currentDate timeIntervalSinceDate:oldSendNotificationDate];
@@ -148,7 +149,7 @@
             return;
         }
         bottomLayoutConstraint.constant  =  bottomConstraintConstant;
-        [theNeedChangeFrameTheView setNeedsUpdateConstraints];
+        [theNeedChangeFrameTheView.superview setNeedsUpdateConstraints];
     }else {
         if (CGRectEqualToRect(theNeedChangeFrameTheView.frame, keyboardFrameDidChangeNeedChangeViewFrame)) {
             return;
@@ -162,7 +163,8 @@
             theNeedChangeFrameTheView.frame = keyboardFrameDidChangeNeedChangeViewFrame;
         }else {
             //应使用父视图来视图更新结构
-            [theNeedChangeFrameTheView.superview layoutIfNeeded];
+            UIView *view    = theNeedChangeFrameTheView.superview;
+            [view layoutIfNeeded];
         }
         
         if ([note.name isEqualToString:UIKeyboardWillShowNotification] || [note.name isEqualToString:UIKeyboardDidShowNotification]) {
@@ -180,7 +182,8 @@
                 theNeedChangeFrameTheView.frame = keyboardFrameDidChangeNeedChangeViewFrame;
             }else {
                 //应使用父视图来视图更新结构
-                [theNeedChangeFrameTheView.superview layoutIfNeeded];
+                UIView *view    = theNeedChangeFrameTheView.superview;
+                [view layoutIfNeeded];
             }
             
             if ([self.delegate respondsToSelector:@selector(keyboardManager:animationsNotification:)]) {
@@ -334,7 +337,7 @@
         bottomConstraintConstant    = [self.delegate targetViewBottomConstraintConstantWithKeyboardManager:self notification:note keyboardRect:keyboardRect needChangeFrameTheView:theNeedChangeFrameTheView];
     }else {
         
-        if (theNeedChangeFrameTheView.superview && timeIntervalValue < [self getKeyboardDuration:note]) {
+        if (theNeedChangeFrameTheView.superview && timeIntervalValue > CGZeroFloatValue && timeIntervalValue < [self getKeyboardDuration:note]) {
             //更新视图结构说明：
             //在iOS 10下，切换输入框时will show keyboard 会连续发送两次消息，这时第一次修改的值还没有生效，第二次用和第一次一样的视图结构重新计算一遍，导致设置的约束会出现问题，在这需要立即刷新，注意！这里刷的视图布局应为 指定视图的父视图
             UIView *view    = theNeedChangeFrameTheView.superview;

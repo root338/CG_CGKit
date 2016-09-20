@@ -75,6 +75,7 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
     
     return nil;
 }
+
 @end
 
 @implementation UIView (CGSearchNextInputView)

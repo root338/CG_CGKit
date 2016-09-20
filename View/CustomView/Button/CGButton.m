@@ -332,6 +332,8 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     return size;
 }
 
+//#pragma mark - 约束系统方法重写
+
 #pragma mark - 属性设置
 - (void)setButtonStyle:(CGButtonStyle)buttonStyle
 {
