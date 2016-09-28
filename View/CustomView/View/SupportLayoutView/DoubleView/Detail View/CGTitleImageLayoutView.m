@@ -9,6 +9,9 @@
 #import "CGTitleImageLayoutView.h"
 
 @interface CGTitleImageLayoutView ()
+{
+    
+}
 
 @property (nonatomic, strong, readwrite) UIImageView * imageView;
 
@@ -23,24 +26,35 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _imageView  = [[UIImageView alloc] init];
-        _titleLabel = [[UILabel alloc] init];
-        
-        [self.contentView addSubview:_titleLabel];
-        [self.contentView addSubview:_imageView];
+        [self initializationData];
     }
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [self initializationData];
+    [super awakeFromNib];
+}
+
+- (void)initializationData
+{
+    _imageView  = [[UIImageView alloc] init];
+    _titleLabel = [[UILabel alloc] init];
+    
+    [self.contentView addSubview:_titleLabel];
+    [self.contentView addSubview:_imageView];
 }
 
 #pragma mark - CGDoubleLayoutDelegate
 - (UIView *)cg_layoutFirstTargetView
 {
-    return self.firstItemIsImageView ? self.imageView : self.titleLabel;
+    return self.firstItemIsTitleLabel ? self.titleLabel : self.imageView;
 }
 
 - (UIView *)cg_layoutSecondTargetView
 {
-    return self.firstItemIsImageView ? self.titleLabel : self.imageView;
+    return self.firstItemIsTitleLabel ? self.imageView : self.titleLabel;
 }
 
 @end

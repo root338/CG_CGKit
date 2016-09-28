@@ -12,14 +12,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (CGPushViewController)
 
-- (void)cg_pushViewController:(UIViewController *)viewController;
+/** 默认push视图控制器验证当前导航栏的topViewController */
+@property (nonatomic, assign) BOOL disablePushVerifyCurrentTopViewController;
 
-- (void)cg_pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)cgvc_pushViewController:(UIViewController *)viewController;
+
+- (void)cgvc_pushViewController:(UIViewController *)viewController verifyCurrentTopViewController:(nullable UIViewController *)currentTopViewController;
+
+- (void)cgvc_pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
+- (void)cgvc_pushViewController:(UIViewController *)viewController verifyCurrentTopViewController:(UIViewController *)currentTopViewController animated:(BOOL)animated;
 
 /** push视图控制器，删除最上层的视图控制器 */
-- (void)cg_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController;
+- (void)cgvc_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController;
 /** push视图控制器，删除最上层的视图控制器 */
-- (void)cg_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)cgvc_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
 @end
 

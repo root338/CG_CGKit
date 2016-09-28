@@ -12,6 +12,34 @@
 
 @implementation UIButton (CGSetupAppearance)
 
+- (void)setImageName:(NSString *)localImageName forState:(UIControlState)state
+{
+    [self setImageName:localImageName forState:state renderingMode:UIImageRenderingModeAlwaysOriginal];
+}
+
+- (void)setImageName:(NSString *)localImageName forState:(UIControlState)state renderingMode:(UIImageRenderingMode)renderingMode
+{
+    UIImage *image = nil;
+    if (localImageName) {
+        image   = [UIImage imageNamed:localImageName];
+        image   = [image imageWithRenderingMode:renderingMode];
+    }
+    
+    [self setImage:image forState:state];
+}
+
+- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor forState:(UIControlState)state
+{
+    [self setTitle:title forState:state];
+    [self setTitleColor:titleColor forState:state];
+}
+
+- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor image:(UIImage *)image forState:(UIControlState)state
+{
+    [self cg_setupWithTitle:title titleColor:titleColor forState:state];
+    [self setImage:image forState:state];
+}
+
 - (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
 {
     [self setTitle:title forState:UIControlStateNormal];

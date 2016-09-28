@@ -17,6 +17,8 @@
 
 #import "NSArray+CGArray.h"
 
+#import "Value+Constant.h"
+
 @interface CGCycleBrowseImageScrollView ()<CGCycleScrollViewDataSource, CGCycleScrollViewDelegate>
 {
     NSInteger _currentIndex;
@@ -62,8 +64,12 @@
             [dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 NSString *imagePath = extractBlock(obj);
+                if ([imagePath isKindOfClass:[NSString class]]) {
+                    [weakself.dataSource addObject:imagePath ? imagePath : @""];
+                }else {
+                    CGDebugAssert(nil, @"只支持NSString *类型的返回");
+                }
                 
-                [weakself.dataSource addObject:imagePath ? imagePath : @""];
             }];
         }
     }else {
@@ -172,17 +178,33 @@
         }
     }else {
         
-        if (CGRectEqualToRect(self.pageControl.frame, CGRectZero) && self.pageControl.numberOfPages) {
-            [self.pageControl sizeToFit];
-        }
-        
-        CGPoint origin = CGPointMake((self.width - self.pageControl.width) / 2, 0);
-        if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionBottom) {
-            origin = CGPointMake(0, self.height - self.pageControl.height);
-        }
-        
-        if (!CGPointEqualToPoint(origin, self.pageControl.origin)) {
-            self.pageControl.origin = origin;
+        if (self.pageControlVerticalSpace < CGZeroFloatValue) {
+            if (CGRectEqualToRect(self.pageControl.frame, CGRectZero) && self.pageControl.numberOfPages) {
+                [self.pageControl sizeToFit];
+            }
+            
+            CGPoint origin = CGPointMake((self.width - self.pageControl.width) / 2, 0);
+            if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionBottom) {
+                origin = CGPointMake(0, self.height - self.pageControl.height);
+            }
+            
+            if (!CGPointEqualToPoint(origin, self.pageControl.origin)) {
+                self.pageControl.origin = origin;
+            }
+        }else {
+            
+            CGSize  size;
+            size    = CGSizeMake(MIN(self.pageControl.numberOfPages * 16 + 9, self.width), 20);
+            
+            CGFloat originY = 0;
+            if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionTop) {
+                originY = self.pageControlVerticalSpace;
+            }else if (self.positionForPageControl == CGCycleBrowseImageViewPageControlPositionBottom) {
+                originY = self.height - self.pageControl.height;
+            }
+            
+            CGPoint origin = CGPointMake((self.width - self.pageControl.width) / 2.0, originY);
+            self.pageControl.frame  = (CGRect){origin, size};
         }
     }
 }

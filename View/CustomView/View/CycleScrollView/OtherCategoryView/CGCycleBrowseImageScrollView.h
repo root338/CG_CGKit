@@ -56,8 +56,11 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 @property (strong, nonatomic, readonly) CGCycleScrollView *cycleScrollView;
 
 #pragma mark - pageControl
-/** 是否显示分页视图，默认NO */
+/** 是否隐藏分页视图，默认NO */
 @property (assign, nonatomic) BOOL isHidePageControl;
+
+/** 距离边界的距离 */
+@property (nonatomic, assign) CGFloat pageControlVerticalSpace;
 
 /** 分页视图的位置 */
 @property (assign, nonatomic) CGCycleBrowseImageViewPageControlPosition positionForPageControl;

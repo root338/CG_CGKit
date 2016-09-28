@@ -48,4 +48,9 @@
     return insets.top + insets.bottom + self.marginEdgeInsets.top + self.marginEdgeInsets.bottom;
 }
 
+- (CGFloat)getRadioViewCompressedHeight
+{
+    return self.itemSize.height + self.sliderViewHeight;
+}
+
 @end

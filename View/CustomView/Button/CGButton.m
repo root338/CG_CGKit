@@ -8,9 +8,11 @@
 
 #import "CGButton.h"
 
+
 #import "UIView+CGSetupFrame.h"
 #import "UIButton+UpdateLocate.h"
 #import "UIView+CG_CGAreaCalculate.h"
+#import "UIButton+CGCreateCustomButton.h"
 
 #import "NSObject+CGDelaySelector.h"
 
@@ -374,5 +376,17 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 //        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
 //    }
 //}
+
+@end
+
+@implementation CGButton (CGCreateButton)
+
++ (CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image
+{
+    CGButton *button    = [self cg_createButtonWithButtonType:buttonType title:title titleColor:titleColor font:font normalImage:image];
+    button.buttonStyle  = buttonStyle;
+    button.space        = space;
+    return button;
+}
 
 @end

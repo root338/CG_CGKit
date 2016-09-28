@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) UILabel     * titleLabel;
 
 /** 第一个视图为图像， 默认为NO */
-@property (nonatomic, assign) BOOL firstItemIsImageView;
+@property (nonatomic, assign) BOOL firstItemIsTitleLabel;
 
 @end
 

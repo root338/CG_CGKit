@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UINavigationController (CGPushViewController)
 
 /** 默认push视图控制器隐藏动画，默认值为 NO */
-@property (nonatomic, assign) BOOL defaultPushHideAnimatied;
+@property (nonatomic, assign) BOOL disablePushHideAnimatied;
 
 /** push视图控制器 */
 - (void)cg_pushViewController:(UIViewController *)viewController;

@@ -34,21 +34,32 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _marginEdgeInsets           = UIEdgeInsetsZero;
-        _firstTargetViewEdgeInsets  = UIEdgeInsetsZero;
-        _secondTargetViewEdgeInsets = UIEdgeInsetsZero;
-        _targetViewsBetweenSapce    = 0;
-        
-        _firstItemSize              = CGSizeZero;
-        _secondItemSize             = CGSizeZero;
-        
-        config          = [[CGTwoSubviewsConstraintsAppearance alloc] init];
-        _contentView    = [[UIView alloc] init];
-        [self addSubview:_contentView];
-        
-        [self setNeedsUpdateConstraints];
+        [self initializationData];
     }
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self initializationData];
+}
+
+- (void)initializationData
+{
+    _marginEdgeInsets           = UIEdgeInsetsZero;
+    _firstTargetViewEdgeInsets  = UIEdgeInsetsZero;
+    _secondTargetViewEdgeInsets = UIEdgeInsetsZero;
+    _targetViewsBetweenSapce    = 0;
+    
+    _firstItemSize              = CGSizeZero;
+    _secondItemSize             = CGSizeZero;
+    
+    config          = [[CGTwoSubviewsConstraintsAppearance alloc] init];
+    _contentView    = [[UIView alloc] init];
+    [self addSubview:_contentView];
+    
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)updateConstraints

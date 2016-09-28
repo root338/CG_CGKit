@@ -14,12 +14,12 @@
 
 - (void)cg_pushViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:!self.defaultPushHideAnimatied];
+    [self.navigationController pushViewController:viewController animated:!self.disablePushHideAnimatied];
 }
 
 - (void)cg_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController
 {
-    [self cg_pushRemoveLastVCWithNewViewController:viewController animated:!self.defaultPushHideAnimatied];
+    [self cg_pushRemoveLastVCWithNewViewController:viewController animated:!self.disablePushHideAnimatied];
 }
 
 - (void)cg_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -32,7 +32,7 @@
 
 - (void)cg_pushViewController:(UIViewController *)viewController removeViewControllers:(NSArray<UIViewController *> *)viewControllers
 {
-    [self cg_pushViewController:viewController removeViewControllers:viewControllers animated:!self.defaultPushHideAnimatied];
+    [self cg_pushViewController:viewController removeViewControllers:viewControllers animated:!self.disablePushHideAnimatied];
 }
 
 - (void)cg_pushViewController:(UIViewController *)viewController removeViewControllers:(NSArray<UIViewController *> *)viewControllers animated:(BOOL)animated
@@ -50,7 +50,7 @@
 
 - (void)cg_pushViewController:(UIViewController *)viewController removeViewControllerClass:(NSArray<Class> *)viewControllerClass
 {
-    [self cg_pushViewController:viewController removeViewControllerClass:viewControllerClass animated:!self.defaultPushHideAnimatied];
+    [self cg_pushViewController:viewController removeViewControllerClass:viewControllerClass animated:!self.disablePushHideAnimatied];
 }
 
 - (void)cg_pushViewController:(UIViewController *)viewController removeViewControllerClass:(NSArray<Class> *)viewControllerClass animated:(BOOL)animated
@@ -70,12 +70,12 @@
 
 #pragma mark - 设置属性 
 
-- (void)setDefaultPushHideAnimatied:(BOOL)animatied
+- (void)setDisablePushHideAnimatied:(BOOL)disable
 {
-    objc_setAssociatedObject(self, @selector(defaultPushHideAnimatied), @(animatied), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(disablePushHideAnimatied), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)defaultPushHideAnimatied
+- (BOOL)disablePushHideAnimatied
 {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }

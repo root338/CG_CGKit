@@ -52,4 +52,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupLineType:(LineBoxType)lineType color:(nullable UIColor *)lineColor length:(CGFloat)length;
 @end
 
+@interface CGLineBoxView (CGCreateLineView)
+
++ (__kindof CGLineBoxView *)createLineViewWithLineType:(LineBoxType)type color:(nullable UIColor *)lineColor length:(CGFloat)length;
+
+@end
+
 NS_ASSUME_NONNULL_END

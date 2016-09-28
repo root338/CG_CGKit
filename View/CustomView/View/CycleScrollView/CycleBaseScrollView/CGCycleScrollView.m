@@ -590,6 +590,7 @@
     if (nextIndex) {
         
         self.currentIndex = nextIndex.integerValue;
+        [self setupScrollContentView];
     }
     
 }
@@ -603,6 +604,7 @@
     if (previousIndex) {
         
         self.currentIndex = previousIndex.integerValue;
+        [self setupScrollContentView];
     }
 }
 
@@ -828,7 +830,6 @@
     if (currentIndex != _currentIndex) {
         _currentIndex = currentIndex;
         
-        [self setupScrollContentView];
         if ([self.delegate respondsToSelector:@selector(cycleScrollView:didChangeCurrentIndex:)]) {
             [self.delegate cycleScrollView:self didChangeCurrentIndex:self.currentIndex];
         }

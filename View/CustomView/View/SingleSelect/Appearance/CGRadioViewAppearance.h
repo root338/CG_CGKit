@@ -47,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 移动滑块是否动画执行 */
 @property (nonatomic, assign)           BOOL                moveSliderViewIsAnimation;
 
+/** 获取单选视图最适高度 */
+- (CGFloat)getRadioViewCompressedHeight;
+
 /** 获取子视图与父视图的边距，为绘制的线提供显示区域 */
 - (UIEdgeInsets)getSubviewEdgeInsets;
 

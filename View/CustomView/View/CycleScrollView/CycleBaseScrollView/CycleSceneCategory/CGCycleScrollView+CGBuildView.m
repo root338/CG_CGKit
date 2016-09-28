@@ -121,6 +121,10 @@
         paramViewIndex = paramViewIndex - self.totalViewNumber;
     }
     
+    if (paramViewIndex < 0 || paramViewIndex >= self.totalViewNumber) {
+        return [self cg_getViewIndexWithIndex:paramViewIndex];
+    }
+    
     return paramViewIndex;
 }
 

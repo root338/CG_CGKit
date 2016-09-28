@@ -127,3 +127,14 @@
 }
 
 @end
+
+@implementation CGLineBoxView (CGCreateLineView)
+
++ (CGLineBoxView *)createLineViewWithLineType:(LineBoxType)type color:(UIColor *)lineColor length:(CGFloat)length
+{
+    CGLineBoxView *lineBoxView  = [[self alloc] init];
+    [lineBoxView setupLineType:type color:lineColor length:length];
+    return lineBoxView;
+}
+
+@end

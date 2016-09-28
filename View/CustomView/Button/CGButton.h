@@ -43,4 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)sizeThatFits:(CGSize)size;
 @end
+
+@interface CGButton (CGCreateButton)
+
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(nullable NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image;
+
+@end
+
 NS_ASSUME_NONNULL_END
