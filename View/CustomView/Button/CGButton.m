@@ -39,6 +39,10 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 - (void)initialization
 {
+    _contentSubviewOfficeSpace  = 0;
+    _space                      = 0;
+    _marginEdgeInsets           = UIEdgeInsetsZero;
+    _imageViewSize              = CGSizeZero;
     [super initialization];
 }
 
@@ -179,14 +183,21 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     
     if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
         
-        CGFloat targetHeight = 0.0;   //当前控件的高度
+        CGFloat targetHeight        = 0.0;   //当前控件的高度
         CGFloat maxContentHeight    = MAX(imageSize.height, titleSize.height);
+        CGFloat offset              = 0;
         
         //获取指定视图的高度
         if (paramContentType == _CGButtonContentTypeImageView) {
             targetHeight    = imageSize.height;
+            if (imageSize.height < titleSize.height) {
+                offset  = self.contentSubviewOfficeSpace;
+            }
         }else if (paramContentType == _CGButtonContentTypeTitleLabel) {
             targetHeight    = titleSize.height;
+            if (titleSize.height < imageSize.height) {
+                offset  = self.contentSubviewOfficeSpace;
+            }
         }
         
         CGSize tempTargetSize   = CGSizeMake(titleSize.width + imageSize.width + self.space,  maxContentHeight);
@@ -198,12 +209,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         switch (self.contentSubviewAlignment) {
             case CGButtonContentAlignmentTop:
             {
-                originTargetY   = 0;
+                originTargetY   = offset;
             }
                 break;
             case CGButtonContentAlignmentBottom:
             {
-                originTargetY   = maxContentHeight - targetHeight;
+                originTargetY   = maxContentHeight - targetHeight - offset;
             }
                 break;
             default:
@@ -229,14 +240,21 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         }
     }else {
         
-        CGFloat targetWidth = 0.0;
-        CGFloat maxContentWidth    = MAX(imageSize.width, titleSize.width);
+        CGFloat targetWidth     = 0.0;
+        CGFloat maxContentWidth = MAX(imageSize.width, titleSize.width);
+        CGFloat offset          = 0;
         
         //获取指定视图的宽度
         if (paramContentType == _CGButtonContentTypeImageView) {
             targetWidth     = imageSize.width;
+            if (imageSize.width < titleSize.width) {
+                offset  = self.contentSubviewOfficeSpace;
+            }
         }else if (paramContentType == _CGButtonContentTypeTitleLabel) {
             targetWidth     = titleSize.width;
+            if (titleSize.width < imageSize.width) {
+                offset = self.contentSubviewOfficeSpace;
+            }
         }
         
         CGSize tempTargetSize   = CGSizeMake(maxContentWidth, titleSize.height + imageSize.height + self.space);
@@ -248,12 +266,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         switch (self.contentSubviewAlignment) {
             case CGButtonContentAlignmentLeft:
             {
-                originTargetX   = 0;
+                originTargetX   = offset;
             }
                 break;
             case CGButtonContentAlignmentRight:
             {
-                originTargetX   = maxContentWidth - targetWidth;
+                originTargetX   = maxContentWidth - targetWidth - offset;
             }
                 break;
             default:
@@ -317,7 +335,13 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 - (CGSize)sizeThatFits:(CGSize)paramSize
 {
     //!!先使用imageView大小，在调用titleLabel大小，否则计算会出错，原因暂时没查
-    CGSize imageSize = self.currentImage.size;
+    CGSize imageSize = CGSizeZero;
+    if (!CGSizeEqualToSize(self.imageViewSize, CGSizeZero)) {
+        imageSize   = self.imageViewSize;
+    }else {
+        imageSize   = self.currentImage.size;
+    }
+    
     CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
     
     CGSize size;
@@ -365,6 +389,15 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     if (contentSubviewAlignment != _contentSubviewAlignment) {
         _contentSubviewAlignment   = contentSubviewAlignment;
+        [self cg_updateButtonLayout];
+    }
+}
+
+- (void)setContentSubviewOfficeSpace:(CGFloat)contentSubviewOfficeSpace
+{
+    if (_contentSubviewOfficeSpace != contentSubviewOfficeSpace) {
+        
+        _contentSubviewOfficeSpace  = contentSubviewOfficeSpace;
         [self cg_updateButtonLayout];
     }
 }

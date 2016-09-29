@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
 /** 标题和图片的对齐方式 */
 @property (nonatomic, assign) CGButtonContentAlignment contentSubviewAlignment;
+/** 标题和图片对齐方式时的偏移间距 */
+@property (nonatomic, assign) CGFloat contentSubviewOfficeSpace;
 
 //@property (nonatomic, assign) UIControlContentHorizontalAlignment   contentViewHorizontalAlignment;
 //@property (nonatomic, assign) UIControlContentVerticalAlignment     contentViewVerticalAlignment;

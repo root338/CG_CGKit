@@ -85,6 +85,8 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置与父视图四周的间距，并忽略哪边边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingOptionEdge:(CGLayoutOptionEdge)edge;
 
+/** 设置与父视图指定四周的零间距约束 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewEdgesWithEdge:(CGLayoutOptionEdge)edge;
 /** 设置与父视图指定四周的间距 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithEdge:(CGLayoutOptionEdge)edge insets:(UIEdgeInsets)insets;
 
@@ -182,6 +184,8 @@ typedef void (^CGSetupConstraints) (void);
 
 /** 设置视图与指定视图大小相等 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)view;
+/** 设置视图与指定视图大小的比例值 */
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)view scale:(CGFloat)scale;
 
 /** 设置视图宽高与指定视图相等 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoDimensionEqualView:(UIView *)view;
