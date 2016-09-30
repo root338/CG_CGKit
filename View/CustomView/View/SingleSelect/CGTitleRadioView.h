@@ -19,12 +19,13 @@ typedef void (^CGTitleRadioSelectedBlock) (NSInteger index, id obj);
 
 @property (nonatomic, strong) NSArray<NSString *>     *titles;
 @property (nonatomic, assign) NSInteger currentSelectedTitleIndex;
+//@property (nullable, nonatomic, strong, readonly) NSString *currentSelectedTitle;
 
 /** 当前正在使用的数据 */
 @property (nullable, nonatomic, readonly) NSArray *currentDataSouce;
 
 /** 
- *  是否缓存cell大小 默认YES
+ *  是否缓存cell大小 默认NO
  *  @see    当使用setupTitlesWithDataSouce:getTitleBlock:方法设置标题时，有可能标题会出现变化，此时应该取消缓存cell的大小
  */
 @property (nonatomic, assign) BOOL isCacheCellsSize;
@@ -35,6 +36,8 @@ typedef void (^CGTitleRadioSelectedBlock) (NSInteger index, id obj);
 @property (nullable, nonatomic, copy) CGTitleRadioSelectedBlock didSelectedCallback;
 
 - (instancetype)initWithTitles:(nullable NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance;
+
+- (void)scrollTopView;
 
 /** 设置标题 */
 - (void)setupTitlesWithDataSouce:(NSArray *)dataSource getTitleBlock:(CGTitleRadioGetTitleBlock)titleBlock;

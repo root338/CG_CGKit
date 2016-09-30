@@ -8,7 +8,7 @@
 
 #import "CGButton.h"
 
-
+#import "Value+Constant.h"
 #import "UIView+CGSetupFrame.h"
 #import "UIButton+UpdateLocate.h"
 #import "UIView+CG_CGAreaCalculate.h"
@@ -29,6 +29,9 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     ///YES表示正在cg_calculateAreaWithContentType:contentRect:方法中处理布局,
     BOOL _isCalculateAreaButtonContentView;
+    
+    UIFont          *_defaultAttributedDictIdentifier;
+    NSDictionary    *_defaultAttributedDict;
 }
 
 @property (nonatomic, strong) UILabel *tempCalculateLabel;
@@ -115,10 +118,11 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     /** 获取私有属性，如果直接使用self.titleLabel会导致出现两个一样的标题控件 */
     id titleView    = [self valueForKey:@"_titleView"];
     
-    CGSize titleSize    = CGSizeZero;
-    if ([titleView isKindOfClass:[UILabel class]]) {
-        titleSize   = [titleView sizeThatFits:CGSizeMake(FLT_MAX, FLT_MAX)];
+    if (![titleView isKindOfClass:[UILabel class]]) {
+        //当使用setTitle:forState:方法设置标题时，button不会立即刷新，当立即重新刷新button大小时，会出错
+        titleView   = nil;
     }
+    CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:titleView];
     
     titleSize   = CG_CGMinSize(tempLabelSize, titleSize);
     
@@ -342,7 +346,8 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         imageSize   = self.currentImage.size;
     }
     
-    CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
+    //当使用setTitle:forState:方法设置标题时，button不会立即刷新，当立即重新刷新button大小时，会使用原标题进行计算出错
+    CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:self.titleLabel];
     
     CGSize size;
     
@@ -354,8 +359,63 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     
     size = CG_CGMaxSizeWidthSize(size, self.marginEdgeInsets);
     
-    
+    if (paramSize.width > CGZeroFloatValue && paramSize.width < size.width) {
+        size.width  = paramSize.width;
+    }
+    if (paramSize.height > CGZeroFloatValue && paramSize.height < size.height) {
+        size.height = paramSize.height;
+    }
     return size;
+}
+
+- (CGSize)calculateCurrentTitleAreaWithTitleLabel:(UILabel *)titleLabel
+{
+    CGSize titleSize        = CGSizeZero;
+    CGSize compressedSize   = CGSizeMake(FLT_MAX, FLT_MAX);
+    if (self.currentAttributedTitle) {
+        
+        if (titleLabel) {
+            [titleLabel setAttributedText:self.currentAttributedTitle];
+            titleSize   = [titleLabel sizeThatFits:compressedSize];
+        }else {
+            titleSize           = [self.currentAttributedTitle size];
+        }
+    }else {
+        
+        if (titleLabel) {
+            [titleLabel setText:self.currentTitle];
+            //iOS7 下如果不设置会导致按钮颜色变为默认的蓝色
+            [titleLabel setTextColor:self.currentTitleColor];
+            titleSize   = [titleLabel sizeThatFits:compressedSize];
+        }else {
+            
+            if (_defaultAttributedDictIdentifier != self.titleLabel.font) {
+                _defaultAttributedDict  = nil;
+            }
+            if (_defaultAttributedDict == nil) {
+                
+                UIFont *titleFont       = self.titleLabel.font;
+                if (!titleFont) {
+                    titleFont   = [UIFont systemFontOfSize:15];
+                }
+                _defaultAttributedDict  = @{
+                                            NSFontAttributeName : titleFont,
+                                            NSParagraphStyleAttributeName : [NSParagraphStyle defaultParagraphStyle],
+                                            };
+                _defaultAttributedDictIdentifier    = titleFont;
+            }
+            
+            titleSize   = [self.currentTitle sizeWithAttributes:_defaultAttributedDict];
+        }
+    }
+    
+    if (!titleLabel) {
+        //单纯使用富文本进行计算，与Label的 sizeThatFits: 方法计算会出现稍微的偏差，从而导致内容显示不全
+        titleSize.width     = ceil(titleSize.width);
+        titleSize.height    = ceil(titleSize.height);
+    }
+    
+    return titleSize;
 }
 
 //#pragma mark - 约束系统方法重写

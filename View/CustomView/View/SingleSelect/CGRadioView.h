@@ -86,6 +86,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifierClass:(Class)identifierClass forIndexPath:(nonnull NSIndexPath *)indexPath;
 
 - (void)reloadData;
+
+- (void)scrollTopView;
 @end
 
 NS_ASSUME_NONNULL_END

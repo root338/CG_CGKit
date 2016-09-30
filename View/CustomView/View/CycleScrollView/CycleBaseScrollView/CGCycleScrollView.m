@@ -765,8 +765,12 @@
 - (void)setupAutoScrollTimer
 {
     if (self.isAutoScrollView) {
+        
         [self stopAutoScroll];
         [self setupTimerWithWindows:self.window];
+    }else {
+        
+        [self stopAutoScroll];
     }
 }
 
@@ -805,9 +809,9 @@
         _isAutoScrollView = isAutoScrollView;
         if (!self.delayTimeInterval) {
             self.delayTimeInterval = 2;
-        }else {
-            [self setupAutoScrollTimer];
         }
+        
+        [self setupAutoScrollTimer];
     }
 }
 

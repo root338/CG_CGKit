@@ -12,13 +12,14 @@
 
 - (CGSize)calculateLabelTextSize
 {
+    if (self.attributedText) {
+        return [self.attributedText size];
+    }
     
     CGSize size = CGSizeZero;
-    
     NSDictionary *dic = @{
                           NSFontAttributeName : self.font,
                           };
-    
     size = [self.text sizeWithAttributes:dic];
     
     return size;

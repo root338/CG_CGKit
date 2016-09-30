@@ -54,7 +54,7 @@
     if (self) {
         
         _titles = titles;
-        _isCacheCellsSize           = YES;
+        _isCacheCellsSize           = NO;
         _currentSelectedTitleIndex  = 0;
         
         CGRadioSliderView *sliderView   = [[CGRadioSliderView alloc] init];
@@ -104,6 +104,11 @@
     }else {
         return self.getTitleBlock(index, _dataSource[index]);
     }
+}
+
+- (void)scrollTopView
+{
+    [self.radioView scrollTopView];
 }
 
 #pragma mark - CGRadioViewDataSource
@@ -164,7 +169,7 @@
     
     CGSize size = [_cacheResueCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
-    CGFloat height  = (self.radioView.height - [self.appearance getVerticalAllSpace]);
+    CGFloat height  = self.appearance.itemSize.height;
     size        = CGSizeMake(size.width, height);
     
     return size;
