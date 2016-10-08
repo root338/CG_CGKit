@@ -61,7 +61,7 @@
 
 - (BOOL)verityInputString:(NSString *)inputString
 {
-    return inputString;
+    return inputString != nil ? YES : NO;
 }
 
 - (void)dealloc

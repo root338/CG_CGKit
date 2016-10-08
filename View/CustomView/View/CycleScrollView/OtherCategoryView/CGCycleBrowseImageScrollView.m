@@ -19,6 +19,8 @@
 
 #import "Value+Constant.h"
 
+#import "CGPrintLogHeader.h"
+
 @interface CGCycleBrowseImageScrollView ()<CGCycleScrollViewDataSource, CGCycleScrollViewDelegate>
 {
     NSInteger _currentIndex;

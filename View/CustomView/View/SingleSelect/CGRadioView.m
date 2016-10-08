@@ -280,7 +280,7 @@
 
 - (BOOL)didSelectedIndexFlag
 {
-    return self.currentSelectedIndexPath;
+    return (self.currentSelectedIndexPath != nil) ? YES : NO;
 }
 
 - (void)setCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath
