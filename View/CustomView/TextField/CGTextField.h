@@ -1,5 +1,5 @@
 //
-//  CGBaseTextField.h
+//  CGTextField.h
 //  TestCG_CGKit
 //
 //  Created by apple on 15/12/5.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CGViewProtocol.h"
 
-@interface CGBaseTextField : UITextField<CGViewInitializationProtocol>
+@interface CGTextField : UITextField
 
 @end

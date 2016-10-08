@@ -116,6 +116,7 @@
     if (monitorMark == NO) {
         return;
     }
+    monitorMark = NO;
     [self.webView removeObserver:self forKeyPath:[self webViewTitleKeyPath]];
     [self.webView removeObserver:self forKeyPath:[self webViewProgressKeyPath]];
 }
@@ -133,8 +134,6 @@
         if ([self.delegate respondsToSelector:@selector(cg_webView:updateProgress:)]) {
             [self.delegate cg_webView:self.targetObject updateProgress:progress];
         }
-    }else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

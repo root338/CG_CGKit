@@ -10,24 +10,24 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CGBaseWebView;
+@class CGWebView;
 
 @protocol CGWebViewDelegate <NSObject>
 
 @optional
-- (BOOL)cg_webView:(CGBaseWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
-- (void)cg_webViewDidStartLoad:(CGBaseWebView *)webView;
-- (void)cg_webViewDidFinishLoad:(CGBaseWebView *)webView;
-- (void)cg_webView:(CGBaseWebView *)webView didFailLoadWithError:(NSError *)error;
+- (BOOL)cg_webView:(CGWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
+- (void)cg_webViewDidStartLoad:(CGWebView *)webView;
+- (void)cg_webViewDidFinishLoad:(CGWebView *)webView;
+- (void)cg_webView:(CGWebView *)webView didFailLoadWithError:(NSError *)error;
 
 
 /** 获取webView的加载进度 */
-- (void)cg_webView:(CGBaseWebView *)webView updateProgress:(CGFloat)progress;
+- (void)cg_webView:(CGWebView *)webView updateProgress:(CGFloat)progress;
 
 /** 获取webView的title标签内容 
  *  @warning    在使用UIWebView时会多次回调该代理方法
  */
-- (void)cg_webView:(CGBaseWebView *)webView webViewTitle:(NSString *)webViewTitle;
+- (void)cg_webView:(CGWebView *)webView webViewTitle:(NSString *)webViewTitle;
 
 @end
 

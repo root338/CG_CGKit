@@ -11,7 +11,7 @@
 
 #import "CGWebViewDelegate.h"
 
-#import "CGBaseWebView.h"
+#import "CGWebView.h"
 
 #import "UIWebView+CGValue.h"
 
@@ -24,7 +24,7 @@
 
 @implementation CGUIWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(nonnull CGBaseWebView *)targetObj
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(nonnull CGWebView *)targetObj
 {
     CGUIWebViewDelegateManager *manager = [[self alloc] init];
     manager.delegate                    = delegate;

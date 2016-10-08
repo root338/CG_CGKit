@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, CGTextFieldInputButtonType){
     CGTextFieldInputButtonTypeRightArrow,
 };
 
-typedef UIButton *(^SetupInputViewInButton)(CGTextFieldInputButtonType buttonType);
+typedef UIButton *(^CGSetupInputViewInButton)(CGTextFieldInputButtonType buttonType);
 
 @protocol CGTextFieldInputViewDelegate <NSObject>
 
@@ -64,5 +64,5 @@ typedef UIButton *(^SetupInputViewInButton)(CGTextFieldInputButtonType buttonTyp
 
 @property (weak, nonatomic) id<CGTextFieldInputViewDelegate> delegate;
 
-@property (copy, nonatomic) SetupInputViewInButton setupInputViewInSubview;
+@property (copy, nonatomic) CGSetupInputViewInButton setupInputViewInSubview;
 @end

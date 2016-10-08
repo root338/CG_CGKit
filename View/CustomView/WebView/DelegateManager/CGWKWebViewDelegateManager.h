@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGBaseWebView;
+@class CGWebView;
 @protocol CGWebViewDelegate;
 
 //WKWebView 相关代理方法设置
@@ -21,9 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) WKWebView *webView;
 
 @property (nonatomic, weak) id<CGWebViewDelegate> delegate;
-@property (nonatomic, weak) CGBaseWebView *targetObject;
+@property (nonatomic, weak) CGWebView *targetObject;
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(CGBaseWebView *)targetObj;
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(CGWebView *)targetObj;
 @end
 
 NS_ASSUME_NONNULL_END

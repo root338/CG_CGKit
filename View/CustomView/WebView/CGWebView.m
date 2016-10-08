@@ -1,135 +1,184 @@
 //
 //  CGWebView.m
-//  TestCG_CGKit
+//  QuickAskCommunity
 //
-//  Created by DY on 16/4/20.
-//  Copyright © 2016年 apple. All rights reserved.
+//  Created by DY on 15/10/19.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
 #import "CGWebView.h"
-@import WebKit;
 
 #import "UIView+CGAddConstraints.h"
 
-#import "EXTKeyPathCoding.h"
+//代理实现类
+#import "CGUIWebViewDelegateManager.h"
+#import "CGWKWebViewDelegateManager.h"
 
-@interface CGWebView ()
+#import "CGPrintLogHeader.h"
 
-@property (nonatomic, strong, readwrite) WKWebView *webView;
-@property (nonatomic, strong, readwrite) WKWebViewConfiguration *webViewConfiguration;
-@property (nullable, nonatomic, strong, readwrite) WKNavigation *navigation;
+@import WebKit;
 
-@property (nullable, nonatomic, strong, readwrite) UIProgressView *progressView;
+@interface CGWebView<ObjectType> ()<UIWebViewDelegate>
+{
+    CGUIWebViewDelegateManager  *_delegateManagerForUIWebView;
+    CGWKWebViewDelegateManager  *_delegateManagerForWKWebView;
+}
+
+@property (nonatomic, strong, readwrite) IBOutlet ObjectType webView;
+
+@property (nonatomic, assign, readwrite) CGWebViewType webViewType;
+@property (nonatomic, readonly) CGWebViewType currentWebViewType;
+
+@property (nonatomic, readonly) UIWebView *webViewForUIWebView;
+@property (nonatomic, readonly) WKWebView *webViewForWKWebView;
 @end
 
 @implementation CGWebView
 
-- (void)initialization
++ (BOOL)isWebKitAvailable
 {
-    _isHiddeProgressView    = YES;
-    _webViewConfiguration   = [[WKWebViewConfiguration alloc] init];
-    _webView    = [[WKWebView alloc] initWithFrame:CGRectZero configuration:_webViewConfiguration];
-    [self addSubview:_webView];
-    [_webView cg_autoEdgesInsetsZeroToSuperview];
+    return [WKWebView class] == nil ? NO : YES;
+}
+
+#pragma mark - 初始化CGWebView
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    return [self initWithFrame:frame webViewType:CGWebViewTypeAuto];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
+- (instancetype)initWithWebViewType:(CGWebViewType)webViewType
+{
+    return [self initWithFrame:CGRectZero webViewType:webViewType];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType
+{
+    return [self initWithFrame:frame webViewType:webViewType configuration:nil];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType configuration:(WKWebViewConfiguration *)configuration
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        if (webViewType == CGWebViewTypeWKWebView) {
+            if (![CGWebView isWebKitAvailable]) {
+                
+                CGDebugAssert(nil, @"不支持WKWebview");
+                webViewType = CGWebViewTypeUIWebView;
+            }
+        }
+        _webViewType    = webViewType;
+        [self createWebViewWithFrame:frame configuration:configuration];
+    }
+    return self;
+}
+
+#pragma mark - 创建子视图
+- (void)createWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
+{
     
-    NSString *titleKeyPath = [self webViewTitleKeyPath];
-    [_webView addObserver:self forKeyPath:titleKeyPath options:NSKeyValueObservingOptionNew context:nil];
-    NSString *progressKeyPath   = [self webViewProgressKeyPath];
-    [_webView addObserver:self forKeyPath:progressKeyPath options:NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)setupProgressView
-{
-    if (self.isHiddeProgressView) {
-        
-        if (_progressView.superview) {
-            
-            [_progressView removeFromSuperview];
+    id webView  = nil;
+    switch (self.currentWebViewType) {
+        case CGWebViewTypeWKWebView:
+        {
+            webView = [self createWKWebViewWithFrame:frame configuration:configuration];
         }
-    }else if (!self.progressView.superview) {
-        
-        [self addSubview:self.progressView];
-        [self.progressView cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:CGLayoutEdgeBottom];
-    }
-}
-
-#pragma mark - 重写系统方法
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-    if (newWindow) {
-        [self moveToWindowWithIsAddWindow:YES];
-    }
-}
-
-/** 是否移动到窗口 */
-- (void)moveToWindowWithIsAddWindow:(BOOL)isAddToWindow
-{
-    if (isAddToWindow) {
-        [self setupProgressView];
-    }
-}
-
-- (void)setupURLForString:(NSString *)paramString
-{
-    NSURL *url              = [NSURL URLWithString:paramString];
-    NSURLRequest *request   = [NSURLRequest requestWithURL:url];
-    self.navigation         = [self.webView loadRequest:request];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:[self webViewTitleKeyPath]]) {
-        if (self.webViewTitleChangeCallback) {
-            self.webViewTitleChangeCallback(change[NSKeyValueChangeNewKey]);
+            break;
+        case CGWebViewTypeUIWebView:
+        {
+            webView = [self createUIWebViewWithFrame:frame];
         }
-    }else if ([keyPath isEqualToString:[self webViewProgressKeyPath]]) {
-        
-        CGFloat progress    = [change[NSKeyValueChangeNewKey] floatValue];
-        if (self.webViewProgressChangeCallback) {
-            self.webViewProgressChangeCallback(progress);
-        }
-        
-        self.progressView.progress  = progress;
+            break;
+        default:
+            break;
+    }
+    _webView    = webView;
+    [self addSubview:webView];
+    [webView cg_autoEdgesInsetsZeroToSuperview];
+}
+
+- (UIWebView *)createUIWebViewWithFrame:(CGRect)frame
+{
+    return [[UIWebView alloc] initWithFrame:frame];
+}
+
+- (WKWebView *)createWKWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
+{
+    if (configuration) {
+        return [[WKWebView alloc] initWithFrame:frame configuration:configuration];
     }else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        return [[WKWebView alloc] initWithFrame:frame];
     }
 }
 
-#pragma mark - 监听的KeyPath
-- (NSString *)webViewTitleKeyPath
+//设置代理管理类
+- (void)setupDelegateManager
 {
-    return @keypath(_webView.title);
-}
-
-- (NSString *)webViewProgressKeyPath
-{
-    return @keypath(_webView.estimatedProgress);
+    if (self.currentWebViewType == CGWebViewTypeUIWebView) {
+        
+        _delegateManagerForUIWebView    = [CGUIWebViewDelegateManager createManagerWithDelegate:self.delegate targetObj:self];
+        self.webViewForUIWebView.delegate   = _delegateManagerForUIWebView.webViewProxyDelegate;
+        
+    }else if (self.currentWebViewType == CGWebViewTypeWKWebView) {
+        
+        _delegateManagerForWKWebView            = [CGWKWebViewDelegateManager createManagerWithDelegate:self.delegate targetObj:self];
+        _delegateManagerForWKWebView.webView    = self.webViewForWKWebView;
+        self.webViewForWKWebView.navigationDelegate = _delegateManagerForWKWebView;
+    }
 }
 
 - (void)dealloc
 {
-    [self.webView removeObserver:self forKeyPath:[self webViewTitleKeyPath]];
-    [self.webView removeObserver:self forKeyPath:[self webViewProgressKeyPath]];
+    if (self.currentWebViewType == CGWebViewTypeWKWebView) {
+        //需要在释放前，手动释放CGWKWebViewDelegateManager类开启的KVO，否则会发生运行错误
+        _delegateManagerForWKWebView.webView = nil;
+    }
 }
 
 #pragma mark - 设置属性
-- (UIProgressView *)progressView
+- (void)setDelegate:(id<CGWebViewDelegate>)delegate
 {
-    if (_progressView) {
-        return _progressView;
+    if (_delegate != delegate) {
+        
+        _delegate   = delegate;
+        [self setupDelegateManager];
     }
-    
-    _progressView   = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-    return _progressView;
 }
 
-- (void)setIsHiddeProgressView:(BOOL)isHiddeProgressView
+- (CGWebViewType)currentWebViewType
 {
-    if (_isHiddeProgressView != isHiddeProgressView) {
-        _isHiddeProgressView    = isHiddeProgressView;
-        [self moveToWindowWithIsAddWindow:self.window != nil];
+    if (self.webViewType == CGWebViewTypeAuto) {
+        if ([CGWebView isWebKitAvailable]) {
+            return  CGWebViewTypeWKWebView;
+        }else {
+            return  CGWebViewTypeUIWebView;
+        }
+    }else {
+        return self.webViewType;
     }
+}
+
+- (UIWebView *)webViewForUIWebView
+{
+    if ([self.webView isKindOfClass:[UIWebView class]]) {
+        return self.webView;
+    }
+    return nil;
+}
+
+- (WKWebView *)webViewForWKWebView
+{
+    if ([CGWebView isWebKitAvailable]) {
+        if ([self.webView isKindOfClass:[WKWebView class]]) {
+            return self.webView;
+        }
+    }
+    return nil;
 }
 
 @end

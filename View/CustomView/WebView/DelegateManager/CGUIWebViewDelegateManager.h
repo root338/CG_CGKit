@@ -12,17 +12,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGBaseWebView;
+@class CGWebView;
 @protocol CGWebViewDelegate;
 
 @interface CGUIWebViewDelegateManager : NSObject<UIWebViewDelegate>
 
 @property (nonatomic, weak) id<CGWebViewDelegate> delegate;
-@property (nonatomic, weak) CGBaseWebView *targetObject;
+@property (nonatomic, weak) CGWebView *targetObject;
 
 @property (nonatomic, readonly) id<UIWebViewDelegate> webViewProxyDelegate;
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(CGBaseWebView *)targetObj;
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(CGWebView *)targetObj;
 
 - (void)resetWebViewLoad;
 @end

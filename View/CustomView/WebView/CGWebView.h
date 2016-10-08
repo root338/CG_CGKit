@@ -1,36 +1,51 @@
 //
 //  CGWebView.h
-//  TestCG_CGKit
+//  QuickAskCommunity
 //
-//  Created by DY on 16/4/20.
-//  Copyright © 2016年 apple. All rights reserved.
+//  Created by DY on 15/10/19.
+//  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "CGBaseView.h"
+#import <UIKit/UIKit.h>
+#import "CGWebViewDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WKWebView;
-@class WKWebViewConfiguration;
-@class WKNavigation;
+@class WKWebViewConfiguration, WKWebView;
 
-NS_CLASS_AVAILABLE(10_10, 8_0) @interface CGWebView : CGBaseView
+/** webView加载的类型 */
+typedef NS_ENUM(NSInteger, CGWebViewType) {
+    /** 自动设置webView加载的类型 */
+    CGWebViewTypeAuto,
+    /** webView是UIWebView类型 */
+    CGWebViewTypeUIWebView,
+    /** webView是WKWebView类型 */
+    CGWebViewTypeWKWebView,
+};
 
-@property (nonatomic, strong, readonly) WKWebView *webView;
-@property (nonatomic, strong, readonly) WKWebViewConfiguration *webViewConfiguration;
-@property (nullable, nonatomic, strong, readonly) WKNavigation *navigation;
+@interface CGWebView<ObjectType> : UIView
 
-/** 加载的进度条视图 */
-@property (nullable, nonatomic, strong, readonly) UIProgressView *progressView;
-/** 是否隐藏加载进度条 */
-@property (nonatomic, assign) BOOL isHiddeProgressView;
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED
 
-/** 获取到网页标题的回调 */
-@property (nullable, nonatomic, copy) void (^webViewTitleChangeCallback) (NSString * _Nullable title);
-/** 网页加载进度的改变回调 */
-@property (nullable, nonatomic, copy) void (^webViewProgressChangeCallback) (CGFloat progress);
+@property (nonatomic, strong, readonly) IBOutlet ObjectType webView;
 
-- (void)setupURLForString:(NSString *)paramString;
+/** 加载的webView类型 */
+@property (nonatomic, assign, readonly) CGWebViewType webViewType;
 
+@property (nullable, nonatomic, weak) id<CGWebViewDelegate> delegate;
+
+//#pragma mark - 使用UIWebView类时的方法
+//
+//@property (nullable, nonatomic, weak) id<UIWebViewDelegate> proxyDelegateForUIWebView;
+
+//webKit是否可用
++ (BOOL)isWebKitAvailable;
+
+- (instancetype)initWithWebViewType:(CGWebViewType)webViewType;
+- (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType configuration:(nullable WKWebViewConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 @end
+
+
 NS_ASSUME_NONNULL_END
