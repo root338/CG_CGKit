@@ -443,6 +443,11 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:0];
 }
 
+- (NSLayoutConstraint *)cg_autoDimensionWidthEqualHeight
+{
+    return [self cg_autoDimensionScale:1.0];
+}
+
 - (NSLayoutConstraint *)cg_autoDimensionScale:(CGFloat)scale
 {
     return [self cg_attribute:NSLayoutAttributeWidth

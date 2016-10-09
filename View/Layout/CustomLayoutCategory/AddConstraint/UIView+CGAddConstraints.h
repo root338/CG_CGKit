@@ -193,6 +193,9 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置视图与指定视图大小的关系 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation;
 
+/** 设置视图宽 ： 高 = 1 : 1 */
+- (NSLayoutConstraint *)cg_autoDimensionWidthEqualHeight;
+
 /** 设置视图宽 : 高 的值 */
 - (NSLayoutConstraint *)cg_autoDimensionScale:(CGFloat)scale;
 @end

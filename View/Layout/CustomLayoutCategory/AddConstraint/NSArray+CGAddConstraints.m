@@ -407,7 +407,7 @@
             CGLayoutEdge edge1, edge2;
             id item1, item2;
             
-            item1   = self;
+            item1   = obj;
             item2   = self[idx + 1];
             if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
                 
