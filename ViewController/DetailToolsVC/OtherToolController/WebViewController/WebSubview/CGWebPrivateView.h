@@ -10,13 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGWebView, CGWebBottomView;
+@class CGWebView, CGWebViewToolBar;
 
 /** CGWebViewController 的 view */
 @interface CGWebPrivateView : CGBaseView
 
-@property (nonatomic, strong, readonly) CGWebView       * webView;
-@property (nonatomic, strong, readonly) CGWebBottomView * bottomView;
+@property (nonatomic, strong, readonly) CGWebView           * webView;
+@property (nonatomic, strong, readonly) CGWebViewToolBar    * webViewToolBar;
 
 /** 隐藏底部视图工具条 */
 @property (nonatomic, assign) BOOL isHiddenBottomView;
