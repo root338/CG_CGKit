@@ -19,6 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor forState:(UIControlState)state;
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image forState:(UIControlState)state;
+/** 设置不同状态下的标题, key:@(UIControlState) */
+- (void)cg_setupTitles:(nullable NSDictionary<NSNumber *, NSString *> *)titles;
+/** 设置不同状态下的标题颜色, key:@(UIControlState) */
+- (void)cg_setupTitleColors:(nullable NSDictionary<NSNumber *, UIColor *> *)titleColors;
+/** 设置不同状态下的图片, key:@(UIControlState) */
+- (void)cg_setupImages:(nullable NSDictionary<NSNumber *, UIImage *> *)images;
 
 /**
  *  设置按钮标题、标题颜色和标题字体

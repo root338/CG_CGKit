@@ -50,6 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable UIView *)searchInputTextControl;
 
+/** 搜索当前窗口内，下一个可输入视图 */
++ (nullable UIView *)searchNextWithCurrentInputView:(UIView *)currentInputView;
+/** 搜索当前窗口内，上一个可输入视图 */
++ (nullable UIView *)searchPreviousWithCurrentInputView:(UIView *)currentInputView;
+
 /**
  *  搜索指定类的视图
  *  @warning 当搜索的视图满足指定类视图后，将不继续搜索其子视图

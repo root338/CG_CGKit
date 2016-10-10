@@ -34,6 +34,27 @@
     [self setTitleColor:titleColor forState:state];
 }
 
+- (void)cg_setupTitles:(NSDictionary<NSNumber *,NSString *> *)titles
+{
+    [titles enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        [self setTitle:obj forState:key.integerValue];
+    }];
+}
+
+- (void)cg_setupTitleColors:(NSDictionary<NSNumber *,UIColor *> *)titleColors
+{
+    [titleColors enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, UIColor * _Nonnull obj, BOOL * _Nonnull stop) {
+        [self setTitleColor:obj forState:key.integerValue];
+    }];
+}
+
+- (void)cg_setupImages:(NSDictionary<NSNumber *,UIImage *> *)images
+{
+    [images enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, UIImage * _Nonnull obj, BOOL * _Nonnull stop) {
+        [self setImage:obj forState:key.integerValue];
+    }];
+}
+
 - (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor image:(UIImage *)image forState:(UIControlState)state
 {
     [self cg_setupWithTitle:title titleColor:titleColor forState:state];

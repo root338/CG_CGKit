@@ -80,6 +80,18 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
 
 @implementation UIView (CGSearchNextInputView)
 
++ (UIView *)searchNextWithCurrentInputView:(UIView *)currentInputView
+{
+    UIWindow *window    = [[UIApplication sharedApplication].delegate window];
+    return [window searchNextWithCurrentInputView:currentInputView];
+}
+
++ (UIView *)searchPreviousWithCurrentInputView:(UIView *)currentInputView
+{
+    UIWindow *window    = [[UIApplication sharedApplication].delegate window];
+    return [window searchPreviousWithCurrentInputView:currentInputView];
+}
+
 - (UIView *)searchNextWithCurrentInputView:(UIView *)currentInputView
 {
     return [self searchType:CGSearchInputViewTypeNext currentView:currentInputView];
