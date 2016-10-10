@@ -45,6 +45,29 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 - (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType;
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType configuration:(nullable WKWebViewConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+
+#pragma mark - 兼容API
+
+@property (nullable, nonatomic, readonly) UIScrollView *scrollView NS_AVAILABLE_IOS(5_0);
+
+- (void)loadRequest:(NSURLRequest *)request;
+- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
+- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
+
+@property (nonatomic, readonly) BOOL canGoBack;
+@property (nonatomic, readonly) BOOL canGoForward;
+@property (nonatomic, readonly, getter=isLoading) BOOL loading;
+
+- (void)reload;
+- (void)stopLoading;
+
+- (void)goBack;
+- (void)goForward;
+
+@property (nullable, nonatomic) NSString *title;
+
+#pragma mark - 兼容扩展API
+- (void)loadRequestWithURLString:(NSString *)urlString;
 @end
 
 

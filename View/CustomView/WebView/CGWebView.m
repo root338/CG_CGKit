@@ -14,6 +14,8 @@
 #import "CGUIWebViewDelegateManager.h"
 #import "CGWKWebViewDelegateManager.h"
 
+#import "UIWebView+CGValue.h"
+
 #import "CGPrintLogHeader.h"
 
 @import WebKit;
@@ -140,6 +142,98 @@
     }
 }
 
+#pragma mark - 兼容API方法
+- (void)loadRequest:(NSURLRequest *)request
+{
+    if ([self.webView respondsToSelector:@selector(loadRequest:)]) {
+        
+        if (self.webViewForUIWebView) {
+            [self.webViewForUIWebView loadRequest:request];
+        }else if (self.webViewForWKWebView) {
+            [self.webViewForWKWebView loadRequest:request];
+        }
+        
+    }else {
+        CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
+    }
+}
+
+- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
+{
+    if ([self.webView respondsToSelector:@selector(loadHTMLString:baseURL:)]) {
+        
+        if (self.webViewForUIWebView) {
+            [self.webViewForUIWebView loadHTMLString:string baseURL:baseURL];
+        }else if (self.webViewForWKWebView) {
+            [self.webViewForWKWebView loadHTMLString:string baseURL:baseURL];
+        }
+        
+    }else {
+        CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
+    }
+}
+
+- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL
+{
+    if ([self.webView respondsToSelector:@selector(loadData:MIMEType:textEncodingName:baseURL:)]) {
+        
+        if (self.webViewForUIWebView) {
+            [self.webViewForUIWebView loadData:data MIMEType:MIMEType textEncodingName:textEncodingName baseURL:baseURL];
+        }else if (self.webViewForWKWebView) {
+            [self.webViewForWKWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
+        }
+        
+    }else {
+        CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
+    }
+}
+
+- (void)reload
+{
+    if (self.webViewForUIWebView) {
+        [self.webViewForUIWebView reload];
+    }else if (self.webViewForWKWebView) {
+        [self.webViewForWKWebView reload];
+    }
+}
+
+- (void)stopLoading
+{
+    if (self.webViewForUIWebView) {
+        [self.webViewForUIWebView stopLoading];
+    }else if (self.webViewForWKWebView) {
+        [self.webViewForWKWebView stopLoading];
+    }
+}
+
+- (void)goBack
+{
+    if (self.webViewForUIWebView) {
+        [self.webViewForUIWebView goBack];
+    }else if (self.webViewForWKWebView) {
+        [self.webViewForWKWebView goBack];
+    }
+}
+
+- (void)goForward
+{
+    if (self.webViewForUIWebView) {
+        [self.webViewForUIWebView goForward];
+    }else if (self.webViewForWKWebView) {
+        [self.webViewForWKWebView goForward];
+    }
+}
+
+#pragma mark - 兼容扩展API
+- (void)loadRequestWithURLString:(NSString *)urlString
+{
+    NSURL *url  = [NSURL URLWithString:urlString];
+    if (url) {
+        NSURLRequest *request   = [NSURLRequest requestWithURL:url];
+        [self loadRequest:request];
+    }
+}
+
 #pragma mark - 设置属性
 - (void)setDelegate:(id<CGWebViewDelegate>)delegate
 {
@@ -179,6 +273,46 @@
         }
     }
     return nil;
+}
+
+- (UIScrollView *)scrollView
+{
+    if ([self.webView respondsToSelector:@selector(scrollView)]) {
+        return [self.webView scrollView];
+    }
+    return nil;
+}
+
+- (NSString *)title
+{
+    if ([self.webView respondsToSelector:@selector(title)]) {
+        return [self.webView title];
+    }
+    return nil;
+}
+
+- (BOOL)canGoBack
+{
+    if ([self.webView respondsToSelector:@selector(canGoBack)]) {
+        return [self.webView canGoBack];
+    }
+    return NO;
+}
+
+- (BOOL)canGoForward
+{
+    if ([self.webView respondsToSelector:@selector(canGoForward)]) {
+        return [self.webView canGoForward];
+    }
+    return NO;
+}
+
+- (BOOL)isLoading
+{
+    if ([self.webView respondsToSelector:@selector(isLoading)]) {
+        return [self.webView isLoading];
+    }
+    return YES;
 }
 
 @end

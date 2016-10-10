@@ -34,7 +34,7 @@
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(cg_webView:shouldStartLoadWithRequest:navigationType:)]) {
+    if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
         NSURLRequest *request   = navigationAction.targetFrame.request;
         UIWebViewNavigationType type;
         switch (navigationAction.navigationType) {
@@ -57,7 +57,7 @@
                 type    = UIWebViewNavigationTypeOther;
                 break;
         }
-        result  = [self.delegate cg_webView:self.targetObject shouldStartLoadWithRequest:request navigationType:type];
+        result  = [self.delegate webView:self.targetObject shouldStartLoadWithRequest:request navigationType:type];
     }
     
     WKNavigationActionPolicy policy;
@@ -66,27 +66,30 @@
     }else {
         policy  = WKNavigationActionPolicyCancel;
     }
-    decisionHandler(policy);
+    
+    if (decisionHandler) {
+        decisionHandler(policy);
+    }
 }
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
-    if ([self.delegate respondsToSelector:@selector(cg_webViewDidStartLoad:)]) {
-        [self.delegate cg_webViewDidStartLoad:self.targetObject];
+    if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+        [self.delegate webViewDidStartLoad:self.targetObject];
     }
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-    if ([self.delegate respondsToSelector:@selector(cg_webViewDidFinishLoad:)]) {
-        [self.delegate cg_webViewDidFinishLoad:self.targetObject];
+    if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+        [self.delegate webViewDidFinishLoad:self.targetObject];
     }
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    if ([self.delegate respondsToSelector:@selector(cg_webView:didFailLoadWithError:)]) {
-        [self.delegate cg_webView:self.targetObject didFailLoadWithError:error];
+    if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
+        [self.delegate webView:self.targetObject didFailLoadWithError:error];
     }
 }
 
@@ -125,14 +128,14 @@
 {
     if ([keyPath isEqualToString:[self webViewTitleKeyPath]]) {
         
-        if ([self.delegate respondsToSelector:@selector(cg_webView:webViewTitle:)]) {
-            [self.delegate cg_webView:self.targetObject webViewTitle:change[NSKeyValueChangeNewKey]];
+        if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
+            [self.delegate webView:self.targetObject webViewTitle:change[NSKeyValueChangeNewKey]];
         }
     }else if ([keyPath isEqualToString:[self webViewProgressKeyPath]]) {
         
         CGFloat progress    = [change[NSKeyValueChangeNewKey] floatValue];
-        if ([self.delegate respondsToSelector:@selector(cg_webView:updateProgress:)]) {
-            [self.delegate cg_webView:self.targetObject updateProgress:progress];
+        if ([self.delegate respondsToSelector:@selector(webView:updateProgress:)]) {
+            [self.delegate webView:self.targetObject updateProgress:progress];
         }
     }
 }
