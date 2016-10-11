@@ -8,7 +8,7 @@
 
 #import "CGWebPrivateView.h"
 #import "CGWebView.h"
-#import "CGWebBottomView.h"
+#import "CGWebViewToolBar.h"
 
 #import "UIView+CGAddConstraints.h"
 #import "NSArray+CGAddConstraints.h"
@@ -21,7 +21,7 @@
 }
 
 @property (nonatomic, strong, readwrite) CGWebView          * webView;
-@property (nonatomic, strong, readwrite) CGWebBottomView    * bottomView;
+@property (nonatomic, strong, readwrite) CGWebViewToolBar   * webViewToolBar;
 
 @end
 
@@ -32,22 +32,22 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _webView    = [[CGWebView alloc] init];
-        _bottomView = [[CGWebBottomView alloc] init];
+        _webView        = [[CGWebView alloc] init];
+        _webViewToolBar = [[CGWebViewToolBar alloc] init];
         
         [self addSubview:_webView];
-        [self addSubview:_bottomView];
+        [self addSubview:_webViewToolBar];
         
-        NSArray *subviews   = @[_webView, _bottomView];
+        NSArray *subviews   = @[_webView, _webViewToolBar];
         [subviews cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewLayoutExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
             BOOL isExculdingEdge    = NO;
-            if (view == _bottomView && exculdingEdge == CGLayoutEdgeBottom) {
+            if (view == _webViewToolBar && exculdingEdge == CGLayoutEdgeBottom) {
                 isExculdingEdge     = YES;
             }
             return isExculdingEdge;
         }];
         [UIView cg_autoSetPriority:980 forConstraints:^{
-            [_bottomView cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
+            [_webViewToolBar cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
         }];
     }
     return self;
@@ -55,29 +55,29 @@
 
 - (void)setBottomViewHidden:(BOOL)isHidden animated:(BOOL)animated
 {
-    if (self.bottomView.isHidden == isHidden) {
+    if (self.webViewToolBar.isHidden == isHidden) {
         return;
     }
     
     _isHiddenBottomView = isHidden;
     if (isHidden) {
-        _bottomViewTopConstraint    = [self.bottomView cg_autoInverseAttribute:CGLayoutEdgeTop toItem:self.bottomView.superview];
+        _bottomViewTopConstraint    = [self.webViewToolBar cg_autoInverseAttribute:CGLayoutEdgeTop toItem:self.webViewToolBar.superview];
     }else {
-        [self.bottomView.superview removeConstraint:_bottomViewTopConstraint];
+        [self.webViewToolBar.superview removeConstraint:_bottomViewTopConstraint];
     }
     
     [self setupUpdateConstraintsWithAnimated:animated completion:^(BOOL finished) {
-        self.bottomView.hidden  = isHidden;
+        self.webViewToolBar.hidden  = isHidden;
     }];
 }
 
 - (void)setBottomViewHeight:(CGFloat)bottomViewHeight animated:(BOOL)animated
 {
-    if (self.bottomView.height == bottomViewHeight) {
+    if (self.webViewToolBar.height == bottomViewHeight) {
         return;
     }
     
-    if (self.bottomView.isHidden) {
+    if (self.webViewToolBar.isHidden) {
         animated    = NO;
     }
     
@@ -85,7 +85,7 @@
     if (_bottomViewHeightConstraint) {
         _bottomViewHeightConstraint.constant    = bottomViewHeight;
     }else {
-        _bottomViewHeightConstraint = [self.bottomView cg_autoDimension:CGDimensionHeight fixedLength:bottomViewHeight];
+        _bottomViewHeightConstraint = [self.webViewToolBar cg_autoDimension:CGDimensionHeight fixedLength:bottomViewHeight];
     }
     
     [self setupUpdateConstraintsWithAnimated:animated completion:nil];

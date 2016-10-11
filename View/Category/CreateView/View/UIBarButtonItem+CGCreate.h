@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIBarButtonItem *)cg_createItemWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 
++ (UIBarButtonItem *)cg_createItemWithImage:(UIImage *)image target:(id)target action:(SEL)action;
+
 + (UIBarButtonItem *)cg_createItemWithImage:(UIImage *)image landscapeImage:(nullable UIImage *)landscapeImage target:(id)target action:(SEL)action;
 
 @end

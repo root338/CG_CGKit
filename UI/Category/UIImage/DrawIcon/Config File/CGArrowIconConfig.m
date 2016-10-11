@@ -27,6 +27,8 @@
         _arrowVertexOffset      = 0;
         _LeftVertex             = CGPointZero;
         _rightVertex            = CGPointZero;
+        
+        
     }
     return self;
 }

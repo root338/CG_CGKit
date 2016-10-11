@@ -11,11 +11,13 @@
 #import "CGAngleRadianHeader.h"
 
 #import "CGArrowIconConfig.h"
+#import "CGCloseIconConfig.h"
 
 /** 绘制的图标类型 */
 typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     CGImageICONDrawImageTypeArrow,
+    CGImageICONDrawImageTypeClose,
 };
 
 @implementation UIImage (CGDrawIcon)
@@ -27,22 +29,36 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     return image;
 }
 
++ (UIImage *)drawCloseWithConfig:(CGCloseIconConfig *)closeConfig
+{
+    UIImage *closeImage = [self drawType:CGImageICONDrawImageTypeArrow
+                                  config:closeConfig];
+    return closeImage;
+}
+
 + (UIImage *)drawType:(CGImageICONDrawImageType)type config:(__kindof CGIconConfig *)config
 {
     UIImage *image  = nil;
     
     __block CGSize canvasSize   = config.size;
+    CGPathRef path              = NULL;
     
-    CGPathRef path  = NULL;
+    void (^setupCanvasSizeBlock) (CGSize)   = ^(CGSize size) {
+        
+        canvasSize  = size;
+    };
+    
     switch (type) {
         case CGImageICONDrawImageTypeArrow:
         {
-            path    = [self createArrowPathWith:config completion:^(CGSize size) {
-                canvasSize  = size;
-            }];
+            path    = [self createArrowPathWith:config completion:setupCanvasSizeBlock];
         }
             break;
-            
+        case CGImageICONDrawImageTypeClose:
+        {
+            path    = [self createClosePathWith:config completion:setupCanvasSizeBlock];
+        }
+            break;
         default:
             break;
     }
@@ -94,7 +110,6 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         if (arrowVertexOffset < CGZeroFloatValue) {
             //自动计算箭头顶点的偏移量，防止箭头出现平面截断
             arrowVertexOffset   = config.lineWidth * cos(_CG_RadianForAngle(angle));
-            
         }
     }
     
@@ -156,6 +171,11 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     CGPathAddLineToPoint(path, NULL, rightVertex.x, rightVertex.y);
     
     return path;
+}
+
++ (CGPathRef)createClosePathWith:(CGCloseIconConfig *)config completion:(void (^) (CGSize size))completion
+{
+    return NULL;
 }
 
 @end
