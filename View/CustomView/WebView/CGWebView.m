@@ -138,7 +138,11 @@
 {
     if (self.currentWebViewType == CGWebViewTypeWKWebView) {
         //需要在释放前，手动释放CGWKWebViewDelegateManager类开启的KVO，否则会发生运行错误
-        _delegateManagerForWKWebView.webView = nil;
+        _delegateManagerForWKWebView                    = nil;
+        
+        //当使用WKWebView，并实现scrollView的UIScrollView协议时需要在WKWebView释放时将scrollView.delegate置为nil
+        //否则会发生运行错误:-[WKScrollViewDelegateForwarder release]: message sent to deallocated instance 0x170c3cc60
+        self.webViewForWKWebView.scrollView.delegate    = nil;
     }
 }
 
@@ -277,8 +281,10 @@
 
 - (UIScrollView *)scrollView
 {
-    if ([self.webView respondsToSelector:@selector(scrollView)]) {
-        return [self.webView scrollView];
+    if (self.webViewForUIWebView) {
+        return self.webViewForUIWebView.scrollView;
+    }else if (self.webViewForWKWebView) {
+        return self.webViewForWKWebView.scrollView;
     }
     return nil;
 }

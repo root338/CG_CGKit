@@ -35,7 +35,7 @@
 {
     BOOL result = YES;
     if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
-        NSURLRequest *request   = navigationAction.targetFrame.request;
+        NSURLRequest *request   = navigationAction.request;
         UIWebViewNavigationType type;
         switch (navigationAction.navigationType) {
             case WKNavigationTypeLinkActivated:
