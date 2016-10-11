@@ -11,10 +11,14 @@
 #import "UIBarButtonItem+CGCreate.h"
 #import "UIView+CGAddSubview.h"
 
+#import "CGWebViewToolBarItemManager.h"
+
 @interface CGWebViewToolBar ()
 {
     NSMutableArray<NSNumber *> *itemsKey;
     NSMutableDictionary<NSNumber *, UIBarButtonItem *> *_itemsDict;
+    
+    CGWebViewToolBarItemManager *itemImageManager;
 }
 
 @end
@@ -29,6 +33,11 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     return [super initWithCoder:aDecoder];
+}
+
+- (instancetype)initWithItemsType:(NSArray<NSNumber *> *)itemsType
+{
+    return [self initWithFrame:CGRectZero itemsType:itemsType];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame itemsType:(nullable NSArray<NSNumber *> *)itemsType
@@ -69,17 +78,47 @@
     
     [_itemsDict removeObjectsForKeys:[allItemsSet allObjects]];
     
+    NSMutableArray<UIBarButtonItem *> *items   = [NSMutableArray arrayWithCapacity:_itemsType.count];
     [itemsKey enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [self addItemWithType:obj.integerValue key:obj];
+        UIBarButtonItem *item   = [self addItemWithType:obj.integerValue key:obj];
+        item == nil ?: [items addObject:item];
     }];
+    
+    [self setItems:items animated:YES];
 }
 
-- (void)addItemWithType:(CGWebViewItemType)itemType key:(NSNumber *)key
+- (UIBarButtonItem *)addItemWithType:(CGWebViewItemType)itemType key:(NSNumber *)key
 {
-    if (![_itemsDict.allKeys containsObject:key]) {
-        
-//        UIBarButtonItem *item   = [UIBarButtonItem cg_createItemWithImage:<#(nonnull UIImage *)#> target:<#(nonnull id)#> action:<#(nonnull SEL)#>]
+    UIBarButtonItem *item   = [_itemsDict objectForKey:key];
+    if (item != nil) {
+        return item;
     }
+    
+    SEL action              = @selector(handleItemClickEvent:);
+
+    if (itemType == CGWebViewItemTypeReload) {
+        item    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:action];
+    }else {
+        
+        if (itemImageManager == nil) {
+            itemImageManager    = [CGWebViewToolBarItemManager new];
+        }
+        
+        UIImage *itemImage  = [itemImageManager getImageWithItemType:itemType];
+        if (itemImage) {
+            item    = [UIBarButtonItem cg_createItemWithImage:itemImage target:self action:action];
+        }
+    }
+    if (item) {
+        [_itemsDict setObject:item forKey:key];
+    }
+    
+    return item;
+}
+
+- (void)handleItemClickEvent:(UIBarButtonItem *)item
+{
+    
 }
 
 - (NSArray<NSNumber *> *)allKeys

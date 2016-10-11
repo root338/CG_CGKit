@@ -33,7 +33,11 @@
     if (self) {
         
         _webView        = [[CGWebView alloc] init];
-        _webViewToolBar = [[CGWebViewToolBar alloc] init];
+        _webViewToolBar = [[CGWebViewToolBar alloc] initWithItemsType:@[
+                                                                        @(CGWebViewItemTypeBack),
+                                                                        @(CGWebViewItemTypeForward),
+                                                                        @(CGWebViewItemTypeReload),
+                                                                        ]];
         
         [self addSubview:_webView];
         [self addSubview:_webViewToolBar];

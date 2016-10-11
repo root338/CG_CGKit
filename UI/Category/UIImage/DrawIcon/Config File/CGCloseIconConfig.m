@@ -10,4 +10,18 @@
 
 @implementation CGCloseIconConfig
 
++ (instancetype)defalutCloseConfig
+{
+    return [[self alloc] init];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _angle  = 0;
+    }
+    return self;
+}
+
 @end

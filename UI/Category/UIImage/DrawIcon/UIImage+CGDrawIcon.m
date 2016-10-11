@@ -9,6 +9,7 @@
 #import "UIImage+CGDrawIcon.h"
 #import "Value+Constant.h"
 #import "CGAngleRadianHeader.h"
+#import "UIView+CG_CGAreaCalculate.h"
 
 #import "CGArrowIconConfig.h"
 #import "CGCloseIconConfig.h"
@@ -63,6 +64,8 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
             break;
     }
     
+    CGContextRef context    = UIGraphicsGetCurrentContext();
+    
     UIGraphicsBeginImageContextWithOptions(canvasSize, config.opaque, config.scale);
     
     UIBezierPath *bezierPath    = [UIBezierPath bezierPathWithCGPath:path];
@@ -81,6 +84,10 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     [bezierPath stroke];
     
+    if (config.canvasRotateAngle > 0) {
+        CGContextRotateCTM(context, _CG_RadianForAngle(config.canvasRotateAngle));
+    }
+    
     image   = UIGraphicsGetImageFromCurrentImageContext();
     
     CGPathRelease(path);
@@ -91,25 +98,37 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
 
 + (CGPathRef)createArrowPathWith:(CGArrowIconConfig *)config completion:(void (^) (CGSize size))completion
 {
-    CGMutablePathRef path = CGPathCreateMutable();
-    
     CGPoint arrowVertex, leftVertex, rightVertex;
     CGPoint zeroPoint   = CGPointZero;
     CGFloat offset      = config.scale;
-    CGSize  size        = CGSizeMake(config.size.width, config.size.height);
-    CGFloat arrowVertexOffset   = config.arrowVertexOffset;
-    CGFloat length  = size.height / 2.0;
-    CGFloat angle   = 0;
-    CGFloat originX = 0;
-    BOOL disableAdjustToSize   = NO;
     
+    CGPoint startPoint  = CGPointMake(config.marginEdgeInset.left, config.marginEdgeInset.top);
+    CGSize  size        = CG_CGSizeWidthMaxSize(config.size, config.marginEdgeInset);
+    
+    CGFloat arrowVertexOffset   = 0;
+    CGFloat angle   = config.angle / 2.0;
+    
+    //计算箭头尾部坐标时，垂直，水平距离值
+    CGFloat horizontalValue = 0;
+    CGFloat verticalValue   = size.height / 2.0;
+    
+    CGFloat verticalOffset  = 0;
+    
+    BOOL disableAdjustToSize    = NO;
+    
+    CGFloat radianValue         = _CG_RadianForAngle(angle);
     if (config.angle > CGZeroFloatValue) {
-        angle   = config.angle / 2.0;
-        originX = length / tan(_CG_RadianForAngle(angle));
+        
+        horizontalValue = verticalValue / tan(radianValue);
+        if (horizontalValue > size.width) {
+            horizontalValue = size.width;
+            verticalValue   = horizontalValue * tan(radianValue);
+            verticalOffset  = (size.height - verticalValue * 2) / 2.0;
+        }
         
         if (arrowVertexOffset < CGZeroFloatValue) {
             //自动计算箭头顶点的偏移量，防止箭头出现平面截断
-            arrowVertexOffset   = config.lineWidth * cos(_CG_RadianForAngle(angle));
+            arrowVertexOffset   = config.lineWidth * cos(radianValue);
         }
     }
     
@@ -122,12 +141,12 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     if (CGPointEqualToPoint(zeroPoint, config.LeftVertex)) {
         
-        CGFloat originY = size.height;
+        CGFloat originY = verticalValue * 2 + verticalOffset;
         if (config.angle < CGZeroFloatValue) {
             leftVertex  = CGPointMake(size.width, originY);
         }else {
             
-            leftVertex  = CGPointMake(originX, originY);
+            leftVertex  = CGPointMake(horizontalValue, originY);
         }
         
     }else {
@@ -137,13 +156,13 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     if (CGPointEqualToPoint(zeroPoint, config.rightVertex)) {
         
-        CGFloat originY = 0;
+        CGFloat originY = verticalOffset;
         if (config.angle < CGZeroFloatValue) {
             
             rightVertex = CGPointMake(size.width, originY);
         }else {
             
-            rightVertex = CGPointMake(originX, originY);
+            rightVertex = CGPointMake(horizontalValue, originY);
         }
         
     }else {
@@ -155,17 +174,26 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         disableAdjustToSize = YES;
     }
     
+    CGFloat horizontalSpaceValue    = 0;
+    CGFloat verticalSpaceValue      = 0;
+    
     if (!disableAdjustToSize) {
-        CGFloat offsetX = arrowVertexOffset + offset;
-        leftVertex  = CGPointMake(leftVertex.x + offsetX, leftVertex.y + offset);
-        rightVertex = CGPointMake(rightVertex.x + offsetX, rightVertex.y + offset);
-        arrowVertex = CGPointMake(arrowVertex.x + offsetX, arrowVertex.y + offset);
-        
-        if (completion && !config.disableAdjustToSize) {
-            completion(CGSizeMake(config.size.width + offsetX + offset, config.size.height + offset * 2));
-        }
+        horizontalSpaceValue    = (arrowVertexOffset + offset);
+        verticalSpaceValue      = offset;
     }
     
+    CGFloat offsetX = startPoint.x + horizontalSpaceValue;
+    CGFloat offsetY = startPoint.y + verticalSpaceValue;
+    
+    leftVertex  = CGPointMake(leftVertex.x + offsetX, leftVertex.y + offsetY);
+    rightVertex = CGPointMake(rightVertex.x + offsetX, rightVertex.y + offsetY);
+    arrowVertex = CGPointMake(arrowVertex.x + offsetX, arrowVertex.y + offsetY);
+    
+    if (completion) {
+        completion(CGSizeMake(config.size.width + horizontalSpaceValue, config.size.height + verticalSpaceValue * 2));
+    }
+    
+    CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, leftVertex.x, leftVertex.y);
     CGPathAddLineToPoint(path, NULL, arrowVertex.x, arrowVertex.y);
     CGPathAddLineToPoint(path, NULL, rightVertex.x, rightVertex.y);
@@ -175,7 +203,58 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
 
 + (CGPathRef)createClosePathWith:(CGCloseIconConfig *)config completion:(void (^) (CGSize size))completion
 {
-    return NULL;
+    CGPoint startPoint  = CGPointMake(config.marginEdgeInset.left, config.marginEdgeInset.top);
+    CGSize drawSize     = CG_CGSizeWidthMaxSize(config.size, config.marginEdgeInset);
+    
+    CGPoint line1StartPoint = CGPointZero;
+    CGPoint line1EndPoint   = CGPointZero;
+    CGPoint line2StartPoint = CGPointZero;
+    CGPoint line2EndPoint   = CGPointZero;
+    
+    if (config.angle < CGZeroFloatValue) {
+        line1EndPoint   = CGPointMake(drawSize.width, drawSize.height);
+        line2StartPoint = CGPointMake(drawSize.width, 0);
+        line2EndPoint   = CGPointMake(0, drawSize.height);
+    }else {
+        
+        CGFloat angle   = _CG_RadianForAngle(config.angle / 2.0);
+        CGFloat horizontalValue = drawSize.width / 2.0;
+        CGFloat verticalValue   = 0;
+        
+        CGFloat horizontalOffset    = 0;
+        CGFloat verticalOffset      = 0;
+        
+        verticalValue   = horizontalValue / tan(angle);
+        if (verticalValue > drawSize.height / 2.0) {
+            verticalValue   = drawSize.height / 2.0;
+            horizontalValue = verticalValue * tan(angle);
+            horizontalOffset    = drawSize.width / 2.0 - horizontalValue;
+        }else {
+            verticalOffset  = drawSize.height / 2.0 - verticalValue;
+        }
+        
+        line1StartPoint = CGPointMake(horizontalOffset, verticalOffset);
+        line1EndPoint   = CGPointMake(horizontalOffset + horizontalValue * 2, verticalOffset + verticalValue * 2);
+        line2StartPoint = CGPointMake(horizontalOffset + horizontalValue * 2, verticalOffset);
+        line2EndPoint   = CGPointMake(horizontalOffset, verticalOffset + verticalValue * 2);
+    }
+    
+    line1StartPoint = CG_CGPointWithOffsetPoint(line1StartPoint, startPoint);
+    line1EndPoint   = CG_CGPointWithOffsetPoint(line1EndPoint, startPoint);
+    line2StartPoint = CG_CGPointWithOffsetPoint(line2StartPoint, startPoint);
+    line2EndPoint   = CG_CGPointWithOffsetPoint(line2EndPoint, startPoint);
+    
+    if (completion) {
+        completion(CGSizeMake(config.size.width, config.size.height));
+    }
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, line1StartPoint.x, line1StartPoint.y);
+    CGPathAddLineToPoint(path, NULL, line1EndPoint.x, line1EndPoint.y);
+    CGPathMoveToPoint(path, NULL, line2StartPoint.x, line2StartPoint.y);
+    CGPathAddLineToPoint(path, NULL, line2EndPoint.x, line2EndPoint.y);
+    
+    return path;
 }
 
 @end

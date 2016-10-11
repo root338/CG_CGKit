@@ -70,6 +70,24 @@ UIKIT_STATIC_INLINE CGSize CG_CGMaxSize(CGSize s1, CGSize s2)
 
 #pragma mark - CGPoint
 
+/** 计算 { p1.x + x, p1.y + y } */
+UIKIT_STATIC_INLINE CGPoint CG_CGPointWithOffset(CGPoint p1, CGFloat x, CGFloat y)
+{
+    return CGPointMake(p1.x + x, p1.y + y);
+}
+
+/** 计算 { p1.x + p2.x, p1.y + p2.y } */
+UIKIT_STATIC_INLINE CGPoint CG_CGPointWithOffsetPoint(CGPoint p1, CGPoint p2)
+{
+    return  CG_CGPointWithOffset(p1, p2.x, p2.y);
+}
+
+/** 获取 s1 的中心点 */
+UIKIT_STATIC_INLINE CGPoint CG_CGCenterWithSize(CGSize s1)
+{
+    return CGPointMake(s1.width / 2.0, s1.height / 2.0);
+}
+
 /** 获取 s2 在 s1 居中时的起始坐标 */
 UIKIT_STATIC_INLINE CGPoint CG_CGCenterOriginWith(CGSize s1, CGSize s2)
 {

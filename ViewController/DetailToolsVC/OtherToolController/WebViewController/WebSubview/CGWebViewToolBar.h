@@ -15,8 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, copy) void (^actionCallback) (CGWebViewItemType actionType);
 
+/** 里面对象应为(CGWebViewItemType 类型的数字对象) */
 @property (nonatomic, readonly) NSArray<NSNumber *> *itemsType;
 
+- (instancetype)initWithItemsType:(nullable NSArray<NSNumber *> *)itemsType;
 - (instancetype)initWithFrame:(CGRect)frame itemsType:(nullable NSArray<NSNumber *> *)itemsType NS_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 @end

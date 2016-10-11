@@ -13,7 +13,7 @@
 
 + (instancetype)defaultArrowConfig
 {
-    return [[CGArrowIconConfig alloc] init];
+    return [[self alloc] init];
 }
 
 - (instancetype)init
@@ -23,8 +23,8 @@
         
 //        _arrowVertexOrientation = CGOrientationTypeLeft;
         _arrowVertex            = CGPointZero;
-        _angle                  = 0;
-        _arrowVertexOffset      = 0;
+        _angle                  = 90;
+//        _arrowVertexOffset      = 0;
         _LeftVertex             = CGPointZero;
         _rightVertex            = CGPointZero;
         

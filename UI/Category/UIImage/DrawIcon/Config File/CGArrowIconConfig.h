@@ -9,6 +9,7 @@
 #import "CGIconConfig.h"
 #import "CGOrientationTypeHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
 //箭头配置
 @interface CGArrowIconConfig : CGIconConfig
 
@@ -21,14 +22,15 @@
  */
 @property (nonatomic, assign) CGPoint arrowVertex;
 
-/** 箭头角度(1, 180)，默认为0，表示三点都在边的中点上 */
+/** 箭头角度(1, 180)，默认为90，表示三点都在边的中点上 */
 @property (nonatomic, assign) CGFloat angle;
 
-/** 
- *  箭头偏移的的值，默认为0
- *  @warning    为了防止箭头的箭头没有全部绘制，而出现平箭头现象
- */
-@property (nonatomic, assign) CGFloat arrowVertexOffset;
+///** 
+// *  箭头偏移的的值，默认为0
+// *  @warning    为了防止箭头的箭头没有全部绘制，而出现平箭头现象
+// *  @param      使用父类marginEdgeInset属性替换
+// */
+//@property (nonatomic, assign) CGFloat arrowVertexOffset;
 
 //-----自定义设置相对于箭头的左右坐标
 @property (nonatomic, assign) CGPoint LeftVertex;
@@ -36,3 +38,5 @@
 
 + (instancetype)defaultArrowConfig;
 @end
+
+NS_ASSUME_NONNULL_END

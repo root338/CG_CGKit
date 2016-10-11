@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 禁止自动调节size大小，默认为NO @warning 为了防止顶点无法绘制尖角和预留一定像素防止锯齿需要额外的画布空间 */
 @property (nonatomic, assign) BOOL disableAdjustToSize;
 
+/** 绘制视图与设置大小的边界距离，默认为UIEdgeInsetsZero */
+@property (nonatomic, assign) UIEdgeInsets marginEdgeInset;
+
 #pragma mark - 图标设置
 /** 图标颜色，默认黑色 */
 @property (nullable, nonatomic, strong) UIColor *tintColor;
@@ -37,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) CGLineJoin lineJoinStyle;
 
 @property(nonatomic, assign) CGFloat miterLimit; // Used when lineJoinStyle is kCGLineJoinMiter
+
+/** 旋转画布，默认0 */
+@property (nonatomic, assign) CGFloat canvasRotateAngle;
 
 @end
 

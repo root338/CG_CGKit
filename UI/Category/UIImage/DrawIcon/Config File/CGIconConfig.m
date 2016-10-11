@@ -22,7 +22,10 @@
         _lineWidth          = 2.0;
         _lineJoinStyle      = kCGLineJoinMiter;
         _miterLimit         = 0;
+        _canvasRotateAngle  = 0;
         _disableAdjustToSize    = NO;
+        
+        _marginEdgeInset        = UIEdgeInsetsZero;
     }
     return self;
 }
