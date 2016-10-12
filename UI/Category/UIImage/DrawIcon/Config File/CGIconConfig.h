@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 画布设置
 /** 背景色，默认nil */
 //@property (nullable, nonatomic, strong) UIColor *backgroundColor;
-/** 大小，默认32 x 32 */
+/** 大小，默认20 x 20 */
 @property (nonatomic, assign) CGSize size;
 /** 是否不透明，默认NO */
 @property (nonatomic, assign) BOOL opaque;
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) CGFloat miterLimit; // Used when lineJoinStyle is kCGLineJoinMiter
 
 /** 旋转画布，默认0 */
-@property (nonatomic, assign) CGFloat canvasRotateAngle;
+//@property (nonatomic, assign) CGFloat canvasRotateAngle;
 
 @end
 

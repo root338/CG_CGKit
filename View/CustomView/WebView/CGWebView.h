@@ -12,6 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class WKWebViewConfiguration, WKWebView;
+@protocol WKNavigationDelegate;
 
 /** webView加载的类型 */
 typedef NS_ENUM(NSInteger, CGWebViewType) {
@@ -34,6 +35,11 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 @property (nullable, nonatomic, weak) id<CGWebViewDelegate> delegate;
 
+/** 当加载UIWebView时，自定义实现代理类时设置 */
+@property (nullable, nonatomic, weak) id<UIWebViewDelegate> delegateForUIWebView;
+/** 当加载WKWebView时，自定义实现代理类时设置 */
+@property (nullable, nonatomic, weak) id<WKNavigationDelegate> delegateForWKWebView;
+
 //#pragma mark - 使用UIWebView类时的方法
 //
 //@property (nullable, nonatomic, weak) id<UIWebViewDelegate> proxyDelegateForUIWebView;
@@ -43,8 +49,9 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 - (instancetype)initWithWebViewType:(CGWebViewType)webViewType;
 - (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType;
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
 - (instancetype)initWithFrame:(CGRect)frame webViewType:(CGWebViewType)webViewType configuration:(nullable WKWebViewConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 #pragma mark - 兼容API
 
@@ -68,6 +75,7 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 #pragma mark - 兼容扩展API
 - (void)loadRequestWithURLString:(NSString *)urlString;
+
 @end
 
 

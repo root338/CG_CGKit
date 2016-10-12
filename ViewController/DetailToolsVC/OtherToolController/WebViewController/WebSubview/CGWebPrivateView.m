@@ -29,18 +29,34 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
+    
+    CGWebView *webView  = [[CGWebView alloc] init];
+    
+    NSArray<NSNumber *> *itemsType  = @[
+                                        @(CGWebViewItemTypeBack),
+                                        @(CGWebViewItemTypeForward),
+                                        @(CGWebViewItemTypeFlexibleSpace),
+                                        @(CGWebViewItemTypeReload),
+                                        ];
+    CGWebViewToolBar *toolBar   = [[CGWebViewToolBar alloc] initWithItemsType:itemsType];
+    
+    return [self initWithFrame:frame webView:webView toolBar:toolBar];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame webView:(CGWebView *)webView toolBar:(CGWebViewToolBar *)toolBar
+{
     self = [super initWithFrame:frame];
     if (self) {
+        _webView        = webView;
+        _webViewToolBar = toolBar;
         
-        _webView        = [[CGWebView alloc] init];
-        _webViewToolBar = [[CGWebViewToolBar alloc] initWithItemsType:@[
-                                                                        @(CGWebViewItemTypeBack),
-                                                                        @(CGWebViewItemTypeForward),
-                                                                        @(CGWebViewItemTypeReload),
-                                                                        ]];
-        
-        [self addSubview:_webView];
-        [self addSubview:_webViewToolBar];
+        [self addSubview:webView];
+        [self addSubview:toolBar];
         
         NSArray *subviews   = @[_webView, _webViewToolBar];
         [subviews cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewLayoutExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
@@ -57,13 +73,13 @@
     return self;
 }
 
-- (void)setBottomViewHidden:(BOOL)isHidden animated:(BOOL)animated
+- (void)setWebViewToolBarHidden:(BOOL)isHidden animated:(BOOL)animated
 {
     if (self.webViewToolBar.isHidden == isHidden) {
         return;
     }
     
-    _isHiddenBottomView = isHidden;
+    _isHiddenWebViewToolBar = isHidden;
     if (isHidden) {
         _bottomViewTopConstraint    = [self.webViewToolBar cg_autoInverseAttribute:CGLayoutEdgeTop toItem:self.webViewToolBar.superview];
     }else {
@@ -75,9 +91,9 @@
     }];
 }
 
-- (void)setBottomViewHeight:(CGFloat)bottomViewHeight animated:(BOOL)animated
+- (void)setWebViewToolBarHeight:(CGFloat)webViewToolBarHeight animated:(BOOL)animated
 {
-    if (self.webViewToolBar.height == bottomViewHeight) {
+    if (self.webViewToolBar.height == webViewToolBarHeight) {
         return;
     }
     
@@ -85,11 +101,11 @@
         animated    = NO;
     }
     
-    _bottomViewHeight   = bottomViewHeight;
+    _webViewToolBarHeight   = webViewToolBarHeight;
     if (_bottomViewHeightConstraint) {
-        _bottomViewHeightConstraint.constant    = bottomViewHeight;
+        _bottomViewHeightConstraint.constant    = webViewToolBarHeight;
     }else {
-        _bottomViewHeightConstraint = [self.webViewToolBar cg_autoDimension:CGDimensionHeight fixedLength:bottomViewHeight];
+        _bottomViewHeightConstraint = [self.webViewToolBar cg_autoDimension:CGDimensionHeight fixedLength:webViewToolBarHeight];
     }
     
     [self setupUpdateConstraintsWithAnimated:animated completion:nil];
@@ -108,14 +124,14 @@
 }
 
 #pragma mark - 设置属性
-- (void)setBottomViewHeight:(CGFloat)bottomViewHeight
+- (void)setWebViewToolBarHeight:(CGFloat)webViewToolBarHeight
 {
-    [self setBottomViewHeight:bottomViewHeight animated:!self.disableAnimatedChangeViewStatus];
+    [self setWebViewToolBarHeight:webViewToolBarHeight animated:!self.disableAnimatedChangeViewStatus];
 }
 
-- (void)setIsHiddenBottomView:(BOOL)isHiddenBottomView
+- (void)setIsHiddenWebViewToolBar:(BOOL)isHiddenWebViewToolBar
 {
-    [self setBottomViewHidden:isHiddenBottomView animated:!self.disableAnimatedChangeViewStatus];
+    [self setWebViewToolBarHidden:isHiddenWebViewToolBar animated:!self.disableAnimatedChangeViewStatus];
 }
 
 @end

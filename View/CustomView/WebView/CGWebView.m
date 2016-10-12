@@ -279,12 +279,23 @@
     return nil;
 }
 
+- (void)setDelegateForUIWebView:(id<UIWebViewDelegate>)delegateForUIWebView
+{
+    _delegateForUIWebView               = delegateForUIWebView;
+    self.webViewForUIWebView.delegate   = delegateForUIWebView;
+}
+
+- (void)setDelegateForWKWebView:(id<WKNavigationDelegate>)delegateForWKWebView
+{
+    _delegateForWKWebView       = delegateForWKWebView;
+    self.webViewForWKWebView.navigationDelegate = delegateForWKWebView;
+}
+
+#pragma mark - 兼容实例属性
 - (UIScrollView *)scrollView
 {
-    if (self.webViewForUIWebView) {
-        return self.webViewForUIWebView.scrollView;
-    }else if (self.webViewForWKWebView) {
-        return self.webViewForWKWebView.scrollView;
+    if ([self.webView respondsToSelector:@selector(scrollView)]) {
+        return [self.webView scrollView];
     }
     return nil;
 }

@@ -165,6 +165,9 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
  */
 @property (nonatomic, assign) BOOL disableAutoSearchScrollView;
 
+/** 当第一响应者为UITextView时是否自动滑动，默认 NO */
+@property (nonatomic, assign) BOOL enableFirstResponderIsUITextViewAutoScrolling;
+
 /** 键盘显示区域发生改变时需要改变的view  @warning 改变该视图的显示区域 */
 @property (nullable, nonatomic, weak) UIView *keyboardFrameDidChangeTheNeedToChangeFrameTheView;
 /** 键盘显示区域发生改变时需要改变的view的底部约束  @warning 改变该视图的显示区域 */
@@ -193,7 +196,6 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 @property (nonatomic, assign) NSTimeInterval duration;
 /** 执行动画UIViewAnimationCurve值，默认是0，即使用键盘的速率值 */
 //@property (nonatomic, assign) NSUInteger curve;
-
 
 /** 键盘在指定view的显示区域 */
 //- (CGRect)keyboardRectToView:(UIView *)paramView;

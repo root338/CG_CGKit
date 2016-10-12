@@ -28,7 +28,7 @@
         _LeftVertex             = CGPointZero;
         _rightVertex            = CGPointZero;
         
-        
+        _orientationType        = CGOrientationTypeLeft;
     }
     return self;
 }

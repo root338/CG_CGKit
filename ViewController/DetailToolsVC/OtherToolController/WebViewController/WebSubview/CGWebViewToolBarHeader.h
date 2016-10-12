@@ -15,13 +15,15 @@ typedef NS_ENUM(NSInteger, CGWebViewItemType) {
     /** 未知 */
     CGWebViewItemTypeUnknown        = 0,
     /** 回退 */
-    CGWebViewItemTypeBack           = 1 << 0,
+    CGWebViewItemTypeBack,
     /** 前进 */
-    CGWebViewItemTypeForward        = 1 << 1,
+    CGWebViewItemTypeForward,
     /** 重新加载 */
-    CGWebViewItemTypeReload         = 1 << 2,
+    CGWebViewItemTypeReload,
     /** 停止加载 */
-    CGWebViewItemTypeStopLoading    = 1 << 3,
+    CGWebViewItemTypeStopLoading,
+    /** 使用UIBarButtonSystemItemFlexibleSpace */
+    CGWebViewItemTypeFlexibleSpace,
 };
 
 #endif /* CGWebViewToolBarHeader_h */

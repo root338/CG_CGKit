@@ -448,6 +448,11 @@
 
 - (void)scrollingWithFirstResponderView:(UIView *)firstResponderView note:(NSNotification *)note
 {
+    if ([firstResponderView isKindOfClass:[UITextView class]]) {
+        if (!self.enableFirstResponderIsUITextViewAutoScrolling) {
+            return;
+        }
+    }
     UIScrollView *scrollView    = nil;
     
     if ([self.delegate respondsToSelector:@selector(scrollViewWithKeyboardManager:notification:)]) {

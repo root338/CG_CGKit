@@ -15,14 +15,14 @@
     self    = [super init];
     if (self) {
 //        _backgroundColor    = nil;
-        _size               = CGSizeMake(32.0, 32.0);
+        _size               = CGSizeMake(20.0, 20.0);
         _opaque             = NO;
         _scale              = [UIScreen mainScreen].scale;
         _tintColor          = [UIColor blackColor];
         _lineWidth          = 2.0;
         _lineJoinStyle      = kCGLineJoinMiter;
         _miterLimit         = 0;
-        _canvasRotateAngle  = 0;
+//        _canvasRotateAngle  = 0;
         _disableAdjustToSize    = NO;
         
         _marginEdgeInset        = UIEdgeInsetsZero;

@@ -22,8 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) CGPoint arrowVertex;
 
-/** 箭头角度(1, 180)，默认为90，表示三点都在边的中点上 */
+/** 箭头角度(1, 180)，默认为90 */
 @property (nonatomic, assign) CGFloat angle;
+
+/** 箭头的方向，默认CGOrientationTypeLeft */
+@property (nonatomic, assign) CGOrientationType orientationType;
 
 ///** 
 // *  箭头偏移的的值，默认为0
@@ -32,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 // */
 //@property (nonatomic, assign) CGFloat arrowVertexOffset;
 
-//-----自定义设置相对于箭头的左右坐标
+//-----自定义设置相对于箭头的左右坐标，自定义时其他属性将被忽略
 @property (nonatomic, assign) CGPoint LeftVertex;
 @property (nonatomic, assign) CGPoint rightVertex;
 

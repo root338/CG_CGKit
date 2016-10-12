@@ -15,11 +15,14 @@
 
 @interface CGWebViewToolBar ()
 {
-    NSMutableArray<NSNumber *> *itemsKey;
-    NSMutableDictionary<NSNumber *, UIBarButtonItem *> *_itemsDict;
-    
+    __weak UIBarButtonItem *backItem;
+    __weak UIBarButtonItem *forwardItem;
+    __weak UIBarButtonItem *reloadItem;
+    __weak UIBarButtonItem *stopLoadingItem;
     CGWebViewToolBarItemManager *itemImageManager;
 }
+
+@property (nullable, nonatomic, strong, readwrite) NSArray<NSNumber *> *itemsType;
 
 @end
 
@@ -44,12 +47,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        if (itemsType) {
-            itemsKey    = [NSMutableArray arrayWithArray:itemsType];
-        }else {
-            itemsKey    = [NSMutableArray array];
-        }
         
+        _itemsType      = itemsType;
         [self setupContentView];
     }
     return self;
@@ -63,41 +62,26 @@
 
 - (void)setupContentView
 {
-    NSArray<NSNumber *> *allKeys    = [self allKeys];
-    NSMutableSet<NSNumber *> *allItemsSet  = [NSMutableSet setWithArray:allKeys];
-    NSSet<NSNumber *> *itemsSet     = [NSSet setWithArray:itemsKey];
-    
-    [allItemsSet minusSet:itemsSet];
-    
-//    [allItemsSet enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
-//        [self removeItemWithType:obj.integerValue key:obj];
-//    }];
-//    [itemsSet enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
-//        [self addItemWithType:obj.integerValue key:obj];
-//    }];
-    
-    [_itemsDict removeObjectsForKeys:[allItemsSet allObjects]];
     
     NSMutableArray<UIBarButtonItem *> *items   = [NSMutableArray arrayWithCapacity:_itemsType.count];
-    [itemsKey enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        UIBarButtonItem *item   = [self addItemWithType:obj.integerValue key:obj];
+    [_itemsType enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        UIBarButtonItem *item   = [self addItemWithType:obj.integerValue];
         item == nil ?: [items addObject:item];
     }];
     
     [self setItems:items animated:YES];
 }
 
-- (UIBarButtonItem *)addItemWithType:(CGWebViewItemType)itemType key:(NSNumber *)key
+- (UIBarButtonItem *)addItemWithType:(CGWebViewItemType)itemType
 {
-    UIBarButtonItem *item   = [_itemsDict objectForKey:key];
-    if (item != nil) {
-        return item;
-    }
-    
+    UIBarButtonItem *item   = nil;
     SEL action              = @selector(handleItemClickEvent:);
 
+    if (itemType == CGWebViewItemTypeFlexibleSpace) {
+        item    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:action];
+    }
     if (itemType == CGWebViewItemTypeReload) {
-        item    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:action];
+        item    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:action];
     }else {
         
         if (itemImageManager == nil) {
@@ -109,8 +93,22 @@
             item    = [UIBarButtonItem cg_createItemWithImage:itemImage target:self action:action];
         }
     }
-    if (item) {
-        [_itemsDict setObject:item forKey:key];
+    
+    switch (itemType) {
+        case CGWebViewItemTypeStopLoading:
+            stopLoadingItem = item;
+            break;
+        case CGWebViewItemTypeBack:
+            backItem    = item;
+            break;
+        case CGWebViewItemTypeReload:
+            reloadItem  = item;
+            break;
+        case CGWebViewItemTypeForward:
+            forwardItem = item;
+            break;
+        default:
+            break;
     }
     
     return item;
@@ -119,16 +117,34 @@
 - (void)handleItemClickEvent:(UIBarButtonItem *)item
 {
     
+    if ([self.toolBarProxyDelegate respondsToSelector:@selector(webViewToolBar:itemType:)]) {
+        
+        CGWebViewItemType itemType = 0;
+        if (item == stopLoadingItem) {
+            
+            itemType    = CGWebViewItemTypeStopLoading;
+        }else if (item == backItem) {
+            
+            itemType    = CGWebViewItemTypeBack;
+        }else if (item == reloadItem) {
+            
+            itemType    = CGWebViewItemTypeReload;
+        }else if (item == forwardItem) {
+            
+            itemType    = CGWebViewItemTypeForward;
+        }
+        [self.toolBarProxyDelegate webViewToolBar:self itemType:itemType];
+    }
 }
 
-- (NSArray<NSNumber *> *)allKeys
+- (void)setupStopLoadingToTargetTypeWithType:(CGWebViewItemType)type
 {
-    return @[
-             @(CGWebViewItemTypeBack),
-             @(CGWebViewItemTypeForward),
-             @(CGWebViewItemTypeReload),
-             @(CGWebViewItemTypeStopLoading),
-             ];
+    
+}
+
+- (void)setupTargetTypeToStopLoadingWithType:(CGWebViewItemType)type
+{
+    
 }
 
 @end

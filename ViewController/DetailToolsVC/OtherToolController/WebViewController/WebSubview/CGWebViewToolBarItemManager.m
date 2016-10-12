@@ -40,15 +40,21 @@
             case CGWebViewItemTypeForward:
             {
                 CGArrowIconConfig *config   = [CGArrowIconConfig new];
+                config.size                 = CGSizeMake(20, 20);
+                
                 if (itemType == CGWebViewItemTypeForward) {
-                    config.canvasRotateAngle    = 90;
+                    config.orientationType  = CGOrientationTypeRight;
+                }else {
+                    config.orientationType  = CGOrientationTypeLeft;
                 }
                 image   = [UIImage drawArrowWithConfig:config];
             }
                 break;
             case CGWebViewItemTypeStopLoading:
             {
-                image   = [UIImage drawCloseWithConfig:[CGCloseIconConfig new]];
+                CGCloseIconConfig *config   = [CGCloseIconConfig new];
+                config.size                 = CGSizeMake(20, 20);
+                image   = [UIImage drawCloseWithConfig:config];
             }
                 break;
             default:

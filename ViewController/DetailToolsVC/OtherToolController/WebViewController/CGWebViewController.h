@@ -11,17 +11,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGWebView;
-NS_CLASS_AVAILABLE(10_10, 8_0) @interface CGWebViewController : CGBaseViewController
+@interface CGWebViewController : CGBaseViewController
 
 @property (nonatomic, strong, readonly) CGWebView   *webView;
 
 /** 禁止自动设置标题 */
 @property (nonatomic, assign) BOOL disableAutoSetupTitle;
 /** 隐藏webView加载时的进度条 */
-@property (nonatomic, assign) BOOL isHiddenWebViewLoadingProgress;
+@property (nonatomic, assign) BOOL isHiddenProgressView;
 /** 隐藏底部视图工具条 */
-@property (nonatomic, assign) BOOL isHiddenWebBottomView;
-/** 设置底部视图的高度 */
-@property (nonatomic, assign) CGFloat bottomViewHeight;
+@property (nonatomic, assign) BOOL isHiddenWebViewToolBar;
 @end
+
 NS_ASSUME_NONNULL_END

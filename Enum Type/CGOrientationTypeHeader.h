@@ -14,9 +14,9 @@ typedef NS_ENUM(NSInteger, CGOrientationType) {
     
     
     CGOrientationTypeUnkown = -1,
-    CGOrientationTypeTop    = 1,
+    CGOrientationTypeUp    = 1,
     CGOrientationTypeLeft   = 2,
-    CGOrientationTypeBottom = 3,
+    CGOrientationTypeDown = 3,
     CGOrientationTypeRight  = 4,
 };
 
