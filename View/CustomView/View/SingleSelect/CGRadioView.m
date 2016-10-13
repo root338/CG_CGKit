@@ -83,16 +83,14 @@
         [cell setSelected:isSelected];
     }
     
-    if (_CG_IOS_8_0_BEFORE) {
-        //iOS 8 以前手动调用
-        [self collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    if (cell.selected) {
+        [self setupSelectedWithCollectionView:collectionView willSelectedCell:cell forItemAtIndexPath:indexPath];
     }
     
     return cell;
 }
 
-//iOS 8 以上
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath
+- (void)setupSelectedWithCollectionView:(UICollectionView *)collectionView willSelectedCell:(nonnull UICollectionViewCell *)cell forItemAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     if (cell.selected && indexPath != _currentSelectedIndexPath) {
         
@@ -229,6 +227,10 @@
     }
     if (beforeSelectedCell.isSelected) {
         [beforeSelectedCell setSelected:NO];
+    }
+    
+    if (!self.disableCurrentSelectedIndexToCenterHorizontalPosition) {
+        [_collectionView scrollToItemAtIndexPath:currentSelectedIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     }
     
     return YES;

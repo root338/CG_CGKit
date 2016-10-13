@@ -17,12 +17,6 @@
     BOOL isResult   = [self cg_verifyWithItem:view1 attribute:att1 relatedBy:relation toItem:item2 attribute:att2];
     if (!isResult) {
         
-        if (relation == NSLayoutRelationGreaterThanOrEqual) {
-            relation    = NSLayoutRelationLessThanOrEqual;
-        }else if (relation == NSLayoutRelationLessThanOrEqual) {
-            relation    = NSLayoutRelationGreaterThanOrEqual;
-        }
-        
         isResult    = [self cg_verifyWithItem:item2 attribute:att2 relatedBy:relation toItem:view1 attribute:att1];
         if (isResult) {
             type    = CGSearchConstraintTypeReverse;

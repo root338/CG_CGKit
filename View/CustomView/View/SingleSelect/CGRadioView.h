@@ -75,6 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 默认的滑块视图 */
 @property (nullable, nonatomic, strong) CGRadioSliderView *sliderView;
 
+/** 是否关闭将选中的索引滑动到中间 */
+@property (nonatomic, assign) BOOL disableCurrentSelectedIndexToCenterHorizontalPosition;
+
 - (instancetype)initWithFrame:(CGRect)frame appearance:(CGRadioViewAppearance *)appearance;
 
 - (void)registerClassForCellWithReuseIdentifierClass:(Class)cellClass;

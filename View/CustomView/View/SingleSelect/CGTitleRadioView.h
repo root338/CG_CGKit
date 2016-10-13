@@ -30,6 +30,9 @@ typedef void (^CGTitleRadioSelectedBlock) (NSInteger index, id obj);
  */
 @property (nonatomic, assign) BOOL isCacheCellsSize;
 
+/** 是否关闭将选中的索引滑动到中间 */
+@property (nonatomic, assign) BOOL disableCurrentSelectedIndexToCenterHorizontalPosition;
+
 @property (nullable, nonatomic, strong, readonly) CGRadioViewAppearance *appearance;
 
 /** 已选择block */

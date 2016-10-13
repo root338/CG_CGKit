@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSLayoutConstraint *)cg_searchAttribute:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)view2 attribute:(NSLayoutAttribute)attr2;
 
 /** 搜索已设置的约束(约束添加的视图) */
-- (nullable NSLayoutConstraint *)cg_searchAttribute:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)view2 attribute:(NSLayoutAttribute)attr2 commonSuperview:(UIView *)commonSuperview;
+- (nullable NSLayoutConstraint *)cg_searchAttribute:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)item2 attribute:(NSLayoutAttribute)attr2 commonSuperview:(UIView *)commonSuperview;
 
 @end
 
