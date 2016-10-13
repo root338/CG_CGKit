@@ -44,6 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** 旋转画布，默认0 */
 //@property (nonatomic, assign) CGFloat canvasRotateAngle;
 
+//可用的绘制区域
+@property (nonatomic, assign, readonly) CGSize canvasAvailableSize;
+//绘制的开始坐标
+@property (nonatomic, assign, readonly) CGPoint drawStartPoint;
+
 @end
 
 NS_ASSUME_NONNULL_END

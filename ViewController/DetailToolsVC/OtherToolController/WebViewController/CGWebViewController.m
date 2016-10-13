@@ -57,13 +57,6 @@
 }
 
 #pragma mark - CGWebViewToolBarDelegate
-- (BOOL)webView:(CGWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    if (_currentToolBarItemType == 0) {
-        self.currentToolBarItemType = CGWebViewItemTypeForward;
-    }
-    return YES;
-}
 
 - (void)webViewToolBar:(CGWebViewToolBar *)webViewToolBar itemType:(CGWebViewItemType)itemType
 {
@@ -71,6 +64,11 @@
 }
 
 #pragma mark - CGWebViewDelegate
+- (BOOL)webView:(CGWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    return YES;
+}
+
 - (void)webView:(CGWebView *)webView webViewTitle:(NSString *)webViewTitle
 {
     if (!self.disableAutoSetupTitle) {
@@ -87,17 +85,22 @@
 
 - (void)webViewDidStartLoad:(CGWebView *)webView
 {
+    if (_currentToolBarItemType == CGWebViewItemTypeNone) {
+        self.currentToolBarItemType = CGWebViewItemTypeForward;
+    }
     [self addProgressView];
 }
 
 - (void)webViewDidFinishLoad:(CGWebView *)webView
 {
     [self hiddenProgressView];
+    self.currentToolBarItemType = CGWebViewItemTypeNone;
 }
 
 - (void)webView:(CGWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [self hiddenProgressView];
+    self.currentToolBarItemType = CGWebViewItemTypeNone;
 }
 
 #pragma mark - 设置进度条
@@ -190,6 +193,8 @@
         default:
             break;
     }
+    
+    
 }
 
 @end

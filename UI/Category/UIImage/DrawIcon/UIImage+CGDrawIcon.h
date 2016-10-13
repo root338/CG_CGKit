@@ -10,12 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGArrowIconConfig, CGCloseIconConfig;
+@class CGArrowIconConfig, CGCloseIconConfig, CGRefreshIconConfig;
 @interface UIImage (CGDrawIcon)
 
-+ (UIImage *)drawArrowWithConfig:(CGArrowIconConfig *)arrowConfig;
++ (UIImage *)drawArrowWithConfig:(CGArrowIconConfig *)arrowIconConfig;
 
-+ (UIImage *)drawCloseWithConfig:(CGCloseIconConfig *)closeConfig;
++ (UIImage *)drawCloseWithConfig:(CGCloseIconConfig *)closeIconConfig;
+
++ (UIImage *)drawRefreshImageWithConfig:(CGRefreshIconConfig *)refreshImageConfig;
 @end
 
 NS_ASSUME_NONNULL_END

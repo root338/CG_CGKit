@@ -80,9 +80,7 @@
     if (itemType == CGWebViewItemTypeFlexibleSpace) {
         item    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:action];
     }
-    if (itemType == CGWebViewItemTypeReload) {
-        item    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:action];
-    }else {
+    else {
         
         if (itemImageManager == nil) {
             itemImageManager    = [CGWebViewToolBarItemManager new];

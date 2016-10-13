@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 //X型关闭图片配置
 @interface CGCloseIconConfig : CGIconConfig
 
-/** X型 上边角的角度值, 默认值为0，即绘制两条对角线 */
+/** X型 上边角的角度值, 默认值为90，即绘制两条对角线 */
 @property (nonatomic, assign) CGFloat angle;
 
 + (instancetype)defalutCloseConfig;

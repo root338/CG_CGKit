@@ -13,7 +13,9 @@
 typedef NS_ENUM(NSInteger, CGWebViewItemType) {
     
     /** 未知 */
-    CGWebViewItemTypeUnknown        = 0,
+    CGWebViewItemTypeUnknown        = -1,
+    
+    CGWebViewItemTypeNone           = 0,
     /** 回退 */
     CGWebViewItemTypeBack,
     /** 前进 */

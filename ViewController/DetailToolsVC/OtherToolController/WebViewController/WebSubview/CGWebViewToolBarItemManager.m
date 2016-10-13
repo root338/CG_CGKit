@@ -11,6 +11,7 @@
 
 #import "CGCloseIconConfig.h"
 #import "CGArrowIconConfig.h"
+#import "CGRefreshIconConfig.h"
 
 #import "UIImage+CGDrawIcon.h"
 #import "UIImage+CGImageRotate.h"
@@ -39,9 +40,8 @@
             case CGWebViewItemTypeBack:
             case CGWebViewItemTypeForward:
             {
-                CGArrowIconConfig *config   = [CGArrowIconConfig new];
-                config.size                 = CGSizeMake(20, 20);
                 
+                CGArrowIconConfig *config   = [CGArrowIconConfig new];
                 if (itemType == CGWebViewItemTypeForward) {
                     config.orientationType  = CGOrientationTypeRight;
                 }else {
@@ -53,8 +53,13 @@
             case CGWebViewItemTypeStopLoading:
             {
                 CGCloseIconConfig *config   = [CGCloseIconConfig new];
-                config.size                 = CGSizeMake(20, 20);
                 image   = [UIImage drawCloseWithConfig:config];
+            }
+                break;
+            case CGWebViewItemTypeReload:
+            {
+                CGRefreshIconConfig *config = [CGRefreshIconConfig new];
+                image   = [UIImage drawRefreshImageWithConfig:config];
             }
                 break;
             default:

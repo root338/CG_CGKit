@@ -19,7 +19,7 @@
 {
     self = [super init];
     if (self) {
-        _angle  = 0;
+        _angle  = 90;
     }
     return self;
 }

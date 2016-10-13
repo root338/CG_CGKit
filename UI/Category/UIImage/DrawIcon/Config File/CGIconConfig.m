@@ -8,6 +8,8 @@
 
 #import "CGIconConfig.h"
 
+#import "UIView+CG_CGAreaCalculate.h"
+
 @implementation CGIconConfig
 
 - (instancetype)init
@@ -28,6 +30,16 @@
         _marginEdgeInset        = UIEdgeInsetsZero;
     }
     return self;
+}
+
+- (CGSize)canvasAvailableSize
+{
+    return CG_CGSizeWidthMaxSize(self.size, self.marginEdgeInset);
+}
+
+- (CGPoint)drawStartPoint
+{
+    return CGPointMake(self.marginEdgeInset.left, self.marginEdgeInset.top);
 }
 
 @end
