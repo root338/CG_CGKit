@@ -17,19 +17,16 @@
 
 - (NSLayoutConstraint *)cg_updateConstraintWithAtt1:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(id)item2 att2:(NSLayoutAttribute)att2 multiplier:(CGFloat)multiplier constant:(CGFloat)c layoutPriority:(UILayoutPriority)layoutPriority commonSuperview:(nullable UIView *)commonSuperview
 {
-    if (att1 == NSLayoutAttributeTrailing || att1 == NSLayoutAttributeRight || att1 == NSLayoutAttributeBottom) {
-        c = -c;
-        
-        if (relation == NSLayoutRelationGreaterThanOrEqual) {
-            relation    = NSLayoutRelationLessThanOrEqual;
-        }else if (relation == NSLayoutRelationLessThanOrEqual) {
-            relation    = NSLayoutRelationGreaterThanOrEqual;
-        }
-    }
     
     NSLayoutConstraint *layoutConstraint    = nil;
     
     layoutConstraint    = [self cg_searchAttribute:att1 relatedBy:relation toItem:item2 attribute:att2 commonSuperview:commonSuperview];
+    
+    if (att1 == NSLayoutAttributeBottom || att1 == NSLayoutAttributeRight || att1 == NSLayoutAttributeTrailing) {
+        if (multiplier != 0) {
+            multiplier = 1.0 / multiplier;
+        }
+    }
     
     if (layoutConstraint) {
         
@@ -77,13 +74,25 @@
     return [self cg_searchAttribute:att1 relatedBy:relation toItem:view2 attribute:attr2 commonSuperview:targetCommonSuperview];
 }
 
-- (nullable NSLayoutConstraint *)cg_searchAttribute:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(id)view2 attribute:(NSLayoutAttribute)attr2 commonSuperview:(UIView *)commonSuperview
+- (nullable NSLayoutConstraint *)cg_searchAttribute:(NSLayoutAttribute)att1 relatedBy:(NSLayoutRelation)relation toItem:(id)item2 attribute:(NSLayoutAttribute)attr2 commonSuperview:(UIView *)commonSuperview
 {
     __block NSLayoutConstraint *targetLayoutConstraint  = nil;
     
+    UIView *item1   = self;
+    if (att1 == NSLayoutAttributeTrailing || att1 == NSLayoutAttributeRight || att1 == NSLayoutAttributeBottom) {
+        
+        NSLayoutAttribute tempAtt   = att1;
+        att1   = attr2;
+        attr2   = tempAtt;
+        
+        UIView *tempView    = item1;
+        item1   = item2;
+        item2   = tempView;
+    }
+    
     [commonSuperview.constraints enumerateObjectsUsingBlock:^(__kindof NSLayoutConstraint * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        BOOL isResult = [obj cg_verifyWithItem:self attribute:att1 relatedBy:relation toItem:view2 attribute:attr2 searchType:nil];
+        BOOL isResult = [obj cg_verifyWithItem:item1 attribute:att1 relatedBy:relation toItem:item2 attribute:attr2 searchType:nil];
         if (isResult) {
             targetLayoutConstraint  = obj;
             *stop   = YES;

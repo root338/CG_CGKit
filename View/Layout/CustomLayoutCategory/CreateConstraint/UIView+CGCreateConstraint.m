@@ -75,13 +75,8 @@
 
 - (NSLayoutConstraint *)cg_createBottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier
 {
-    inset   = -inset;
-    if (NSLayoutRelationGreaterThanOrEqual == relation) {
-        relation    = NSLayoutRelationLessThanOrEqual;
-    }else if (NSLayoutRelationLessThanOrEqual == relation) {
-        relation    = NSLayoutRelationGreaterThanOrEqual;
-    }
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:relation toItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:multiplier constant:inset];
+    
+    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:viewController.bottomLayoutGuide attribute:NSLayoutAttributeTop relatedBy:relation toItem:self attribute:NSLayoutAttributeBottom multiplier:multiplier constant:inset];
     
     return layoutConstraint;
 }
@@ -169,19 +164,25 @@
 
 - (NSLayoutConstraint *)cg_createAttribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c
 {
+    UIView *view1   = self;
     if (attr1 == NSLayoutAttributeTrailing || attr1 == NSLayoutAttributeRight || attr1 == NSLayoutAttributeBottom) {
-        c = -c;
         
-        if (relation == NSLayoutRelationGreaterThanOrEqual) {
-            relation    = NSLayoutRelationLessThanOrEqual;
-        }else if (relation == NSLayoutRelationLessThanOrEqual) {
-            relation    = NSLayoutRelationGreaterThanOrEqual;
+        NSLayoutAttribute tempAtt   = attr1;
+        attr1   = attr2;
+        attr2   = tempAtt;
+        
+        UIView *tempView    = view1;
+        view1   = view2;
+        view2   = tempView;
+        
+        if (multiplier != 0) {
+            multiplier = 1.0 / multiplier;
         }
     }
     
     NSAssert(self.superview, @"请添加到父视图中再添加约束");
     
-    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:self attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
+    NSLayoutConstraint *layoutConstraint    = [NSLayoutConstraint constraintWithItem:view1 attribute:attr1 relatedBy:relation toItem:view2 attribute:attr2 multiplier:multiplier constant:c];
     
     return layoutConstraint;
 }

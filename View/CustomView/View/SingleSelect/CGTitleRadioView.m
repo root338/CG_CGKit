@@ -218,4 +218,10 @@
     return _appearance;
 }
 
+- (void)setDisableCurrentSelectedIndexToCenterHorizontalPosition:(BOOL)disableCurrentSelectedIndexToCenterHorizontalPosition
+{
+    _disableCurrentSelectedIndexToCenterHorizontalPosition  = disableCurrentSelectedIndexToCenterHorizontalPosition;
+    self.radioView.disableCurrentSelectedIndexToCenterHorizontalPosition    = disableCurrentSelectedIndexToCenterHorizontalPosition;
+}
+
 @end
