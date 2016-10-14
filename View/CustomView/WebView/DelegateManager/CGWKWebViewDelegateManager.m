@@ -62,9 +62,14 @@
     
     WKNavigationActionPolicy policy;
     if (result) {
+        
         policy  = WKNavigationActionPolicyAllow;
     }else {
+        
         policy  = WKNavigationActionPolicyCancel;
+        if ([self.delegate respondsToSelector:@selector(webViewDidCancelRequest:)]) {
+            [self.delegate webViewDidCancelRequest:self.targetObject];
+        }
     }
     
     if (decisionHandler) {

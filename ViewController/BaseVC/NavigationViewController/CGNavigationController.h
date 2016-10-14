@@ -32,5 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 导航栏标题默认的样式 */
 @property (nullable, nonatomic, strong) NSDictionary<NSString *, id> *defaultTitleTextAttributes;
+
+/** 打开自定义实现视图控制器的push，pop 默认 NO */
+//@property (nonatomic, assign) BOOL enableViewControllerManager;
+
+/** 
+ *  关闭全屏回退功能，默认 NO
+ */
+@property (nonatomic, assign) BOOL disableFullScreenPopGestureRecognizer;
 @end
 NS_ASSUME_NONNULL_END

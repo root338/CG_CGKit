@@ -19,7 +19,7 @@
 {
     self = [super init];
     if (self) {
-        _arrowSize              = CGSizeMake(20, 20);
+        _arrowSize              = CGSizeMake(25, 25);
         _arrowLineWidth         = 1.5;
         _arrowImageTintColor    = [UIColor blueColor];
         

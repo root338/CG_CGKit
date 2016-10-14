@@ -16,8 +16,9 @@
 {
     self    = [super init];
     if (self) {
+        
 //        _backgroundColor    = nil;
-        _size               = CGSizeMake(20.0, 20.0);
+        _size               = CGSizeMake(25.0, 25.0);
         _opaque             = NO;
         _scale              = [UIScreen mainScreen].scale;
         _tintColor          = [UIColor blackColor];
@@ -25,7 +26,6 @@
         _lineJoinStyle      = kCGLineJoinMiter;
         _miterLimit         = 0;
 //        _canvasRotateAngle  = 0;
-        _disableAdjustToSize    = NO;
         
         _marginEdgeInset        = UIEdgeInsetsZero;
     }

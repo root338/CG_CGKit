@@ -17,15 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 画布设置
 /** 背景色，默认nil */
 //@property (nullable, nonatomic, strong) UIColor *backgroundColor;
-/** 大小，默认20 x 20 */
+/** 大小，默认30 x 30 */
 @property (nonatomic, assign) CGSize size;
 /** 是否不透明，默认NO */
 @property (nonatomic, assign) BOOL opaque;
 /** 比例因子，默认为[UIScreen mainScreen].scale */
 @property (nonatomic, assign) CGFloat scale;
-
-/** 禁止自动调节size大小，默认为NO @warning 为了防止顶点无法绘制尖角和预留一定像素防止锯齿需要额外的画布空间 */
-@property (nonatomic, assign) BOOL disableAdjustToSize;
 
 /** 绘制视图与设置大小的边界距离，默认为UIEdgeInsetsZero */
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInset;

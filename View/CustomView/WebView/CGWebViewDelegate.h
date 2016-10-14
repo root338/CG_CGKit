@@ -16,10 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (BOOL)webView:(CGWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
+
 - (void)webViewDidStartLoad:(CGWebView *)webView;
 - (void)webViewDidFinishLoad:(CGWebView *)webView;
 - (void)webView:(CGWebView *)webView didFailLoadWithError:(NSError *)error;
 
+/** webView:shouldStartLoadWithRequest:navigationType: 代理方法返回NO的时候调用 */
+- (void)webViewDidCancelRequest:(CGWebView *)webView;
 
 /** 获取webView的加载进度 */
 - (void)webView:(CGWebView *)webView updateProgress:(CGFloat)progress;

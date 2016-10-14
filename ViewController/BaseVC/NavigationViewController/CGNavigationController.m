@@ -13,7 +13,10 @@
 #import "UINavigationController+CGSetupGestureRecognizer.h"
 
 @interface CGNavigationController ()
-
+{
+    //标识当前全屏回退按钮设置是否成功
+    BOOL currentFullScreenPopGestureRecognizerSetupIsSuccessMark;
+}
 @property (nonatomic, strong) CGNavigationDelegateObject *delegateObject;
 @end
 
@@ -23,7 +26,7 @@
 {
     [super viewDidLoad];
     
-    [self cg_openFullScreenPopGestureRecognizer];
+    [self setupFullScreenPopGestureRecognizer];
     
     self.delegateObject = [[CGNavigationDelegateObject alloc] init];
     self.delegate       = self.delegateObject;
@@ -70,6 +73,38 @@
 //    return statusBarUpdateAnimation;
 //}
 
-#pragma mark - 设置属性
+- (void)setupFullScreenPopGestureRecognizer
+{
+    if (currentFullScreenPopGestureRecognizerSetupIsSuccessMark) {
+        return;
+    }
+    
+    BOOL isResult = NO;
+    if (self.disableFullScreenPopGestureRecognizer) {
+        isResult    = [self closeFullScreenPopGestureRecognizer];
+    }else {
+        isResult    = [self openFullScreenPopGestureRecognizer];
+    }
+    
+    currentFullScreenPopGestureRecognizerSetupIsSuccessMark = isResult;
+}
 
+#pragma mark - 设置属性
+//- (void)setEnableViewControllerManager:(BOOL)enableViewControllerManager
+//{
+//    if (_enableViewControllerManager != enableViewControllerManager) {
+//        
+//        
+//    }
+//}
+
+- (void)setDisableFullScreenPopGestureRecognizer:(BOOL)disableFullScreenPopGestureRecognizer
+{
+    if (_disableFullScreenPopGestureRecognizer != disableFullScreenPopGestureRecognizer) {
+        
+        _disableFullScreenPopGestureRecognizer  = disableFullScreenPopGestureRecognizer;
+        currentFullScreenPopGestureRecognizerSetupIsSuccessMark = NO;
+        [self setupFullScreenPopGestureRecognizer];
+    }
+}
 @end

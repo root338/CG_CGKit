@@ -66,6 +66,9 @@
 #pragma mark - CGWebViewDelegate
 - (BOOL)webView:(CGWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    if (self.currentToolBarItemType == CGWebViewItemTypeNone) {
+        self.currentToolBarItemType = CGWebViewItemTypeForward;
+    }
     return YES;
 }
 
@@ -176,19 +179,28 @@
 
 - (void)setCurrentToolBarItemType:(CGWebViewItemType)currentToolBarItemType
 {
+    
     _currentToolBarItemType = currentToolBarItemType;
     switch (currentToolBarItemType) {
         case CGWebViewItemTypeForward:
+        {
             [self.webView goForward];
+        }
             break;
         case CGWebViewItemTypeReload:
+        {
             [self.webView reload];
+        }
             break;
         case CGWebViewItemTypeBack:
+        {
             [self.webView goBack];
+        }
             break;
         case CGWebViewItemTypeStopLoading:
+        {
             [self.webView stopLoading];
+        }
             break;
         default:
             break;

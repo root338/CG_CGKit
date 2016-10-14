@@ -10,7 +10,21 @@
 
 #import "UIViewController+CGFullscreenPopGesture.h"
 
+#import "CGNavigationViewControllerManager.h"
 #import <objc/runtime.h>
+
+@interface _CGGestureRecognizerManagerForNavigationView : NSObject
+
+//发送的目标
+@property (weak, nonatomic) id target;
+//下拉刷新发送的消息
+@property (assign, nonatomic) SEL selector;
+
+@end
+
+@implementation _CGGestureRecognizerManagerForNavigationView
+
+@end
 
 @interface _CGFullScreenPopGestureRecognizerDelegate : NSObject<UIGestureRecognizerDelegate>
 
@@ -56,30 +70,59 @@
 #pragma mark - 全屏横滑回退
 
 /** 打开全屏回退手势 */
-- (void)cg_openFullScreenPopGestureRecognizer
+- (BOOL)openFullScreenPopGestureRecognizer
 {
-    if (![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.fullScreenPopGestureRecognizer]) {
-        
-        //使用默认的滑动样式
-        NSArray *targets        = [self.interactivePopGestureRecognizer valueForKey:@"targets"];
-        id target               = [targets.firstObject valueForKey:@"target"];
-        SEL select              = NSSelectorFromString(@"handleNavigationTransition:");
-        
-        if (target && [target respondsToSelector:select]) {
-        
-            [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.fullScreenPopGestureRecognizer];
-            
-            self.fullScreenPopGestureRecognizer.delegate = self.cg_fullScreenPopGestureRecognizerDelegate;
-            
-            [self.fullScreenPopGestureRecognizer addTarget:target action:select];
+    return [self handleFullScreenPopGestureRecognizerWithIsOpen:YES];
+}
 
-            self.interactivePopGestureRecognizer.enabled    = NO;
+- (BOOL)closeFullScreenPopGestureRecognizer
+{
+    return [self handleFullScreenPopGestureRecognizerWithIsOpen:NO];
+}
+
+- (BOOL)handleFullScreenPopGestureRecognizerWithIsOpen:(BOOL)isOpen
+{
+    BOOL isResult   = YES;
+    if (isOpen) {
+        
+        if (self.interactivePopGestureRecognizer.view.gestureRecognizers == nil) {
+            
+            isResult    = NO;
+        }else if (![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.fullScreenPopGestureRecognizer]) {
+            
+            //使用默认的滑动样式
+            NSArray *targets        = [self.interactivePopGestureRecognizer valueForKey:@"targets"];
+            id target               = [targets.firstObject valueForKey:@"target"];
+            SEL select              = NSSelectorFromString(@"handleNavigationTransition:");
+            
+            if (target && [target respondsToSelector:select]) {
+                
+                [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.fullScreenPopGestureRecognizer];
+                
+                self.fullScreenPopGestureRecognizer.delegate = self.cg_fullScreenPopGestureRecognizerDelegate;
+                
+                [self.fullScreenPopGestureRecognizer addTarget:target action:select];
+                
+                self.interactivePopGestureRecognizer.enabled    = NO;
+            }
+        }
+    }else {
+        
+        if (self.fullScreenPopGestureRecognizer) {
+            
+            [self.fullScreenPopGestureRecognizer.view removeGestureRecognizer:self.fullScreenPopGestureRecognizer];
+        }
+        
+        if (self.interactivePopGestureRecognizer.enabled != YES) {
+            self.interactivePopGestureRecognizer.enabled    = YES;
         }
     }
+    return isResult;
 }
 
 - (void)handlePopGestureRecognizer:(UIPanGestureRecognizer *)recognizer
 {
+    
     CGFloat progress    = [recognizer locationInView:recognizer.view].x / recognizer.view.bounds.size.width;
     progress    = MAX(0, MIN(1, progress));
     if (recognizer.state == UIGestureRecognizerStateBegan) {
@@ -128,6 +171,16 @@
         objc_setAssociatedObject(self, @selector(cg_fullScreenPopGestureRecognizerDelegate), _fullScreenPopGestureRecognizerDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return _fullScreenPopGestureRecognizerDelegate;
+}
+
+- (_CGGestureRecognizerManagerForNavigationView *)gestureRecognizerManager
+{
+    _CGGestureRecognizerManagerForNavigationView *_gestureRecognizerManager = objc_getAssociatedObject(self, _cmd);
+    if (_gestureRecognizerManager == nil) {
+        _gestureRecognizerManager   = [[_CGGestureRecognizerManagerForNavigationView alloc] init];
+        objc_setAssociatedObject(self, @selector(gestureRecognizerManager), _gestureRecognizerManager, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return _gestureRecognizerManager;
 }
 @end
 

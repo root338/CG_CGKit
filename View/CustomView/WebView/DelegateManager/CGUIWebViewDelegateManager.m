@@ -39,7 +39,10 @@
     if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
         result  = [self.delegate webView:self.targetObject shouldStartLoadWithRequest:request navigationType:navigationType];
     }
-    return YES;
+    if (result == NO && [self.delegate respondsToSelector:@selector(webViewDidCancelRequest:)]) {
+        [self.delegate webViewDidCancelRequest:self.targetObject];
+    }
+    return result;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView

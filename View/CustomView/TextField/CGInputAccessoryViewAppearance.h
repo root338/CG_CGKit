@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) UIColor *arrowImageTintColor;
 /** 箭头线宽, 默认 1.5 */
 @property (nonatomic, assign) CGFloat arrowLineWidth;
-/** 箭头大小, 默认{20, 20} */
+/** 箭头大小, 默认{25, 25} */
 @property (nonatomic, assign) CGSize arrowSize;
 
 

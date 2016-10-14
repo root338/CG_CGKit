@@ -48,20 +48,15 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     __block CGSize canvasSize   = config.size;
     CGPathRef path              = NULL;
     
-    void (^setupCanvasSizeBlock) (CGSize)   = ^(CGSize size) {
-        
-        canvasSize  = size;
-    };
-    
     switch (type) {
         case CGImageICONDrawImageTypeArrow:
         {
-            path    = [self createArrowPathWith:config completion:setupCanvasSizeBlock];
+            path    = [self createArrowPathWith:config];
         }
             break;
         case CGImageICONDrawImageTypeClose:
         {
-            path    = [self createClosePathWith:config completion:setupCanvasSizeBlock];
+            path    = [self createClosePathWith:config];
         }
             break;
         default:
@@ -106,7 +101,7 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     return bezierPath;
 }
 
-+ (CGPathRef)createArrowPathWith:(CGArrowIconConfig *)config completion:(void (^) (CGSize size))completion
++ (CGPathRef)createArrowPathWith:(CGArrowIconConfig *)config
 {
     
     CGPoint arrowVertex, leftVertex, rightVertex;
@@ -114,10 +109,29 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     CGFloat angle       = config.angle / 2.0;
     CGFloat radianValue = _CG_RadianForAngle(angle);
     CGPoint zeroPoint   = CGPointZero;
-    CGFloat offset      = config.lineWidth * cos(radianValue);
+    CGPoint offsetPoint = CGPointZero;
+    CGFloat lineWidth   = config.lineWidth;
     
-    CGPoint startPoint  = CGPointMake(config.marginEdgeInset.left, config.marginEdgeInset.top);
-    CGSize  size        = config.canvasAvailableSize;
+    CGPoint startPoint  = config.drawStartPoint;
+    
+    CGFloat radianSinValue  = fabs(sin(radianValue));
+    CGFloat radianCosValue  = fabs(cos(radianValue));
+    CGFloat radianTanValue  = fabs(tan(radianValue));
+    
+    BOOL isHorizontalType   = (config.orientationType == CGOrientationTypeLeft || config.orientationType == CGOrientationTypeRight);
+    
+    if (isHorizontalType) {
+        
+        offsetPoint = CGPointMake(lineWidth / radianCosValue, lineWidth / radianSinValue);
+        startPoint  = CG_CGPointWithOffset(startPoint, offsetPoint.x, offsetPoint.y / 2);
+    }else {
+        
+        CGFloat length  = lineWidth / radianTanValue;
+        offsetPoint = CGPointMake(length * radianSinValue, length * radianCosValue);
+        startPoint  = CG_CGPointWithOffset(startPoint, offsetPoint.x / 2, offsetPoint.y);
+    }
+    
+    CGSize  size        = CGSizeMake(config.canvasAvailableSize.width - startPoint.x * 2, config.canvasAvailableSize.height - startPoint.y);
     
     //计算箭头尾部坐标时，垂直，水平距离值
     CGFloat horizontalValue = 0;
@@ -126,14 +140,21 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     CGFloat verticalOffset  = 0;
     CGFloat horizontalOffset= 0;
     
-    BOOL disableAdjustToSize    = NO;
-    
     if (config.angle > CGZeroFloatValue) {
         
-        horizontalValue = verticalValue / tan(radianValue);
+        if (isHorizontalType) {
+            horizontalValue = verticalValue / radianTanValue;
+        }else {
+            horizontalValue = verticalValue * radianTanValue;
+        }
+        
         if (horizontalValue > size.width) {
             horizontalValue = size.width;
-            verticalValue   = horizontalValue * tan(radianValue);
+            if (isHorizontalType) {
+                verticalValue   = horizontalValue * radianTanValue;
+            }else {
+                verticalValue   = horizontalValue / radianTanValue;
+            }
             verticalOffset  = (size.height - verticalValue * 2) / 2.0;
         }else {
             horizontalOffset    = (size.width - horizontalValue * 2) / 2.0;
@@ -162,7 +183,6 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         arrowVertex = point;
     }else {
         arrowVertex = config.arrowVertex;
-        disableAdjustToSize = YES;
     }
     
     if (CGPointEqualToPoint(zeroPoint, config.LeftVertex)) {
@@ -190,7 +210,6 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         
     }else {
         leftVertex  = config.LeftVertex;
-        disableAdjustToSize = YES;
     }
     
     if (CGPointEqualToPoint(zeroPoint, config.rightVertex)) {
@@ -221,31 +240,14 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         
     }else {
         rightVertex = config.rightVertex;
-        disableAdjustToSize = YES;
     }
     
-    if (config.disableAdjustToSize) {
-        disableAdjustToSize = YES;
-    }
-    
-    CGFloat horizontalSpaceValue    = 0;
-    CGFloat verticalSpaceValue      = 0;
-    
-    if (!disableAdjustToSize) {
-        horizontalSpaceValue    = offset;
-        verticalSpaceValue      = offset;
-    }
-    
-    CGFloat offsetX = startPoint.x + horizontalSpaceValue;
-    CGFloat offsetY = startPoint.y + verticalSpaceValue;
+    CGFloat offsetX = startPoint.x;
+    CGFloat offsetY = startPoint.y;
     
     leftVertex  = CGPointMake(leftVertex.x + offsetX, leftVertex.y + offsetY);
     rightVertex = CGPointMake(rightVertex.x + offsetX, rightVertex.y + offsetY);
     arrowVertex = CGPointMake(arrowVertex.x + offsetX, arrowVertex.y + offsetY);
-    
-    if (completion) {
-        completion(CGSizeMake(config.size.width + horizontalSpaceValue * 2, config.size.height + verticalSpaceValue * 2));
-    }
     
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, leftVertex.x, leftVertex.y);
@@ -255,7 +257,7 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     return path;
 }
 
-+ (CGPathRef)createClosePathWith:(CGCloseIconConfig *)config completion:(void (^) (CGSize size))completion
++ (CGPathRef)createClosePathWith:(CGCloseIconConfig *)config
 {
     CGPoint startPoint  = CGPointMake(config.marginEdgeInset.left, config.marginEdgeInset.top);
     CGSize drawSize     = config.canvasAvailableSize;
@@ -287,20 +289,13 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     line2StartPoint = CGPointMake(horizontalOffset + horizontalValue * 2, verticalOffset);
     line2EndPoint   = CGPointMake(horizontalOffset, verticalOffset + verticalValue * 2);
     
-    CGFloat offset  = 0;
-    if (!config.disableAdjustToSize) {
-        offset      = config.lineWidth * cos(radian);
-        startPoint  = CG_CGPointWithOffset(startPoint, offset, offset);
-    }
+    CGFloat offset  = offset      = config.lineWidth * cos(radian);
+    startPoint  = CG_CGPointWithOffset(startPoint, offset, offset);
     
     line1StartPoint = CG_CGPointWithOffsetPoint(line1StartPoint, startPoint);
     line1EndPoint   = CG_CGPointWithOffsetPoint(line1EndPoint, startPoint);
     line2StartPoint = CG_CGPointWithOffsetPoint(line2StartPoint, startPoint);
     line2EndPoint   = CG_CGPointWithOffsetPoint(line2EndPoint, startPoint);
-    
-    if (completion) {
-        completion(CGSizeMake(config.size.width + offset * 2, config.size.height + offset * 2));
-    }
     
     CGMutablePathRef path = CGPathCreateMutable();
     CGPathMoveToPoint(path, NULL, line1StartPoint.x, line1StartPoint.y);
@@ -313,29 +308,19 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
 
 + (UIImage *)drawRefreshImageWithConfig:(CGRefreshIconConfig *)config
 {
-    
     CGFloat sideValue       = config.arrowWidth / 2.0;
     CGFloat angle           = 360.0 - (config.endAngle - (floor(config.endAngle / 360) * 360));
     CGFloat radian          = _CG_RadianForAngle(angle);
+    CGFloat offset          = MAX(fabs(config.lineWidth * cos(radian)), config.lineWidth / 2.0);
+    CGPoint startPoint      = CG_CGPointWithOffset(config.drawStartPoint, offset, offset);
     
-    CGFloat refreshArrowHorizontalValue = fabs(sin(radian) * sideValue);
-    CGFloat refreshArrowVerticalValue   = fabs(cos(radian) * sideValue);
-    CGSize drawSize         = CGSizeMake(config.canvasAvailableSize.width - refreshArrowHorizontalValue, config.canvasAvailableSize.height - refreshArrowVerticalValue);
+    CGFloat refreshArrowOffset  = (config.arrowWidth - config.lineWidth) / 2.0;
+    CGSize drawSize         = CGSizeMake(config.canvasAvailableSize.width - refreshArrowOffset * 2 - offset * 2, config.canvasAvailableSize.height - refreshArrowOffset * 2 - offset * 2);
     
     CGPoint circleCenter    = CG_CGCenterWithSize(drawSize);
     CGFloat radius          = MIN(drawSize.width, drawSize.height) / 2.0;
     CGFloat circleCenterHorizontalOffset    = drawSize.width / 2.0 - radius;
     CGFloat circleCenterVerticalOffset      = drawSize.height / 2.0 - radius;
-    
-    CGFloat offset      = 0;
-    CGPoint startPoint  = config.drawStartPoint;
-    if (!config.disableAdjustToSize) {
-        
-        offset      = MAX( fabs(config.lineWidth * cos(radian)), config.lineWidth / 2.0);
-        startPoint  = CG_CGPointWithOffset(startPoint, offset, offset);
-    }
-    
-    circleCenter    = CG_CGPointWithOffsetPoint(circleCenter, startPoint);
     
     CGFloat horizontalValue = fabs(cos(radian) * radius);
     CGFloat verticalValue   = fabs(sin(radian) * radius);
@@ -359,6 +344,7 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         vertex1Point    = CGPointMake(vertexOriginX + arrowVertexHorizonalValue, vertexOriginY + arrowVertexVerticalValue);
         vertex2Point    = CGPointMake(vertexOriginX - vertexCosValue, vertexOriginY + vertexSinValue);
         vertex3Point    = CGPointMake(vertexOriginX + vertexCosValue, vertexOriginY - vertexSinValue);
+        
     }else if (angle >= 90 && angle < 180) {
         CGFloat vertexOriginX   = circleCenterHorizontalOffset + radius - horizontalValue;
         CGFloat vertexOriginY   = circleCenterVerticalOffset + radius - verticalValue;
@@ -366,6 +352,7 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         vertex1Point    = CGPointMake(vertexOriginX + arrowVertexHorizonalValue, vertexOriginY - arrowVertexVerticalValue);
         vertex2Point    = CGPointMake(vertexOriginX + vertexCosValue, vertexOriginY + vertexSinValue);
         vertex3Point    = CGPointMake(vertexOriginX - vertexCosValue, vertexOriginY - vertexSinValue);
+        
     }else if (angle >= 180 && angle < 270) {
         CGFloat vertexOriginX   = circleCenterHorizontalOffset + radius - horizontalValue;
         CGFloat vertexOriginY   = circleCenterVerticalOffset + radius + verticalValue;
@@ -373,6 +360,7 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         vertex1Point    = CGPointMake(vertexOriginX - arrowVertexHorizonalValue, vertexOriginY - arrowVertexVerticalValue);
         vertex2Point    = CGPointMake(vertexOriginX + vertexCosValue, vertexOriginY - vertexSinValue);
         vertex3Point    = CGPointMake(vertexOriginX - vertexCosValue, vertexOriginY + vertexSinValue);
+        
     }else if (angle >= 270 && angle <= 360) {
         
         CGFloat vertexOriginX   = circleCenterHorizontalOffset + radius + horizontalValue;
@@ -383,11 +371,15 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
         vertex3Point    = CGPointMake(vertexOriginX + vertexCosValue, vertexOriginY + vertexSinValue);
     }
     
+    startPoint      = CG_CGPointWithOffset(startPoint, refreshArrowOffset, refreshArrowOffset);
+    
     vertex1Point    = CG_CGPointWithOffsetPoint(vertex1Point, startPoint);
     vertex2Point    = CG_CGPointWithOffsetPoint(vertex2Point, startPoint);
     vertex3Point    = CG_CGPointWithOffsetPoint(vertex3Point, startPoint);
     
-    CGSize canvasSize = CGSizeMake(config.size.width + offset * 2, config.size.height + offset * 2);
+    circleCenter    = CG_CGPointWithOffsetPoint(circleCenter, startPoint);
+    
+    CGSize canvasSize = CGSizeMake(config.size.width, config.size.height);
     UIGraphicsBeginImageContextWithOptions(canvasSize, config.opaque, config.scale);
     
     CGMutablePathRef path1      = CGPathCreateMutable();
@@ -407,8 +399,6 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     UIImage *image  = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    
     return image;
 }
 
