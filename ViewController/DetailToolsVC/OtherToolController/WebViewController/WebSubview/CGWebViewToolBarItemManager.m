@@ -43,9 +43,9 @@
                 
                 CGArrowIconConfig *config   = [CGArrowIconConfig new];
                 if (itemType == CGWebViewItemTypeForward) {
-                    config.orientationType  = CGOrientationTypeUp;
-                }else {
                     config.orientationType  = CGOrientationTypeDown;
+                }else {
+                    config.orientationType  = CGOrientationTypeUp;
                 }
                 image   = [UIImage drawArrowWithConfig:config];
             }

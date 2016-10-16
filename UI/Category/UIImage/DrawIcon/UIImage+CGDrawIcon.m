@@ -103,63 +103,117 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
 
 + (CGPathRef)createArrowPathWith:(CGArrowIconConfig *)config
 {
-    
-    CGPoint arrowVertex, leftVertex, rightVertex;
-    
     CGFloat angle       = config.angle / 2.0;
     CGFloat radianValue = _CG_RadianForAngle(angle);
+    
+    CGFloat radianSinValue  = fabs(sin(radianValue));
+    CGFloat radianCosValue  = fabs(cos(radianValue));
+    CGFloat radianTanValue  = fabs(tan(radianValue));
+    
+    BOOL isCalculateVertical    = YES;
+    {
+        //计算取哪边的值为参考值
+        CGSize canvasAvailableSize  = config.canvasAvailableSize;
+        if ((canvasAvailableSize.height / 2.0) * radianTanValue > canvasAvailableSize.width / 2.0) {
+            isCalculateVertical = NO;
+        }
+    }
+    CGPoint arrowVertex, leftVertex, rightVertex;
+    
     CGPoint zeroPoint   = CGPointZero;
     CGPoint offsetPoint = CGPointZero;
     CGFloat lineWidth   = config.lineWidth;
     
     CGPoint startPoint  = config.drawStartPoint;
     
-    CGFloat radianSinValue  = fabs(sin(radianValue));
-    CGFloat radianCosValue  = fabs(cos(radianValue));
-    CGFloat radianTanValue  = fabs(tan(radianValue));
+    CGFloat horizonalOffsetTotalValue   = 0;
+    CGFloat verticalOffsetTotalValue    = 0;
     
     BOOL isHorizontalType   = (config.orientationType == CGOrientationTypeLeft || config.orientationType == CGOrientationTypeRight);
     
-    if (isHorizontalType) {
-        
-        offsetPoint = CGPointMake(lineWidth / radianCosValue, lineWidth / radianSinValue);
-        startPoint  = CG_CGPointWithOffset(startPoint, offsetPoint.x, offsetPoint.y / 2);
-    }else {
-        
-        CGFloat length  = lineWidth / radianTanValue;
-        offsetPoint = CGPointMake(length * radianSinValue, length * radianCosValue);
-        startPoint  = CG_CGPointWithOffset(startPoint, offsetPoint.x / 2, offsetPoint.y);
+    {
+        if (isHorizontalType) {
+            
+            CGFloat hlength = lineWidth / radianSinValue;
+            
+            CGFloat vlenght = lineWidth * radianCosValue / 2.0 / 2.0;
+            
+            CGFloat hlenght0    = 0;
+            
+            if (isCalculateVertical) {
+                
+                hlenght0    = lineWidth * radianCosValue / 2.0 / 2.0;
+            }else {
+                
+                hlenght0    = lineWidth * radianSinValue / 2.0 / 2.0;
+            }
+            
+            horizonalOffsetTotalValue   = hlength + hlenght0;
+            verticalOffsetTotalValue    = vlenght * 2;
+            if (config.orientationType == CGOrientationTypeLeft) {
+                startPoint  = CGPointMake(hlength, vlenght);
+            }else if (config.orientationType == CGOrientationTypeRight) {
+                startPoint  = CGPointMake(hlenght0, vlenght);
+            }
+        }else {
+            
+            //箭头需要空余的空间
+            CGFloat vlength = lineWidth / radianTanValue;
+            //第一个2.0表示水平距离减半，第二个2.0表示水平偏移需要减半
+            CGFloat hlength = (lineWidth * radianCosValue) / 4.0;
+            
+            CGFloat vlength2    = 0;
+            
+            //* 2 表示两端都需要空余空间
+            horizonalOffsetTotalValue   = hlength * 2;
+            
+            if (isCalculateVertical) {
+                //使用水平长度时
+                vlength2    = lineWidth * radianSinValue / 2.0;
+            }else {
+                //使用垂直长度时
+                vlength2    = lineWidth * radianCosValue / 2.0;
+            }
+            
+            verticalOffsetTotalValue    = vlength + vlength2;
+            
+            if (config.orientationType == CGOrientationTypeUp) {
+                offsetPoint  = CGPointMake(hlength, vlength);
+            }else if (config.orientationType == CGOrientationTypeDown) {
+                offsetPoint  = CGPointMake(hlength, vlength2);
+            }
+        }
     }
     
-    CGSize  size        = CGSizeMake(config.canvasAvailableSize.width - startPoint.x * 2, config.canvasAvailableSize.height - startPoint.y);
+    startPoint          = CG_CGPointWithOffsetPoint(startPoint, offsetPoint);
+    
+    CGSize  size        = CGSizeMake(config.canvasAvailableSize.width - horizonalOffsetTotalValue, config.canvasAvailableSize.height - verticalOffsetTotalValue);
     
     //计算箭头尾部坐标时，垂直，水平距离值
     CGFloat horizontalValue = 0;
-    CGFloat verticalValue   = size.height / 2.0;
+    CGFloat verticalValue   = 0;
     
     CGFloat verticalOffset  = 0;
     CGFloat horizontalOffset= 0;
     
-    if (config.angle > CGZeroFloatValue) {
-        
+    if (isCalculateVertical) {
+        verticalValue   = size.height / 2.0;
         if (isHorizontalType) {
             horizontalValue = verticalValue / radianTanValue;
         }else {
             horizontalValue = verticalValue * radianTanValue;
         }
-        
-        if (horizontalValue > size.width) {
-            horizontalValue = size.width;
-            if (isHorizontalType) {
-                verticalValue   = horizontalValue * radianTanValue;
-            }else {
-                verticalValue   = horizontalValue / radianTanValue;
-            }
-            verticalOffset  = (size.height - verticalValue * 2) / 2.0;
+    }else {
+        horizontalValue = size.height / 2.0;
+        if (isHorizontalType) {
+            verticalValue = horizontalValue * radianTanValue;
         }else {
-            horizontalOffset    = (size.width - horizontalValue * 2) / 2.0;
+            verticalValue = horizontalValue / radianTanValue;
         }
     }
+    
+    verticalOffset      = (size.height - verticalValue * 2) / 2.0;
+    horizontalOffset    = (size.width - horizontalValue * 2) / 2.0;
     
     if (CGPointEqualToPoint(zeroPoint, config.arrowVertex)) {
         
@@ -187,21 +241,19 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     if (CGPointEqualToPoint(zeroPoint, config.LeftVertex)) {
         
-        CGFloat originY = verticalValue * 2 + verticalOffset;
-        
         CGPoint point   = CGPointZero;
         switch (config.orientationType) {
             case CGOrientationTypeLeft:
-                point   = CGPointMake(horizontalValue, originY);
+                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue * 2 + verticalOffset);
                 break;
             case CGOrientationTypeRight:
-                point   = CGPointMake(horizontalValue + horizontalOffset * 2, originY);
+                point   = CGPointMake(horizontalOffset, verticalValue * 2 + verticalOffset);
                 break;
             case CGOrientationTypeUp:
-                point   = CGPointMake(horizontalOffset, verticalValue);
+                point   = CGPointMake(horizontalOffset, verticalValue * 2 + verticalOffset);
                 break;
             case CGOrientationTypeDown:
-                point   = CGPointMake(horizontalOffset, verticalValue + verticalOffset * 2);
+                point   = CGPointMake(horizontalOffset, verticalOffset);
                 break;
             default:
                 break;
@@ -214,22 +266,20 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
     if (CGPointEqualToPoint(zeroPoint, config.rightVertex)) {
         
-        CGFloat originY = verticalOffset;
-        
         CGPoint point   = CGPointZero;
         
         switch (config.orientationType) {
             case CGOrientationTypeLeft:
-                point   = CGPointMake(horizontalValue, originY);
+                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalOffset);
                 break;
             case CGOrientationTypeRight:
-                point   = CGPointMake(horizontalValue + horizontalOffset * 2, originY);
+                point   = CGPointMake(horizontalOffset, verticalOffset);
                 break;
             case CGOrientationTypeUp:
-                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue);
+                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue * 2 + verticalOffset);
                 break;
             case CGOrientationTypeDown:
-                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue + verticalOffset * 2);
+                point   = CGPointMake(horizontalValue * 2 + horizontalOffset,verticalOffset);
                 break;
             default:
                 break;

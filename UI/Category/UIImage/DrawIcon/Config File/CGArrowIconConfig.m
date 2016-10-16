@@ -23,7 +23,7 @@
         
 //        _arrowVertexOrientation = CGOrientationTypeLeft;
         _arrowVertex            = CGPointZero;
-        _angle                  = 90;
+        _angle                  = 150;
 //        _arrowVertexOffset      = 0;
         _LeftVertex             = CGPointZero;
         _rightVertex            = CGPointZero;
