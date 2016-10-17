@@ -17,6 +17,8 @@
 
 @import QuartzCore;
 
+typedef void (^CGDrawImageResetSizeBlock) (CGSize size);
+
 /** 绘制的图标类型 */
 typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     
@@ -48,10 +50,15 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     __block CGSize canvasSize   = config.size;
     CGPathRef path              = NULL;
     
+    CGDrawImageResetSizeBlock resetSizeBlock    = ^(CGSize size) {
+        
+        canvasSize  = size;
+    };
+    
     switch (type) {
         case CGImageICONDrawImageTypeArrow:
         {
-            path    = [self createArrowPathWith:config];
+            path    = [self createArrowPathWith:config completion:resetSizeBlock];
         }
             break;
         case CGImageICONDrawImageTypeClose:
@@ -101,210 +108,183 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     return bezierPath;
 }
 
-+ (CGPathRef)createArrowPathWith:(CGArrowIconConfig *)config
++ (CGPathRef)createArrowPathWith:(CGArrowIconConfig *)config completion:(CGDrawImageResetSizeBlock)completion
 {
-    CGFloat angle       = config.angle / 2.0;
-    CGFloat radianValue = _CG_RadianForAngle(angle);
     
-    CGFloat radianSinValue  = fabs(sin(radianValue));
-    CGFloat radianCosValue  = fabs(cos(radianValue));
-    CGFloat radianTanValue  = fabs(tan(radianValue));
+    CGPathRef (^createArrowPathBlock) (CGPoint, CGPoint, CGPoint)  = ^(CGPoint arrowVertex, CGPoint leftVertex, CGPoint rightVertex) {
+        
+        CGPathRef path              = NULL;
+        
+        CGMutablePathRef mutablePath    = CGPathCreateMutable();
+        CGPathMoveToPoint(mutablePath, NULL, leftVertex.x, leftVertex.y);
+        CGPathAddLineToPoint(mutablePath, NULL, arrowVertex.x, arrowVertex.y);
+        CGPathAddLineToPoint(mutablePath, NULL, rightVertex.x, rightVertex.y);
+        path    = mutablePath;
+        return path;
+    };
     
-    BOOL isCalculateVertical    = YES;
-    {
-        //计算取哪边的值为参考值
-        CGSize canvasAvailableSize  = config.canvasAvailableSize;
-        if ((canvasAvailableSize.height / 2.0) * radianTanValue > canvasAvailableSize.width / 2.0) {
-            isCalculateVertical = NO;
-        }
+    if (config.configType == CGArrowIconConfigTypeFixedPoint) {
+        
+        return createArrowPathBlock(config.arrowVertex, config.LeftVertex, config.rightVertex);
     }
-    CGPoint arrowVertex, leftVertex, rightVertex;
     
-    CGPoint zeroPoint   = CGPointZero;
-    CGPoint offsetPoint = CGPointZero;
-    CGFloat lineWidth   = config.lineWidth;
+    CGSize canvasAvailableSize  = config.canvasAvailableSize;
+    CGPoint startPoint          = config.drawStartPoint;
     
-    CGPoint startPoint  = config.drawStartPoint;
+    CGFloat angle               = config.angle / 2.0;
+    CGFloat radian              = _CG_RadianForAngle(angle);
     
-    CGFloat horizonalOffsetTotalValue   = 0;
-    CGFloat verticalOffsetTotalValue    = 0;
+    CGFloat radianTanValue      = tan(radian);
     
-    BOOL isHorizontalType   = (config.orientationType == CGOrientationTypeLeft || config.orientationType == CGOrientationTypeRight);
+    BOOL isHorizontalDraw    = (config.arrowVertexOrientationType == CGOrientationTypeLeft |
+                                   config.arrowVertexOrientationType == CGOrientationTypeRight);
+    //是否以height进行计算
+    BOOL isAvailableVertical    = YES;
     
     {
-        if (isHorizontalType) {
-            
-            CGFloat hlength = lineWidth / radianSinValue;
-            
-            CGFloat vlenght = lineWidth * radianCosValue / 2.0 / 2.0;
-            
-            CGFloat hlenght0    = 0;
-            
-            if (isCalculateVertical) {
-                
-                hlenght0    = lineWidth * radianCosValue / 2.0 / 2.0;
-            }else {
-                
-                hlenght0    = lineWidth * radianSinValue / 2.0 / 2.0;
-            }
-            
-            horizonalOffsetTotalValue   = hlength + hlenght0;
-            verticalOffsetTotalValue    = vlenght * 2;
-            if (config.orientationType == CGOrientationTypeLeft) {
-                startPoint  = CGPointMake(hlength, vlenght);
-            }else if (config.orientationType == CGOrientationTypeRight) {
-                startPoint  = CGPointMake(hlenght0, vlenght);
+        //计算以哪一边进行计算
+        if (isHorizontalDraw) {
+            if ((canvasAvailableSize.height / 2.0) / radianTanValue > canvasAvailableSize.width) {
+                isAvailableVertical = NO;
             }
         }else {
-            
-            //箭头需要空余的空间
-            CGFloat vlength = lineWidth / radianTanValue;
-            //第一个2.0表示水平距离减半，第二个2.0表示水平偏移需要减半
-            CGFloat hlength = (lineWidth * radianCosValue) / 4.0;
-            
-            CGFloat vlength2    = 0;
-            
-            //* 2 表示两端都需要空余空间
-            horizonalOffsetTotalValue   = hlength * 2;
-            
-            if (isCalculateVertical) {
-                //使用水平长度时
-                vlength2    = lineWidth * radianSinValue / 2.0;
-            }else {
-                //使用垂直长度时
-                vlength2    = lineWidth * radianCosValue / 2.0;
-            }
-            
-            verticalOffsetTotalValue    = vlength + vlength2;
-            
-            if (config.orientationType == CGOrientationTypeUp) {
-                offsetPoint  = CGPointMake(hlength, vlength);
-            }else if (config.orientationType == CGOrientationTypeDown) {
-                offsetPoint  = CGPointMake(hlength, vlength2);
+            if (canvasAvailableSize.height * radianTanValue > canvasAvailableSize.width / 2.0) {
+                isAvailableVertical = NO;
             }
         }
     }
     
-    startPoint          = CG_CGPointWithOffsetPoint(startPoint, offsetPoint);
+    CGFloat horizontalTotalValue    = 0;
+    CGFloat verticalTotalValue      = 0;
+    {
+        CGFloat radianSinValue      = sin(radian);
+        CGFloat radianCosValue      = cos(radian);
+        
+        //箭头需要的空间
+        CGFloat lineWidth           = config.lineWidth;
+        CGFloat arrowVertexLenght   = 0;
+        //角度空余空间计算
+        arrowVertexLenght   = lineWidth / radianSinValue / 2.0;
+        
+        CGFloat vOffset     = 0;
+        CGFloat hOffset     = 0;
+        CGPoint offset      = CGPointZero;
+        
+        if (isHorizontalDraw) {
+            hOffset = lineWidth * radianSinValue / 2.0;
+            vOffset = lineWidth * radianCosValue / 2.0;
+            
+            if (config.arrowVertexOrientationType == CGOrientationTypeLeft) {
+                offset  = CGPointMake(arrowVertexLenght, vOffset);
+            }else {
+                offset  = CGPointMake(hOffset, vOffset);
+            }
+            horizontalTotalValue    = arrowVertexLenght + hOffset;
+            verticalTotalValue      = vOffset * 2;
+        }else {
+            hOffset = lineWidth * radianCosValue / 2.0;
+            vOffset = lineWidth * radianSinValue / 2.0;
+            if (config.arrowVertexOrientationType == CGOrientationTypeUp) {
+                offset  = CGPointMake(hOffset, arrowVertexLenght);
+            }else {
+                offset  = CGPointMake(hOffset, vOffset);
+            }
+            
+            horizontalTotalValue    = hOffset * 2;
+            verticalTotalValue      = arrowVertexLenght + vOffset;
+        }
+        
+        startPoint  = CG_CGPointWithOffsetPoint(startPoint, offset);
+        canvasAvailableSize = CGSizeMake(canvasAvailableSize.width - horizontalTotalValue, canvasAvailableSize.height - verticalTotalValue);
+        
+    }
     
-    CGSize  size        = CGSizeMake(config.canvasAvailableSize.width - horizonalOffsetTotalValue, config.canvasAvailableSize.height - verticalOffsetTotalValue);
+    CGFloat horizontalValue     = 0;
+    CGFloat verticalValue       = 0;
+    CGFloat horizontalOffset    = 0;
+    CGFloat verticalOffset      = 0;
     
-    //计算箭头尾部坐标时，垂直，水平距离值
-    CGFloat horizontalValue = 0;
-    CGFloat verticalValue   = 0;
-    
-    CGFloat verticalOffset  = 0;
-    CGFloat horizontalOffset= 0;
-    
-    if (isCalculateVertical) {
-        verticalValue   = size.height / 2.0;
-        if (isHorizontalType) {
+    if (isHorizontalDraw) {
+        if (isAvailableVertical) {
+            verticalValue   = canvasAvailableSize.height / 2.0;
             horizontalValue = verticalValue / radianTanValue;
-        }else {
-            horizontalValue = verticalValue * radianTanValue;
-        }
-    }else {
-        horizontalValue = size.height / 2.0;
-        if (isHorizontalType) {
-            verticalValue = horizontalValue * radianTanValue;
-        }else {
-            verticalValue = horizontalValue / radianTanValue;
-        }
-    }
-    
-    verticalOffset      = (size.height - verticalValue * 2) / 2.0;
-    horizontalOffset    = (size.width - horizontalValue * 2) / 2.0;
-    
-    if (CGPointEqualToPoint(zeroPoint, config.arrowVertex)) {
-        
-        CGPoint point   = CGPointZero;
-        switch (config.orientationType) {
-            case CGOrientationTypeLeft:
-                point   = CGPointMake(0, size.height / 2.0);
-                break;
-            case CGOrientationTypeUp:
-                point   = CGPointMake(size.width / 2.0, 0);
-                break;
-            case CGOrientationTypeRight:
-                point   = CGPointMake(size.width, size.height / 2.0);
-                break;
-            case CGOrientationTypeDown:
-                point   = CGPointMake(size.width / 2.0, size.height);
-                break;
-            default:
-                break;
-        }
-        arrowVertex = point;
-    }else {
-        arrowVertex = config.arrowVertex;
-    }
-    
-    if (CGPointEqualToPoint(zeroPoint, config.LeftVertex)) {
-        
-        CGPoint point   = CGPointZero;
-        switch (config.orientationType) {
-            case CGOrientationTypeLeft:
-                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue * 2 + verticalOffset);
-                break;
-            case CGOrientationTypeRight:
-                point   = CGPointMake(horizontalOffset, verticalValue * 2 + verticalOffset);
-                break;
-            case CGOrientationTypeUp:
-                point   = CGPointMake(horizontalOffset, verticalValue * 2 + verticalOffset);
-                break;
-            case CGOrientationTypeDown:
-                point   = CGPointMake(horizontalOffset, verticalOffset);
-                break;
-            default:
-                break;
-        }
-        leftVertex  = point;
-        
-    }else {
-        leftVertex  = config.LeftVertex;
-    }
-    
-    if (CGPointEqualToPoint(zeroPoint, config.rightVertex)) {
-        
-        CGPoint point   = CGPointZero;
-        
-        switch (config.orientationType) {
-            case CGOrientationTypeLeft:
-                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalOffset);
-                break;
-            case CGOrientationTypeRight:
-                point   = CGPointMake(horizontalOffset, verticalOffset);
-                break;
-            case CGOrientationTypeUp:
-                point   = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue * 2 + verticalOffset);
-                break;
-            case CGOrientationTypeDown:
-                point   = CGPointMake(horizontalValue * 2 + horizontalOffset,verticalOffset);
-                break;
-            default:
-                break;
-        }
             
-        rightVertex = point;
-        
-        
+            if (config.configType == CGArrowIconConfigTypeDefaultCropOverSize) {
+                canvasAvailableSize.width = horizontalValue;
+            }else {
+                horizontalOffset    = canvasAvailableSize.width - horizontalValue;
+            }
+        }else {
+            horizontalValue = canvasAvailableSize.width;
+            verticalValue   = horizontalValue * radianTanValue;
+            
+            if (config.configType == CGArrowIconConfigTypeDefaultCropOverSize) {
+                
+                canvasAvailableSize.height  = verticalValue * 2;
+            }else {
+                
+                verticalOffset  = canvasAvailableSize.height / 2.0 - verticalValue;
+            }
+        }
     }else {
-        rightVertex = config.rightVertex;
+        if (isAvailableVertical) {
+            verticalValue   = canvasAvailableSize.height;
+            horizontalValue = verticalValue * radianTanValue;
+            
+            if (config.configType == CGArrowIconConfigTypeDefaultCropOverSize) {
+                
+                canvasAvailableSize.width   = horizontalValue * 2;
+            }else {
+                horizontalOffset    = canvasAvailableSize.width / 2.0 - horizontalValue;
+            }
+        }else {
+            horizontalValue = canvasAvailableSize.width / 2.0;
+            verticalValue   = horizontalValue / radianTanValue;
+            
+            if (config.configType == CGArrowIconConfigTypeDefaultCropOverSize) {
+                
+                canvasAvailableSize.height  = verticalValue;
+            }else {
+                verticalOffset  = canvasAvailableSize.height - verticalValue;
+            }
+        }
     }
     
-    CGFloat offsetX = startPoint.x;
-    CGFloat offsetY = startPoint.y;
+    if (config.configType == CGArrowIconConfigTypeDefaultCropOverSize && completion) {
+        completion(CGSizeMake(canvasAvailableSize.width + horizontalTotalValue + config.marginEdgeInset.left + config.marginEdgeInset.right, canvasAvailableSize.height + verticalTotalValue + config.marginEdgeInset.top + config.marginEdgeInset.bottom));
+    }
     
-    leftVertex  = CGPointMake(leftVertex.x + offsetX, leftVertex.y + offsetY);
-    rightVertex = CGPointMake(rightVertex.x + offsetX, rightVertex.y + offsetY);
-    arrowVertex = CGPointMake(arrowVertex.x + offsetX, arrowVertex.y + offsetY);
+    CGPoint arrowVertex, leftVertex, rightVertex;
+    switch (config.arrowVertexOrientationType) {
+        case CGOrientationTypeUp:
+            arrowVertex = CGPointMake(canvasAvailableSize.width / 2.0, 0);
+            leftVertex  = CGPointMake(horizontalOffset, verticalValue);
+            rightVertex = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalValue);
+            break;
+        case CGOrientationTypeDown:
+            arrowVertex = CGPointMake(canvasAvailableSize.width / 2.0, canvasAvailableSize.height);
+            leftVertex  = CGPointMake(horizontalOffset, verticalOffset);
+            rightVertex = CGPointMake(horizontalValue * 2 + horizontalOffset, verticalOffset);
+            break;
+        case CGOrientationTypeLeft:
+            arrowVertex = CGPointMake(0, canvasAvailableSize.height / 2.0);
+            leftVertex  = CGPointMake(horizontalValue, verticalValue * 2.0 + verticalOffset);
+            rightVertex = CGPointMake(horizontalValue, verticalOffset);
+            break;
+        case CGOrientationTypeRight:
+            arrowVertex = CGPointMake(canvasAvailableSize.width, canvasAvailableSize.height / 2.0);
+            leftVertex  = CGPointMake(horizontalOffset, verticalValue * 2.0 + verticalOffset);
+            rightVertex = CGPointMake(horizontalOffset, verticalOffset);
+            break;
+        default:
+            break;
+    }
     
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, leftVertex.x, leftVertex.y);
-    CGPathAddLineToPoint(path, NULL, arrowVertex.x, arrowVertex.y);
-    CGPathAddLineToPoint(path, NULL, rightVertex.x, rightVertex.y);
+    arrowVertex = CG_CGPointWithOffsetPoint(arrowVertex, startPoint);
+    leftVertex  = CG_CGPointWithOffsetPoint(leftVertex, startPoint);
+    rightVertex = CG_CGPointWithOffsetPoint(rightVertex, startPoint);
     
-    return path;
+    return createArrowPathBlock(arrowVertex, leftVertex, rightVertex);
 }
 
 + (CGPathRef)createClosePathWith:(CGCloseIconConfig *)config

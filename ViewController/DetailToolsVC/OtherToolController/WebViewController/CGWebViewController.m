@@ -42,6 +42,7 @@
         [self.view addSubview:self.privateView];
         [self.privateView cg_autoEdgesInsetsZeroToSuperview];
     }
+    [self updateToolBarStatus];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -66,9 +67,6 @@
 #pragma mark - CGWebViewDelegate
 - (BOOL)webView:(CGWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if (self.currentToolBarItemType == CGWebViewItemTypeNone) {
-        self.currentToolBarItemType = CGWebViewItemTypeForward;
-    }
     return YES;
 }
 
@@ -84,6 +82,7 @@
     if (!self.isHiddenProgressView) {
         [self getProgressView].progress = progress;
     }
+    [self updateToolBarStatus];
 }
 
 - (void)webViewDidStartLoad:(CGWebView *)webView
@@ -205,8 +204,12 @@
         default:
             break;
     }
-    
-    
+}
+
+- (void)updateToolBarStatus
+{
+    self.privateView.webViewToolBar.backItem.enabled    = self.webView.canGoBack;
+    self.privateView.webViewToolBar.forwardItem.enabled = self.webView.canGoForward;
 }
 
 @end

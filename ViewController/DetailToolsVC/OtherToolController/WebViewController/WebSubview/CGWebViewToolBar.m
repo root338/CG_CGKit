@@ -135,14 +135,20 @@
     }
 }
 
-- (void)setupStopLoadingToTargetTypeWithType:(CGWebViewItemType)type
+#pragma mark - 设置属性
+- (UIBarButtonItem *)backItem
 {
-    
+    return backItem;
 }
 
-- (void)setupTargetTypeToStopLoadingWithType:(CGWebViewItemType)type
+- (UIBarButtonItem *)forwardItem
 {
-    
+    return forwardItem;
+}
+
+- (UIBarButtonItem *)refreshItem
+{
+    return reloadItem;
 }
 
 @end

@@ -15,6 +15,7 @@
 
 #import "UIImage+CGDrawIcon.h"
 #import "UIImage+CGImageRotate.h"
+#import "UIEdgeInsets+Category.h"
 
 @interface CGWebViewToolBarItemManager ()
 {
@@ -40,12 +41,13 @@
             case CGWebViewItemTypeBack:
             case CGWebViewItemTypeForward:
             {
-                
                 CGArrowIconConfig *config   = [CGArrowIconConfig new];
                 if (itemType == CGWebViewItemTypeForward) {
-                    config.orientationType  = CGOrientationTypeDown;
+                    config.arrowVertexOrientationType   = CGOrientationTypeRight;
+                    config.marginEdgeInset              = UIEdgeInsetsZeroMakeExcludeLeft(8);
                 }else {
-                    config.orientationType  = CGOrientationTypeUp;
+                    config.arrowVertexOrientationType   = CGOrientationTypeLeft;
+                    config.marginEdgeInset              = UIEdgeInsetsZeroMakeExcludeRight(8);
                 }
                 image   = [UIImage drawArrowWithConfig:config];
             }
