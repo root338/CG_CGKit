@@ -33,12 +33,15 @@ typedef void (^CGTitleRadioSelectedBlock) (NSInteger index, id obj);
 /** 是否关闭将选中的索引滑动到中间 */
 @property (nonatomic, assign) BOOL disableCurrentSelectedIndexToCenterHorizontalPosition;
 
-@property (nullable, nonatomic, strong, readonly) CGRadioViewAppearance *appearance;
+@property (nonatomic, strong, readonly) CGRadioViewAppearance *appearance;
 
 /** 已选择block */
 @property (nullable, nonatomic, copy) CGTitleRadioSelectedBlock didSelectedCallback;
 
 - (instancetype)initWithTitles:(nullable NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance;
+
+- (instancetype)initWithFrame:(CGRect)frame titles:(nullable NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 - (void)scrollTopView;
 

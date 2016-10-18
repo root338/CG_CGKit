@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) UIColor         *   itemBackgroundColor;
 @property (nullable, nonatomic, strong) UIColor         *   itemSelectedBackgroundColor;
 
-@property (nullable, nonatomic, strong) UIView          *   itemBackgourndView;
+@property (nullable, nonatomic, strong) UIView          *   itemBackgroundView;
 @property (nullable, nonatomic, strong) UIView          *   itemSelectedBackgroundView;
 
 @end

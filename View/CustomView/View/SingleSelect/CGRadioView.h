@@ -7,11 +7,10 @@
 //
 
 #import "CGLineBoxView.h"
-#import "CGRadioViewAppearance.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGRadioView, CGRadioSliderView;
+@class CGRadioView, CGRadioSliderView, CGRadioViewAppearance;
 
 @protocol CGRadioViewDataSource <NSObject>
 
@@ -63,6 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, weak) id<CGRadioViewDataSource> dataSource;
 @property (nullable, nonatomic, weak) id<CGRadioViewDelegate> delegate;
+
+@property (nonatomic, strong, readonly) CGRadioViewAppearance *appearance;
 
 /** 是否已经有选择的索引 */
 @property (nonatomic, assign, readonly) BOOL didSelectedIndexFlag;

@@ -18,6 +18,7 @@
 #import "UIView+CG_CGAreaCalculate.h"
 
 #import "CGDispathMethod.h"
+#import "CGRadioViewAppearance.h"
 
 @interface CGTitleRadioView ()<CGRadioViewDataSource, CGRadioViewDelegate>
 {
@@ -38,19 +39,25 @@
 
 @implementation CGTitleRadioView
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self    = [super initWithFrame:frame];
-    if (self) {
-        
-    }
-    return self;
+    return [self initWithFrame:frame titles:nil appearance:[CGRadioViewAppearance defaultRadioAppearance]];
 }
 
 - (instancetype)initWithTitles:(NSArray<NSString *> *)titles appearance:(nonnull CGRadioViewAppearance *)appearance
 {
     CGRect frame  = CGRectZero;
-    self    = [self initWithFrame:frame];
+    return [self initWithFrame:frame titles:titles appearance:appearance];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame titles:(NSArray<NSString *> *)titles appearance:(CGRadioViewAppearance *)appearance
+{
+    self    = [super initWithFrame:frame];
     if (self) {
         
         _titles = titles;
@@ -61,6 +68,7 @@
         sliderView.positionType         = appearance.sliderViewPositionType;
         sliderView.backgroundColor      = appearance.sliderViewBackgroundColor;
         [sliderView cg_setupBorderWithWidth:appearance.sliderViewBorderWidth color:appearance.sliderViewBorderColor cornerRadius:appearance.sliderViewCornerRadius];
+        sliderView.hidden               = appearance.isHideSliderView;
         
         _radioView  = [[CGRadioView alloc] initWithFrame:frame appearance:appearance];
         
@@ -215,6 +223,11 @@
 
 - (CGRadioViewAppearance *)appearance
 {
+    if (_appearance != nil) {
+        return _appearance;
+    }
+    
+    _appearance = [CGRadioViewAppearance defaultRadioAppearance];
     return _appearance;
 }
 

@@ -11,6 +11,7 @@
 
 #import "UIView+CGAddConstraints.h"
 
+#import "CGRadioViewAppearance.h"
 #import "CGVerifyIOSVersionHeader.h"
 
 @interface CGRadioView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
@@ -21,6 +22,7 @@
 /** 当前选择的标题索引 */
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 
+@property (nonatomic, strong, readwrite) CGRadioViewAppearance *appearance;
 @end
 
 @implementation CGRadioView
@@ -45,7 +47,8 @@
         UICollectionViewFlowLayout *flowLayout  = [[UICollectionViewFlowLayout alloc] init];
         flowLayout.sectionInset                 = appearance.marginEdgeInsets;
         flowLayout.itemSize                     = appearance.itemSize;
-        flowLayout.minimumInteritemSpacing      = appearance.itemSpace;
+        flowLayout.minimumInteritemSpacing      = appearance.minimumInteritemSpacing;
+        flowLayout.minimumLineSpacing           = appearance.minimumLineSpacing;
         flowLayout.scrollDirection              = appearance.scrollDirection;
         
         [self setupLineType:appearance.lineBoxType color:appearance.lineColor length:appearance.lineLength];
@@ -62,6 +65,8 @@
         
         self.backgroundColor            = appearance.backgroundColor;
         _collectionView.backgroundColor = appearance.backgroundColor;
+        
+        _appearance                     = appearance;
     }
     return self;
 }
@@ -117,12 +122,10 @@
 {
     CGSize itemSize = CGSizeZero;
     
-    if ([self.dataSource respondsToSelector:@selector(radioView:sizeForIndexPath:)]) {
+    if (self.appearance.isAutoItemSize && [self.dataSource respondsToSelector:@selector(radioView:sizeForIndexPath:)]) {
         itemSize    = [self.dataSource radioView:self sizeForIndexPath:indexPath];
     }else {
-        if ([collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]) {
-            itemSize    = [(UICollectionViewFlowLayout *)collectionViewLayout itemSize];
-        }
+        itemSize    = self.appearance.itemSize;
     }
     
     return itemSize;
@@ -182,6 +185,9 @@
 /** 更新滑块，返回更新是否成功 */
 - (BOOL)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
+    if (self.appearance.isHideSliderView) {
+        return NO;
+    }
     
     UICollectionViewCell *beforeSelectedCell     = nil;
     UICollectionViewCell *currentSelectedCell   = nil;
@@ -218,7 +224,9 @@
 
 - (BOOL)setupSliderViewFrameWithCurrentSelectedCell:(UICollectionViewCell *)currentSelectedCell currentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedCell:(UICollectionViewCell *)beforeSelectedCell beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
-    
+    if (self.appearance.isHideSliderView) {
+        return NO;
+    }
     CGRadioSliderView *sliderView   = [self getCurrentRadioSliderView];
     
     if (!sliderView) {
@@ -232,8 +240,8 @@
         [_collectionView addSubview:sliderView];
     }
     
-    if (sliderView.hidden == YES) {
-        sliderView.hidden   = NO;
+    if (self.appearance.isHideSliderView !=  sliderView.hidden) {
+        sliderView.hidden   = self.appearance.isHideSliderView;
     }
         
     CGRect sliderViewFrame  = CGRectZero;

@@ -30,13 +30,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign)           UICollectionViewScrollDirection scrollDirection;
 
 //内部选择按钮设置
-/** 自动计算选择按钮 */
+/** 自动计算选择按钮,默认为YES */
 @property (nonatomic, assign)           BOOL                isAutoItemSize;
 @property (nonatomic, assign)           CGSize              itemSize;
+
 /** 选择按钮之间的间距 */
-@property (nonatomic, assign)           CGFloat             itemSpace;
+@property (nonatomic, assign)           CGFloat             itemSpace __deprecated_msg("itemSpace 已经舍弃，请使用minimumInteritemSpacing来进行替换");
+
+/** 选择按钮之间的间距 */
+@property (nonatomic, assign)           CGFloat             minimumInteritemSpacing;
+@property (nonatomic, assign)           CGFloat             minimumLineSpacing;
 
 //设置滑块
+@property (nonatomic, assign)           BOOL                isHideSliderView;
 @property (nullable, nonatomic, strong) UIColor         *   sliderViewBackgroundColor;
 @property (nonatomic, assign)           CGFloat             sliderViewCornerRadius;
 @property (nullable, nonatomic, strong) UIColor         *   sliderViewBorderColor;
@@ -63,6 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 设置滑块边框／圆角 */
 - (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius;
+
++ (instancetype)defaultRadioAppearance;
 @end
 
 NS_ASSUME_NONNULL_END

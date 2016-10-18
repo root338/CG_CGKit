@@ -8,6 +8,7 @@
 
 #import "CGTitleRadioCollectionViewCell.h"
 
+#import "UIView+CGCreateViews.h"
 #import "UIView+CGAddConstraints.h"
 #import "UIView+CGAddConstraintStatus.h"
 
@@ -16,6 +17,8 @@
 @interface CGTitleRadioCollectionViewCell ()
 {
     CGTitleRadioCellAppearance  *_appearance;
+    //是否已经设置过样式了
+    BOOL didSetupContentAppearance;
 }
 @property (nullable, nonatomic, strong, readwrite) UILabel *titleLabel;
 
@@ -69,8 +72,22 @@
 {
     _appearance                 = appearance;
     
-    self.marginEdgeInsets       = appearance.itemMarginEdgeInsets;
-    self.titleLabel.font        = appearance.titleFont;
+    if (!didSetupContentAppearance) {
+        
+        self.marginEdgeInsets       = appearance.itemMarginEdgeInsets;
+        self.titleLabel.font        = appearance.titleFont;
+        self.backgroundColor        = appearance.itemBackgroundColor;
+        self.backgroundView         = appearance.itemBackgroundView;
+        if (appearance.itemSelectedBackgroundView) {
+            self.selectedBackgroundView = appearance.self.itemSelectedBackgroundView;
+        }else if (appearance.itemSelectedBackgroundColor) {
+            
+            self.selectedBackgroundView = [UIView cg_createViewWithBackgroundColor:appearance.itemSelectedBackgroundColor];
+        }
+        
+        didSetupContentAppearance   = YES;
+    }
+    
     [self setupTitleLabelColor];
 }
 

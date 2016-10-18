@@ -10,11 +10,20 @@
 
 @implementation CGRadioViewAppearance
 
++ (instancetype)defaultRadioAppearance
+{
+    return [self new];
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
+        
+        _backgroundColor    = [UIColor clearColor];
         _scrollDirection    = UICollectionViewScrollDirectionHorizontal;
+        
+        _isAutoItemSize     = YES;
     }
     return self;
 }
@@ -60,6 +69,17 @@
 - (CGFloat)getRadioViewCompressedHeight
 {
     return self.itemSize.height + self.sliderViewHeight;
+}
+
+#pragma mark - 属性设置
+- (void)setItemSpace:(CGFloat)itemSpace
+{
+    self.minimumInteritemSpacing    = itemSpace;
+}
+
+- (CGFloat)itemSpace
+{
+    return self.minimumInteritemSpacing;
 }
 
 @end
