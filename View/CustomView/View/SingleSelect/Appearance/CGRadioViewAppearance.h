@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 //滑动视图的设置
 @property (nonatomic, assign)           UIEdgeInsets        marginEdgeInsets;
+/** 滑动视图滑动的方向, 默认 UICollectionViewScrollDirectionHorizontal */
+@property (nonatomic, assign)           UICollectionViewScrollDirection scrollDirection;
 
 //内部选择按钮设置
 /** 自动计算选择按钮 */

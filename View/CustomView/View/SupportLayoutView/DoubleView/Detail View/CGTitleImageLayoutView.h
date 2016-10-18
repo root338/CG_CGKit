@@ -10,10 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class CGMultilineLabel;
+
 @interface CGTitleImageLayoutView : CGDoubleLayoutBaseView
 
-@property (nonatomic, strong, readonly) UIImageView * imageView;
-@property (nonatomic, strong, readonly) UILabel     * titleLabel;
+@property (nonatomic, strong, readonly) UIImageView         * imageView;
+@property (nonatomic, strong, readonly) CGMultilineLabel    * titleLabel;
 
 /** 第一个视图为图像， 默认为NO */
 @property (nonatomic, assign) BOOL firstItemIsTitleLabel;

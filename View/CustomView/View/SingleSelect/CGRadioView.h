@@ -78,7 +78,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否关闭将选中的索引滑动到中间 */
 @property (nonatomic, assign) BOOL disableCurrentSelectedIndexToCenterHorizontalPosition;
 
-- (instancetype)initWithFrame:(CGRect)frame appearance:(CGRadioViewAppearance *)appearance;
+- (instancetype)initWithFrame:(CGRect)frame appearance:(CGRadioViewAppearance *)appearance NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 - (void)registerClassForCellWithReuseIdentifierClass:(Class)cellClass;
 - (void)registerNibForCellWithReuseIdentifierClass:(Class)cellClass;

@@ -27,6 +27,16 @@
 
 @synthesize currentSelectedIndex   = _currentSelectedIndex;
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    return [self initWithFrame:frame appearance:[CGRadioViewAppearance new]];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame appearance:(nonnull CGRadioViewAppearance *)appearance
 {
     self = [super initWithFrame:frame];
@@ -36,7 +46,7 @@
         flowLayout.sectionInset                 = appearance.marginEdgeInsets;
         flowLayout.itemSize                     = appearance.itemSize;
         flowLayout.minimumInteritemSpacing      = appearance.itemSpace;
-        flowLayout.scrollDirection              = UICollectionViewScrollDirectionHorizontal;
+        flowLayout.scrollDirection              = appearance.scrollDirection;
         
         [self setupLineType:appearance.lineBoxType color:appearance.lineColor length:appearance.lineLength];
         
@@ -44,6 +54,7 @@
         _collectionView.delegate    = self;
         _collectionView.dataSource  = self;
         _collectionView.showsHorizontalScrollIndicator  = NO;
+        _collectionView.showsVerticalScrollIndicator    = NO;
         
         [self addSubview:_collectionView];
         
@@ -182,20 +193,33 @@
         currentSelectedCell = [_collectionView cellForItemAtIndexPath:currentSelectedIndexPath];
     }
     
-    if (!currentSelectedCell) {
+    BOOL isResult   = currentSelectedCell == nil;
+    
+    CGRadioSliderView *sliderView   = [self getCurrentRadioSliderView];
+    if (sliderView.hidden != isResult) {
+        sliderView.hidden   = isResult;
+    }
+    
+    if (isResult) {
         return NO;
     }
     
     return [self setupSliderViewFrameWithCurrentSelectedCell:currentSelectedCell currentSelectedIndexPath:currentSelectedIndexPath beforeSelectedCell:beforeSelectedCell beforeSelectedIndexPath:beforeSelectedIndexPath];
 }
 
+- (__kindof CGRadioSliderView *)getCurrentRadioSliderView
+{
+    CGRadioSliderView *sliderView = self.sliderView;
+    //    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
+    //        sliderView  = [self.dataSource radioView:self sliderViewForIndex:currentSelectedIndexPath.row];
+    //    }
+    return sliderView;
+}
+
 - (BOOL)setupSliderViewFrameWithCurrentSelectedCell:(UICollectionViewCell *)currentSelectedCell currentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedCell:(UICollectionViewCell *)beforeSelectedCell beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
     
-    CGRadioSliderView *sliderView = self.sliderView;
-//    if ([self.dataSource respondsToSelector:@selector(radioView:sliderViewForIndex:)]) {
-//        sliderView  = [self.dataSource radioView:self sliderViewForIndex:currentSelectedIndexPath.row];
-//    }
+    CGRadioSliderView *sliderView   = [self getCurrentRadioSliderView];
     
     if (!sliderView) {
         return NO;
@@ -206,6 +230,10 @@
         [self sliderView:sliderView isUpdate:NO];
         
         [_collectionView addSubview:sliderView];
+    }
+    
+    if (sliderView.hidden == YES) {
+        sliderView.hidden   = NO;
     }
         
     CGRect sliderViewFrame  = CGRectZero;
