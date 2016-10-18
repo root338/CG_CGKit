@@ -10,6 +10,15 @@
 
 @implementation CGRadioViewAppearance
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _scrollDirection    = UICollectionViewScrollDirectionHorizontal;
+    }
+    return self;
+}
+
 - (void)setupLineBoxType:(LineBoxType)type color:(UIColor *)color width:(CGFloat)width
 {
     self.lineBoxType    = type;

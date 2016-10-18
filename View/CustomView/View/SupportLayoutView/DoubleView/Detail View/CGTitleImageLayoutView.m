@@ -7,15 +7,16 @@
 //
 
 #import "CGTitleImageLayoutView.h"
+#import "CGMultilineLabel.h"
 
 @interface CGTitleImageLayoutView ()
 {
     
 }
 
-@property (nonatomic, strong, readwrite) UIImageView * imageView;
+@property (nonatomic, strong, readwrite) UIImageView        * imageView;
 
-@property (nonatomic, strong, readwrite) UILabel     * titleLabel;
+@property (nonatomic, strong, readwrite) CGMultilineLabel   * titleLabel;
 
 @end
 
@@ -40,7 +41,7 @@
 - (void)initializationData
 {
     _imageView  = [[UIImageView alloc] init];
-    _titleLabel = [[UILabel alloc] init];
+    _titleLabel = [[CGMultilineLabel alloc] init];
     
     [self.contentView addSubview:_titleLabel];
     [self.contentView addSubview:_imageView];

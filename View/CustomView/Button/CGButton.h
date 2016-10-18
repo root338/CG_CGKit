@@ -43,7 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
 @property (nonatomic, assign) CGFloat titleLabelMaxWidth;
 
+@property (nullable, nonatomic, weak) NSLayoutConstraint *heightConstraint;
+@property (nullable, nonatomic, weak) NSLayoutConstraint *widthConstraint;
+
 - (CGSize)sizeThatFits:(CGSize)size;
+
 @end
 
 @interface CGButton (CGCreateButton)
