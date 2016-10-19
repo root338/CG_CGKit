@@ -133,7 +133,7 @@
 {
     CGTitleRadioCollectionViewCell *cell = [radioView dequeueReusableCellWithReuseIdentifierClass:[CGTitleRadioCollectionViewCell class] forIndexPath:indexPath];
     
-    [cell setupCollectionViewCellContentWithData:_appearance];
+    [cell setupCollectionViewCellContentWithData:_appearance.titleRadioCellAppearance];
     [cell.titleLabel setText:[self getTitleAtIndex:indexPath.row]];
     
     return cell;
@@ -164,7 +164,7 @@
 {
     if (!_cacheResueCell) {
         _cacheResueCell = [[CGTitleRadioCollectionViewCell alloc] initWithFrame:CGRectZero];
-        [_cacheResueCell setupCollectionViewCellContentWithData:_appearance];
+        [_cacheResueCell setupCollectionViewCellContentWithData:_appearance.titleRadioCellAppearance];
     }
     
     [_cacheResueCell.titleLabel setText:[self getTitleAtIndex:index]];

@@ -14,18 +14,35 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CGTitleRadioCellAppearance : CGBaseObject
 
 //内部选择按钮设置
-@property (nullable, nonatomic, strong) UIColor         *   titleNormalColor;
-@property (nullable, nonatomic, strong) UIColor         *   titleSelectedColor;
-@property (nullable, nonatomic, strong) UIColor         *   titleHighlightedColor;
-@property (nullable, nonatomic, strong) UIFont          *   titleFont;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   titleNormalColor;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   titleSelectedColor;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   titleHighlightedColor;
+@property (nullable, nonatomic, strong, readonly) UIFont          *   titleFont;
 
-@property (nonatomic, assign)           UIEdgeInsets        itemMarginEdgeInsets;
+@property (nonatomic, assign, readonly)           UIEdgeInsets        itemMarginEdgeInsets;
 
-@property (nullable, nonatomic, strong) UIColor         *   itemBackgroundColor;
-@property (nullable, nonatomic, strong) UIColor         *   itemSelectedBackgroundColor;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   itemBackgroundColor;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   itemSelectedBackgroundColor;
 
-@property (nullable, nonatomic, strong) UIView          *   itemBackgroundView;
-@property (nullable, nonatomic, strong) UIView          *   itemSelectedBackgroundView;
+@property (nullable, nonatomic, strong, readonly) UIView          *   itemBackgroundView;
+@property (nullable, nonatomic, strong, readonly) UIView          *   itemSelectedBackgroundView;
+
+@end
+
+@interface CGMutableTitleRadioCellAppearance : CGTitleRadioCellAppearance
+
+@property (nullable, nonatomic) UIColor         *   titleNormalColor;
+@property (nullable, nonatomic) UIColor         *   titleSelectedColor;
+@property (nullable, nonatomic) UIColor         *   titleHighlightedColor;
+@property (nullable, nonatomic) UIFont          *   titleFont;
+
+@property (nonatomic)           UIEdgeInsets        itemMarginEdgeInsets;
+
+@property (nullable, nonatomic) UIColor         *   itemBackgroundColor;
+@property (nullable, nonatomic) UIColor         *   itemSelectedBackgroundColor;
+
+@property (nullable, nonatomic) UIView          *   itemBackgroundView;
+@property (nullable, nonatomic) UIView          *   itemSelectedBackgroundView;
 
 @end
 

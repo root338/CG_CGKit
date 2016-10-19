@@ -6,7 +6,7 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import "CGTitleRadioCellAppearance.h"
+#import "CGBaseObject.h"
 
 #import "CGLineBoxTypeHeader.h"
 #import "CGRadioSliderViewHeader.h"
@@ -16,44 +16,43 @@ NS_ASSUME_NONNULL_BEGIN
 @class CGTitleRadioCellAppearance;
 
 /** 单选视图外观设置 */
-@interface CGRadioViewAppearance : CGTitleRadioCellAppearance
+@interface CGRadioViewAppearance : CGBaseObject
 
 //单选视图主视图外观设置
-@property (nullable, nonatomic, strong) UIColor         *   backgroundColor;
-@property (nonatomic, assign)           LineBoxType         lineBoxType;
-@property (nonatomic, assign)           CGFloat             lineLength;
-@property (nullable, nonatomic, strong) UIColor         *   lineColor;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   backgroundColor;
+@property (nonatomic, assign, readonly)           LineBoxType         lineBoxType;
+@property (nonatomic, assign, readonly)           CGFloat             lineLength;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   lineColor;
 
 //滑动视图的设置
-@property (nonatomic, assign)           UIEdgeInsets        marginEdgeInsets;
+@property (nonatomic, assign, readonly)           UIEdgeInsets        marginEdgeInsets;
 /** 滑动视图滑动的方向, 默认 UICollectionViewScrollDirectionHorizontal */
-@property (nonatomic, assign)           UICollectionViewScrollDirection scrollDirection;
+@property (nonatomic, assign, readonly)           UICollectionViewScrollDirection scrollDirection;
 
 //内部选择按钮设置
 /** 自动计算选择按钮,默认为YES */
-@property (nonatomic, assign)           BOOL                isAutoItemSize;
-@property (nonatomic, assign)           CGSize              itemSize;
+@property (nonatomic, assign, readonly)           BOOL                isAutoItemSize;
+@property (nonatomic, assign, readonly)           CGSize              itemSize;
 
 /** 选择按钮之间的间距 */
-@property (nonatomic, assign)           CGFloat             itemSpace __deprecated_msg("itemSpace 已经舍弃，请使用minimumInteritemSpacing来进行替换");
-
-/** 选择按钮之间的间距 */
-@property (nonatomic, assign)           CGFloat             minimumInteritemSpacing;
-@property (nonatomic, assign)           CGFloat             minimumLineSpacing;
+@property (nonatomic, assign, readonly)           CGFloat             minimumInteritemSpacing;
+@property (nonatomic, assign, readonly)           CGFloat             minimumLineSpacing;
 
 //设置滑块
-@property (nonatomic, assign)           BOOL                isHideSliderView;
-@property (nullable, nonatomic, strong) UIColor         *   sliderViewBackgroundColor;
-@property (nonatomic, assign)           CGFloat             sliderViewCornerRadius;
-@property (nullable, nonatomic, strong) UIColor         *   sliderViewBorderColor;
-@property (nonatomic, assign)           CGFloat             sliderViewBorderWidth;
-@property (nonatomic, assign)           CGFloat             sliderViewHeight;
-@property (nonatomic, assign)           CGFloat             sliderViewWidth;
+@property (nonatomic, assign, readonly)           BOOL                isHideSliderView;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   sliderViewBackgroundColor;
+@property (nonatomic, assign, readonly)           CGFloat             sliderViewCornerRadius;
+@property (nullable, nonatomic, strong, readonly) UIColor         *   sliderViewBorderColor;
+@property (nonatomic, assign, readonly)           CGFloat             sliderViewBorderWidth;
+@property (nonatomic, assign, readonly)           CGFloat             sliderViewHeight;
+@property (nonatomic, assign, readonly)           CGFloat             sliderViewWidth;
 
-@property (nonatomic, assign)           CGSliderViewPositionType sliderViewPositionType;
+@property (nonatomic, assign, readonly)           CGSliderViewPositionType sliderViewPositionType;
 
 /** 移动滑块是否动画执行 */
-@property (nonatomic, assign)           BOOL                moveSliderViewIsAnimation;
+@property (nonatomic, assign, readonly)           BOOL                moveSliderViewIsAnimation;
+
+@property (nullable, nonatomic, strong, readonly) CGTitleRadioCellAppearance *titleRadioCellAppearance;
 
 /** 获取单选视图最适高度 */
 - (CGFloat)getRadioViewCompressedHeight;
@@ -71,6 +70,30 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius;
 
 + (instancetype)defaultRadioAppearance;
+@end
+
+@interface CGMutableRadioViewAppearance : CGRadioViewAppearance
+
+@property (nullable, nonatomic) UIColor         *   backgroundColor;
+@property (nonatomic)           LineBoxType         lineBoxType;
+@property (nonatomic)           CGFloat             lineLength;
+@property (nullable, nonatomic) UIColor         *   lineColor;
+@property (nonatomic)           UIEdgeInsets        marginEdgeInsets;
+@property (nonatomic)           UICollectionViewScrollDirection scrollDirection;
+@property (nonatomic)           BOOL                isAutoItemSize;
+@property (nonatomic)           CGSize              itemSize;
+@property (nonatomic)           CGFloat             minimumInteritemSpacing;
+@property (nonatomic)           CGFloat             minimumLineSpacing;
+@property (nonatomic)           BOOL                isHideSliderView;
+@property (nullable, nonatomic) UIColor         *   sliderViewBackgroundColor;
+@property (nonatomic)           CGFloat             sliderViewCornerRadius;
+@property (nullable, nonatomic) UIColor         *   sliderViewBorderColor;
+@property (nonatomic)           CGFloat             sliderViewBorderWidth;
+@property (nonatomic)           CGFloat             sliderViewHeight;
+@property (nonatomic)           CGFloat             sliderViewWidth;
+@property (nonatomic)           CGSliderViewPositionType sliderViewPositionType;
+@property (nonatomic)           BOOL                moveSliderViewIsAnimation;
+@property (nullable, nonatomic) CGTitleRadioCellAppearance *titleRadioCellAppearance;
 @end
 
 NS_ASSUME_NONNULL_END
