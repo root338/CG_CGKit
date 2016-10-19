@@ -78,18 +78,28 @@
         
         self.marginEdgeInsets       = appearance.itemMarginEdgeInsets;
         self.titleLabel.font        = appearance.titleFont;
-        self.backgroundColor        = appearance.itemBackgroundColor;
-        self.backgroundView         = appearance.itemBackgroundView;
+        
+        if (appearance.itemBackgroundView) {
+            self.backgroundView         = appearance.itemBackgroundView;
+        }else if (appearance.itemBackgroundColor) {
+            self.backgroundColor        = appearance.itemBackgroundColor;
+        }
+        
         if (appearance.itemSelectedBackgroundView) {
+            
             self.selectedBackgroundView = appearance.self.itemSelectedBackgroundView;
         }else if (appearance.itemSelectedBackgroundColor) {
             
             self.selectedBackgroundView = [UIView cg_createViewWithBackgroundColor:appearance.itemSelectedBackgroundColor];
         }
         
+        self.titleLabel.textAlignment   = NSTextAlignmentLeft;
         if (appearance.separatorStyle != CGCellSeparatorStyleNone) {
             
-            
+            separatorView   = [UIView cg_createViewWithBackgroundColor:appearance.separatorColor];
+            [self.contentView addSubview:separatorView];
+            [separatorView cg_autoEdgesInsetsZeroToSuperviewExcludingEdge:CGLayoutEdgeTop];
+            [separatorView cg_autoDimension:CGDimensionHeight fixedLength:appearance.separatorHeight];
         }
         
         didSetupContentAppearance   = YES;

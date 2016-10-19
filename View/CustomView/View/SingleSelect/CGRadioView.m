@@ -196,9 +196,6 @@
 /** 更新滑块，返回更新是否成功 */
 - (BOOL)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
-    if (self.appearance.isHideSliderView) {
-        return NO;
-    }
     
     UICollectionViewCell *beforeSelectedCell     = nil;
     UICollectionViewCell *currentSelectedCell   = nil;
@@ -235,6 +232,13 @@
 
 - (BOOL)setupSliderViewFrameWithCurrentSelectedCell:(UICollectionViewCell *)currentSelectedCell currentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedCell:(UICollectionViewCell *)beforeSelectedCell beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {
+    if (!currentSelectedCell.isSelected) {
+        [currentSelectedCell setSelected:YES];
+    }
+    if (beforeSelectedCell.isSelected) {
+        [beforeSelectedCell setSelected:NO];
+    }
+    
     if (self.appearance.isHideSliderView) {
         return NO;
     }
@@ -268,13 +272,6 @@
     [UIView animateWithDuration:0.3 animations:^{
         sliderView.frame    = sliderViewFrame;
     }];
-    
-    if (!currentSelectedCell.isSelected) {
-        [currentSelectedCell setSelected:YES];
-    }
-    if (beforeSelectedCell.isSelected) {
-        [beforeSelectedCell setSelected:NO];
-    }
     
     if (!self.disableCurrentSelectedIndexToCenterHorizontalPosition) {
         [_collectionView scrollToItemAtIndexPath:currentSelectedIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
