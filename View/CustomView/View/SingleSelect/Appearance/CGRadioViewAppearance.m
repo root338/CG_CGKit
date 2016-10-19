@@ -45,6 +45,11 @@
 @property (nonatomic, assign, readwrite)           BOOL                moveSliderViewIsAnimation;
 
 @property (nullable, nonatomic, strong, readwrite) CGTitleRadioCellAppearance *titleRadioCellAppearance;
+
+/** item 的宽度等于父视图的宽度，默认NO */
+@property (nonatomic, assign, readwrite)           BOOL itemWidthEqualSuperViewWidth;
+/** item 的高度等于父视图的高度，默认NO */
+@property (nonatomic, assign, readwrite)           BOOL itemHeightWidthEqualSuperViewHeight;
 @end
 
 @implementation CGRadioViewAppearance
@@ -59,7 +64,6 @@
     self = [super init];
     if (self) {
         
-        _backgroundColor    = [UIColor clearColor];
         _scrollDirection    = UICollectionViewScrollDirectionHorizontal;
         
         _isAutoItemSize     = YES;
@@ -121,6 +125,15 @@
     return self.minimumInteritemSpacing;
 }
 
+- (UIColor *)backgroundColor
+{
+    if (_backgroundColor != nil) {
+        return _backgroundColor;
+    }
+    _backgroundColor    = [UIColor clearColor];
+    return _backgroundColor;
+}
+
 @end
 
 @implementation CGMutableRadioViewAppearance
@@ -145,5 +158,7 @@
 @dynamic sliderViewBackgroundColor;
 @dynamic moveSliderViewIsAnimation;
 @dynamic titleRadioCellAppearance;
+@dynamic itemWidthEqualSuperViewWidth;
+@dynamic itemHeightWidthEqualSuperViewHeight;
 
 @end

@@ -10,7 +10,6 @@
 #import "CGLineBoxTypeHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
-#define _LINE_WIDTH_SINGLE           (1.0 / [UIScreen mainScreen].scale)
 
 /**
  *  线框视图

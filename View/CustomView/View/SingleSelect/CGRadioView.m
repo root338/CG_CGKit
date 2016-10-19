@@ -125,7 +125,18 @@
     if (self.appearance.isAutoItemSize && [self.dataSource respondsToSelector:@selector(radioView:sizeForIndexPath:)]) {
         itemSize    = [self.dataSource radioView:self sizeForIndexPath:indexPath];
     }else {
-        itemSize    = self.appearance.itemSize;
+        
+        if (self.appearance.itemWidthEqualSuperViewWidth) {
+            itemSize.width  = collectionView.width;
+        }else {
+            itemSize.width  = self.appearance.itemSize.width;
+        }
+        
+        if (self.appearance.itemHeightWidthEqualSuperViewHeight) {
+            itemSize.height = collectionView.height;
+        }else {
+            itemSize.height = self.appearance.itemSize.height;
+        }
     }
     
     return itemSize;

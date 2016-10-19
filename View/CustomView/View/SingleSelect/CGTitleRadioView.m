@@ -64,11 +64,15 @@
         _isCacheCellsSize           = NO;
         _currentSelectedTitleIndex  = 0;
         
-        CGRadioSliderView *sliderView   = [[CGRadioSliderView alloc] init];
-        sliderView.positionType         = appearance.sliderViewPositionType;
-        sliderView.backgroundColor      = appearance.sliderViewBackgroundColor;
-        [sliderView cg_setupBorderWithWidth:appearance.sliderViewBorderWidth color:appearance.sliderViewBorderColor cornerRadius:appearance.sliderViewCornerRadius];
-        sliderView.hidden               = appearance.isHideSliderView;
+        CGRadioSliderView *sliderView   = nil;
+        if (!appearance.isHideSliderView) {
+            
+            sliderView                      = [[CGRadioSliderView alloc] init];
+            sliderView.positionType         = appearance.sliderViewPositionType;
+            sliderView.backgroundColor      = appearance.sliderViewBackgroundColor;
+            [sliderView cg_setupBorderWithWidth:appearance.sliderViewBorderWidth color:appearance.sliderViewBorderColor cornerRadius:appearance.sliderViewCornerRadius];
+            sliderView.hidden               = appearance.isHideSliderView;
+        }
         
         _radioView  = [[CGRadioView alloc] initWithFrame:frame appearance:appearance];
         

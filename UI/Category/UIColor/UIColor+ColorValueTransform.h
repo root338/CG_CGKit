@@ -47,6 +47,8 @@ typedef NS_ENUM(NSUInteger, KCG_16_ColorValueType) {
 NS_ASSUME_NONNULL_BEGIN
 @interface UIColor (ColorValueTransform)
 
++ (UIColor *)colorWithValueType:(KCG_16_ColorValueType)valueType;
++ (UIColor *)colorWithValueType:(KCG_16_ColorValueType)valueType alpha:(CGFloat)alpha;
 
 @end
 NS_ASSUME_NONNULL_END

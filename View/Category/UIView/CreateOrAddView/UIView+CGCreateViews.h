@@ -27,9 +27,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface UIView (CGCreateView)
-
-+ (instancetype)cg_createViewWithBackgroundColor:(UIColor *)backgroundColor;
-
-@end
 NS_ASSUME_NONNULL_END

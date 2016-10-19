@@ -10,7 +10,7 @@
 
 #import "CGAddSubviewsAppearance.h"
 
-#import "Value+Constant.h"
+#import "UIView+Constant.h"
 
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CG_CGAreaCalculate.h"
@@ -76,17 +76,6 @@
     calculateSize   =   CGSizeMake(width, height);
     
     return calculateSize;
-}
-
-@end
-
-@implementation UIView (CGCreateView)
-
-+ (instancetype)cg_createViewWithBackgroundColor:(UIColor *)backgroundColor
-{
-    UIView *view            = [[self alloc] initWithFrame:CGRectZero];
-    view.backgroundColor    = backgroundColor;
-    return view;
 }
 
 @end

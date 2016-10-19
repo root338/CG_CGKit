@@ -15,11 +15,9 @@
 #import "UIView+CGSearchView.h"
 #import "UIScrollView+CGSetupScrollProperty.h"
 
-#import "Value+Constant.h"
+#import "UIView+Constant.h"
 
 #import "CGPrintLogHeader.h"
-
-
 
 @interface CGKeyboardManager ()
 {

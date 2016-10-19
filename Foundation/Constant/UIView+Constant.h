@@ -8,7 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - 常量数值
+UIKIT_EXTERN const CGFloat            CGZeroFloatValue;
+
 #pragma mark - 简单自动布局常量值
 UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleAllMargin;
 
 UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
+
+@interface UIView (CGValueConstant)
+
+#if UIKIT_DEFINE_AS_PROPERTIES
+
+@property (class, nonatomic, readonly) CGFloat onePixlesForCGKitUIScreenScale;
+
+#else
+
++ (CGFloat)onePixlesForCGKitUIScreenScale;
+
+#endif
+
+@end

@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 自动计算选择按钮,默认为YES */
 @property (nonatomic, assign, readonly)           BOOL                isAutoItemSize;
 @property (nonatomic, assign, readonly)           CGSize              itemSize;
+/** item 的宽度等于父视图的宽度，默认NO */
+@property (nonatomic, assign, readonly)           BOOL itemWidthEqualSuperViewWidth;
+/** item 的高度等于父视图的高度，默认NO */
+@property (nonatomic, assign, readonly)           BOOL itemHeightWidthEqualSuperViewHeight;
 
 /** 选择按钮之间的间距 */
 @property (nonatomic, assign, readonly)           CGFloat             minimumInteritemSpacing;
@@ -52,6 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 移动滑块是否动画执行 */
 @property (nonatomic, assign, readonly)           BOOL                moveSliderViewIsAnimation;
 
+
+/**
+ 仅在使用 CGTitleRadioView 下有效
+ */
 @property (nullable, nonatomic, strong, readonly) CGTitleRadioCellAppearance *titleRadioCellAppearance;
 
 /** 获取单选视图最适高度 */
@@ -94,6 +102,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic)           CGSliderViewPositionType sliderViewPositionType;
 @property (nonatomic)           BOOL                moveSliderViewIsAnimation;
 @property (nullable, nonatomic) CGTitleRadioCellAppearance *titleRadioCellAppearance;
+
+@property (nonatomic)           BOOL itemWidthEqualSuperViewWidth;
+@property (nonatomic)           BOOL itemHeightWidthEqualSuperViewHeight;
+
 @end
 
 NS_ASSUME_NONNULL_END

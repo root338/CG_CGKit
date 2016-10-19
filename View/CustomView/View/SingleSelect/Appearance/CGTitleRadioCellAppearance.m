@@ -8,6 +8,8 @@
 
 #import "CGTitleRadioCellAppearance.h"
 
+#import "UIView+Constant.h"
+
 @interface CGTitleRadioCellAppearance ()
 
 @property (nullable, nonatomic, strong, readwrite) UIColor         *   titleNormalColor;
@@ -23,9 +25,24 @@
 @property (nullable, nonatomic, strong, readwrite) UIView          *   itemBackgroundView;
 @property (nullable, nonatomic, strong, readwrite) UIView          *   itemSelectedBackgroundView;
 
+@property (nonatomic, assign, readwrite)           CGCellSeparatorStyle  separatorStyle;
+@property (nullable, nonatomic, strong, readwrite) UIColor         *     separatorColor;
+@property (nonatomic, assign, readwrite)           UIEdgeInsets          separatorEdgeInsets;
+@property (nonatomic, assign, readwrite)           CGFloat               separatorHeight;
+@property (nonatomic, assign, readwrite) CGCellSeparatorIgnoreType       separatorIgnoreType;
 @end
 
 @implementation CGTitleRadioCellAppearance
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _separatorStyle     = CGCellSeparatorStyleNone;
+        _separatorHeight    = [UIView onePixlesForCGKitUIScreenScale];
+    }
+    return self;
+}
 
 @end
 
@@ -40,5 +57,10 @@
 @dynamic itemBackgroundView;
 @dynamic itemSelectedBackgroundColor;
 @dynamic itemSelectedBackgroundView;
+@dynamic separatorColor;
+@dynamic separatorStyle;
+@dynamic separatorEdgeInsets;
+@dynamic separatorHeight;
+@dynamic separatorIgnoreType;
 
 @end

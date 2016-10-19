@@ -15,5 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)cg_createView;
 
 + (instancetype)cg_createClearColorView;
+
++ (instancetype)cg_createViewWithBackgroundColor:(UIColor *)backgroundColor;
 @end
 NS_ASSUME_NONNULL_END

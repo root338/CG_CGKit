@@ -7,7 +7,7 @@
 //
 
 #import "UIImage+CGDrawIcon.h"
-#import "Value+Constant.h"
+#import "UIView+Constant.h"
 #import "CGAngleRadianHeader.h"
 #import "UIView+CG_CGAreaCalculate.h"
 

@@ -17,9 +17,13 @@
 
 + (instancetype)cg_createClearColorView
 {
-    UIView *view = [self cg_createView];
-    view.backgroundColor = [UIColor clearColor];
-    
+    return [self cg_createViewWithBackgroundColor:[UIColor clearColor]];
+}
+
++ (instancetype)cg_createViewWithBackgroundColor:(UIColor *)backgroundColor
+{
+    UIView *view            = [[self alloc] initWithFrame:CGRectZero];
+    view.backgroundColor    = backgroundColor;
     return view;
 }
 @end

@@ -8,7 +8,7 @@
 
 #import "CGTitleRadioCollectionViewCell.h"
 
-#import "UIView+CGCreateViews.h"
+#import "UIView+CGCreate.h"
 #import "UIView+CGAddConstraints.h"
 #import "UIView+CGAddConstraintStatus.h"
 
@@ -19,6 +19,8 @@
     CGTitleRadioCellAppearance  *_appearance;
     //是否已经设置过样式了
     BOOL didSetupContentAppearance;
+    
+    UIView  *separatorView;
 }
 @property (nullable, nonatomic, strong, readwrite) UILabel *titleLabel;
 
@@ -83,6 +85,11 @@
         }else if (appearance.itemSelectedBackgroundColor) {
             
             self.selectedBackgroundView = [UIView cg_createViewWithBackgroundColor:appearance.itemSelectedBackgroundColor];
+        }
+        
+        if (appearance.separatorStyle != CGCellSeparatorStyleNone) {
+            
+            
         }
         
         didSetupContentAppearance   = YES;

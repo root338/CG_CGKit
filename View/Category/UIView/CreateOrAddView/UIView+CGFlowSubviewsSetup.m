@@ -12,7 +12,7 @@
 #import "CGCreateSubviewsFlowLayoutConfigModel.h"
 #import "CGUpdateSubviewsFlowLayoutConfigModel.h"
 
-#import "Value+Constant.h"
+#import "UIView+Constant.h"
 
 #import "UIView+CGSetupFrame.h"
 
