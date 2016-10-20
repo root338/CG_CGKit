@@ -24,11 +24,11 @@
 
 @implementation CGUIWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(nonnull CGWebView *)targetObj
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewProxyDelegate
 {
     CGUIWebViewDelegateManager *manager = [[self alloc] init];
     manager.delegate                    = delegate;
-    manager.targetObject                = targetObj;
+    manager.webViewPrivateProxyDelegate = webViewProxyDelegate;
     return manager;
 }
 

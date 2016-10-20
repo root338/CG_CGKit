@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CGWebViewPrivateProxyDelegate.h"
 
 @import UIKit;
 
@@ -18,11 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CGUIWebViewDelegateManager : NSObject<UIWebViewDelegate>
 
 @property (nonatomic, weak) id<CGWebViewDelegate> delegate;
-@property (nonatomic, weak) CGWebView *targetObject;
 
+@property (nonatomic, weak) id<CGWebViewPrivateProxyDelegate> webViewPrivateProxyDelegate;
 @property (nonatomic, readonly) id<UIWebViewDelegate> webViewProxyDelegate;
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate targetObj:(CGWebView *)targetObj;
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewProxyDelegate;
 
 - (void)resetWebViewLoad;
 @end

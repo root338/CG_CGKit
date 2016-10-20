@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WKWebViewConfiguration, WKWebView;
+@class WKWebViewConfiguration, WKWebView, WKUIDelegate;
 @protocol WKNavigationDelegate;
 
 /** webView加载的类型 */
@@ -40,6 +40,14 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 @property (nullable, nonatomic, weak) id<UIWebViewDelegate> delegateForUIWebView;
 /** 当加载WKWebView时，自定义实现代理类时设置 */
 @property (nullable, nonatomic, weak) id<WKNavigationDelegate> delegateForWKWebView;
+/** 当加载WKWebView时，自定义实现代理类时设置 */
+@property (nullable, nonatomic, weak) id<WKUIDelegate *> UIDelegateForWKWebView;
+
+#pragma mark - 使用WKWebView下的一些设置选项
+//WKWebView下，提示框／警告框／输入框，不会自动弹出，需要原生自行实现WKUIDelegate的协议方法来实现
+//tel:xxx 拨打电话时也不会自动调用
+/** 关闭拨打电话的处理 */
+@property (nonatomic, assign) BOOL disableHandleCallPhoneLink;
 
 //#pragma mark - 使用UIWebView类时的方法
 //

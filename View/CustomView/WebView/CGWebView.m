@@ -14,13 +14,15 @@
 #import "CGUIWebViewDelegateManager.h"
 #import "CGWKWebViewDelegateManager.h"
 
+#import "CGWebViewPrivateProxyDelegate.h"
+
 #import "UIWebView+CGValue.h"
 
 #import "CGPrintLogHeader.h"
 
 @import WebKit;
 
-@interface CGWebView<ObjectType> ()<UIWebViewDelegate>
+@interface CGWebView<ObjectType> ()<CGWebViewPrivateProxyDelegate>
 {
     CGUIWebViewDelegateManager  *_delegateManagerForUIWebView;
     CGWKWebViewDelegateManager  *_delegateManagerForWKWebView;
@@ -131,8 +133,10 @@
     }else if (self.currentWebViewType == CGWebViewTypeWKWebView) {
         
         _delegateManagerForWKWebView            = [CGWKWebViewDelegateManager createManagerWithDelegate:self.delegate targetObj:self];
+        
         _delegateManagerForWKWebView.webView    = self.webViewForWKWebView;
         self.webViewForWKWebView.navigationDelegate = _delegateManagerForWKWebView;
+        self.webViewForWKWebView.UIDelegate         = _delegateManagerForWKWebView;
     }
 }
 
@@ -291,6 +295,12 @@
 {
     _delegateForWKWebView       = delegateForWKWebView;
     self.webViewForWKWebView.navigationDelegate = delegateForWKWebView;
+}
+
+- (void)setUIDelegateForWKWebView:(id)UIDelegateForWKWebView
+{
+    _UIDelegateForWKWebView             = UIDelegateForWKWebView;
+    self.webViewForWKWebView.UIDelegate = UIDelegateForWKWebView;
 }
 
 #pragma mark - 兼容实例属性
