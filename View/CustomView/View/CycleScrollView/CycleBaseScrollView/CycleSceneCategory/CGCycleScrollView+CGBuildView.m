@@ -109,6 +109,9 @@
 
 - (NSInteger)cg_getViewIndexWithIndex:(NSInteger)paramViewIndex
 {
+    if (self.totalViewNumber <= 0) {
+        return 0;
+    }
     if (paramViewIndex >= 0 && paramViewIndex < self.totalViewNumber) {
         return paramViewIndex;
     }

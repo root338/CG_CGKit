@@ -9,6 +9,7 @@
 #import "NSObject+CGObjectToDictionary.h"
 
 #import <objc/runtime.h>
+#import "CGPrintLogHeader.h"
 
 @implementation NSObject (CGObjectToDictionary)
 
@@ -37,7 +38,17 @@
 
 - (nullable NSDictionary *)cg_objectToDictionaryWithTargetClass:(Class)targetClass
 {
-    if ([self cg_objectToDictionaryFilterWithClass:targetClass]) {
+    BOOL filterTarget   = YES;
+    
+    id<CGObjectToDictionaryFilterDelegate> delegate    = nil;
+    if ([self conformsToProtocol:@protocol(CGObjectToDictionaryFilterDelegate)]) {
+        delegate    = (id<CGObjectToDictionaryFilterDelegate>)self;
+    }
+    
+    if ([delegate respondsToSelector:@selector(cg_objectToDictionaryFilterWithClass:)]) {
+        filterTarget    = [delegate cg_objectToDictionaryFilterWithClass:targetClass];
+    }
+    if (filterTarget) {
         
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         
@@ -58,6 +69,7 @@
                 value   = [self valueForKey:propertyName];
             } @catch (NSException *exception) {
                 
+                CGErrorLog(@"%@", exception);
             } @finally {
                 
             }
@@ -66,7 +78,10 @@
                 continue;
             }
             
-            BOOL isFlag = [self cg_objectToDictionaryFilterWithKey:propertyName value:value];
+            BOOL isFlag = YES;
+            if ([delegate respondsToSelector:@selector(cg_objectToDictionaryFilterWithKey:value:)]) {
+                isFlag  = [delegate cg_objectToDictionaryFilterWithKey:propertyName value:value];
+            }
             
             if (isFlag) {
                 [dic setObject:value forKey:propertyName];
@@ -79,13 +94,4 @@
     }
 }
 
-- (BOOL)cg_objectToDictionaryFilterWithKey:(NSString *)key value:(id)value
-{
-    return YES;
-}
-
-- (BOOL)cg_objectToDictionaryFilterWithClass:(Class)targetClass
-{
-    return YES;
-}
 @end

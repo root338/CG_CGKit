@@ -9,6 +9,32 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+/** 转换的过滤方法 */
+@protocol CGObjectToDictionaryFilterDelegate <NSObject>
+
+@optional
+/**
+ *  转换过程中的过滤不必要的key值方法
+ *
+ *  @param key   对象的属性名称
+ *  @param value 相对属性名的值
+ *
+ *  @return 返回是否添加该key值 YES（添加）
+ */
+- (BOOL)cg_objectToDictionaryFilterWithKey:(NSString *)key value:(id)value;
+
+/**
+ *  转换过程中的过滤方法，当前类下的属性是否需要添加到字典中
+ *
+ *  @param targetClass  对象类的名称
+ *
+ *  @return 返回是否添加该key值 YES（添加）
+ */
+- (BOOL)cg_objectToDictionaryFilterWithClass:(Class)targetClass;
+
+@end
+
 /** 对象转字典 */
 @interface NSObject (CGObjectToDictionary)
 
@@ -27,26 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSDictionary *)cg_allObjectToDictionary;
 
-/**
- *  转换过程中的过滤方法
- *  @warning 子类可以重写该方法过滤不必要的key值
- *
- *  @param key   对象的属性名称
- *  @param value 相对属性名的值
- *
- *  @return 返回是否添加该key值 YES（添加）
- */
-- (BOOL)cg_objectToDictionaryFilterWithKey:(NSString *)key value:(id)value;
-
-/**
- *  转换过程中的过滤方法
- *  @warning 子类可以重写该方法过滤不必要的key值
- *
- *  @param targetClass  对象类的名称
- *
- *  @return 返回是否添加该key值 YES（添加）
- */
-- (BOOL)cg_objectToDictionaryFilterWithClass:(Class)targetClass;
 @end
 
 NS_ASSUME_NONNULL_END
