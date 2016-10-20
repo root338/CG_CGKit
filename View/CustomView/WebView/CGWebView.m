@@ -94,6 +94,7 @@
         case CGWebViewTypeUIWebView:
         {
             webView = [self createUIWebViewWithFrame:frame];
+            
         }
             break;
         default:
@@ -106,7 +107,8 @@
 
 - (UIWebView *)createUIWebViewWithFrame:(CGRect)frame
 {
-    return [[UIWebView alloc] initWithFrame:frame];
+    UIWebView *webView  = [[UIWebView alloc] initWithFrame:frame];
+    return webView;
 }
 
 - (WKWebView *)createWKWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration

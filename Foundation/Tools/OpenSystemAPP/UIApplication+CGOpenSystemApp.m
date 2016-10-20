@@ -74,15 +74,20 @@
         phoneStr = [NSString stringWithFormat:@"tel:%@", phoneStr];
         NSURL *callPhoneURL = [NSURL URLWithString:phoneStr];
         
-        UIApplication *application = [UIApplication sharedApplication];
-        if ((isOpen = [application canOpenSystemAppURL:callPhoneURL])) {
-            isOpen = [application openSystemAppURL:callPhoneURL];
-        }
-        
+        isOpen  = [self callPhoneWithURL:callPhoneURL];
     }
     return isOpen;
 }
 
++ (BOOL)callPhoneWithURL:(NSURL *)callPhoneURL
+{
+    BOOL isOpen;
+    UIApplication *application = [UIApplication sharedApplication];
+    if ((isOpen = [application canOpenSystemAppURL:callPhoneURL])) {
+        isOpen = [application openSystemAppURL:callPhoneURL];
+    }
+    return isOpen;
+}
 
 @end
 

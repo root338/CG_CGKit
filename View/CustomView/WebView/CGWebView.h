@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
     CGWebViewTypeWKWebView,
 };
 
+
 @interface CGWebView<ObjectType> : UIView
 
 //#if __IPHONE_OS_VERSION_MIN_REQUIRED
