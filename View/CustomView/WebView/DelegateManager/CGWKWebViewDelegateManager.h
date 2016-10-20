@@ -19,13 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 //WKWebView 相关代理方法设置
 @interface CGWKWebViewDelegateManager : NSObject<WKNavigationDelegate, WKUIDelegate>
 
-@property (nonatomic, weak) WKWebView *webView;
-
 @property (nonatomic, weak) id<CGWebViewDelegate> delegate;
 
-@property (nonatomic, weak) id<CGWebViewPrivateProxyDelegate> webViewProxyDelegate;
+@property (nonatomic, weak) id<CGWebViewPrivateProxyDelegate> webViewPrivateProxyDelegate;
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewProxyDelegate;
+
+
+/** 开启webView的属性值监听 */
+- (void)openWebViewMonitor;
+/** 关闭webView的属性值监听 */
+- (void)closeWebViewMonitor;
+
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate;
 @end
 
 NS_ASSUME_NONNULL_END

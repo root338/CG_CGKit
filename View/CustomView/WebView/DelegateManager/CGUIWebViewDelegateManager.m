@@ -20,16 +20,23 @@
     NJKWebViewProgress  *progressProxy;
 }
 
+@property (nonatomic, readonly) CGWebView *webView;
+
 @end
 
 @implementation CGUIWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewProxyDelegate
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(nonnull id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate
 {
     CGUIWebViewDelegateManager *manager = [[self alloc] init];
     manager.delegate                    = delegate;
-    manager.webViewPrivateProxyDelegate = webViewProxyDelegate;
+    manager.webViewPrivateProxyDelegate = webViewPrivateProxyDelegate;
     return manager;
+}
+
+- (CGWebView *)webView
+{
+    return self.webViewPrivateProxyDelegate.webViewForPrivateObject;
 }
 
 #pragma mark - UIWebViewDelegate
@@ -37,10 +44,10 @@
 {
     BOOL result = YES;
     if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
-        result  = [self.delegate webView:self.targetObject shouldStartLoadWithRequest:request navigationType:navigationType];
+        result  = [self.delegate webView:self.webView shouldStartLoadWithRequest:request navigationType:navigationType];
     }
     if (result == NO && [self.delegate respondsToSelector:@selector(webViewDidCancelRequest:)]) {
-        [self.delegate webViewDidCancelRequest:self.targetObject];
+        [self.delegate webViewDidCancelRequest:self.webView];
     }
     return result;
 }
@@ -48,21 +55,21 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
-        [self.delegate webViewDidStartLoad:self.targetObject];
+        [self.delegate webViewDidStartLoad:self.webView];
     }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [self.delegate webViewDidFinishLoad:self.targetObject];
+        [self.delegate webViewDidFinishLoad:self.webView];
     }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
-        [self.delegate webView:self.targetObject didFailLoadWithError:error];
+        [self.delegate webView:self.webView didFailLoadWithError:error];
     }
 }
 
@@ -70,15 +77,15 @@
 - (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
 {
     if ([self.delegate respondsToSelector:@selector(webView:updateProgress:)]) {
-        [self.delegate webView:self.targetObject updateProgress:progress];
+        [self.delegate webView:self.webView updateProgress:progress];
     }
     
-    UIWebView *webView  = self.targetObject.webView;
+    UIWebView *webView  = self.webView.webView;
     NSString *title = webView.title;
     if (title.length > 0) {
         if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
             
-            [self.delegate webView:self.targetObject webViewTitle:title];
+            [self.delegate webView:self.webView webViewTitle:title];
         }
     }
 }

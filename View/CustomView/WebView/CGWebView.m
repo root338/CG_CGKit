@@ -33,8 +33,6 @@
 @property (nonatomic, assign, readwrite) CGWebViewType webViewType;
 @property (nonatomic, readonly) CGWebViewType currentWebViewType;
 
-@property (nonatomic, readonly) UIWebView *webViewForUIWebView;
-@property (nonatomic, readonly) WKWebView *webViewForWKWebView;
 @end
 
 @implementation CGWebView
@@ -127,17 +125,31 @@
 {
     if (self.currentWebViewType == CGWebViewTypeUIWebView) {
         
-        _delegateManagerForUIWebView    = [CGUIWebViewDelegateManager createManagerWithDelegate:self.delegate targetObj:self];
-        self.webViewForUIWebView.delegate   = _delegateManagerForUIWebView.webViewProxyDelegate;
+        if (_delegateManagerForUIWebView == nil) {
+            _delegateManagerForUIWebView    = [CGUIWebViewDelegateManager createManagerWithDelegate:self.delegate webViewPrivateProxyDelegate:self];
+            self.webViewForUIWebView.delegate   = _delegateManagerForUIWebView.webViewProxyDelegate;
+            
+        }else {
+            _delegateManagerForUIWebView.delegate   = self.delegate;
+        }
         
     }else if (self.currentWebViewType == CGWebViewTypeWKWebView) {
         
-        _delegateManagerForWKWebView            = [CGWKWebViewDelegateManager createManagerWithDelegate:self.delegate targetObj:self];
-        
-        _delegateManagerForWKWebView.webView    = self.webViewForWKWebView;
-        self.webViewForWKWebView.navigationDelegate = _delegateManagerForWKWebView;
-        self.webViewForWKWebView.UIDelegate         = _delegateManagerForWKWebView;
+        if (_delegateManagerForWKWebView == nil) {
+            
+            _delegateManagerForWKWebView            = [CGWKWebViewDelegateManager createManagerWithDelegate:self.delegate webViewPrivateProxyDelegate:self];
+            self.webViewForWKWebView.navigationDelegate = _delegateManagerForWKWebView;
+            [_delegateManagerForWKWebView openWebViewMonitor];
+        }else {
+            _delegateManagerForWKWebView.delegate   = self.delegate;
+        }
     }
+}
+
+#pragma mark - CGWebViewPrivateProxyDelegate
+- (CGWebView *)webViewForPrivateObject
+{
+    return self;
 }
 
 - (void)dealloc
@@ -289,12 +301,14 @@
 {
     _delegateForUIWebView               = delegateForUIWebView;
     self.webViewForUIWebView.delegate   = delegateForUIWebView;
+    _delegateManagerForUIWebView        = nil;
 }
 
 - (void)setDelegateForWKWebView:(id<WKNavigationDelegate>)delegateForWKWebView
 {
-    _delegateForWKWebView       = delegateForWKWebView;
+    _delegateForWKWebView                       = delegateForWKWebView;
     self.webViewForWKWebView.navigationDelegate = delegateForWKWebView;
+    _delegateManagerForWKWebView                = nil;
 }
 
 - (void)setUIDelegateForWKWebView:(id)UIDelegateForWKWebView

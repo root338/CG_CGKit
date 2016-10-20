@@ -1,31 +1,28 @@
 //
-//  CGUIWebViewDelegateManager.h
+//  CGWKWebViewUIDelegateManager.h
 //  TestCG_CGKit
 //
-//  Created by DY on 16/10/8.
+//  Created by apple on 16/10/20.
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "CGBaseObject.h"
 #import "CGWebViewPrivateProxyDelegate.h"
 
-@import UIKit;
+@import WebKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGWebView;
 @protocol CGWebViewDelegate;
 
-@interface CGUIWebViewDelegateManager : NSObject<UIWebViewDelegate>
+@interface CGWKWebViewUIDelegateManager : CGBaseObject<WKUIDelegate>
 
 @property (nonatomic, weak) id<CGWebViewDelegate> delegate;
-
 @property (nonatomic, weak) id<CGWebViewPrivateProxyDelegate> webViewPrivateProxyDelegate;
-@property (nonatomic, readonly) id<UIWebViewDelegate> webViewProxyDelegate;
 
 + (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate;
 
-- (void)resetWebViewLoad;
 @end
 
 NS_ASSUME_NONNULL_END

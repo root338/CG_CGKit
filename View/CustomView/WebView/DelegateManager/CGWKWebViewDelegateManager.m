@@ -8,6 +8,8 @@
 
 #import "CGWKWebViewDelegateManager.h"
 
+#import "CGWebView.h"
+
 #import "EXTKeyPathCoding.h"
 #import "CGWebViewDelegate.h"
 
@@ -17,16 +19,23 @@
 {
     BOOL monitorMark;
 }
+
+@property (nonatomic, readonly) CGWebView *webView;
 @end
 
 @implementation CGWKWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewProxyDelegate
++ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(nonnull id)webViewPrivateProxyDelegate
 {
     CGWKWebViewDelegateManager *manager = [self new];
     manager.delegate                    = delegate;
-    manager.targetObject                = targetObj;
+    manager.webViewPrivateProxyDelegate = webViewPrivateProxyDelegate;
     return manager;
+}
+
+- (CGWebView *)webView
+{
+    return self.webViewPrivateProxyDelegate.webViewForPrivateObject;
 }
 
 #pragma mark - WKNavigationDelegate
@@ -57,7 +66,7 @@
                 type    = UIWebViewNavigationTypeOther;
                 break;
         }
-        result  = [self.delegate webView:self.targetObject shouldStartLoadWithRequest:request navigationType:type];
+        result  = [self.delegate webView:self.webView shouldStartLoadWithRequest:request navigationType:type];
     }
     
     WKNavigationActionPolicy policy;
@@ -68,7 +77,7 @@
         
         policy  = WKNavigationActionPolicyCancel;
         if ([self.delegate respondsToSelector:@selector(webViewDidCancelRequest:)]) {
-            [self.delegate webViewDidCancelRequest:self.targetObject];
+            [self.delegate webViewDidCancelRequest:self.webView];
         }
     }
     
@@ -77,61 +86,38 @@
     }
 }
 
-- (BOOL)handleRequest
+//- (BOOL)handleRequest
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
     if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
-        [self.delegate webViewDidStartLoad:self.targetObject];
+        [self.delegate webViewDidStartLoad:self.webView];
     }
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [self.delegate webViewDidFinishLoad:self.targetObject];
+        [self.delegate webViewDidFinishLoad:self.webView];
     }
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
-        [self.delegate webView:self.targetObject didFailLoadWithError:error];
+        [self.delegate webView:self.webView didFailLoadWithError:error];
     }
-}
-
-#pragma mark - WKUIDelegate
-- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler
-{
-    
-}
-
-// JS端调用confirm函数时，会触发此方法
-// 通过message可以拿到JS端所传的数据
-// 在iOS端显示原生alert得到YES/NO后
-// 通过completionHandler回调给JS端
-- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(nonnull NSString *)message initiatedByFrame:(nonnull WKFrameInfo *)frame completionHandler:(nonnull void (^)(BOOL))completionHandler
-{
-    
-}
-
-// JS端调用prompt函数时，会触发此方法
-// 要求输入一段文本
-// 在原生输入得到文本内容后，通过completionHandler回调给JS
-- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
-{
-    
 }
 
 #pragma mark - 设置监听
 - (NSString *)webViewTitleKeyPath
 {
-    return @keypath(_webView.title);
+    return @keypath(self.webView.webViewForWKWebView.title);
 }
 
 - (NSString *)webViewProgressKeyPath
 {
-    return @keypath(_webView.estimatedProgress);
+    return @keypath(self.webView.webViewForWKWebView.estimatedProgress);
 }
 
 - (void)openWebViewMonitor
@@ -159,13 +145,13 @@
     if ([keyPath isEqualToString:[self webViewTitleKeyPath]]) {
         
         if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
-            [self.delegate webView:self.targetObject webViewTitle:change[NSKeyValueChangeNewKey]];
+            [self.delegate webView:self.webView webViewTitle:change[NSKeyValueChangeNewKey]];
         }
     }else if ([keyPath isEqualToString:[self webViewProgressKeyPath]]) {
         
         CGFloat progress    = [change[NSKeyValueChangeNewKey] floatValue];
         if ([self.delegate respondsToSelector:@selector(webView:updateProgress:)]) {
-            [self.delegate webView:self.targetObject updateProgress:progress];
+            [self.delegate webView:self.webView updateProgress:progress];
         }
     }
 }
@@ -174,18 +160,6 @@
 {
     if (monitorMark) {
         [self closeWebViewMonitor];
-    }
-}
-
-#pragma mark - 设置属性
-- (void)setWebView:(WKWebView *)webView
-{
-    if (_webView != nil) {
-        [self closeWebViewMonitor];
-    }
-    _webView    = webView;
-    if (webView != nil) {
-        [self openWebViewMonitor];
     }
 }
 

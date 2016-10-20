@@ -11,8 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WKWebViewConfiguration, WKWebView, WKUIDelegate;
-@protocol WKNavigationDelegate;
+@class WKWebViewConfiguration, WKWebView, CGWebViewConfig;
+@protocol WKNavigationDelegate, WKUIDelegate;
 
 /** webView加载的类型 */
 typedef NS_ENUM(NSInteger, CGWebViewType) {
@@ -31,6 +31,9 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 @property (nonatomic, strong, readonly) IBOutlet ObjectType webView;
 
+@property (nonatomic, readonly) UIWebView *webViewForUIWebView;
+@property (nonatomic, readonly) WKWebView *webViewForWKWebView;
+
 /** 加载的webView类型 */
 @property (nonatomic, assign, readonly) CGWebViewType webViewType;
 
@@ -41,17 +44,18 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 /** 当加载WKWebView时，自定义实现代理类时设置 */
 @property (nullable, nonatomic, weak) id<WKNavigationDelegate> delegateForWKWebView;
 /** 当加载WKWebView时，自定义实现代理类时设置 */
-@property (nullable, nonatomic, weak) id<WKUIDelegate *> UIDelegateForWKWebView;
+@property (nullable, nonatomic, weak) id<WKUIDelegate> UIDelegateForWKWebView;
 
-#pragma mark - 使用WKWebView下的一些设置选项
 //WKWebView下，提示框／警告框／输入框，不会自动弹出，需要原生自行实现WKUIDelegate的协议方法来实现
-//tel:xxx 拨打电话时也不会自动调用
-/** 关闭拨打电话的处理 */
-@property (nonatomic, assign) BOOL disableHandleCallPhoneLink;
+
+@property (nullable, nonatomic, strong) CGWebViewConfig *webViewConfig;
 
 //#pragma mark - 使用UIWebView类时的方法
 //
 //@property (nullable, nonatomic, weak) id<UIWebViewDelegate> proxyDelegateForUIWebView;
+
+/** 在使用WKWebView时，js弹出提示框，警告框，输入框时需要原生处理，此UIViewController指在设置UIAlertController 时弹出使用 */
+@property (nullable, nonatomic, weak) UIViewController *viewController;
 
 //webKit是否可用
 + (BOOL)isWebKitAvailable;
