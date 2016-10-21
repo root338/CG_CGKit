@@ -50,6 +50,20 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
     return paramSuperview;
 }
 
+- (nullable __kindof UIViewController *)cg_searchViewControllerOfLate
+{
+    return [self cg_searchViewControllerWithClass:[UIViewController class]];
+}
+
+- (nullable __kindof UIViewController *)cg_searchViewControllerWithClass:(Class)className
+{
+    UIResponder *responder  = [self nextResponder];
+    while (responder && ![responder isKindOfClass:[className class]]) {
+        responder   = [responder nextResponder];
+    }
+    return (UIViewController *)responder;
+}
+
 + (nullable __kindof UIView *)cg_searchFirstResponder
 {
     UIWindow *window = [[UIApplication sharedApplication].delegate window];

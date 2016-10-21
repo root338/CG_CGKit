@@ -10,8 +10,15 @@
 
 #import "CGWebView.h"
 
+#import "UIView+CGSearchView.h"
+
+#import "UIViewController+CGAlert.h"
+
 #import "EXTKeyPathCoding.h"
 #import "CGWebViewDelegate.h"
+#import "NSString+VerificationString.h"
+
+#import "UIApplication+CGOpenSystemApp.h"
 
 #import "CGPrintLogHeader.h"
 
@@ -43,8 +50,12 @@
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
-        NSURLRequest *request   = navigationAction.request;
+    NSURLRequest *request   = navigationAction.request;
+    
+    result  = [self webView:webView handleNotHTTPPrefixRequest:request];
+    
+    if (result && [self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        
         UIWebViewNavigationType type;
         switch (navigationAction.navigationType) {
             case WKNavigationTypeLinkActivated:
@@ -86,7 +97,28 @@
     }
 }
 
-//- (BOOL)handleRequest
+- (BOOL)webView:(WKWebView *)webView handleNotHTTPPrefixRequest:(NSURLRequest *)request
+{
+    BOOL isResult   = YES;
+    NSString *requestURLStr = [request.URL absoluteString];
+    if ([requestURLStr hasPrefix:@"tel:"]) {
+        
+        NSString *phoneStr  = [requestURLStr substringFromIndex:4];
+        UIViewController *viewController    = self.webView.viewController;
+        if (viewController == nil) {
+            viewController  = [self.webView cg_searchViewControllerOfLate];
+        }
+        
+        [viewController showAlertViewWithTitle:nil message:phoneStr cancelTitle:@"取消" otherTitle:@"呼叫" resultCallback:^(BOOL isCancel) {
+            if (!isCancel) {
+                [UIApplication callPhoneWithURL:request.URL];
+            }
+        }];
+        
+        isResult    = NO;
+    }
+    return isResult;
+}
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
@@ -112,12 +144,13 @@
 #pragma mark - 设置监听
 - (NSString *)webViewTitleKeyPath
 {
-    return @keypath(self.webView.webViewForWKWebView.title);
+    return @keypath(self.webView.webViewForWKWebView, title);
 }
 
 - (NSString *)webViewProgressKeyPath
 {
-    return @keypath(self.webView.webViewForWKWebView.estimatedProgress);
+    
+    return @keypath(self.webView.webViewForWKWebView, estimatedProgress);
 }
 
 - (void)openWebViewMonitor
@@ -126,8 +159,9 @@
         return;
     }
     monitorMark = YES;
-    [self.webView addObserver:self forKeyPath:[self webViewTitleKeyPath] options:NSKeyValueObservingOptionNew context:nil];
-    [self.webView addObserver:self forKeyPath:[self webViewProgressKeyPath] options:NSKeyValueObservingOptionNew context:nil];
+    WKWebView *webView  = self.webView.webViewForWKWebView;
+    [webView addObserver:self forKeyPath:[self webViewTitleKeyPath] options:NSKeyValueObservingOptionNew context:nil];
+    [webView addObserver:self forKeyPath:[self webViewProgressKeyPath] options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)closeWebViewMonitor
@@ -136,8 +170,9 @@
         return;
     }
     monitorMark = NO;
-    [self.webView removeObserver:self forKeyPath:[self webViewTitleKeyPath]];
-    [self.webView removeObserver:self forKeyPath:[self webViewProgressKeyPath]];
+    WKWebView *webView  = self.webView.webViewForWKWebView;
+    [webView removeObserver:self forKeyPath:[self webViewTitleKeyPath]];
+    [webView removeObserver:self forKeyPath:[self webViewProgressKeyPath]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
@@ -161,6 +196,7 @@
     if (monitorMark) {
         [self closeWebViewMonitor];
     }
+    _webViewPrivateProxyDelegate    = nil;
 }
 
 @end

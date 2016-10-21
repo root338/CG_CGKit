@@ -132,6 +132,29 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return constraints;
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeWithView:(UIView *)view optionEdge:(CGLayoutOptionEdge)optionEdge insets:(UIEdgeInsets)insets
+{
+    NSMutableArray *constraints = [NSMutableArray array];
+    
+    if (optionEdge & CGLayoutOptionEdgeTop) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeTop toItem:view constant:insets.top]];
+    }
+    
+    if (optionEdge & CGLayoutOptionEdgeLeft || optionEdge & CGLayoutOptionEdgeLeading) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeLeading toItem:view constant:insets.left]];
+    }
+    
+    if (optionEdge & CGLayoutOptionEdgeBottom) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeBottom toItem:view constant:insets.bottom]];
+    }
+    
+    if (optionEdge & CGLayoutOptionEdgeRight || optionEdge & CGLayoutOptionEdgeTrailing) {
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeTrailing toItem:view constant:insets.right]];
+    }
+    
+    return constraints;
+}
+
 @end
 
 @implementation UIView (CGViewControllerConstraints)

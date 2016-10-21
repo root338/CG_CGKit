@@ -10,10 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class CGAlertView;
 /** 显示提示视图 */
 @interface UIViewController (CGAlert)
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
+
+
+- (UIAlertController *)showAlertViewWithMessage:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle;
+
 /** 
  *  显示提示视图
  *  
@@ -23,12 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #else 
 
+- (id)showAlertViewWithMessage:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle;
+
 /**
  *  显示提示视图
  *
  *  @return iOS 小于 8.0 返回CGAlertView ,大于等于8.0 返回CGAlertController
  */
-- (CGAlertView *)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
+- (id)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
 
 #endif
 @end

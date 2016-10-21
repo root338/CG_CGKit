@@ -17,11 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol CGWebViewDelegate;
 
 //WKWebView 相关代理方法设置
-@interface CGWKWebViewDelegateManager : NSObject<WKNavigationDelegate, WKUIDelegate>
+@interface CGWKWebViewDelegateManager : NSObject<WKNavigationDelegate>
 
 @property (nonatomic, weak) id<CGWebViewDelegate> delegate;
 
-@property (nonatomic, weak) id<CGWebViewPrivateProxyDelegate> webViewPrivateProxyDelegate;
+/** !!!注意使用，使用assign的原因：在使用weak时，在dealloc中使用此属性时会它会为nil，而在这时WKWebView添加的监听还没有被销毁，所以使用assign属性，这时不会为nil */
+@property (nonatomic, assign) id<CGWebViewPrivateProxyDelegate> webViewPrivateProxyDelegate;
 
 
 

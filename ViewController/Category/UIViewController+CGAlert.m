@@ -15,6 +15,15 @@
 
 @implementation UIViewController (CGAlert)
 
+- (id)showAlertViewWithMessage:(NSString *)message cancelTitle:(NSString *)cancelTitle
+{
+    return [self showAlertViewWithTitle:nil
+                                message:message
+                            cancelTitle:cancelTitle
+                             otherTitle:nil
+                         resultCallback:nil];
+}
+
 - (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (^)(BOOL))resultCallback
 {
     
