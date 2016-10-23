@@ -8,14 +8,65 @@
 
 #import "CGTitlesTableView.h"
 
+#import "CGRadioView.h"
+#import "CGTitleRadioView.h"
+
+#import "CGRadioViewAppearance.h"
+#import "CGTitleRadioCellAppearance.h"
+
+@interface CGTitlesTableView ()
+{
+    CGTitleRadioView    *_titleRadioView;
+    CGRadioView         *_radioView;
+}
+
+@property (nonatomic, assign, readwrite) CGTitlesViewType titlesViewType;
+
+@end
+
 @implementation CGTitlesTableView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    return [self initWithFrame:frame titlesViewType:CGTitlesViewTypeViewHeader];
 }
-*/
+
+- (instancetype)initWithFrame:(CGRect)frame titlesViewType:(CGTitlesViewType)titlesViewType
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        _titlesViewType = titlesViewType;
+    }
+    return self;
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    if (newWindow) {
+        
+    }
+}
+
+- (void)reloadData
+{
+    
+}
+
+- (void)setupTitleRadioView
+{
+    if (_titleRadioView != nil) {
+        return ;
+    }
+    
+    CGRadioViewAppearance *appearance   = [self.delegate titlesViewAppearanceForTitlesTableView:self titlesViewType:self.titlesViewType];
+    _titleRadioView = [[CGTitleRadioView alloc] initWithTitles:nil appearance:appearance];
+}
 
 @end

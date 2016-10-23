@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CGWKWebViewConfig : CGBaseObject
 
 /** 关闭标题的监听，默认NO */
-//@property (nonatomic, assign) BOOL disableTitleMonitor;
+@property (nonatomic, assign) BOOL disableTitleMonitor;
 /** 关闭加载进度的监听，默认NO */
-//@property (nonatomic, assign) BOOL disableProgressMonitor;
+@property (nonatomic, assign) BOOL disableProgressMonitor;
 
 @end
 
@@ -29,11 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CGWebViewConfig : CGBaseObject
 
 /** 关闭自动处理打电话链接 tel: 开头的NSURL请求，默认NO */
-//@property (nonatomic, assign) BOOL disableHandleCallPhoneLink;
+@property (nonatomic, assign) BOOL disableHandleCallPhoneLink;
 
-//@property (nullable, nonatomic, strong) CGWKWebViewConfig *WKWebViewConfig;
+@property (nullable, nonatomic, strong) CGWKWebViewConfig *WKWebViewConfig;
 
-//@property (nullable, nonatomic, strong) CGUIWebViewConfig *UIWebViewConfig;
+@property (nullable, nonatomic, strong) CGUIWebViewConfig *UIWebViewConfig;
 
 @end
 

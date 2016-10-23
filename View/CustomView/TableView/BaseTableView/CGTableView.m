@@ -20,41 +20,6 @@
 //    }
 //    return self;
 //}
-#pragma mark - 初始化方法
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
-{
-    self = [super initWithFrame:frame style:style];
-    if (self) {
-        [self initialization];
-        
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self initialization];
-        
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self initialization];
-        
-    }
-    return self;
-}
-
-- (void)initialization
-{
-    
-}
 
 #pragma mark - 属性设置
 

@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, CGArrowIconConfigType) {
 //箭头配置
 @interface CGArrowIconConfig : CGIconConfig
 
-/** 箭头的绘制类型, 默认为CGArrowIconConfigTypeDefaultCropOverSize */
+/** 箭头的绘制类型, 默认为CGArrowIconConfigTypeNone */
 @property (nonatomic, assign) CGArrowIconConfigType configType;
 
 /** 箭头的方向，默认CGOrientationTypeLeft */

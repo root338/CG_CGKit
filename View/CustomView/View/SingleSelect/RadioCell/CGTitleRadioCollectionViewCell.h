@@ -6,14 +6,14 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import "CGCollectionViewCell.h"
+#import "CGRadioCollectionViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGTitleRadioCellAppearance;
 
 
-@interface CGTitleRadioCollectionViewCell : CGCollectionViewCell
+@interface CGTitleRadioCollectionViewCell : CGRadioCollectionViewCell
 
 @property (nullable, nonatomic, strong, readonly) UILabel *titleLabel;
 

@@ -10,7 +10,7 @@
 #import "CGViewProtocol.h"
 #import "UITableView+CGRegisterCell.h"
 
-@interface CGTableView : UITableView<CGViewInitializationProtocol>
+@interface CGTableView : UITableView
 
 /** 
  *  隐藏plainStyle 模式下没有数据时还会显示的线条
