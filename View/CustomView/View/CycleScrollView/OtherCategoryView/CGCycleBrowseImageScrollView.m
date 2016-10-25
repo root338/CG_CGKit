@@ -69,7 +69,7 @@
                 if ([imagePath isKindOfClass:[NSString class]]) {
                     [weakself.dataSource addObject:imagePath ? imagePath : @""];
                 }else {
-                    CGDebugAssert(nil, @"只支持NSString *类型的返回");
+                    CGErrorLog(@"只支持NSString *类型的返回");
                 }
                 
             }];
