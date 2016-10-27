@@ -21,7 +21,7 @@
     self = [super init];
     if (self) {
         
-        _configType             = CGArrowIconConfigTypeDefaultCropOverSize;
+        _configType             = CGArrowIconConfigTypeNone;
         _angle                  = 90;
         _arrowVertex            = CGPointZero;
         _LeftVertex             = CGPointZero;
