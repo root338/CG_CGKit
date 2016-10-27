@@ -433,18 +433,13 @@
                                             constant:subviewsSpaceBlock(item1, item2)]];
         }
         
-        //设置对齐
-        
-        CGAxis axis;
         if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
             
-            axis    = CGAxisHorizontal;
+            [constraints addObjectsFromArray:[obj cg_autoEdgesToSuperviewEdgesWithEdge:CGLayoutOptionEdgeVertical insets:marginInsets]];
         }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
             
-            axis    = CGAxisVertical;
+            [constraints addObjectsFromArray:[obj cg_autoEdgesToSuperviewEdgesWithEdge:CGLayoutOptionEdgeHorizontal insets:marginInsets]];
         }
-        
-        [constraints addObject:[obj cg_autoCenterToSuperviewWithAxis:axis]];
     }];
     
     return constraints;

@@ -113,11 +113,14 @@
 
 - (WKWebView *)createWKWebViewWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration
 {
+    WKWebView *webView  = nil;
     if (configuration) {
-        return [[WKWebView alloc] initWithFrame:frame configuration:configuration];
+        webView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
     }else {
-        return [[WKWebView alloc] initWithFrame:frame];
+        webView = [[WKWebView alloc] initWithFrame:frame];
     }
+    
+    return webView;
 }
 
 //设置代理管理类

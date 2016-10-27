@@ -65,7 +65,9 @@
     if (self) {
         
         _scrollDirection    = UICollectionViewScrollDirectionHorizontal;
-        
+        _lineBoxType        = 0;
+        _marginEdgeInsets   = UIEdgeInsetsZero;
+        _lineLength         = 0;
         _isAutoItemSize     = YES;
     }
     return self;

@@ -13,6 +13,10 @@
 #define SINGLE_LINE_WIDTH           (1 / [UIScreen mainScreen].scale)
 #define SINGLE_LINE_ADJUST_OFFSET   ((1 / [UIScreen mainScreen].scale) / 2)
 
+@interface CGLineBoxView ()
+
+@end
+
 @implementation CGLineBoxView
 
 - (instancetype)init
@@ -30,8 +34,13 @@
 {
     [super awakeFromNib];
     
-    _lineWidth = .5;
-    _lineColor = __K_CG_16_VALUE_COLOR(KCG_16_ColorValueType_0XE5E5E5);
+    if (_lineWidth == 0) {
+        _lineWidth = .5;
+    }
+    if (_lineColor == nil) {
+        _lineColor = __K_CG_16_VALUE_COLOR(KCG_16_ColorValueType_0XE5E5E5);
+    }
+    
 }
 
 // Only override drawRect: if you perform custom drawing.
