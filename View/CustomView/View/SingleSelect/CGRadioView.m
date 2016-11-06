@@ -11,8 +11,8 @@
 
 #import "UIView+CGAddConstraints.h"
 
-#import "CGRadioViewAppearance.h"
 #import "CGVerifyIOSVersionHeader.h"
+#import "CGRadioViewAppearanceHeader.h"
 
 @interface CGRadioView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 {
@@ -44,12 +44,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        UICollectionViewFlowLayout *flowLayout  = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.sectionInset                 = appearance.marginEdgeInsets;
-        flowLayout.itemSize                     = appearance.itemSize;
-        flowLayout.minimumInteritemSpacing      = appearance.minimumInteritemSpacing;
-        flowLayout.minimumLineSpacing           = appearance.minimumLineSpacing;
-        flowLayout.scrollDirection              = appearance.scrollDirection;
+        CGRadioViewFlowLayout *flowLayoutAppearance = appearance.radioViewFlowLayout;
+        UICollectionViewFlowLayout *flowLayout  = [self createCollectionViewFlowLayoutWithRadioViewFlowLayout:flowLayoutAppearance];
         
         [self setupLineType:appearance.lineBoxType color:appearance.lineColor length:appearance.lineLength];
         
@@ -122,20 +118,21 @@
 {
     CGSize itemSize = CGSizeZero;
     
-    if (self.appearance.isAutoItemSize && [self.dataSource respondsToSelector:@selector(radioView:sizeForIndexPath:)]) {
+    CGRadioViewFlowLayout *flowLayout   = self.appearance.radioViewFlowLayout;
+    if (flowLayout.isAutoItemSize && [self.dataSource respondsToSelector:@selector(radioView:sizeForIndexPath:)]) {
         itemSize    = [self.dataSource radioView:self sizeForIndexPath:indexPath];
     }else {
         
-        if (self.appearance.itemWidthEqualSuperViewWidth) {
+        if (flowLayout.itemWidthEqualSuperViewWidth) {
             itemSize.width  = collectionView.width;
         }else {
-            itemSize.width  = self.appearance.itemSize.width;
+            itemSize.width  = flowLayout.itemSize.width;
         }
         
-        if (self.appearance.itemHeightWidthEqualSuperViewHeight) {
+        if (flowLayout.itemHeightWidthEqualSuperViewHeight) {
             itemSize.height = collectionView.height;
         }else {
-            itemSize.height = self.appearance.itemSize.height;
+            itemSize.height = flowLayout.itemSize.height;
         }
     }
     
@@ -192,7 +189,38 @@
     return [_collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
+#pragma mark - update flow layout
+- (UICollectionViewFlowLayout *)createCollectionViewFlowLayoutWithRadioViewFlowLayout:(CGRadioViewFlowLayout *)paramFlowLayout
+{
+    UICollectionViewFlowLayout *flowLayout  = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.sectionInset                 = paramFlowLayout.marginEdgeInsets;
+    flowLayout.itemSize                     = paramFlowLayout.itemSize;
+    flowLayout.minimumInteritemSpacing      = paramFlowLayout.minimumInteritemSpacing;
+    flowLayout.minimumLineSpacing           = paramFlowLayout.minimumLineSpacing;
+    flowLayout.scrollDirection              = paramFlowLayout.scrollDirection;
+    return flowLayout;
+}
+
+- (void)setRadioViewFlowLayout:(CGRadioViewFlowLayout *)layout
+{
+    [self setRadioViewFlowLayout:layout animated:self.updateRadioViewFlowLayoutIsAnimated];
+}
+
+- (void)setRadioViewFlowLayout:(CGRadioViewFlowLayout *)layout animated:(BOOL)animated
+{
+    [self setRadioViewViewLayout:layout animated:animated completion:nil];
+}
+
+- (void)setRadioViewViewLayout:(CGRadioViewFlowLayout *)layout animated:(BOOL)animated completion:(void (^)(BOOL))completion
+{
+    [self.appearance setupRadioViewFlowLayout:layout];
+    
+    UICollectionViewFlowLayout *flowLayout  = [self createCollectionViewFlowLayoutWithRadioViewFlowLayout:layout];
+    [_collectionView setCollectionViewLayout:flowLayout animated:animated completion:completion];
+}
+
 #pragma mark - setup Slider View
+
 /** 更新滑块，返回更新是否成功 */
 - (BOOL)setupSliderViewFrameWithCurrentSelectedIndexPath:(NSIndexPath *)currentSelectedIndexPath beforeSelectedIndexPath:(NSIndexPath *)beforeSelectedIndexPath;
 {

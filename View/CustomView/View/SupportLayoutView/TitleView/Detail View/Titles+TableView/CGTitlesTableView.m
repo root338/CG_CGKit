@@ -11,6 +11,8 @@
 #import "CGRadioView.h"
 #import "CGTitleRadioView.h"
 
+#import "NSArray+CGAddConstraints.h"
+
 #import "CGRadioViewAppearance.h"
 #import "CGTitleRadioCellAppearance.h"
 
@@ -50,23 +52,36 @@
 {
     [super willMoveToWindow:newWindow];
     if (newWindow) {
-        
+        if (self.delegate != nil) {
+            [self reloadData];
+        }
     }
 }
 
 - (void)reloadData
 {
+    [self setupContentView];
+    
     
 }
 
-- (void)setupTitleRadioView
+- (void)setupContentView
 {
-    if (_titleRadioView != nil) {
+    if (!(_titleRadioView == nil || _radioView == nil)) {
         return ;
     }
     
-    CGRadioViewAppearance *appearance   = [self.delegate titlesViewAppearanceForTitlesTableView:self titlesViewType:self.titlesViewType];
-    _titleRadioView = [[CGTitleRadioView alloc] initWithTitles:nil appearance:appearance];
+    CGRadioViewAppearance *titleAppearance  = [self.delegate titlesViewAppearanceForTitlesTableView:self titlesViewType:self.titlesViewType];
+    _titleRadioView = [[CGTitleRadioView alloc] initWithTitles:nil appearance:titleAppearance];
+    
+    CGRadioViewAppearance *contentAppearance   = [self.delegate titlesTableView:self tableViewAppearanceForIndex:self.currentIndex];
+    _radioView  = [[CGRadioView alloc] initWithFrame:CGRectZero appearance:contentAppearance];
+    
+    [self addSubview:_titleRadioView];
+    [self addSubview:_radioView];
+    
+    NSArray *views  = @[_titleRadioView, _radioView];
+    [views cg_autoSetupVerticalSubviewsLayout];
 }
 
 @end

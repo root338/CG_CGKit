@@ -8,6 +8,8 @@
 
 #import "CGRadioViewAppearance.h"
 
+#import "CGRadioViewFlowLayout.h"
+
 @interface CGRadioViewAppearance ()
 
 //单选视图主视图外观设置
@@ -15,20 +17,6 @@
 @property (nonatomic, assign, readwrite)           LineBoxType         lineBoxType;
 @property (nonatomic, assign, readwrite)           CGFloat             lineLength;
 @property (nullable, nonatomic, strong, readwrite) UIColor         *   lineColor;
-
-//滑动视图的设置
-@property (nonatomic, assign, readwrite)           UIEdgeInsets        marginEdgeInsets;
-/** 滑动视图滑动的方向, 默认 UICollectionViewScrollDirectionHorizontal */
-@property (nonatomic, assign, readwrite)           UICollectionViewScrollDirection scrollDirection;
-
-//内部选择按钮设置
-/** 自动计算选择按钮,默认为YES */
-@property (nonatomic, assign, readwrite)           BOOL                isAutoItemSize;
-@property (nonatomic, assign, readwrite)           CGSize              itemSize;
-
-/** 选择按钮之间的间距 */
-@property (nonatomic, assign, readwrite)           CGFloat             minimumInteritemSpacing;
-@property (nonatomic, assign, readwrite)           CGFloat             minimumLineSpacing;
 
 //设置滑块
 @property (nonatomic, assign, readwrite)           BOOL                isHideSliderView;
@@ -46,10 +34,9 @@
 
 @property (nullable, nonatomic, strong, readwrite) CGTitleRadioCellAppearance *titleRadioCellAppearance;
 
-/** item 的宽度等于父视图的宽度，默认NO */
-@property (nonatomic, assign, readwrite)           BOOL itemWidthEqualSuperViewWidth;
-/** item 的高度等于父视图的高度，默认NO */
-@property (nonatomic, assign, readwrite)           BOOL itemHeightWidthEqualSuperViewHeight;
+@property (nullable, nonatomic, strong, readwrite) CGRadioViewFlowLayout *radioViewFlowLayout;
+
+
 @end
 
 @implementation CGRadioViewAppearance
@@ -64,13 +51,15 @@
     self = [super init];
     if (self) {
         
-        _scrollDirection    = UICollectionViewScrollDirectionHorizontal;
         _lineBoxType        = 0;
-        _marginEdgeInsets   = UIEdgeInsetsZero;
         _lineLength         = 0;
-        _isAutoItemSize     = YES;
     }
     return self;
+}
+
+- (void)setupRadioViewFlowLayout:(CGRadioViewFlowLayout *)flowLayout
+{
+    self.radioViewFlowLayout    = flowLayout;
 }
 
 - (void)setupLineBoxType:(LineBoxType)type color:(UIColor *)color width:(CGFloat)width
@@ -108,24 +97,15 @@
 - (CGFloat)getVerticalAllSpace
 {
     UIEdgeInsets insets = [self getSubviewEdgeInsets];
-    return insets.top + insets.bottom + self.marginEdgeInsets.top + self.marginEdgeInsets.bottom;
+    return insets.top + insets.bottom + self.radioViewFlowLayout.marginEdgeInsets.top + self.radioViewFlowLayout.marginEdgeInsets.bottom;
 }
 
 - (CGFloat)getRadioViewCompressedHeight
 {
-    return self.itemSize.height + self.sliderViewHeight;
+    return self.radioViewFlowLayout.itemSize.height + self.sliderViewHeight;
 }
 
 #pragma mark - 属性设置
-- (void)setItemSpace:(CGFloat)itemSpace
-{
-    self.minimumInteritemSpacing    = itemSpace;
-}
-
-- (CGFloat)itemSpace
-{
-    return self.minimumInteritemSpacing;
-}
 
 - (UIColor *)backgroundColor
 {
@@ -144,12 +124,6 @@
 @dynamic lineBoxType;
 @dynamic lineLength;
 @dynamic lineColor;
-@dynamic marginEdgeInsets;
-@dynamic scrollDirection;
-@dynamic isAutoItemSize;
-@dynamic itemSize;
-@dynamic minimumInteritemSpacing;
-@dynamic minimumLineSpacing;
 @dynamic isHideSliderView;
 @dynamic sliderViewWidth;
 @dynamic sliderViewHeight;
@@ -160,7 +134,6 @@
 @dynamic sliderViewBackgroundColor;
 @dynamic moveSliderViewIsAnimation;
 @dynamic titleRadioCellAppearance;
-@dynamic itemWidthEqualSuperViewWidth;
-@dynamic itemHeightWidthEqualSuperViewHeight;
+@dynamic radioViewFlowLayout;
 
 @end

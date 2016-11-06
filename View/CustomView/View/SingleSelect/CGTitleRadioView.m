@@ -16,9 +16,10 @@
 #import "UIView+CGAddConstraints.h"
 #import "UIView+CGSetupAppearance.h"
 #import "UIView+CG_CGAreaCalculate.h"
+#import "UIView+CGUpdateViewLayout.h"
 
 #import "CGDispathMethod.h"
-#import "CGRadioViewAppearance.h"
+#import "CGRadioViewAppearanceHeader.h"
 
 @interface CGTitleRadioView ()<CGRadioViewDataSource, CGRadioViewDelegate>
 {
@@ -173,18 +174,34 @@
     
     [_cacheResueCell.titleLabel setText:[self getTitleAtIndex:index]];
     
-    [_cacheResueCell.contentView setNeedsUpdateConstraints];
-    [_cacheResueCell.contentView updateConstraintsIfNeeded];
-    
-    [_cacheResueCell.contentView setNeedsLayout];
-    [_cacheResueCell.contentView layoutIfNeeded];
+    [_cacheResueCell cg_updateContentLayoutIfNeeded];
     
     CGSize size = [_cacheResueCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
-    CGFloat height  = self.appearance.itemSize.height;
-    size        = CGSizeMake(size.width, height);
+    CGFloat width, height;
     
-    return size;
+    CGRadioViewFlowLayout *flowLayout   = self.appearance.radioViewFlowLayout;
+    
+    if (flowLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
+        
+        if (flowLayout.itemWidthEqualSuperViewWidth) {
+            width   = self.width;
+        }else {
+            width   = flowLayout.itemSize.width;
+        }
+        
+        height  = size.height;
+    }else if (flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        
+        width   = size.width;
+        if (flowLayout.itemHeightWidthEqualSuperViewHeight) {
+            height  = self.height;
+        }else {
+            height  = flowLayout.itemSize.height;
+        }
+    }
+    
+    return CGSizeMake(width, height);
 }
 
 #pragma mark - CGRadioViewDelegate

@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, CGTitlesViewType) {
     /** 视图的页眉视图 */
     CGTitlesViewTypeViewHeader,
     /** TableView 的页眉视图 */
-    CGTitlesViewTypeTableViewHeader,
+//    CGTitlesViewTypeTableViewHeader,
     /** TableView 的每组页眉视图 */
 //    CGTitlesViewTypeTableViewSectionHeader,
 };

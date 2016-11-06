@@ -13,11 +13,19 @@
 - (void)cg_updateConstraintsIfNeeded;
 - (void)cg_layoutIfNeeded;
 
+- (void)cg_viewUpdateContentLayoutIfNeeded;
+
 /** 重绘标记调用 setNeedsDisplay, setNeedsDisplayInRect:方法 */
 
 @end
 
 @interface UITableViewCell (CGUpdateCellLayout)
+
+- (void)cg_updateContentLayoutIfNeeded;
+
+@end
+
+@interface UICollectionViewCell (CGUpdateCellLayout)
 
 - (void)cg_updateContentLayoutIfNeeded;
 

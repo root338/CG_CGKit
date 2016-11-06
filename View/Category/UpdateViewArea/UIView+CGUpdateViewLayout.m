@@ -22,14 +22,28 @@
     [self layoutIfNeeded];
 }
 
+- (void)cg_viewUpdateContentLayoutIfNeeded
+{
+    [self cg_updateConstraintsIfNeeded];
+    [self cg_layoutIfNeeded];
+}
+
 @end
 
 @implementation UITableViewCell (CGUpdateCellLayout)
 
 - (void)cg_updateContentLayoutIfNeeded
 {
-    [self.contentView cg_updateConstraintsIfNeeded];
-    [self.contentView cg_layoutIfNeeded];
+    [self.contentView cg_viewUpdateContentLayoutIfNeeded];
+}
+
+@end
+
+@implementation UICollectionViewCell (CGUpdateCellLayout)
+
+- (void)cg_updateContentLayoutIfNeeded
+{
+    [self.contentView cg_viewUpdateContentLayoutIfNeeded];
 }
 
 @end

@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGTitleRadioCellAppearance;
+@class CGTitleRadioCellAppearance, CGRadioViewFlowLayout;
 
 /** 单选视图外观设置 */
 @interface CGRadioViewAppearance : CGBaseObject
@@ -23,24 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly)           LineBoxType         lineBoxType;
 @property (nonatomic, assign, readonly)           CGFloat             lineLength;
 @property (nullable, nonatomic, strong, readonly) UIColor         *   lineColor;
-
-//滑动视图的设置
-@property (nonatomic, assign, readonly)           UIEdgeInsets        marginEdgeInsets;
-/** 滑动视图滑动的方向, 默认 UICollectionViewScrollDirectionHorizontal */
-@property (nonatomic, assign, readonly)           UICollectionViewScrollDirection scrollDirection;
-
-//内部选择按钮设置
-/** 自动计算选择按钮,默认为YES */
-@property (nonatomic, assign, readonly)           BOOL                isAutoItemSize;
-@property (nonatomic, assign, readonly)           CGSize              itemSize;
-/** item 的宽度等于父视图的宽度，默认NO */
-@property (nonatomic, assign, readonly)           BOOL itemWidthEqualSuperViewWidth;
-/** item 的高度等于父视图的高度，默认NO */
-@property (nonatomic, assign, readonly)           BOOL itemHeightWidthEqualSuperViewHeight;
-
-/** 选择按钮之间的间距 */
-@property (nonatomic, assign, readonly)           CGFloat             minimumInteritemSpacing;
-@property (nonatomic, assign, readonly)           CGFloat             minimumLineSpacing;
 
 //设置滑块
 @property (nonatomic, assign, readonly)           BOOL                isHideSliderView;
@@ -56,11 +38,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** 移动滑块是否动画执行 */
 @property (nonatomic, assign, readonly)           BOOL                moveSliderViewIsAnimation;
 
-
 /**
  仅在使用 CGTitleRadioView 下有效
  */
 @property (nullable, nonatomic, strong, readonly) CGTitleRadioCellAppearance *titleRadioCellAppearance;
+
+/**
+ 设置 cell 的布局
+ */
+@property (nullable, nonatomic, strong, readonly) CGRadioViewFlowLayout *radioViewFlowLayout;
+
+- (void)setupRadioViewFlowLayout:(CGRadioViewFlowLayout *)flowLayout;
 
 /** 获取单选视图最适高度 */
 - (CGFloat)getRadioViewCompressedHeight;
@@ -86,12 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic)           LineBoxType         lineBoxType;
 @property (nonatomic)           CGFloat             lineLength;
 @property (nullable, nonatomic) UIColor         *   lineColor;
-@property (nonatomic)           UIEdgeInsets        marginEdgeInsets;
-@property (nonatomic)           UICollectionViewScrollDirection scrollDirection;
-@property (nonatomic)           BOOL                isAutoItemSize;
-@property (nonatomic)           CGSize              itemSize;
-@property (nonatomic)           CGFloat             minimumInteritemSpacing;
-@property (nonatomic)           CGFloat             minimumLineSpacing;
+
 @property (nonatomic)           BOOL                isHideSliderView;
 @property (nullable, nonatomic) UIColor         *   sliderViewBackgroundColor;
 @property (nonatomic)           CGFloat             sliderViewCornerRadius;
@@ -102,9 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic)           CGSliderViewPositionType sliderViewPositionType;
 @property (nonatomic)           BOOL                moveSliderViewIsAnimation;
 @property (nullable, nonatomic) CGTitleRadioCellAppearance *titleRadioCellAppearance;
+@property (nullable, nonatomic) CGRadioViewFlowLayout *radioViewFlowLayout;
 
-@property (nonatomic)           BOOL itemWidthEqualSuperViewWidth;
-@property (nonatomic)           BOOL itemHeightWidthEqualSuperViewHeight;
 
 @end
 

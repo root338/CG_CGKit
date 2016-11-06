@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CGRadioView, CGRadioSliderView, CGRadioViewAppearance;
+@class CGRadioView, CGRadioSliderView, CGRadioViewAppearance, CGRadioViewFlowLayout;
 
 @protocol CGRadioViewDataSource <NSObject>
 
@@ -89,6 +89,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(nonnull NSIndexPath *)indexPath;
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifierClass:(Class)identifierClass forIndexPath:(nonnull NSIndexPath *)indexPath;
+
+//更新 flow layout 是否动画执行，默认NO
+@property (nonatomic, assign) BOOL updateRadioViewFlowLayoutIsAnimated;
+
+- (void)setRadioViewFlowLayout:(CGRadioViewFlowLayout *)layout;
+- (void)setRadioViewFlowLayout:(CGRadioViewFlowLayout *)layout animated:(BOOL)animated;
+- (void)setRadioViewViewLayout:(CGRadioViewFlowLayout *)layout animated:(BOOL)animated completion:(void (^ __nullable)(BOOL finished))completion NS_AVAILABLE_IOS(7_0);
 
 - (void)reloadData;
 
