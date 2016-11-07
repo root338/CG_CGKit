@@ -6,7 +6,7 @@
 //  Copyright © 2016年 ym. All rights reserved.
 //
 
-//与CG_CGKit/Foundation/NeedStandByLibraryClass/AFNetwork+Category/Manager/CGRequestManager.h文件重命名 
+//与CG_CGKit/Foundation/NeedStandByLibraryClass/AFNetwork+Category/Manager/CGRequestManager.h文件重命名
 //#import <Foundation/Foundation.h>
 //
 //@interface CGRequestManager : NSObject
