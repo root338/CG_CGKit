@@ -44,6 +44,41 @@
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CGTitleRadioCellAppearance *cellAppearance  = [[[self class] alloc] init];
+    [self copyWithAppearance:cellAppearance];
+    return cellAppearance;
+}
+
+#pragma mark - NSMutableCopying
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CGMutableTitleRadioCellAppearance *cellAppearance   = [[CGMutableTitleRadioCellAppearance alloc] init];
+    [self copyWithAppearance:cellAppearance];
+    return cellAppearance;
+}
+
+- (void)copyWithAppearance:(CGTitleRadioCellAppearance *)cellAppearance
+{
+    cellAppearance.titleNormalColor             = [self.titleNormalColor copy];
+    cellAppearance.titleSelectedColor           = [self.titleSelectedColor copy];
+    cellAppearance.titleHighlightedColor        = [self.titleHighlightedColor copy];
+    cellAppearance.titleFont                    = [self.titleFont copy];
+    cellAppearance.itemMarginEdgeInsets         = self.itemMarginEdgeInsets;
+    cellAppearance.itemBackgroundColor          = [self.itemBackgroundColor copy];
+    cellAppearance.itemBackgroundView           = self.itemBackgroundView;
+    cellAppearance.itemSelectedBackgroundColor  = [self.itemSelectedBackgroundColor copy];
+    cellAppearance.itemSelectedBackgroundView   = self.itemSelectedBackgroundView;
+    cellAppearance.separatorColor               = [self.separatorColor copy];
+    cellAppearance.separatorStyle               = self.separatorStyle;
+    cellAppearance.separatorEdgeInsets          = self.separatorEdgeInsets;
+    cellAppearance.separatorHeight              = self.separatorHeight;
+    cellAppearance.separatorIgnoreType          = self.separatorIgnoreType;
+}
+
 @end
 
 @implementation CGMutableTitleRadioCellAppearance

@@ -66,12 +66,15 @@
         _currentSelectedTitleIndex  = 0;
         
         CGRadioSliderView *sliderView   = nil;
+        
         if (!appearance.isHideSliderView) {
             
+            CGRadioSliderViewAppearance *radioSliderViewAppearance  = appearance.radioSliderViewAppearance;
+            
             sliderView                      = [[CGRadioSliderView alloc] init];
-            sliderView.positionType         = appearance.sliderViewPositionType;
-            sliderView.backgroundColor      = appearance.sliderViewBackgroundColor;
-            [sliderView cg_setupBorderWithWidth:appearance.sliderViewBorderWidth color:appearance.sliderViewBorderColor cornerRadius:appearance.sliderViewCornerRadius];
+            sliderView.positionType         = radioSliderViewAppearance.sliderViewPositionType;
+            sliderView.backgroundColor      = radioSliderViewAppearance.sliderViewBackgroundColor;
+            [sliderView cg_setupBorderWithWidth:radioSliderViewAppearance.sliderViewBorderWidth color:radioSliderViewAppearance.sliderViewBorderColor cornerRadius:radioSliderViewAppearance.sliderViewCornerRadius];
             sliderView.hidden               = appearance.isHideSliderView;
         }
         
@@ -208,7 +211,7 @@
 
 - (CGRect)radioView:(CGRadioView *)radioView sliderViewFrameBeforeSelectedCell:(__kindof UICollectionViewCell *)beforeSelectedCell currentSelectedCell:(__kindof UICollectionViewCell *)currentSelectedCell
 {
-    CGSize sliderViewSize = CGSizeMake(currentSelectedCell.width, self.appearance.sliderViewHeight);
+    CGSize sliderViewSize = CGSizeMake(currentSelectedCell.width, self.appearance.radioSliderViewAppearance.sliderViewHeight);
     CGPoint sliderViewOrigin    = CGPointMake(currentSelectedCell.xCenter - sliderViewSize.width / 2.0, currentSelectedCell.height - sliderViewSize.height);
     return (CGRect){sliderViewOrigin, sliderViewSize};
 }

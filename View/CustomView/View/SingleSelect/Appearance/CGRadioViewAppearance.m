@@ -9,6 +9,8 @@
 #import "CGRadioViewAppearance.h"
 
 #import "CGRadioViewFlowLayout.h"
+#import "CGTitleRadioCellAppearance.h"
+#import "CGRadioSliderViewAppearance.h"
 
 @interface CGRadioViewAppearance ()
 
@@ -18,28 +20,45 @@
 @property (nonatomic, assign, readwrite)           CGFloat             lineLength;
 @property (nullable, nonatomic, strong, readwrite) UIColor         *   lineColor;
 
-//设置滑块
-@property (nonatomic, assign, readwrite)           BOOL                isHideSliderView;
-@property (nullable, nonatomic, strong, readwrite) UIColor         *   sliderViewBackgroundColor;
-@property (nonatomic, assign, readwrite)           CGFloat             sliderViewCornerRadius;
-@property (nullable, nonatomic, strong, readwrite) UIColor         *   sliderViewBorderColor;
-@property (nonatomic, assign, readwrite)           CGFloat             sliderViewBorderWidth;
-@property (nonatomic, assign, readwrite)           CGFloat             sliderViewHeight;
-@property (nonatomic, assign, readwrite)           CGFloat             sliderViewWidth;
-
-@property (nonatomic, assign, readwrite)           CGSliderViewPositionType sliderViewPositionType;
-
-/** 移动滑块是否动画执行 */
-@property (nonatomic, assign, readwrite)           BOOL                moveSliderViewIsAnimation;
-
 @property (nullable, nonatomic, strong, readwrite) CGTitleRadioCellAppearance *titleRadioCellAppearance;
 
 @property (nullable, nonatomic, strong, readwrite) CGRadioViewFlowLayout *radioViewFlowLayout;
 
+@property (nonatomic, assign, readwrite)           BOOL                isHideSliderView;
+@property (nullable, nonatomic, strong, readwrite) CGRadioSliderViewAppearance *radioSliderViewAppearance;
 
 @end
 
 @implementation CGRadioViewAppearance
+
+#pragma mark - NSCopying
+- (id)copyWithZone:(NSZone *)zone
+{
+    CGRadioViewAppearance *appearance   = [[[self class] alloc] init];
+    [self copyWithAppearance:appearance];
+    return appearance;
+}
+
+#pragma mark - NSMutableCopying
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CGMutableRadioViewAppearance *appearance    = [[CGMutableRadioViewAppearance alloc] init];
+    [self copyWithAppearance:appearance];
+    return appearance;
+}
+
+- (void)copyWithAppearance:(CGRadioViewAppearance *)appearance
+{
+    appearance.backgroundColor          = [self.backgroundColor copy];
+    appearance.lineBoxType              = self.lineBoxType;
+    appearance.lineLength               = self.lineLength;
+    appearance.lineColor                = [self.lineColor copy];
+    
+    appearance.titleRadioCellAppearance = [self.titleRadioCellAppearance copy];
+    appearance.radioViewFlowLayout      = [self.radioViewFlowLayout copy];
+    appearance.isHideSliderView         = self.isHideSliderView;
+    appearance.radioSliderViewAppearance= [self.radioSliderViewAppearance copy];
+}
 
 + (instancetype)defaultRadioAppearance
 {
@@ -55,25 +74,6 @@
         _lineLength         = 0;
     }
     return self;
-}
-
-- (void)setupRadioViewFlowLayout:(CGRadioViewFlowLayout *)flowLayout
-{
-    self.radioViewFlowLayout    = flowLayout;
-}
-
-- (void)setupLineBoxType:(LineBoxType)type color:(UIColor *)color width:(CGFloat)width
-{
-    self.lineBoxType    = type;
-    self.lineColor      = color;
-    self.lineLength     = width;
-}
-
-- (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius
-{
-    self.sliderViewBorderColor  = borderColor;
-    self.sliderViewBorderWidth  = borderWidth;
-    self.sliderViewCornerRadius = cornerRadius;
 }
 
 - (UIEdgeInsets)getSubviewEdgeInsets
@@ -102,7 +102,7 @@
 
 - (CGFloat)getRadioViewCompressedHeight
 {
-    return self.radioViewFlowLayout.itemSize.height + self.sliderViewHeight;
+    return self.radioViewFlowLayout.itemSize.height + self.radioSliderViewAppearance.sliderViewHeight;
 }
 
 #pragma mark - 属性设置
@@ -124,16 +124,17 @@
 @dynamic lineBoxType;
 @dynamic lineLength;
 @dynamic lineColor;
-@dynamic isHideSliderView;
-@dynamic sliderViewWidth;
-@dynamic sliderViewHeight;
-@dynamic sliderViewBorderColor;
-@dynamic sliderViewBorderWidth;
-@dynamic sliderViewCornerRadius;
-@dynamic sliderViewPositionType;
-@dynamic sliderViewBackgroundColor;
-@dynamic moveSliderViewIsAnimation;
 @dynamic titleRadioCellAppearance;
 @dynamic radioViewFlowLayout;
+
+@dynamic isHideSliderView;
+@dynamic radioSliderViewAppearance;
+
+- (void)setupLineBoxType:(LineBoxType)type color:(UIColor *)color width:(CGFloat)width
+{
+    self.lineBoxType    = type;
+    self.lineColor      = color;
+    self.lineLength     = width;
+}
 
 @end

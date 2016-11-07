@@ -8,7 +8,7 @@
 
 #import "CGBaseObject.h"
 
-@interface CGRadioViewFlowLayout : CGBaseObject
+@interface CGRadioViewFlowLayout : CGBaseObject<NSCopying, NSMutableCopying>
 
 //滑动视图的设置
 @property (nonatomic, assign, readonly)           UIEdgeInsets        marginEdgeInsets;

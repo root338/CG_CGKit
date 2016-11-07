@@ -213,7 +213,9 @@
 
 - (void)setRadioViewViewLayout:(CGRadioViewFlowLayout *)layout animated:(BOOL)animated completion:(void (^)(BOOL))completion
 {
-    [self.appearance setupRadioViewFlowLayout:layout];
+    CGMutableRadioViewAppearance *appearance    = [self.appearance mutableCopy];
+    appearance.radioViewFlowLayout              = layout;
+    self.appearance                             = appearance;
     
     UICollectionViewFlowLayout *flowLayout  = [self createCollectionViewFlowLayoutWithRadioViewFlowLayout:layout];
     [_collectionView setCollectionViewLayout:flowLayout animated:animated completion:completion];

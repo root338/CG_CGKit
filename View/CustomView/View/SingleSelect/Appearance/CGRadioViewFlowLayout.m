@@ -43,6 +43,34 @@
     return self;
 }
 
+#pragma mark - NSCopying
+- (id)copyWithZone:(NSZone *)zone
+{
+    CGRadioViewFlowLayout *flowLayout   = [[[self class] alloc] init];
+    [self copyWithAppearance:flowLayout];
+    return flowLayout;
+}
+
+#pragma mark - NSMutableCopying
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CGMutableRadioViewFlowLayout *flowLayout    = [[CGMutableRadioViewFlowLayout alloc] init];
+    [self copyWithAppearance:flowLayout];
+    return flowLayout;
+}
+
+- (void)copyWithAppearance:(CGRadioViewFlowLayout *)flowLayout
+{
+    flowLayout.marginEdgeInsets         = self.marginEdgeInsets;
+    flowLayout.scrollDirection          = self.scrollDirection;
+    flowLayout.isAutoItemSize           = self.isAutoItemSize;
+    flowLayout.itemSize                 = self.itemSize;
+    flowLayout.minimumInteritemSpacing  = self.minimumInteritemSpacing;
+    flowLayout.minimumLineSpacing       = self.minimumLineSpacing;
+    flowLayout.itemWidthEqualSuperViewWidth = self.itemWidthEqualSuperViewWidth;
+    flowLayout.itemHeightWidthEqualSuperViewHeight  = self.itemHeightWidthEqualSuperViewHeight;
+}
+
 @end
 
 @implementation CGMutableRadioViewFlowLayout

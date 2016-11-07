@@ -27,7 +27,7 @@ typedef NS_OPTIONS(NSInteger, CGCellSeparatorIgnoreType) {
 };
 
 /** 标题视图单元外观 */
-@interface CGTitleRadioCellAppearance : CGBaseObject
+@interface CGTitleRadioCellAppearance : CGBaseObject<NSCopying, NSMutableCopying>
 
 //内部选择按钮设置
 @property (nullable, nonatomic, strong, readonly) UIColor * titleNormalColor;

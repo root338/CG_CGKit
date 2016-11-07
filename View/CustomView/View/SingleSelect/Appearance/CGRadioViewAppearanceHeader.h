@@ -15,4 +15,6 @@
 
 #import "CGRadioViewFlowLayout.h"
 
+#import "CGRadioSliderViewAppearance.h"
+
 #endif /* CGRadioViewAppearanceHeader_h */
