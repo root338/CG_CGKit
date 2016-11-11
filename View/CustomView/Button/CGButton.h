@@ -11,6 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** 处理按钮当前内容时的方式，使用期间：计算按钮显示区域的时候 */
+typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
+    /** 空 */
+    CGButtonHandleCurrentContentTypeNone,
+    /** 默认的处理方法，当优先获取的值不存在时，获取次级内容项 */
+    CGButtonHandleCurrentContentTypeDefalut,
+    
+};
+
 /**
  *  重写UIButton布局的子类，方便图像和标题的布局
  *  @param UIButton 的子类
@@ -42,6 +51,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
 @property (nonatomic, assign) CGFloat titleLabelMaxWidth;
+
+/**
+ 添加设置handleCurrentContentType, setupCurrentTitleContent, setupCurrentImage 的原因，当按钮不同状态下标题或图片不相同时，在刷新内容时当前的按钮状态有可能会是多个状态的集值，随后变为最终状态后有可能导致显示区域计算错误，所以在此添加这两个block以帮助计算的实现
+ 可能的例子情况：按钮仅在selected状态下才有图片 在UIControlEventTouchUpInside事件中，处理按钮为选中，这时按钮的状态为5，即选中，高亮都为YES，这时获取的当前图片为nil，而随后变为YES后会导致计算的大小出错
+ */
+
+@property (nonatomic, assign, readwrite) CGButtonHandleCurrentContentType handleCurrentContentType;
+
+/** 设置当前标题，返回类型应为NSAttributedString或NSString */
+@property (nullable, nonatomic, copy) __nullable id (^setupCurrentTitleContent) (__kindof CGButton * button, UIControlState currentState);
+/** 设置当前图片 */
+@property (nullable, nonatomic, copy) UIImage  * _Nullable  (^setupCurrentImage) (__kindof CGButton * button, UIControlState currentState);
+
+
 
 @property (nullable, nonatomic, weak) NSLayoutConstraint *heightConstraint;
 @property (nullable, nonatomic, weak) NSLayoutConstraint *widthConstraint;

@@ -18,6 +18,12 @@
 
 #import "CGPrintLogHeader.h"
 
+typedef NS_ENUM(NSInteger, _CGButtonHandleContentType) {
+    
+    _CGButtonHandleContentTypeTitle,
+    _CGButtonHandleContentTypeImage,
+};
+
 typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
     _CGButtonContentTypeContentView,
@@ -36,6 +42,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 @property (nonatomic, strong) UILabel *tempCalculateLabel;
 
+//当图片为空或固定图片大小imageViewSize为CGSizeZero 时该值为零，否则为space属性
+//或者标题为空
+@property (nonatomic, assign, readonly) CGFloat didHandleSpace;
+
+@property (nullable, nonatomic, strong, readonly) id getCurrentTitleContent;
+@property (nullable, nonatomic, strong, readonly) UIImage *getCurrentImage;
 @end
 
 @implementation CGButton
@@ -73,27 +85,29 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 ///计算图片在按钮中最适合的大小
 - (CGSize)cg_calculateImageSizeWithContentRect:(CGRect)contentRect
 {
+    UIImage *currentImage   = self.getCurrentImage;
     BOOL useCustomImageView = !CGSizeEqualToSize(self.imageViewSize, CGSizeZero);
-    if (!self.currentImage && !useCustomImageView) {
+    if (!currentImage && !useCustomImageView) {
         return CGSizeZero;
     }
     
-    CGSize imageSize = useCustomImageView ? self.imageViewSize : self.currentImage.size;
-        
-    imageSize   = CG_CGMinSize(contentRect.size, imageSize);
+    CGSize imageSize = useCustomImageView ? self.imageViewSize : currentImage.size;
+    
+    imageSize       = CG_CGMinSize(contentRect.size, imageSize);
+    CGFloat space   = self.didHandleSpace;
     
     if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
         
         CGFloat contentWidth    = CGRectGetWidth(contentRect);
-        if (imageSize.width + self.space > contentWidth) {
-            imageSize.width     = contentWidth - self.space;
+        if (imageSize.width + space > contentWidth) {
+            imageSize.width     = contentWidth - space;
         }
         
     }else {
         
         CGFloat contentHeight   = CGRectGetHeight(contentRect);
-        if (imageSize.height + self.space > contentHeight) {
-            imageSize.height    = contentHeight - self.space;
+        if (imageSize.height + space > contentHeight) {
+            imageSize.height    = contentHeight - space;
         }
         
     }
@@ -105,14 +119,14 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 - (CGSize)cg_calculateTitleSizeWithContentRect:(CGRect)contentRect imageSize:(CGSize)imageSize
 {
     CGSize tempLabelSize        = contentRect.size;
-    
+    CGFloat space               = self.didHandleSpace;
     //获取标题的最大区域
     if (self.buttonStyle == CGButtonStyleHorizonalRight || self.buttonStyle == CGButtonStyleHorizonalLeft) {
         
-        tempLabelSize.width     = CGRectGetWidth(contentRect) - (imageSize.width + self.space);
+        tempLabelSize.width     = CGRectGetWidth(contentRect) - (imageSize.width + space);
     }else {
         
-        tempLabelSize.height    = CGRectGetHeight(contentRect) - (imageSize.height + self.space);
+        tempLabelSize.height    = CGRectGetHeight(contentRect) - (imageSize.height + space);
     }
     
     /** 获取私有属性，如果直接使用self.titleLabel会导致出现两个一样的标题控件 */
@@ -164,7 +178,8 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 - (CGRect)cg_calculateAreaWithContentType:(_CGButtonContentType)paramContentType contentRect:(CGRect)contentRect
 {
-    if (((contentRect.size.width - self.space) <= 0 || (contentRect.size.height - self.space) <= 0)) {
+    CGFloat space   = self.didHandleSpace;
+    if (((contentRect.size.width - space) <= 0 || (contentRect.size.height - space) <= 0)) {
         return CGRectZero;
     }
     
@@ -204,7 +219,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
             }
         }
         
-        CGSize tempTargetSize   = CGSizeMake(titleSize.width + imageSize.width + self.space,  maxContentHeight);
+        CGSize tempTargetSize   = CGSizeMake(titleSize.width + imageSize.width + space,  maxContentHeight);
         
         //获取标题+间距+图像的综合视图相对于ContentRect的起始坐标
         CGPoint contentPoint    = [self calculateContentPointWithContentSize:CGSizeMake(contentWidth, contentHeight) targetContentSize:tempTargetSize];
@@ -234,12 +249,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         if (self.buttonStyle == CGButtonStyleHorizonalLeft) {
             
             if (paramContentType == _CGButtonContentTypeImageView) {
-                targetPoint.x   += self.space + titleSize.width;
+                targetPoint.x   += space + titleSize.width;
             }
         }else {
             
             if (paramContentType == _CGButtonContentTypeTitleLabel) {
-                targetPoint.x   += self.space + imageSize.width;
+                targetPoint.x   += space + imageSize.width;
             }
         }
     }else {
@@ -261,7 +276,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
             }
         }
         
-        CGSize tempTargetSize   = CGSizeMake(maxContentWidth, titleSize.height + imageSize.height + self.space);
+        CGSize tempTargetSize   = CGSizeMake(maxContentWidth, titleSize.height + imageSize.height + space);
         
         //获取标题+间距+图像的综合视图相对于ContentRect的起始坐标
         CGPoint contentPoint    = [self calculateContentPointWithContentSize:CGSizeMake(contentWidth, contentHeight) targetContentSize:tempTargetSize];
@@ -291,12 +306,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         if (self.buttonStyle == CGButtonStyleVerticalTop) {
             
             if (paramContentType == _CGButtonContentTypeImageView) {
-                targetPoint.y   += self.space + titleSize.height;
+                targetPoint.y   += space + titleSize.height;
             }
         }else {
             
             if (paramContentType == _CGButtonContentTypeTitleLabel) {
-                targetPoint.y   += self.space + imageSize.height;
+                targetPoint.y   += space + imageSize.height;
             }
         }
     }
@@ -343,18 +358,19 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     if (!CGSizeEqualToSize(self.imageViewSize, CGSizeZero)) {
         imageSize   = self.imageViewSize;
     }else {
-        imageSize   = self.currentImage.size;
+        imageSize   = self.getCurrentImage.size;
     }
     
     //当使用setTitle:forState:方法设置标题时，button不会立即刷新，当立即重新刷新button大小时，会使用原标题进行计算出错
     CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:self.titleLabel];
+    CGFloat space       = self.didHandleSpace;
     
     CGSize size;
     
     if (self.buttonStyle == CGButtonStyleHorizonalLeft || self.buttonStyle == CGButtonStyleHorizonalRight) {
-        size = CGSizeMake(titleSize.width + self.space + imageSize.width, MAX(titleSize.height, imageSize.height));
+        size = CGSizeMake(titleSize.width + space + imageSize.width, MAX(titleSize.height, imageSize.height));
     }else {
-        size = CGSizeMake(MAX(titleSize.width, imageSize.width), titleSize.height + self.space + imageSize.height);
+        size = CGSizeMake(MAX(titleSize.width, imageSize.width), titleSize.height + space + imageSize.height);
     }
     
     size = CG_CGMaxSizeWidthSize(size, self.marginEdgeInsets);
@@ -372,18 +388,29 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 {
     CGSize titleSize        = CGSizeZero;
     CGSize compressedSize   = CGSizeMake(FLT_MAX, FLT_MAX);
-    if (self.currentAttributedTitle) {
+    
+    id currentTitleValue                        = self.getCurrentTitleContent;
+    
+    NSAttributedString *currentAttributedTitle  = nil;
+    NSString *currentTitle                      = nil;
+    if ([currentTitleValue isKindOfClass:[NSAttributedString class]]) {
+        currentAttributedTitle  = currentTitleValue;
+    }else {
+        currentTitle    = currentTitleValue;
+    }
+    
+    if (currentAttributedTitle) {
         
         if (titleLabel) {
-            [titleLabel setAttributedText:self.currentAttributedTitle];
+            [titleLabel setAttributedText:currentAttributedTitle];
             titleSize   = [titleLabel sizeThatFits:compressedSize];
         }else {
-            titleSize           = [self.currentAttributedTitle size];
+            titleSize           = [currentAttributedTitle size];
         }
     }else {
         
         if (titleLabel) {
-            [titleLabel setText:self.currentTitle];
+            [titleLabel setText:currentTitle];
             //iOS7 下如果不设置会导致按钮颜色变为默认的蓝色
             [titleLabel setTextColor:self.currentTitleColor];
             titleSize   = [titleLabel sizeThatFits:compressedSize];
@@ -405,7 +432,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
                 _defaultAttributedDictIdentifier    = titleFont;
             }
             
-            titleSize   = [self.currentTitle sizeWithAttributes:_defaultAttributedDict];
+            titleSize   = [currentTitle sizeWithAttributes:_defaultAttributedDict];
         }
     }
     
@@ -419,6 +446,69 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 }
 
 //#pragma mark - 约束系统方法重写
+
+#pragma mark - 内容获取
+- (id)handleContentWithType:(_CGButtonHandleContentType)type state:(UIControlState)state
+{
+    id value    = nil;
+    
+    UIControlState controlState;
+    
+    controlState    = UIControlStateDisabled;
+    if (state & controlState) {
+        return [self getContentWithType:type state:controlState];
+    }
+    
+    controlState    = UIControlStateHighlighted;
+    if (state & controlState) {
+        value   = [self getContentWithType:type state:controlState];
+        state   -= controlState;
+        if (value) {
+            return value;
+        }
+    }
+    
+    controlState    = UIControlStateSelected;
+    if (state & controlState) {
+        return [self getContentWithType:type state:controlState];
+    }
+    
+    controlState    = UIControlStateNormal;
+    if (state == controlState) {
+        return [self getContentWithType:type state:controlState];
+    }
+    
+    controlState    = UIControlStateFocused;
+    if (controlState && (state & controlState)) {
+        return [self getContentWithType:type state:controlState];
+    }
+    
+    controlState    = UIControlStateApplication;
+    if (state & controlState) {
+        return [self getContentWithType:type state:controlState];
+    }
+    
+    controlState    = UIControlStateReserved;
+    if (state & controlState) {
+        return [self getContentWithType:type state:controlState];
+    }
+    
+    return nil;
+}
+
+- (id)getContentWithType:(_CGButtonHandleContentType)type state:(UIControlState)state
+{
+    id value    = nil;
+    if (type == _CGButtonHandleContentTypeImage) {
+        value   = [self imageForState:state];
+    }else {
+        value   = [self attributedTitleForState:state];
+        if (value == nil) {
+            value   = [self titleForState:state];
+        }
+    }
+    return value;
+}
 
 #pragma mark - 属性设置
 - (void)setButtonStyle:(CGButtonStyle)buttonStyle
@@ -469,6 +559,41 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 //        [self cg_performAfterZeroDelaySelector:@selector(cg_updateButtonLayout)];
 //    }
 //}
+
+- (CGFloat)didHandleSpace
+{
+    BOOL useCustomImageView = !CGSizeEqualToSize(self.imageViewSize, CGSizeZero);
+    if (!self.getCurrentImage && !useCustomImageView) {
+        return 0;
+    }
+    
+    id currentTitleValue    = self.getCurrentTitleContent;
+    if (![currentTitleValue respondsToSelector:@selector(length)] || ![currentTitleValue length]) {
+        return 0;
+    }
+    return self.space;
+}
+
+- (id)getCurrentTitleContent
+{
+    if (self.setupCurrentTitleContent) {
+        return self.setupCurrentTitleContent(self, self.state);
+    }else if (self.handleCurrentContentType == CGButtonHandleCurrentContentTypeDefalut) {
+        return [self handleContentWithType:_CGButtonHandleContentTypeTitle state:self.state];
+    }
+    return self.currentAttributedTitle ? self.currentAttributedTitle : self.currentTitle;
+}
+
+- (UIImage *)getCurrentImage
+{
+    if (self.setupCurrentImage) {
+        self.setupCurrentImage(self, self.state);
+    }else if (self.handleCurrentContentType == CGButtonHandleCurrentContentTypeDefalut) {
+        return [self handleContentWithType:_CGButtonHandleContentTypeImage state:self.state];
+    }
+    
+    return self.currentImage;
+}
 
 @end
 

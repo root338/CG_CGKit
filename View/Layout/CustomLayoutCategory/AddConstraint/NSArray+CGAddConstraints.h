@@ -32,6 +32,9 @@ typedef NSLayoutRelation (^CGSetupSubviewLayoutRelation) (UIView *view, CGLayout
 /** 设置子视图相对于父视图的边约束是否忽略 */
 typedef BOOL (^CGSetupSubviewExculdingEdge) (UIView *view, CGLayoutEdge exculdingEdge);
 
+/** 设置子视图与父视图之间的边距 */
+typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
+
 @interface NSArray (CGAddViewSubviewsConstraints)
 
 /** 子视图之间统一的间距 */
@@ -90,6 +93,29 @@ typedef BOOL (^CGSetupSubviewExculdingEdge) (UIView *view, CGLayoutEdge exculdin
  *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
  */
 - (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType marginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation;
+
+/**
+ *  设置(铺展类型，外边距，子视图间距，子视图间／与父视图的约束类型，)约束
+ *  @param  arrangementType             子视图排列的类型
+ *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距，可以在其中设置返回view的其它约束
+ *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
+ *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
+ *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
+ *  @param  setupSubviewMarginEdgeInsets 设置子视图与父视图的边距
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation setupSubviewMarginEdgeInsets:(nullable CGSetupSubViewMarginEdgeInsets)setupSubviewMarginEdgeInsets;
+
+/**
+ *  设置(铺展类型，外边距，子视图间距，子视图间／与父视图的约束类型，)约束
+ *  @param  arrangementType             子视图排列的类型
+ *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距，可以在其中设置返回view的其它约束
+ *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
+ *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
+ *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
+ *  @param  setupSubviewExculdingEdge    设置子视图与父视图需要忽略的边
+ *  @param  setupSubviewMarginEdgeInsets 设置子视图与父视图的边距
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation setupSubviewExculdingEdge:(CGSetupSubviewExculdingEdge)setupSubviewExculdingEdge setupSubviewMarginEdgeInsets:(nullable CGSetupSubViewMarginEdgeInsets)setupSubviewMarginEdgeInsets;
 
 /**
  *  设置约束  视图控制器
