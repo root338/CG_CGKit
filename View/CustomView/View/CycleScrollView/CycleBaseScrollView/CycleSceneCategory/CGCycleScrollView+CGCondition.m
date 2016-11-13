@@ -28,7 +28,6 @@
     if (paramCurrentIndex >= 0 && paramCurrentIndex < self.totalViewNumber && ((type != _CGCycleSubviewTypeCurrentIndex && index >= 0 && index < self.totalViewNumber) || type == _CGCycleSubviewTypeCurrentIndex)) {
         
         switch (type) {
-            case _CGCycleSubviewTypePreviousAideView:
             case _CGCycleSubviewTypePreviousIndex:
                 isResult = !(!self.isCycle && index >= paramCurrentIndex);
                 break;
@@ -36,7 +35,6 @@
                 isResult = YES;
                 break;
             case _CGCycleSubviewTypeNextIndex:
-            case _CGCycleSubviewTypeNextAideView:
                 isResult = !(!self.isCycle && index <= paramCurrentIndex);
                 break;
             default:
