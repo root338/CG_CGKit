@@ -1,22 +1,15 @@
 //
-//  CGScrollView.h
-//  QuickAskCommunity
+//  CGScrollViewDelegateManager.h
+//  TestCG_CGKit
 //
-//  Created by DY on 16/3/10.
-//  Copyright © 2016年 ym. All rights reserved.
+//  Created by DY on 16/8/13.
+//  Copyright © 2016年 apple. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "CGViewProtocol.h"
 #import "CGScrollViewDefineHeader.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-@protocol CGScrollViewDelegate <UIScrollViewDelegate>
-
-@end
-
-@interface CGScrollView : UIScrollView<CGViewInitializationProtocol>
+@interface CGScrollViewDelegateManager : NSObject<UIScrollViewDelegate>
 
 //控制类型
 @property (nonatomic, assign, readonly) CGScrollControlType scrollControlType;
@@ -27,7 +20,5 @@ NS_ASSUME_NONNULL_BEGIN
 //水平滑动平均速度
 @property (nonatomic, assign, readonly) CGFloat horizontalMeanVelocity;
 
-@property (nullable, nonatomic, weak) id<CGScrollViewDelegate> delegate_cg;
-
+- (void)setupInitialPoint:(CGPoint)initialPoint;
 @end
-NS_ASSUME_NONNULL_END

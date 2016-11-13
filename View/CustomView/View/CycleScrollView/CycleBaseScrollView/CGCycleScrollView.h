@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CGScrollViewDirectionHeader.h"
+#import "CGScrollViewDefineHeader.h"
 
 @class CGCycleScrollView;
 

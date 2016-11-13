@@ -1,13 +1,13 @@
 //
-//  CGScrollViewDirectionHeader.h
+//  CGScrollViewDefineHeader.h
 //  QuickAskCommunity
 //
 //  Created by DY on 16/3/10.
 //  Copyright © 2016年 ym. All rights reserved.
 //
 
-#ifndef CGScrollViewDirectionHeader_h
-#define CGScrollViewDirectionHeader_h
+#ifndef CGScrollViewDefineHeader_h
+#define CGScrollViewDefineHeader_h
 
 /**
  *  滑动的方向
@@ -44,4 +44,16 @@ typedef NS_ENUM(NSInteger, CGScrollDirectionType) {
     CGScrollDirectionTypeDownRight  = CGScrollDirectionTypeDown | CGScrollDirectionTypeRight,
 };
 
-#endif /* CGScrollViewDirectionHeader_h */
+/** 滑动控制类型 */
+typedef NS_ENUM(NSInteger, CGScrollControlType) {
+    /** 空 */
+    CGScrollControlTypeNone,
+    /** 手指还在屏幕滑动 */
+    CGScrollControlTypeDragging,
+    /** 手指离开屏幕，即将由惯性滑动 */
+    CGScrollControlTypeEndDraggingWillDecelerating,
+    /** 惯性滑动 */
+    CGScrollControlTypeDecelerating,
+};
+
+#endif /* CGScrollViewDefineHeader_h */
