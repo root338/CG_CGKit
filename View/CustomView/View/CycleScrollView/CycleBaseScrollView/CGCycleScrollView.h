@@ -164,6 +164,9 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  */
 @property (assign, nonatomic) BOOL pagingEnabled;
 
+/** 是否可以滑动，默认为YES */
+@property (nonatomic, assign) BOOL scrollEnabled;
+
 /** 滑动视图的滑动方向 */
 @property (assign, nonatomic) CGCycleViewScrollDirection scrollDirection;
 

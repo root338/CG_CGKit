@@ -74,6 +74,7 @@
             
             _delayTimeInterval  = delayTimeInterval;
             _isAutoScrollView   = YES;
+            _scrollEnabled      = YES;
         }
         
         [self initialization];
@@ -832,6 +833,12 @@
 {
     [super setClipsToBounds:clipsToBounds];
     self.cycleScrollView.clipsToBounds  = clipsToBounds;
+}
+
+- (void)setScrollEnabled:(BOOL)scrollEnabled
+{
+    _scrollEnabled  = scrollEnabled;
+    self.cycleScrollView.scrollEnabled  = scrollEnabled;
 }
 
 //- (void)setEnableScrollDirectionMonitor:(BOOL)enableScrollDirectionMonitor
