@@ -599,12 +599,31 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 @implementation CGButton (CGCreateButton)
 
-+ (CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image
 {
     CGButton *button    = [self cg_createButtonWithButtonType:buttonType title:title titleColor:titleColor font:font normalImage:image];
     button.buttonStyle  = buttonStyle;
     button.space        = space;
     return button;
+}
+
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(NSString *)title font:(UIFont *)font titleColor:(UIColor *)titleColor imageName:(nullable NSString *)imageName
+{
+    return [self createButtonWithType:buttonType style:buttonStyle space:space title:title font:font titleColor:titleColor image:imageName ? [UIImage imageNamed:imageName] : nil];
+}
+
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(NSString *)title font:(UIFont *)font titleColor:(UIColor *)titleColor imageForOriginal:(UIImage *)image
+{
+    return [self createButtonWithType:buttonType style:buttonStyle space:space title:title font:font titleColor:titleColor image:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+}
+
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(NSString *)title font:(UIFont *)font titleColor:(UIColor *)titleColor imageNameForOriginal:(NSString *)imageName
+{
+    UIImage *image  = nil;
+    if (imageName != nil) {
+        image   = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    }
+    return [self createButtonWithType:buttonType style:buttonStyle space:space title:title font:font titleColor:titleColor image:image];
 }
 
 @end

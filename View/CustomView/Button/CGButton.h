@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 /** 标题和图片对齐方式时的偏移间距 */
 @property (nonatomic, assign) CGFloat contentSubviewOfficeSpace;
 
+//使用contentVerticalAlignment，contentHorizontalAlignment代替
 //@property (nonatomic, assign) UIControlContentHorizontalAlignment   contentViewHorizontalAlignment;
 //@property (nonatomic, assign) UIControlContentVerticalAlignment     contentViewVerticalAlignment;
 //@property (nonatomic, assign) UIOffset imageViewOffset;
@@ -57,14 +58,13 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
  可能的例子情况：按钮仅在selected状态下才有图片 在UIControlEventTouchUpInside事件中，处理按钮为选中，这时按钮的状态为5，即选中，高亮都为YES，这时获取的当前图片为nil，而随后变为YES后会导致计算的大小出错
  */
 
-@property (nonatomic, assign, readwrite) CGButtonHandleCurrentContentType handleCurrentContentType;
+//CGButton提供的处理方式
+@property (nonatomic, assign) CGButtonHandleCurrentContentType handleCurrentContentType;
 
 /** 设置当前标题，返回类型应为NSAttributedString或NSString */
 @property (nullable, nonatomic, copy) __nullable id (^setupCurrentTitleContent) (__kindof CGButton * button, UIControlState currentState);
 /** 设置当前图片 */
 @property (nullable, nonatomic, copy) UIImage  * _Nullable  (^setupCurrentImage) (__kindof CGButton * button, UIControlState currentState);
-
-
 
 @property (nullable, nonatomic, weak) NSLayoutConstraint *heightConstraint;
 @property (nullable, nonatomic, weak) NSLayoutConstraint *widthConstraint;
@@ -76,6 +76,13 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 @interface CGButton (CGCreateButton)
 
 + (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(nullable NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image;
+
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(nullable NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor imageName:(nullable NSString *)imageName;
+
+///图片使用UIImageRenderingModeAlwaysOriginal
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(nullable NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor imageForOriginal:(nullable UIImage *)image;
+//图片使用UIImageRenderingModeAlwaysOriginal
++ (__kindof CGButton *)createButtonWithType:(UIButtonType)buttonType style:(CGButtonStyle)buttonStyle space:(CGFloat)space title:(nullable NSString *)title font:(nullable UIFont *)font titleColor:(nullable UIColor *)titleColor imageNameForOriginal:(nullable NSString *)imageName;
 
 @end
 

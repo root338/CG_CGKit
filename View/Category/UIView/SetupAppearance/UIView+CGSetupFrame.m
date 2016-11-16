@@ -195,11 +195,6 @@
 //}
 #pragma mark
 
-- (void)cg_setupCenterWithView:(UIView *)paramView
-{
-    self.center = [self cg_centerOriginWithTargetView:paramView];
-}
-
 - (void)cg_setupFrameWithCenter:(CGPoint)paramCenter size:(CGSize)paramSize
 {
     self.center = paramCenter;

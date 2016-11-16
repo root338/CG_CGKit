@@ -35,11 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic, readonly) CGFloat     maxY;
 
 #pragma mark
-/** 
- *  设置view的中心坐标与为指定视图的中心
- *  @warning 坐标系统为指定视图的坐标系统
- */
-- (void)cg_setupCenterWithView:(UIView *)paramView;
 
 /**
  *  设置视图的显示区域
@@ -49,9 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cg_setupFrameWithCenter:(CGPoint)paramCenter size:(CGSize)paramSize;
 
-/** 获取视图在指定视图的中心点的坐标 */
+/** 获取视图在指定视图内的中心点的坐标 */
 - (CGPoint)cg_centerOriginWithTargetView:(UIView *)targetView;
-/** 获取视图在父视图的中心点的坐标 */
+/** 在父视图类，获取视图在父视图的中心点的坐标 */
 - (CGPoint)cg_centerOrigin;
 
 @end
