@@ -10,6 +10,16 @@
 
 @protocol CGNavigationAppearanceProtocol;
 NS_ASSUME_NONNULL_BEGIN
+
+/** 导航栏回退按钮的类型 */
+typedef NS_ENUM(NSInteger, CGInteractivePopGestureRecognizerType) {
+    /** 系统默认 */
+    CGInteractivePopGestureRecognizerTypeSystem,
+    /** 支持全屏的自定义回退手势 */
+    CGInteractivePopGestureRecognizerTypeFullScreen,
+//    CGNavigationControllerPopGestureRecognizerTypeCustom,
+};
+
 @interface CGNavigationController : UINavigationController
 
 @property (nullable, nonatomic, weak) id<CGNavigationAppearanceProtocol> appearanceDelegate;
@@ -37,8 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (nonatomic, assign) BOOL enableViewControllerManager;
 
 /** 
- *  关闭全屏回退功能，默认 NO
+ *  关闭全屏回退功能，开启系统默认回退功能，默认 YES
  */
-@property (nonatomic, assign) BOOL disableFullScreenPopGestureRecognizer;
+@property (nonatomic, assign) BOOL enablePopGestureRecognizer;
+
+/** 导航栏回退按钮的类型，默认 CGInteractivePopGestureRecognizerTypeFullScreen */
+@property (nonatomic, assign) CGInteractivePopGestureRecognizerType interactivePopGestureRecognizerType;
 @end
 NS_ASSUME_NONNULL_END

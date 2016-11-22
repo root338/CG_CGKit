@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///** 设置全屏回退手势，返回是否设置成功 */
 - (BOOL)openFullScreenPopGestureRecognizer;
 - (BOOL)closeFullScreenPopGestureRecognizer;
+
 @end
 
 @interface UINavigationController (CGPopAnimation)

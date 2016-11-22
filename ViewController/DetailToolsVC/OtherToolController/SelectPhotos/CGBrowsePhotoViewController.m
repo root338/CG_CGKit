@@ -28,7 +28,8 @@
     UIGestureRecognizerDelegate
 >
 {
-    
+    //取代self.isNavigationBarHidden在点击刷新时会获取导航栏的状态值，而导航栏还没有刷新，所以会出现错误状态
+    BOOL _isNavigationBarHidden;
 }
 @property (nonatomic, strong) CGCollectionView *browsePhotoCollectionView;
 @property (nonatomic, strong) CGCollectionViewDataSourceManager *dataSourceManager;
@@ -38,16 +39,16 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return self.isNavigationBarHidden;
+    return _isNavigationBarHidden;
 }
 
 #pragma mark - 事件
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    BOOL isHidden   = !self.navigationBar.hidden;
-    [self setNavigationBarHidden:isHidden animated:YES];
+    _isNavigationBarHidden  = !self.navigationBar.hidden;
     [self setNeedsStatusBarAppearanceUpdate];
+    [self setNavigationBarHidden:_isNavigationBarHidden animated:YES];
 }
 
 - (void)viewDidLoad {
@@ -160,6 +161,11 @@
     }
 }
 
+- (void)setNavigationBarHidden:(BOOL)navigationBarHidden
+{
+    [super setNavigationBarHidden:navigationBarHidden];
+    _isNavigationBarHidden  = self.isNavigationBarHidden;
+}
 /*
 #pragma mark - Navigation
 

@@ -40,7 +40,7 @@
         _didHideContentViewRemoveSuperview  = YES;
         _frameEqualSuperviewBounds          = YES;
         _animationChangeBackgroundColor     = YES;
-        _animationsStyle                    = CGViewAnimationsStyleDefalut;
+        _animationsStyle                    = CGSelectorViewAnimationsStyleDefalut;
         _contentViewAnimationType           = CGSelectorContentViewAnimationTypeBottomToTop;
         _fromBackgroundColor                = nil;
         _toBackgroundColor                  = [UIColor colorWithWhite:0 alpha:0.5];
@@ -108,9 +108,9 @@
         [weakself setupShowContentViewAnimationsCompletions:finished];
     };
     
-    if (self.animationsStyle == CGViewAnimationsStyleDefalut) {
+    if (self.animationsStyle == CGSelectorViewAnimationsStyleDefalut) {
         [UIView animateWithDuration:self.duration delay:self.delayForContentViewShow options:self.contentViewShowAnimationOptions animations:animations completion:completion];
-    }else if (self.animationsStyle == CGViewAnimationsStyleSpringEffect) {
+    }else if (self.animationsStyle == CGSelectorViewAnimationsStyleSpringEffect) {
         [UIView animateWithDuration:self.duration delay:self.delayForContentViewShow usingSpringWithDamping:self.springDampingRatio initialSpringVelocity:self.initialSpringVelocity options:self.contentViewShowAnimationOptions animations:animations completion:completion];
     }
 }
@@ -163,9 +163,9 @@
         [weakself setupHideContentViewAnimationsCompletions:finished];
     };
     
-    if (self.animationsStyle == CGViewAnimationsStyleDefalut) {
+    if (self.animationsStyle == CGSelectorViewAnimationsStyleDefalut) {
         [UIView animateWithDuration:self.duration delay:self.delayForContentViewHide options:self.contentViewHideAnimationOptions animations:animations completion:completion];
-    }else if (self.animationsStyle == CGViewAnimationsStyleSpringEffect) {
+    }else if (self.animationsStyle == CGSelectorViewAnimationsStyleSpringEffect) {
         [UIView animateWithDuration:self.duration delay:self.delayForContentViewHide usingSpringWithDamping:self.springDampingRatio initialSpringVelocity:self.initialSpringVelocity options:self.contentViewHideAnimationOptions animations:animations completion:completion];
     }
 }

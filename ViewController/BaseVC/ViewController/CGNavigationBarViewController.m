@@ -97,9 +97,9 @@
     return self.navigationBarView.navigationBar;
 }
 
-- (void)setIsNavigationBarHidden:(BOOL)isNavigationBarHidden
+- (void)setNavigationBarHidden:(BOOL)navigationBarHidden
 {
-    self.navigationBarView.isNavigationBarHidden    = isNavigationBarHidden;
+    self.navigationBarView.navigationBarHidden  = navigationBarHidden;
 }
 
 - (BOOL)isNavigationBarHidden

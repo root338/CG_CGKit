@@ -14,19 +14,44 @@
 
 @interface CGNavigationController ()
 {
-    //标识当前全屏回退按钮设置是否成功
-    BOOL currentFullScreenPopGestureRecognizerSetupIsSuccessMark;
+    
 }
 @property (nonatomic, strong) CGNavigationDelegateObject *delegateObject;
 @end
 
 @implementation CGNavigationController
 
+@synthesize enablePopGestureRecognizer = _enablePopGestureRecognizer;
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self initializationPropertyValue];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initializationPropertyValue];
+    }
+    return self;
+}
+
+- (void)initializationPropertyValue
+{
+    _enablePopGestureRecognizer             = YES;
+    _interactivePopGestureRecognizerType    = CGInteractivePopGestureRecognizerTypeFullScreen;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self setupFullScreenPopGestureRecognizer];
+    [self setupPopGestureRecognizer];
     
     self.delegateObject = [[CGNavigationDelegateObject alloc] init];
     self.delegate       = self.delegateObject;
@@ -73,20 +98,34 @@
 //    return statusBarUpdateAnimation;
 //}
 
-- (void)setupFullScreenPopGestureRecognizer
+- (void)setupPopGestureRecognizer
 {
-    if (currentFullScreenPopGestureRecognizerSetupIsSuccessMark) {
-        return;
+    BOOL fullScreenPopGestureRecognizerEnable   = NO;
+    BOOL systemPopGestureRecognizerEnable       = NO;
+    if (self.enablePopGestureRecognizer) {
+        
+        switch (self.interactivePopGestureRecognizerType) {
+            case CGInteractivePopGestureRecognizerTypeSystem:
+                systemPopGestureRecognizerEnable        = YES;
+                break;
+            case CGInteractivePopGestureRecognizerTypeFullScreen:
+                fullScreenPopGestureRecognizerEnable    = YES;
+                break;
+            default:
+                break;
+        }
     }
     
-    BOOL isResult = NO;
-    if (self.disableFullScreenPopGestureRecognizer) {
-        isResult    = [self closeFullScreenPopGestureRecognizer];
+    if (self.interactivePopGestureRecognizer.enabled != systemPopGestureRecognizerEnable) {
+        self.interactivePopGestureRecognizer.enabled    = systemPopGestureRecognizerEnable;
+    }
+    
+    if (fullScreenPopGestureRecognizerEnable) {
+        [self openFullScreenPopGestureRecognizer];
     }else {
-        isResult    = [self openFullScreenPopGestureRecognizer];
+        self.fullScreenPopGestureRecognizer.enabled = fullScreenPopGestureRecognizerEnable;
     }
     
-    currentFullScreenPopGestureRecognizerSetupIsSuccessMark = isResult;
 }
 
 #pragma mark - 设置属性
@@ -98,13 +137,36 @@
 //    }
 //}
 
-- (void)setDisableFullScreenPopGestureRecognizer:(BOOL)disableFullScreenPopGestureRecognizer
+- (void)setEnablePopGestureRecognizer:(BOOL)enablePopGestureRecognizer
 {
-    if (_disableFullScreenPopGestureRecognizer != disableFullScreenPopGestureRecognizer) {
-        
-        _disableFullScreenPopGestureRecognizer  = disableFullScreenPopGestureRecognizer;
-        currentFullScreenPopGestureRecognizerSetupIsSuccessMark = NO;
-        [self setupFullScreenPopGestureRecognizer];
+    if (_enablePopGestureRecognizer != enablePopGestureRecognizer) {
+        _enablePopGestureRecognizer    = enablePopGestureRecognizer;
+        [self setupPopGestureRecognizer];
     }
 }
+
+- (BOOL)disablePopGestureRecognizer
+{
+    BOOL isEnablePopGestureRecognizer  = NO;
+    switch (self.interactivePopGestureRecognizerType) {
+        case CGInteractivePopGestureRecognizerTypeSystem:
+            isEnablePopGestureRecognizer    = self.interactivePopGestureRecognizer.enabled;
+            break;
+        case CGInteractivePopGestureRecognizerTypeFullScreen:
+            isEnablePopGestureRecognizer    = self.fullScreenPopGestureRecognizer.enabled;
+            break;
+        default:
+            break;
+    }
+    return isEnablePopGestureRecognizer;
+}
+
+- (void)setInteractivePopGestureRecognizerType:(CGInteractivePopGestureRecognizerType)interactivePopGestureRecognizerType
+{
+    if (_interactivePopGestureRecognizerType != interactivePopGestureRecognizerType) {
+        _interactivePopGestureRecognizerType    = interactivePopGestureRecognizerType;
+        [self setupPopGestureRecognizer];
+    }
+}
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "CGBaseView.h"
+#import "CGSelectorTypeHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,45 +28,20 @@ typedef NS_ENUM(NSInteger, CGSelectorContentViewAnimationType) {
     CGSelectorContentViewAnimationTypeRightToLeft,
 };
 
-/** 动画的状态 */
-typedef NS_ENUM(NSInteger, CGViewAnimationStatus) {
-    /** 未知 */
-    CGViewAnimationStatusUnknowe    = -1,
-    /** 静止 */
-    CGViewAnimationStatusStill,
-    /** 动画执行中 */
-    CGViewAnimationStatusAniamtion,
-};
-
-/** 视图的状态 */
-typedef NS_ENUM(NSInteger, CGViewStatus) {
-    /** 未知 */
-//    CGViewStatusUnknowe     = -1,
-    /** 显示 */
-    CGViewStatusShow,
-    /** 由显示过滤到隐藏状态，一般为动画执行过程 */
-    CGViewStatusShowToHide,
-    /** 隐藏 */
-    CGViewStatusHide,
-    /** 由隐藏过滤到显示状态，一般为动画执行过程 */
-    CGViewStatusHideToShow,
-};
-
 /** 视图动画的效果 */
-typedef NS_ENUM(NSInteger, CGViewAnimationsStyle) {
+typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
     /** 默认效果 */
-    CGViewAnimationsStyleDefalut,
+    CGSelectorViewAnimationsStyleDefalut,
     /** 弹簧效果 */
-    CGViewAnimationsStyleSpringEffect,
+    CGSelectorViewAnimationsStyleSpringEffect,
     
     /** 自定义动画效果，@warning 所有设置项全部失效，需要用户自定义实现 */
-//    CGViewAnimationsStyleCustom,
+//    CGSelectorViewAnimationsStyleCustom,
 };
 
 /**
- 弹层选择视图
+ 弹层选择视图 使用UIView提供的animation动画方法
  @param 内容选择器应该添加到contentView中
- @param 默认背景色 黑色透明度 50%
  */
 @interface CGSelectorView : CGBaseView
 
@@ -111,8 +87,8 @@ typedef NS_ENUM(NSInteger, CGViewAnimationsStyle) {
 @property (nullable, nonatomic, strong) UIColor *toBackgroundColor;
 
 #pragma mark - 动画方式设置
-/** 选择视图的动画效果类型, 默认 CGViewAnimationsStyleDefalut */
-@property (nonatomic, assign) CGViewAnimationsStyle animationsStyle;
+/** 选择视图的动画效果类型, 默认 CGSelectorViewAnimationsStyleDefalut */
+@property (nonatomic, assign) CGSelectorViewAnimationsStyle animationsStyle;
 
 /** 选择内容视图的动画方式， 默认 CGSelectorContentViewAnimationTypeBottomToTop */
 @property (nonatomic, assign) CGSelectorContentViewAnimationType contentViewAnimationType;

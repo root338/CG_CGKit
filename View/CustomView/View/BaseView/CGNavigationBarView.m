@@ -20,6 +20,8 @@
 
 @implementation CGNavigationBarView
 
+@synthesize navigationBarHidden = _navigationBarHidden;
+
 - (instancetype)initWithFrame:(CGRect)frame delegate:(id<CGNavigationBarViewDelegate>)pDelegate
 {
     self = [self initWithFrame:frame];
@@ -43,15 +45,23 @@
 
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-    _isNavigationBarHidden  = hidden;
-    if (!hidden || !animated) {
-        //显示时，或没有动画时
+    _navigationBarHidden    = hidden;
+    if (hidden) {
+        if (!animated) {
+            //导航栏隐藏，没有动画
+            self.navigationBar.hidden   = hidden;
+        }
+    }else {
+        //显示导航栏
         self.navigationBar.hidden   = hidden;
     }
+    
     if (animated) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             
             [self setupSubviewsLayout];
+            
+            
         } completion:^(BOOL finished) {
             
             if (hidden) {
@@ -95,6 +105,7 @@
 {
     
     CGRect navigationBarFrame;
+    
     if (self.delegate) {
         
         navigationBarFrame  = [self.delegate cg_navigationBarFrame];
@@ -109,6 +120,10 @@
         if (!self.isStatusBarHidden) {
             navigationBarFrame.size.height += 20;
         }
+    }
+    
+    if (self.isNavigationBarHidden) {
+        navigationBarFrame.origin.y -= CGRectGetHeight(navigationBarFrame);
     }
     
     CGRect contentViewFrame;
@@ -127,10 +142,10 @@
     }
     
     self.contentView.frame      = contentViewFrame;
-    [self cg_addSubview:self.contentView];
+    self.contentView.superview ?: [self addSubview:self.contentView];
     
     self.navigationBar.frame    = navigationBarFrame;
-    [self cg_addSubview:self.navigationBar];
+    self.navigationBar.superview ?: [self addSubview:self.navigationBar];
 }
 
 #pragma mark - 设置内容视图样式
@@ -170,12 +185,17 @@
     return _contentView;
 }
 
-- (void)setIsNavigationBarHidden:(BOOL)isNavigationBarHidden
+- (void)setNavigationBarHidden:(BOOL)navigationBarHidden
 {
-    if (_isNavigationBarHidden != isNavigationBarHidden) {
+    if (_navigationBarHidden != navigationBarHidden) {
         
-        [self setNavigationBarHidden:isNavigationBarHidden animated:NO];
+        [self setNavigationBarHidden:navigationBarHidden animated:NO];
     }
+}
+
+- (BOOL)isNavigationBarHidden
+{
+    return _navigationBarHidden;
 }
 
 @end

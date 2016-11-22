@@ -106,11 +106,15 @@
                 self.interactivePopGestureRecognizer.enabled    = NO;
             }
         }
+        
+        if (!self.fullScreenPopGestureRecognizer.enabled) {
+            self.fullScreenPopGestureRecognizer.enabled = YES;
+        }
     }else {
         
-        if (self.fullScreenPopGestureRecognizer) {
+        if (self.fullScreenPopGestureRecognizer.enabled) {
             
-            [self.fullScreenPopGestureRecognizer.view removeGestureRecognizer:self.fullScreenPopGestureRecognizer];
+            self.fullScreenPopGestureRecognizer.enabled = NO;
         }
         
         if (self.interactivePopGestureRecognizer.enabled != YES) {
