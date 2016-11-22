@@ -65,7 +65,6 @@ typedef NS_ENUM(NSInteger, CGViewAnimationsStyle) {
 /**
  弹层选择视图
  @param 内容选择器应该添加到contentView中
- @param 默认背景色 黑色透明度 50%
  */
 @interface CGSelectorView : CGBaseView
 
