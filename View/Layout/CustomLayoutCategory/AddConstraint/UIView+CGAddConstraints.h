@@ -216,8 +216,6 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置两对象之间的约束(边值类型(单个)，约束类型, 间距) */
 - (NSLayoutConstraint *)cg_autoInverseAttribute:(CGLayoutEdge)attribute toItem:(UIView *)view2 relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c;
 
-
-
 @end
 
 #pragma mark - 设置视图与指定视图之间的约束

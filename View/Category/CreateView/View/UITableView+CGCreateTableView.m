@@ -21,7 +21,7 @@
 {
     UITableView *tableView = [[self alloc] initWithFrame:CGRectZero style:style];
     
-    if (rowHeight != 0) {
+    if (rowHeight > 0) {
         tableView.rowHeight = rowHeight;
     }
     

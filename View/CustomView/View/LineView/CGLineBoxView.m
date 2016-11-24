@@ -34,13 +34,6 @@
 {
     [super awakeFromNib];
     
-    if (_lineWidth == 0) {
-        _lineWidth = .5;
-    }
-    if (_lineColor == nil) {
-        _lineColor = __K_CG_16_VALUE_COLOR(KCG_16_ColorValueType_0XE5E5E5);
-    }
-    
 }
 
 // Only override drawRect: if you perform custom drawing.

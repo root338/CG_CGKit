@@ -10,6 +10,62 @@
 #import "UIView+CGAddConstraintStatus.h"
 #import "NSLayoutConstraint+CGConstraint.h"
 
+@interface UIView (_CGLayoutEnum_CGCreateConstraint)
+
+- (NSLayoutAttribute)layoutAttributWithCGLayoutAttribute:(CGLayoutAttribute)paramLayoutAttribut;
+
+- (NSLayoutAttribute)layoutAttributWithCGDimension:(CGDimension)paramLayoutAttribut;
+
+- (NSLayoutAttribute)layoutAttributWithCGAxis:(CGAxis)paramLayoutAttribut;
+
+- (NSLayoutAttribute)layoutAttributWithCGLayoutAttributeMargin:(CGLayoutAttributeMargin)paramLayoutAttribut NS_AVAILABLE_IOS(8_0);
+
+- (NSLayoutAttribute)layoutAttributWithCGLayoutEdge:(CGLayoutEdge)paramLayoutAttribut;
+
+- (NSLayoutRelation)layoutRelationWithCGLayoutRelation:(CGLayoutRelation)paramLayoutRelation;
+
+@end
+
+@implementation UIView (_CGLayoutEnum_CGCreateConstraint)
+
+- (NSLayoutAttribute)layoutAttributWithCGLayoutAttribute:(CGLayoutAttribute)paramLayoutAttribut
+{
+    NSLayoutAttribute layoutAttribute = (NSLayoutAttribute)paramLayoutAttribut;
+    return layoutAttribute;
+}
+
+- (NSLayoutAttribute)layoutAttributWithCGDimension:(CGDimension)paramLayoutAttribut
+{
+    NSLayoutAttribute layoutAttribute   = (NSLayoutAttribute)paramLayoutAttribut;
+    return layoutAttribute;
+}
+
+- (NSLayoutAttribute)layoutAttributWithCGAxis:(CGAxis)paramLayoutAttribut
+{
+    NSLayoutAttribute layoutAttribute   = (NSLayoutAttribute)paramLayoutAttribut;
+    return layoutAttribute;
+}
+
+- (NSLayoutAttribute)layoutAttributWithCGLayoutAttributeMargin:(CGLayoutAttributeMargin)paramLayoutAttribut
+{
+    NSLayoutAttribute layoutAttribute   = (NSLayoutAttribute)paramLayoutAttribut;
+    return layoutAttribute;
+}
+
+- (NSLayoutAttribute)layoutAttributWithCGLayoutEdge:(CGLayoutEdge)paramLayoutAttribut
+{
+    NSLayoutAttribute layoutAttribute   = (NSLayoutAttribute)paramLayoutAttribut;
+    return layoutAttribute;
+}
+
+- (NSLayoutRelation)layoutRelationWithCGLayoutRelation:(CGLayoutRelation)paramLayoutRelation
+{
+    NSLayoutRelation layoutRelation = (NSLayoutRelation)paramLayoutRelation;
+    return layoutRelation;
+}
+
+@end
+
 @implementation UIView (CGCreateSuperviewConstranint)
 
 - (NSLayoutConstraint *)cg_createConstrainToSuperviewAttribute:(NSLayoutAttribute)attribute

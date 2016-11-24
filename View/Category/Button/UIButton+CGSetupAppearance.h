@@ -14,11 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 加载本地图片 默认UIImageRenderingModeAlwaysOriginal */
 - (void)setImageName:(nullable NSString *)localImageName forState:(UIControlState)state;
+
 /** 加载本地图片 */
 - (void)setImageName:(nullable NSString *)localImageName forState:(UIControlState)state renderingMode:(UIImageRenderingMode)renderingMode;
 
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor forState:(UIControlState)state;
+
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor image:(nullable UIImage *)image forState:(UIControlState)state;
+
 /** 设置不同状态下的标题, key:@(UIControlState) */
 - (void)cg_setupTitles:(nullable NSDictionary<NSNumber *, NSString *> *)titles;
 /** 设置不同状态下的标题颜色, key:@(UIControlState) */

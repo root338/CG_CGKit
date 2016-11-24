@@ -12,15 +12,20 @@
 
 + (UIColor *)colorWithValueType:(KCG_16_ColorValueType)valueType
 {
-    
-    return [self colorWithValueType:valueType alpha:1];
+    CGFloat alpha   = 0;
+    if (valueType <= 0xFFFFFF) {
+        alpha   = 1;
+    }else {
+        alpha   = ((valueType & 0xFF000000) >> 24) / 255.0;
+    }
+    return [self colorWithValueType:valueType alpha:alpha];
 }
 
 + (UIColor *)colorWithValueType:(KCG_16_ColorValueType)valueType alpha:(CGFloat)alpha
 {
-    CGFloat red     = ((valueType & 0X00FF0000) >> 16) / 255.0;
-    CGFloat green   = ((valueType & 0X0000FF00) >> 8) / 255.0;
-    CGFloat blue    = (valueType & 0X000000FF) / 255.0;
+    CGFloat red     = ((valueType & 0x00FF0000) >> 16) / 255.0;
+    CGFloat green   = ((valueType & 0x0000FF00) >> 8) / 255.0;
+    CGFloat blue    = (valueType & 0x000000FF) / 255.0;
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 

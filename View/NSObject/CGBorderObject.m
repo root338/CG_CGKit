@@ -12,7 +12,7 @@
 
 + (instancetype)cg_createBorderWithColorValue:(KCG_16_ColorValueType)color width:(CGFloat)width
 {
-    return [self cg_createBorderWithColorObject:__K_CG_16_VALUE_ACOLOR(color) width:width];
+    return [self cg_createBorderWithColorObject:[UIColor colorWithValueType:color] width:width];
 }
 
 + (instancetype)cg_createBorderWithColorObject:(UIColor *)color width:(CGFloat)width

@@ -19,5 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 加载图片，使用UIImageRenderingModeAlwaysOriginal模式 */
 + (nullable UIImage *)cg_imageName:(NSString *)imageName;
+
 @end
 NS_ASSUME_NONNULL_END

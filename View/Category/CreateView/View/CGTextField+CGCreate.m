@@ -1,19 +1,19 @@
 //
-//  UITextField+CG_Create.m
+//  CGTextField+CGCreate.m
 //  QuickAskCommunity
 //
 //  Created by DY on 15/9/24.
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "UITextField+CG_Create.h"
+#import "CGTextField+CGCreate.h"
 
-@implementation UITextField (CG_Create)
+@implementation CGTextField (CGCreate)
 
 + (instancetype)cg_createTextFieldWithPlaceholder:(NSString *)placeholder
 {
-    UITextField *textField = [[self alloc] init];
-    
+    CGTextField *textField  = [[self alloc] initWithFrame:CGRectZero];
+    textField.placeholder   = placeholder;
     return textField;
 }
 

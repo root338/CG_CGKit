@@ -1,16 +1,16 @@
 //
-//  UITextField+CG_Create.h
+//  CGTextField+CGCreate.h
 //  QuickAskCommunity
 //
 //  Created by DY on 15/9/24.
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CGTextField.h"
 
 NS_ASSUME_NONNULL_BEGIN
 /* 创建文本框 */
-@interface UITextField (CG_Create)
+@interface CGTextField (CGCreate)
 
 /**
  *  创建输入框

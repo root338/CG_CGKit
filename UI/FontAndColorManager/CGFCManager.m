@@ -92,7 +92,7 @@
     NSString *key       = [self cg_colorCacheKeyWithValue:colorValue];
     UIColor *color      = [self.cacheManager objectForKey:key];
     if (!color) {
-        color           = __K_CG_16_VALUE_ACOLOR(colorValue);
+        color           = [UIColor colorWithValueType:colorValue];
         !color ?: [self.cacheManager setObject:color forKey:key];
     }
     return color;

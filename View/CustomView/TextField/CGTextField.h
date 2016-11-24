@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CGViewProtocol.h"
 
 @interface CGTextField : UITextField
 

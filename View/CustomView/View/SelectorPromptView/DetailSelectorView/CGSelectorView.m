@@ -8,8 +8,7 @@
 
 #import "CGSelectorView.h"
 
-#import "UIView+CGSearchView.h"
-#import "UIView+CGSetupFrame.h"
+#import "UIView+CGSetupInteractivePopGestureRecognizerForNavigationController.h"
 
 #import "CGPrintLogHeader.h"
 
@@ -87,10 +86,7 @@
     }
     
     [self setupSelfLayout];
-    
-    if (self.disableInteractivePopGestureRecognizerForNavigationController) {
-        [self setupNavigationControllerPopGestureRecognizerWithisShowContentViewAnimation:YES];
-    }
+    [self setupNavigationControllerPopGestureRecognizerWithisShowContentViewAnimation:YES];
     
     [self setupBackgroundColorWithIsShow:YES animations:NO];
     
@@ -145,10 +141,7 @@
         return;
     }
     
-    if (self.disableInteractivePopGestureRecognizerForNavigationController) {
-        [self setupNavigationControllerPopGestureRecognizerWithisShowContentViewAnimation:NO];
-    }
-    
+    [self setupNavigationControllerPopGestureRecognizerWithisShowContentViewAnimation:NO];
     [self setupBackgroundColorWithIsShow:NO animations:NO];
     
     if (self.selectorWillHideAnimationsBlock) {
@@ -346,18 +339,14 @@
 
 - (void)setupNavigationControllerPopGestureRecognizerWithisShowContentViewAnimation:(BOOL)isShowContentViewAnimation
 {
-    UINavigationController *navigationController    = [self cg_searchViewControllerWithClass:[UINavigationController class]];
-    
-    BOOL enabled;
-    if (isShowContentViewAnimation) {
-        interactivePopGestureRecognizerEnabledForNavigationController   = navigationController.interactivePopGestureRecognizer.enabled;
-        enabled = NO;
-    }else {
-        enabled = interactivePopGestureRecognizerEnabledForNavigationController;
+    if (!self.disableInteractivePopGestureRecognizerForNavigationController) {
+        return;
     }
     
-    if (navigationController.interactivePopGestureRecognizer.enabled != enabled) {
-        navigationController.interactivePopGestureRecognizer.enabled    = enabled;
+    if (isShowContentViewAnimation) {
+        interactivePopGestureRecognizerEnabledForNavigationController   = [self setupNavigationControllerInteractivePopGestureRecognizerWithEnable:NO];
+    }else {
+        [self setupNavigationControllerInteractivePopGestureRecognizerWithEnable:interactivePopGestureRecognizerEnabledForNavigationController];
     }
 }
 

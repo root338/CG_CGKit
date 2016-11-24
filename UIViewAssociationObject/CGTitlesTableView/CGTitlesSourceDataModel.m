@@ -8,6 +8,10 @@
 
 #import "CGTitlesSourceDataModel.h"
 
+@implementation CGTitlesSinglePageModel
+
+@end
+
 @implementation CGTitlesSourceDataModel
 
 @end

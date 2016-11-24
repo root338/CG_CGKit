@@ -8,6 +8,19 @@
 
 #import "CGBaseObject.h"
 
+
+
+/** 每页加载数据的模型 */
+@interface CGTitlesSinglePageModel : NSObject
+/** 加载的页数 */
+@property (nonatomic, assign) NSUInteger page;
+/** 改页需要加载的数量 */
+@property (nonatomic, assign) NSUInteger count;
+/** 获取到的数据 */
+@property (nullable, nonatomic, strong) NSArray *dataSource;
+
+@end
+
 /** CGTitlesTableView 对象的缓存数据模型 */
 @interface CGTitlesSourceDataModel : CGBaseObject
 
@@ -16,6 +29,8 @@
 @property (nonatomic, assign) NSUInteger currentPage;
 //表格的数据内容
 @property (nullable, nonatomic, copy) NSArray *dataSource;
+
+
 
 #pragma mark - 视图内容记录
 //表格偏移的坐标
