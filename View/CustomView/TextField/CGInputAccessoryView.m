@@ -32,7 +32,14 @@
 
 @end
 
+
+
 @implementation CGInputAccessoryView
+
++ (instancetype)defaultInputAccessoryView
+{
+    return [[self alloc] initWithFrame:CGRectZero];
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CGViewProtocol.h"
 #import "CGScrollViewDefineHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface CGScrollView : UIScrollView<CGViewInitializationProtocol>
+@interface CGScrollView : UIScrollView
 
 //控制类型
 @property (nonatomic, assign, readonly) CGScrollControlType scrollControlType;

@@ -78,6 +78,8 @@ typedef NS_ENUM(NSInteger, CGInputAccessoryViewButtonType){
  */
 @interface CGInputAccessoryView : UIView
 
++ (instancetype)defaultInputAccessoryView;
+
 @property (weak, nonatomic) id<CGInputAccessoryViewDelegate> delegate;
 
 @property (nonatomic, strong, readonly) UIButton *leftArrowButton;
