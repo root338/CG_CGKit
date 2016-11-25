@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIImageView *)cg_createImageName:(NSString *)imageName;
 
++ (UIImageView *)cg_createImageViewWithContentMode:(UIViewContentMode)contentMode;
+
 + (UIImageView *)cg_createImageName:(NSString *)imageName contentMode:(UIViewContentMode)contentMode;
 
 + (UIImageView *)cg_createImageName:(NSString *)imageName contentMode:(UIViewContentMode)contentMode capInsets:(UIEdgeInsets)capInsets;

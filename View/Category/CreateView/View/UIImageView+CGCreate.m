@@ -15,6 +15,13 @@
     return [self cg_createImageName:imageName contentMode:UIViewContentModeScaleAspectFill];
 }
 
++ (UIImageView *)cg_createImageViewWithContentMode:(UIViewContentMode)contentMode
+{
+    UIImageView *imageView  = [[self alloc] initWithFrame:CGRectZero];
+    imageView.contentMode   = contentMode;
+    return imageView;
+}
+
 + (UIImageView *)cg_createImageName:(NSString *)imageName contentMode:(UIViewContentMode)contentMode
 {
     return [self cg_createImageName:imageName contentMode:contentMode capInsets:UIEdgeInsetsZero];

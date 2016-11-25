@@ -8,12 +8,16 @@
 
 #import "CGSelectorView.h"
 
+#import "UIView+CGUpdateViewLayout.h"
 #import "UIView+CGSetupInteractivePopGestureRecognizerForNavigationController.h"
 
 #import "CGPrintLogHeader.h"
 
 @interface CGSelectorView ()
 {
+    /*! 标识是否刷新contentView视图，isUpdateImmediatelyContentViewLayout 必须 = YES */
+    BOOL isDidUpdateContentViewLayout;
+    
     UIButton *cancelButton;
     //记录导航栏回退手势的状态
     BOOL interactivePopGestureRecognizerEnabledForNavigationController;
@@ -201,6 +205,13 @@
  */
 - (CGRect)setupContentViewFrameWithAnimationType:(CGSelectorContentViewAnimationType)animationType showContentView:(BOOL)isShowContentView
 {
+    if (self.isUpdateImmediatelyContentViewLayout) {
+        if (!isDidUpdateContentViewLayout) {
+            [self.contentView cg_viewUpdateContentLayoutIfNeeded];
+            isDidUpdateContentViewLayout    = YES;
+        }
+    }
+    
     CGFloat originX = 0, originY = 0;
     
     CGFloat width   = self.width;
@@ -310,7 +321,11 @@
         CGDebugAssert(targetSuperview, @"请设置选择视图的父视图");
         [targetSuperview addSubview:self];
         if (self.frameEqualSuperviewBounds) {
-            self.frame  = targetSuperview.bounds;
+            
+            if (!CGRectEqualToRect(self.frame, targetSuperview.bounds)) {
+                self.frame  = targetSuperview.bounds;
+                isDidUpdateContentViewLayout    = NO;
+            }
         }
         
         [self setupCancelButton];

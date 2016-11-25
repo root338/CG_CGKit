@@ -30,4 +30,24 @@
 {
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
+
+- (NSString *)cg_removeLastString
+{
+    if (self.length) {
+        return [self substringToIndex:self.length - 1];
+    }
+    return self;
+}
+
+@end
+
+@implementation NSMutableString (CGMutableString)
+
+- (void)removeLastString
+{
+    if (self.length) {
+        [self deleteCharactersInRange:NSMakeRange(self.length - 1, 1)];
+    }
+}
+
 @end
