@@ -24,6 +24,16 @@
     return [self cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewsSpace:nil];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithMarginEdge:(UIEdgeInsets)marginEdge
+{
+    return [self cg_autoArrangementType:CGSubviewsArrangementTypeHorizontal marginInsets:marginEdge setupSubviewsSpace:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutWithMarginEdge:(UIEdgeInsets)marginEdge
+{
+    return [self cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:marginEdge setupSubviewsSpace:nil];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithViewController:(UIViewController *)viewController
 {
     return [self cg_autoViewController:viewController
@@ -38,6 +48,48 @@
                        arrangementType:CGSubviewsArrangementTypeVertical
                           marginInsets:UIEdgeInsetsZero
                     setupSubviewsSpace:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraints
+{
+    return [self cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:UIEdgeInsetsZero];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets
+{
+    return [self cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:marginInsets setupSubviewsSpace:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
+{
+    return [self cg_autoViewController:nil arrangementType:CGSubviewsArrangementTypeHorizontal marginInsets:marginInsets setupSubviewsSpace:setupSubviewsSpaceBlock setupSubviewsLayoutRelation:nil setupSubviewLayoutRelation:nil setupSubviewExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
+        BOOL isExculdingEdge = NO;
+        if (exculdingEdge == CGLayoutEdgeTop || exculdingEdge == CGLayoutEdgeBottom) {
+            isExculdingEdge = YES;
+        }
+        return isExculdingEdge;
+    } setupSubviewMarginEdgeInsets:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraints
+{
+    return [self cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraintsWithMarginInsets:UIEdgeInsetsZero];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets
+{
+    return [self cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraintsWithMarginInsets:marginInsets setupSubviewsSpace:nil];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
+{
+    return [self cg_autoViewController:nil arrangementType:CGSubviewsArrangementTypeVertical marginInsets:marginInsets setupSubviewsSpace:setupSubviewsSpaceBlock setupSubviewsLayoutRelation:nil setupSubviewLayoutRelation:nil setupSubviewExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
+        BOOL isExculdingEdge = YES;
+        if (exculdingEdge == CGLayoutEdgeTop || exculdingEdge == CGLayoutEdgeBottom) {
+            isExculdingEdge = NO;
+        }
+        return isExculdingEdge;
+    } setupSubviewMarginEdgeInsets:nil];
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock
@@ -453,13 +505,18 @@
                                             constant:subviewsSpaceBlock(item1, item2)]];
         }
         
+        //设置对齐
+        
+        CGAxis axis;
         if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
             
-            [constraints addObjectsFromArray:[obj cg_autoEdgesToSuperviewEdgesWithEdge:CGLayoutOptionEdgeVertical insets:marginInsets]];
+            axis    = CGAxisHorizontal;
         }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
             
-            [constraints addObjectsFromArray:[obj cg_autoEdgesToSuperviewEdgesWithEdge:CGLayoutOptionEdgeHorizontal insets:marginInsets]];
+            axis    = CGAxisVertical;
         }
+        [constraints addObject:[obj cg_autoCenterToSuperviewWithAxis:axis]];
+        
     }];
     
     return constraints;

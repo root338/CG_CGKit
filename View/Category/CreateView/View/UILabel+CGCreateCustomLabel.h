@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 创建默认样式的UILabel */
 + (instancetype)cg_createDefaultLabel;
 
+/** 创建UILabel，设置（字体，字体颜色） */
++ (instancetype)cg_createLabelWithFont:(nullable UIFont *)font textColor:(nullable UIColor *)textColor;
+
 /** 创建UILabel，设置（文本，字体，字体颜色） */
 + (instancetype)cg_createLabelWithText:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor;
 

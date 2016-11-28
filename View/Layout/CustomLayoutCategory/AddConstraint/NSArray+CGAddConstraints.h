@@ -43,8 +43,45 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayout;
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayout;
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithMarginEdge:(UIEdgeInsets)marginEdge;
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutWithMarginEdge:(UIEdgeInsets)marginEdge;
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithViewController:(UIViewController *)viewController;
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutWithViewController:(UIViewController *)viewController;
+
+
+/**
+ 子视图水平排列，且仅设置水平状态下的约束，父父视图的 top，bottom 约束不添加
+
+ @return 返回创建的约束
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraints;
+
+/**
+ 子视图垂直排列并设置外边距，且仅设置垂直状态下的约束，父父视图的 left，right 约束不添加
+ 
+ @return 返回创建的约束
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets;
+
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
+
+/**
+ 子视图垂直排列，且仅设置垂直状态下的约束，父父视图的 left，right 约束不添加
+ 
+ @return 返回创建的约束
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraints;
+
+/**
+ 子视图垂直排列并设置外边距，且仅设置垂直状态下的约束，父父视图的 left，right 约束不添加
+ 
+ @return 返回创建的约束
+ */
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets;
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutIsOnlyVerticalConstraintsWithMarginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock;
 
 /**
  *  垂直铺展子视图 (设置子视图之间的间距)

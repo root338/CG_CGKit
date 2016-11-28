@@ -26,6 +26,11 @@
     self.textAlignment      = [self defaultTextAlignment];
 }
 
+- (void)cg_setupWithFont:(UIFont *)font textColor:(UIColor *)textColor
+{
+    [self cg_setupWithText:nil font:font textColor:textColor];
+}
+
 - (void)cg_setupWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
 {
     [self cg_setupWithText:text font:font textColor:textColor textAlignment:[self defaultTextAlignment] backgroundColor:nil];

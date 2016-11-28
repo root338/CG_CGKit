@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置UILabel 设置系统默认属性 */
 - (void)cg_setupDefaultLabel;
 
+/** 设置UILabel（字体，字体颜色） */
+- (void)cg_setupWithFont:(nullable UIFont *)font textColor:(nullable UIColor *)textColor;
+
 /** 设置UILabel（文本，字体，字体颜色） */
 - (void)cg_setupWithText:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor;
 

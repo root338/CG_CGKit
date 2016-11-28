@@ -25,6 +25,11 @@
     return label;
 }
 
++ (instancetype)cg_createLabelWithFont:(UIFont *)font textColor:(UIColor *)textColor
+{
+    return [self cg_createLabelWithText:nil font:font textColor:textColor];
+}
+
 + (instancetype)cg_createLabelWithText:(NSString *)text font:(UIFont *)font textColor:(UIColor *)textColor
 {
     UILabel *label = [self cg_createLabel];
