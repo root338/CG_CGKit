@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) UIView *contentView;
 
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets lineType:(LineBoxType)lineType;
+
+- (instancetype)initWithFrame:(CGRect)frame lineType:(LineBoxType)lineType lineWidth:(CGFloat)lineWidth lineColor:(UIColor *)lineColor;
 @end
 
 NS_ASSUME_NONNULL_END
