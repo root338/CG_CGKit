@@ -39,6 +39,17 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame lineType:(LineBoxType)lineType lineWidth:(CGFloat)lineWidth lineColor:(UIColor *)lineColor
+{
+    self = [self initWithFrame:frame];
+    if (self) {
+        _lineType   = lineType;
+        _lineWidth  = lineWidth;
+        _lineColor  = lineColor;
+    }
+    return self;
+}
+
 #pragma mark - 设置样式
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets lineType:(LineBoxType)lineType
 {
@@ -63,10 +74,6 @@
 #pragma mark - 设置 线视图
 - (void)setupLineView
 {
-    if (!self.lineType && !_lineViews.count) {
-        return;
-    }
-    
     [self.lineTypeKeys enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         LineBoxType lineType    = obj.integerValue;
@@ -153,6 +160,7 @@
     UIView *lineView    = [_lineViews objectForKey:key];
     if (lineView) {
         [lineView removeFromSuperview];
+        
         [_lineViews removeObjectForKey:key];
     }
 }
