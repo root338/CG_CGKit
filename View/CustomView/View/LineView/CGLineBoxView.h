@@ -49,6 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *lineVerticalImage;
 
 - (void)setupLineType:(LineBoxType)lineType color:(nullable UIColor *)lineColor length:(CGFloat)length;
+
+/*! 四周线的外边距 */
+- (UIEdgeInsets)boxLineInsets;
 @end
 
 @interface CGLineBoxView (CGCreateLineView)
