@@ -13,6 +13,7 @@
 //代理实现类
 #import "CGUIWebViewDelegateManager.h"
 #import "CGWKWebViewDelegateManager.h"
+#import "CGWKWebViewUIDelegateManager.h"
 
 #import "CGWebViewPrivateProxyDelegate.h"
 
@@ -24,8 +25,10 @@
 
 @interface CGWebView<ObjectType> ()<CGWebViewPrivateProxyDelegate>
 {
+    
     CGUIWebViewDelegateManager  *_delegateManagerForUIWebView;
     CGWKWebViewDelegateManager  *_delegateManagerForWKWebView;
+    CGWKWebViewUIDelegateManager *_UIDelegateManagerForWKWebView;
 }
 
 @property (nonatomic, strong, readwrite) IBOutlet ObjectType webView;
@@ -40,6 +43,21 @@
 + (BOOL)isWebKitAvailable
 {
     return [WKWebView class] == nil ? NO : YES;
+}
+
+#pragma mark - 重写系统方法
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    [self willAddToWindow:newWindow];
+}
+
+- (void)willAddToWindow:(UIWindow *)newWindow
+{
+    if (newWindow) {
+        
+        [self setupDelegateManager];
+    }
 }
 
 #pragma mark - 初始化CGWebView
@@ -128,23 +146,31 @@
 {
     if (self.currentWebViewType == CGWebViewTypeUIWebView) {
         
-        if (_delegateManagerForUIWebView == nil) {
-            _delegateManagerForUIWebView    = [CGUIWebViewDelegateManager createManagerWithDelegate:self.delegate webViewPrivateProxyDelegate:self];
-            self.webViewForUIWebView.delegate   = _delegateManagerForUIWebView.webViewProxyDelegate;
-            
-        }else {
-            _delegateManagerForUIWebView.delegate   = self.delegate;
+        if (self.delegateForUIWebView) {
+            return;
         }
+        if (_delegateManagerForUIWebView == nil) {
+            
+            _delegateManagerForUIWebView    = [CGUIWebViewDelegateManager createManagerWithWebViewPrivateProxyDelegate:self];
+        }
+        self.webViewForUIWebView.delegate   = _delegateManagerForUIWebView.webViewProxyDelegate;
         
     }else if (self.currentWebViewType == CGWebViewTypeWKWebView) {
         
-        if (_delegateManagerForWKWebView == nil) {
-            
-            _delegateManagerForWKWebView            = [CGWKWebViewDelegateManager createManagerWithDelegate:self.delegate webViewPrivateProxyDelegate:self];
+        if (self.delegateForWKWebView == nil) {
+            if (_delegateManagerForWKWebView == nil) {
+                
+                _delegateManagerForWKWebView            = [CGWKWebViewDelegateManager createManagerWithWebViewPrivateProxyDelegate:self];
+                [_delegateManagerForWKWebView openWebViewMonitor];
+            }
             self.webViewForWKWebView.navigationDelegate = _delegateManagerForWKWebView;
-            [_delegateManagerForWKWebView openWebViewMonitor];
-        }else {
-            _delegateManagerForWKWebView.delegate   = self.delegate;
+        }
+        
+        if (self.UIDelegateForWKWebView == nil) {
+            if (_UIDelegateManagerForWKWebView == nil) {
+                _UIDelegateManagerForWKWebView          = [CGWKWebViewUIDelegateManager createManagerWithWebViewPrivateProxyDelegate:self];
+            }
+            self.webViewForWKWebView.UIDelegate     = _UIDelegateManagerForWKWebView;
         }
     }
 }
@@ -265,7 +291,7 @@
     if (_delegate != delegate) {
         
         _delegate   = delegate;
-        [self setupDelegateManager];
+        [self willAddToWindow:self.window];
     }
 }
 
@@ -304,14 +330,12 @@
 {
     _delegateForUIWebView               = delegateForUIWebView;
     self.webViewForUIWebView.delegate   = delegateForUIWebView;
-    _delegateManagerForUIWebView        = nil;
 }
 
 - (void)setDelegateForWKWebView:(id<WKNavigationDelegate>)delegateForWKWebView
 {
     _delegateForWKWebView                       = delegateForWKWebView;
     self.webViewForWKWebView.navigationDelegate = delegateForWKWebView;
-    _delegateManagerForWKWebView                = nil;
 }
 
 - (void)setUIDelegateForWKWebView:(id)UIDelegateForWKWebView

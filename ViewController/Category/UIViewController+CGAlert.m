@@ -15,6 +15,13 @@
 
 @implementation UIViewController (CGAlert)
 
+- (UIAlertController *)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^)(UIAlertAction * _Nonnull))resultCallback
+{
+    CGAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message textInputsCount:textInputsCount setupTextField:setupTextField cancelTitle:cancelTitle otherTitles:otherButtonTitles resultCallback:resultCallback];
+    [self presentViewController:alertController animated:YES completion:nil];
+    return alertController;
+}
+
 - (id)showAlertViewWithMessage:(NSString *)message cancelTitle:(NSString *)cancelTitle
 {
     return [self showAlertViewWithTitle:nil

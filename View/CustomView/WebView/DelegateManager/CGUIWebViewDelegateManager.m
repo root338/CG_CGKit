@@ -21,15 +21,14 @@
 }
 
 @property (nonatomic, readonly) CGWebView *webView;
-
+@property (nonatomic, readonly) id<CGWebViewDelegate> delegate;
 @end
 
 @implementation CGUIWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(nonnull id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate
++ (instancetype)createManagerWithWebViewPrivateProxyDelegate:(nonnull id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate
 {
     CGUIWebViewDelegateManager *manager = [[self alloc] init];
-    manager.delegate                    = delegate;
     manager.webViewPrivateProxyDelegate = webViewPrivateProxyDelegate;
     return manager;
 }
@@ -37,6 +36,11 @@
 - (CGWebView *)webView
 {
     return self.webViewPrivateProxyDelegate.webViewForPrivateObject;
+}
+
+- (id<CGWebViewDelegate>)delegate
+{
+    return self.webView.delegate;
 }
 
 #pragma mark - UIWebViewDelegate
