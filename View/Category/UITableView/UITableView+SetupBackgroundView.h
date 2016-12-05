@@ -11,6 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface UITableView (SetupBackgroundView)
 
+/*! bgCustomView起始Y坐标 */
+@property (nonatomic, assign) CGFloat backgroundViewStartOriginY;
+
 /**
  *  为表格添加背景视图 
  *  主要用于在需要跟随tableView滑动而移动（比如：下拉刷新时背景视图也随着滑动而移动），系统的backgroundView 不满足需求

@@ -20,14 +20,12 @@
     !self.bgCustomView.superview ?: [self.bgCustomView removeFromSuperview];
     
     if (backgroundView) {
-        backgroundView.frame = self.bounds;
-        CGPoint center = self.center;
-        center.y -= self.frame.origin.y;
-        center.x -= self.frame.origin.x;
-        backgroundView.center = center;
-        [self addSubview:backgroundView];
         
-        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        CGRect frame    = self.bounds;
+        frame.origin.y  += self.backgroundViewStartOriginY;
+        backgroundView.frame    = frame;
+        
+        [self addSubview:backgroundView];
         
         [self willChangeValueForKey:@"bgCustomView"];
         objc_setAssociatedObject(self, @selector(bgCustomView), backgroundView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -38,6 +36,16 @@
 - (UIView *)bgCustomView
 {
     return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setBackgroundViewStartOriginY:(CGFloat)y
+{
+    objc_setAssociatedObject(self, @selector(backgroundViewStartOriginY), @(y), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (CGFloat)backgroundViewStartOriginY
+{
+    return [objc_getAssociatedObject(self, _cmd) floatValue];
 }
 
 @end

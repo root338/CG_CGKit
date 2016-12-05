@@ -7,7 +7,10 @@
 //
 
 #import "CGLineBoxView.h"
+
+#import "UIView+Constant.h"
 #import "UIColor+ColorValueTransform.h"
+
 #import "UIView+CGSetupFrame.h"
 
 #define SINGLE_LINE_WIDTH           (1 / [UIScreen mainScreen].scale)
@@ -55,7 +58,7 @@
 //    [self.lineColor setStroke];
 //    [bezierPath stroke];
     
-    if (self.rectCorner != 0 && self.lineColor && self.lineWidth > 0.001) {
+    if (self.rectCorner != 0 && self.lineColor && self.lineWidth > CGZeroFloatValue) {
         
         CGMutablePathRef path = CGPathCreateMutable();
         
@@ -97,6 +100,28 @@
     self.rectCorner = lineType;
     self.lineColor  = lineColor;
     self.lineWidth  = length;
+}
+
+- (UIEdgeInsets)boxLineInsets
+{
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    CGFloat lineWidth   = self.lineWidth;
+    if (lineWidth < CGZeroFloatValue || self.rectCorner == 0) {
+        return insets;
+    }
+    if (self.rectCorner &LineBoxTypeTop) {
+        insets.top  = lineWidth;
+    }
+    if (self.rectCorner & LineBoxTypeLeft) {
+        insets.left = lineWidth;
+    }
+    if (self.rectCorner & LineBoxTypeBottom) {
+        insets.bottom   = lineWidth;
+    }
+    if (self.rectCorner & LineBoxTypeRight) {
+        insets.right    = lineWidth;
+    }
+    return insets;
 }
 
 #pragma mark 设置属性
