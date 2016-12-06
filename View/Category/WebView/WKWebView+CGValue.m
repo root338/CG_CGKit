@@ -1,27 +1,27 @@
 //
-//  UIWebView+CGValue.m
-//  QuickAskCommunity
+//  WKWebView+CGValue.m
+//  TestCG_CGKit
 //
-//  Created by DY on 16/6/12.
-//  Copyright © 2016年 ym. All rights reserved.
+//  Created by DY on 2016/12/5.
+//  Copyright © 2016年 apple. All rights reserved.
 //
 
-#import "UIWebView+CGValue.h"
+#import "WKWebView+CGValue.h"
 #import <objc/runtime.h>
 
-@implementation UIWebView (CGValue)
+@implementation WKWebView (CGValue)
 
 //禁止长按弹出选择框
 - (void)setIsDisableTouchCallout:(BOOL)disable
 {
-//    if (self.isDisableTouchCallout != disable) {
+    if (self.isDisableTouchCallout != disable) {
     
         NSString *statusStr = disable ? @"none" : @"yes";
         NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
         
-        [self dealWithWebViewJS:jsString];
+        [self dealWithWebViewJS:jsString completionHandler:nil];
         objc_setAssociatedObject(self, @selector(isDisableTouchCallout), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//    }
+    }
 }
 
 - (BOOL)isDisableTouchCallout
@@ -36,9 +36,9 @@
     
         NSString *statusStr = disable ? @"none" : @"yes";
         NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitUserSelect='%@';", statusStr];
-    
-        [self dealWithWebViewJS:jsString];
-    
+        
+        [self dealWithWebViewJS:jsString completionHandler:nil];
+        
         objc_setAssociatedObject(self, @selector(isDisableUserSelect), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }
@@ -48,20 +48,19 @@
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (NSString *)title
+- (void)titleWithCompletionHandler:(CGWKWebViewRunJavaScriptCallback)completionHandler
 {
-    NSString *title = [self dealWithWebViewJS:@"document.title"];
-    return title;
+    [self dealWithWebViewJS:@"document.title" completionHandler:completionHandler];
 }
 
-- (NSString *)HTML
+- (void)HTMLWithCompletionHandler:(CGWKWebViewRunJavaScriptCallback)completionHandler
 {
-    NSString *HTML  = [self dealWithWebViewJS:@"document.innerHTML"];
-    return HTML;
+    [self dealWithWebViewJS:@"document.innerHTML" completionHandler:completionHandler];
 }
 
-- (nullable NSString *)dealWithWebViewJS:(NSString *)jsStr
+- (void)dealWithWebViewJS:(NSString *)jsStr completionHandler:(nullable CGWKWebViewRunJavaScriptCallback)completionHandler
 {
-    return [self stringByEvaluatingJavaScriptFromString:jsStr];
+    [self evaluateJavaScript:jsStr completionHandler:completionHandler];
 }
+
 @end

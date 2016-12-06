@@ -10,6 +10,7 @@
 
 #import "CGWebView.h"
 
+#import "WKWebView+CGValue.h"
 #import "UIView+CGSearchView.h"
 
 #import "UIViewController+CGAlert.h"
@@ -193,6 +194,8 @@
         if ([self.delegate respondsToSelector:@selector(webView:updateProgress:)]) {
             [self.delegate webView:self.webView updateProgress:progress];
         }
+        
+//        self.webView.webViewForWKWebView.isDisableTouchCallout  = self.webView.isDisableTouchCallout;
     }
 }
 

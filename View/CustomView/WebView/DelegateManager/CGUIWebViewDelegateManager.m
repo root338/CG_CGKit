@@ -84,14 +84,14 @@
         [self.delegate webView:self.webView updateProgress:progress];
     }
     
-    UIWebView *webView  = self.webView.webView;
-    NSString *title = webView.title;
-    if (title.length > 0) {
-        if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
-            
-            [self.delegate webView:self.webView webViewTitle:title];
-        }
+    UIWebView *webView  = self.webView.webViewForUIWebView;
+    if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
+        
+        NSString *title = webView.title;
+        [self.delegate webView:self.webView webViewTitle:title];
     }
+    
+//    webView.isDisableTouchCallout   = self.webView.isDisableTouchCallout;
 }
 
 - (void)resetWebViewLoad

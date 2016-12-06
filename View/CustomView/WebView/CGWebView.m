@@ -85,6 +85,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+//#if DEBUG
+//        _isDisableTouchCallout  = YES;
+//#else
+//        _isDisableTouchCallout  = YES;
+//#endif
+        
         if (webViewType == CGWebViewTypeWKWebView) {
             if (![CGWebView isWebKitAvailable]) {
                 
@@ -112,7 +119,6 @@
         case CGWebViewTypeUIWebView:
         {
             webView = [self createUIWebViewWithFrame:frame];
-            
         }
             break;
         default:
@@ -135,7 +141,18 @@
     if (configuration) {
         webView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
     }else {
-        webView = [[WKWebView alloc] initWithFrame:frame];
+//        WKWebViewConfiguration *configuration   = [[WKWebViewConfiguration alloc] init];
+//        WKPreferences *preferences  = [[WKPreferences alloc] init];
+//        preferences.minimumFontSize     = 10;
+//        preferences.javaScriptEnabled   = YES;
+//        configuration.preferences   = preferences;
+//        
+//        WKUserScript *userScript    = [[WKUserScript alloc] initWithSource:@"document.documentElement.style.webkitUserSelect='none';" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
+//        WKUserContentController *userContentController  = [[WKUserContentController alloc] init];
+//        [userContentController addUserScript:userScript];
+//        configuration.userContentController = userContentController;
+        
+        webView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
     }
     
     return webView;
