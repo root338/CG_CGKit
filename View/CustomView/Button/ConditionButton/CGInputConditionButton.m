@@ -7,6 +7,9 @@
 //
 
 #import "CGInputConditionButton.h"
+
+#import "NSString+CGString.h"
+
 #import "NSNotificationCenter+CGCreateNotification.h"
 
 @interface CGInputConditionButton ()
@@ -17,6 +20,15 @@
 @end
 
 @implementation CGInputConditionButton
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _disableRemoveWhitespaceAndNewlineCharacterSet = NO;
+    }
+    return self;
+}
 
 - (void)handleInputControlsTextDidChangeNotification:(NSNotification *)note
 {
@@ -29,44 +41,53 @@
 
 - (void)updateVerifyAllInputControl
 {
+    __block BOOL enable = NO;
     [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [self handleTextDidChangeWithObject:obj];
+        
+        enable  = [self handleTextDidChangeWithObject:obj];
+        if (enable == NO) {
+            *stop   = YES;
+        }
     }];
+    
+    self.enabled    = enable;
 }
 
-- (void)updateVerifyWithTargetInputControl:(id)inputControl
+- (BOOL)updateVerifyWithTargetInputControl:(id)inputControl
 {
-    [self handleTextDidChangeWithObject:inputControl];
+    return [self handleTextDidChangeWithObject:inputControl];
 }
 
-- (void)handleTextDidChangeWithObject:(id)object
+- (BOOL)handleTextDidChangeWithObject:(id)object
 {
     __block BOOL isFlag = NO;
-    if (self.textDidChangeCallback) {
+    
+    NSString *inputText = [self inputTextWithTargetInputControl:object];
+    if (self.inputControlDidTextChangeCallback) {
         
-        isFlag  = self.textDidChangeCallback(object);
+        isFlag  = self.inputControlDidTextChangeCallback(object, inputText);
     }else {
         
-//        [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSString *inputText = nil;
-            if ([object isKindOfClass:[UITextField class]]) {
-                inputText   = [(UITextField *)object text];
-            }
-            if ([object isKindOfClass:[UITextView class]]) {
-                inputText   = [(UITextView *)object text];
-            }
-            
-            if (!inputText.length) {
-                
-                isFlag = NO;
-//                *stop = YES;
-            }else {
-                isFlag = YES;
-            }
-//        }];
+        isFlag  = inputText.length != 0;
     }
     
-    self.enabled = isFlag;
+    return isFlag;
+}
+
+- (NSString *)inputTextWithTargetInputControl:(id)inputControl
+{
+    NSString *inputText = nil;
+    if ([inputControl isKindOfClass:[UITextField class]]) {
+        inputText   = [(UITextField *)inputText text];
+    }
+    if ([inputControl isKindOfClass:[UITextView class]]) {
+        inputText   = [(UITextView *)inputText text];
+    }
+    
+    if (!self.disableRemoveWhitespaceAndNewlineCharacterSet) {
+        inputText   = [inputText cg_stringIgnoreWhitespaceAndNewlineCharacterSet];
+    }
+    return inputText;
 }
 
 #pragma mark - 设置属性
