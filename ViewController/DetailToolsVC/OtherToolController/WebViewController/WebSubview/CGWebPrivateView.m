@@ -30,7 +30,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     
-    CGWebView *webView  = [[CGWebView alloc] init];
+    CGWebView *webView  = [[CGWebView alloc] initWithWebViewType:CGWebViewTypeAuto];
     
     NSArray<NSNumber *> *itemsType  = @[
                                         @(CGWebViewItemTypeBack),

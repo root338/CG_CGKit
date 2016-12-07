@@ -21,15 +21,14 @@
 }
 
 @property (nonatomic, readonly) CGWebView *webView;
-
+@property (nonatomic, readonly) id<CGWebViewDelegate> delegate;
 @end
 
 @implementation CGUIWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(nonnull id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate
++ (instancetype)createManagerWithWebViewPrivateProxyDelegate:(nonnull id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate
 {
     CGUIWebViewDelegateManager *manager = [[self alloc] init];
-    manager.delegate                    = delegate;
     manager.webViewPrivateProxyDelegate = webViewPrivateProxyDelegate;
     return manager;
 }
@@ -37,6 +36,11 @@
 - (CGWebView *)webView
 {
     return self.webViewPrivateProxyDelegate.webViewForPrivateObject;
+}
+
+- (id<CGWebViewDelegate>)delegate
+{
+    return self.webView.delegate;
 }
 
 #pragma mark - UIWebViewDelegate
@@ -80,14 +84,14 @@
         [self.delegate webView:self.webView updateProgress:progress];
     }
     
-    UIWebView *webView  = self.webView.webView;
-    NSString *title = webView.title;
-    if (title.length > 0) {
-        if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
-            
-            [self.delegate webView:self.webView webViewTitle:title];
-        }
+    UIWebView *webView  = self.webView.webViewForUIWebView;
+    if ([self.delegate respondsToSelector:@selector(webView:webViewTitle:)]) {
+        
+        NSString *title = webView.title;
+        [self.delegate webView:self.webView webViewTitle:title];
     }
+    
+//    webView.isDisableTouchCallout   = self.webView.isDisableTouchCallout;
 }
 
 - (void)resetWebViewLoad

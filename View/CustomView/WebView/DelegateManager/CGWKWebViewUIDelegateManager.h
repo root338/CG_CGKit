@@ -14,14 +14,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class CGWebView;
-@protocol CGWebViewDelegate;
 
 @interface CGWKWebViewUIDelegateManager : CGBaseObject<WKUIDelegate>
 
-@property (nonatomic, weak) id<CGWebViewDelegate> delegate;
 @property (nonatomic, weak) id<CGWebViewPrivateProxyDelegate> webViewPrivateProxyDelegate;
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate;
++ (instancetype)createManagerWithWebViewPrivateProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate;
 
 @end
 

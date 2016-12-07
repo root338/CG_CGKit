@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CGWebView;
+@class CGWebView, WKFrameInfo;
 
 @protocol CGWebViewDelegate <NSObject>
 
@@ -31,6 +31,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  @warning    在使用UIWebView时会多次回调该代理方法
  */
 - (void)webView:(CGWebView *)webView webViewTitle:(NSString *)webViewTitle;
+
+#pragma mark - WKWebView 下的代理方法
+/**
+ *  仅在 CGWebView 使用 WKWebView 时才可用
+ */
+/** JS端调用 alert 触发此方法 */
+- (void)webView:(CGWebView *)webView runJavaScriptAlertPanelWithMessage:(nonnull NSString *)message initiatedByFrame:(nonnull WKFrameInfo *)frame completionHandler:(nonnull void (^)(void))completionHandler NS_AVAILABLE_IOS(8_0);
+/** JS端调用 confirm 触发此方法 */
+- (void)webView:(CGWebView *)webView runJavaScriptConfirmPanelWithMessage:(nonnull NSString *)message initiatedByFrame:(nonnull WKFrameInfo *)frame completionHandler:(nonnull void (^)(BOOL))completionHandler NS_AVAILABLE_IOS(8_0);
+/** JS 端调用 prompt 触发此方法 */
+- (void)webView:(CGWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler NS_AVAILABLE_IOS(8_0);
 
 @end
 

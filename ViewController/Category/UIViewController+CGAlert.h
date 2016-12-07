@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 显示提示视图 */
 @interface UIViewController (CGAlert)
 
+- (UIAlertController *)showAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ __nullable) (UITextField *textField, NSInteger textFieldIndex))setupTextField cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction * _Nonnull alertAction))resultCallback NS_AVAILABLE_IOS(8_0);
+
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
 
 
