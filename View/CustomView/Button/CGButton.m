@@ -416,12 +416,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
             titleSize   = [titleLabel sizeThatFits:compressedSize];
         }else {
             
-            if (_defaultAttributedDictIdentifier != self.titleLabel.font) {
+            if (_defaultAttributedDictIdentifier != titleLabel.font) {
                 _defaultAttributedDict  = nil;
             }
             if (_defaultAttributedDict == nil) {
                 
-                UIFont *titleFont       = self.titleLabel.font;
+                UIFont *titleFont       = titleLabel.font;
                 if (!titleFont) {
                     titleFont   = [UIFont systemFontOfSize:15];
                 }
