@@ -14,7 +14,7 @@
 
 - (void)cg_pushViewController:(UIViewController *)viewController
 {
-    [self.navigationController pushViewController:viewController animated:!self.disablePushHideAnimatied];
+    [self pushViewController:viewController animated:!self.disablePushHideAnimatied];
 }
 
 - (void)cg_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController
