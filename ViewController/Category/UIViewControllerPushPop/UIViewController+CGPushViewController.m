@@ -34,6 +34,9 @@
 
 - (void)cgvc_pushViewController:(UIViewController *)viewController verifyCurrentTopViewController:(UIViewController *)currentTopViewController animated:(BOOL)animated
 {
+    if (viewController == nil) {
+        return;
+    }
     if ((currentTopViewController == nil) || (currentTopViewController && self.navigationController.topViewController == currentTopViewController)) {
         [self.navigationController pushViewController:viewController animated:animated];
     }
@@ -46,7 +49,7 @@
 
 - (void)cgvc_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (self.navigationController.topViewController == self) {
+    if (viewController != nil && self.navigationController.topViewController == self) {
         [self.navigationController cg_pushRemoveLastVCWithNewViewController:viewController animated:animated];
     }
 }
