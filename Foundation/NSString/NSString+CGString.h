@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! 删除最后一个字符 */
 - (nullable NSString *)cg_removeLastString;
+
+/** 去除单词之间多余的空格 */
+- (nullable NSString *)cg_stringRemovalRedundantWhitespace;
 @end
 
 @interface NSMutableString (CGMutableString)

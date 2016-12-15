@@ -39,6 +39,15 @@
     return self;
 }
 
+- (NSString *)cg_stringRemovalRedundantWhitespace
+{
+    NSString *str   = [self cg_stringIgnoreWhitespaceCharacterSet];
+    NSArray *components = [str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    components  = [components filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != ''"]];
+    NSString *string    = [components componentsJoinedByString:@" "];
+    return string;
+}
+
 @end
 
 @implementation NSMutableString (CGMutableString)

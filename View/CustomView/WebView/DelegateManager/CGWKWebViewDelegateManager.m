@@ -10,6 +10,7 @@
 
 #import "CGWebView.h"
 
+#import "WKWebView+CGValue.h"
 #import "UIView+CGSearchView.h"
 
 #import "UIViewController+CGAlert.h"
@@ -28,14 +29,14 @@
 }
 
 @property (nonatomic, readonly) CGWebView *webView;
+@property (nonatomic, readonly) id<CGWebViewDelegate> delegate;
 @end
 
 @implementation CGWKWebViewDelegateManager
 
-+ (instancetype)createManagerWithDelegate:(id<CGWebViewDelegate>)delegate webViewPrivateProxyDelegate:(nonnull id)webViewPrivateProxyDelegate
++ (instancetype)createManagerWithWebViewPrivateProxyDelegate:(nonnull id)webViewPrivateProxyDelegate
 {
     CGWKWebViewDelegateManager *manager = [self new];
-    manager.delegate                    = delegate;
     manager.webViewPrivateProxyDelegate = webViewPrivateProxyDelegate;
     return manager;
 }
@@ -43,6 +44,11 @@
 - (CGWebView *)webView
 {
     return self.webViewPrivateProxyDelegate.webViewForPrivateObject;
+}
+
+- (id<CGWebViewDelegate>)delegate
+{
+    return self.webView.delegate;
 }
 
 #pragma mark - WKNavigationDelegate
@@ -188,6 +194,8 @@
         if ([self.delegate respondsToSelector:@selector(webView:updateProgress:)]) {
             [self.delegate webView:self.webView updateProgress:progress];
         }
+        
+//        self.webView.webViewForWKWebView.isDisableTouchCallout  = self.webView.isDisableTouchCallout;
     }
 }
 

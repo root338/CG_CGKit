@@ -66,6 +66,12 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 /** 设置当前图片 */
 @property (nullable, nonatomic, copy) UIImage  * _Nullable  (^setupCurrentImage) (__kindof CGButton * button, UIControlState currentState);
 
+#pragma mark - 约束设置
+
+/** 
+ 在CGButton使用约束时，系统默认计算的布局不包含图片与标题之间的间距(即实例属性space设置的值)
+ */
+
 @property (nullable, nonatomic, weak) NSLayoutConstraint *heightConstraint;
 @property (nullable, nonatomic, weak) NSLayoutConstraint *widthConstraint;
 

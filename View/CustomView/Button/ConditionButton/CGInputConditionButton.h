@@ -15,6 +15,9 @@
 //
 //@end
 
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  对输入文本框进行输入监听，当输入的条件不满足时按钮为disable状态
  *  @param 默认只对是否为空进行判断，其它判断在textDidChangeCallback中进行（inputTextView 表示当前文本正在改变的输入文本框）
@@ -23,16 +26,24 @@
 @interface CGInputConditionButton : CGBaseButton
 
 /** 需要判断的输入文本集合(只能是UITextField，UITextView类型) */
-@property (nonatomic, strong) NSArray *inputControls;
+@property (nullable, nonatomic, strong) NSArray *inputControls;
 
 /** 是否开启UITextfield文本变化通知，需要手动开启 */
 @property (nonatomic, assign) BOOL isOpenTextFieldDidChangeNotification;
 /** 是否开启UITextView文本变化通知，需要手动开启 */
 @property (nonatomic, assign) BOOL isOpenTextViewDidChangeNotification;
 
+/** 是否关闭移除首尾空白字符，默认NO */
+@property (nonatomic, assign) BOOL disableRemoveWhitespaceAndNewlineCharacterSet;
+
 /** 文本发生变化时的回调，返回按钮是否可以点击 */
-@property (nonatomic, copy) BOOL (^textDidChangeCallback) (id inputTextView);
+@property (nullable, nonatomic, copy) BOOL (^textDidChangeCallback) (id inputTextView) __deprecated_msg("使用 inputControlDidTextChangeCallback 来代替该属性");
+
+/** 文本发生变化时的回调，返回按钮是否可以点击 */
+@property (nullable, nonatomic, copy) BOOL (^inputControlDidTextChangeCallback) (id inputTextView, NSString *inputText);
 
 - (void)updateVerifyAllInputControl;
-- (void)updateVerifyWithTargetInputControl:(id)inputControl;
+- (BOOL)updateVerifyWithTargetInputControl:(id)inputControl;
 @end
+
+NS_ASSUME_NONNULL_END
