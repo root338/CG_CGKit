@@ -9,7 +9,7 @@
 #if __has_include(<CoreTelephony/CTTelephonyNetworkInfo.h>)
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
-
+#endif
 
 /**
  
@@ -27,8 +27,10 @@
  */
 @interface CTTelephonyNetworkInfo (CGGetIMSI)
 
+
+
 //+ (NSString *)getIMSI;
 
 @end
 
-#endif
+
