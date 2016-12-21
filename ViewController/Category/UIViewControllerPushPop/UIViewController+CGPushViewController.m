@@ -67,3 +67,12 @@
 }
 
 @end
+
+@implementation UIViewController (CGPopViewController)
+
+- (nullable UIViewController *)cgvc_popCurrentViewController
+{
+    return [self.navigationController cg_popCurrentViewController];
+}
+
+@end

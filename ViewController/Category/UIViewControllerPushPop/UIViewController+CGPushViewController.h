@@ -30,4 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface UIViewController (CGPopViewController)
+
+- (nullable UIViewController *)cgvc_popCurrentViewController;
+
+@end
+
 NS_ASSUME_NONNULL_END

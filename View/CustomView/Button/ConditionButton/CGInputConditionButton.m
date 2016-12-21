@@ -14,7 +14,7 @@
 
 @interface CGInputConditionButton ()
 {
-    
+    BOOL didAutoChangeButtonStatusToWindows;
 }
 
 @end
@@ -25,9 +25,23 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _disableRemoveWhitespaceAndNewlineCharacterSet = NO;
+        
+        _disableRemoveWhitespaceAndNewlineCharacterSet  = NO;
+        _disableDidChangeTextRunLoopAllInputControls    = NO;
     }
     return self;
+}
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    if (newWindow) {
+        if (didAutoChangeButtonStatusToWindows == NO) {
+            
+            [self updateVerifyAllInputControl];
+            didAutoChangeButtonStatusToWindows  = YES;
+        }
+    }
 }
 
 - (void)handleInputControlsTextDidChangeNotification:(NSNotification *)note
@@ -36,13 +50,34 @@
         return;
     }
     
-    [self handleTextDidChangeWithObject:note.object];
+    BOOL enable = NO;
+    if (self.textDidChangeCallback) {
+        
+        enable  = self.textDidChangeCallback(note.object);
+    }else {
+        
+        enable  = [self handleTextDidChangeWithObject:note.object];
+        if (self.disableDidChangeTextRunLoopAllInputControls == NO && enable) {
+            
+            NSMutableArray *inputControls   = [NSMutableArray arrayWithArray:self.inputControls];
+            [inputControls removeObject:note.object];
+            enable  = [self updateVerifyButtonStatusWithInputControls:inputControls];
+        }
+    }
+    
+    self.enabled    = enable;
 }
 
 - (void)updateVerifyAllInputControl
 {
+    BOOL enable = [self updateVerifyButtonStatusWithInputControls:self.inputControls];
+    self.enabled    = enable;
+}
+
+- (BOOL)updateVerifyButtonStatusWithInputControls:(NSArray *)inputControls
+{
     __block BOOL enable = NO;
-    [self.inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [inputControls enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         enable  = [self handleTextDidChangeWithObject:obj];
         if (enable == NO) {
@@ -50,7 +85,7 @@
         }
     }];
     
-    self.enabled    = enable;
+    return enable;
 }
 
 - (BOOL)updateVerifyWithTargetInputControl:(id)inputControl
@@ -61,7 +96,7 @@
 - (BOOL)handleTextDidChangeWithObject:(id)object
 {
     __block BOOL isFlag = NO;
-    
+        
     NSString *inputText = [self inputTextWithTargetInputControl:object];
     if (self.inputControlDidTextChangeCallback) {
         
