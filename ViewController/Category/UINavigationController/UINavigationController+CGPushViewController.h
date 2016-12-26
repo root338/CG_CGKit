@@ -36,5 +36,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface UINavigationController (CGPopViewController)
+
+@property (nonatomic, assign) BOOL disablePopHideAnimatied;
+
+- (nullable UIViewController *)cg_popCurrentViewController;
+
+@end
 
 NS_ASSUME_NONNULL_END

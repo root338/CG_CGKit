@@ -36,8 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否关闭移除首尾空白字符，默认NO */
 @property (nonatomic, assign) BOOL disableRemoveWhitespaceAndNewlineCharacterSet;
 
+/** 关闭 输入文字改变时循环属性inputControls所有变量来设置按钮状态，默认NO */
+@property (nonatomic, assign) BOOL disableDidChangeTextRunLoopAllInputControls;
+
 /** 文本发生变化时的回调，返回按钮是否可以点击 */
-@property (nullable, nonatomic, copy) BOOL (^textDidChangeCallback) (id inputTextView) __deprecated_msg("使用 inputControlDidTextChangeCallback 来代替该属性");
+@property (nullable, nonatomic, copy) BOOL (^textDidChangeCallback) (id inputTextView);
 
 /** 文本发生变化时的回调，返回按钮是否可以点击 */
 @property (nullable, nonatomic, copy) BOOL (^inputControlDidTextChangeCallback) (id inputTextView, NSString *inputText);

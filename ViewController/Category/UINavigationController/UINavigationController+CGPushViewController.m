@@ -80,3 +80,24 @@
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 @end
+
+@implementation UINavigationController (CGPopViewController)
+
+- (nullable UIViewController *)cg_popCurrentViewController
+{
+    return [self popViewControllerAnimated:!self.disablePopHideAnimatied];
+}
+
+#pragma mark - 设置属性
+
+- (void)setDisablePopHideAnimatied:(BOOL)hideAnimatied
+{
+    objc_setAssociatedObject(self, @selector(disablePopHideAnimatied), @(hideAnimatied), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)disablePopHideAnimatied
+{
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+@end

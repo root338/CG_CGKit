@@ -81,7 +81,7 @@
     !normalImage ?: [self setImage:normalImage forState:UIControlStateNormal];
     
     UIImage *selectImage = [UIImage cg_imageName:selectImageName];
-    !selectImage ?: [self setImage:selectImage forState:UIControlStateNormal];
+    !selectImage ?: [self setImage:selectImage forState:UIControlStateSelected];
 }
 
 - (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius

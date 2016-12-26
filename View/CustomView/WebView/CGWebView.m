@@ -152,7 +152,7 @@
 //        [userContentController addUserScript:userScript];
 //        configuration.userContentController = userContentController;
         
-        webView = [[WKWebView alloc] initWithFrame:frame configuration:configuration];
+        webView = [[WKWebView alloc] initWithFrame:frame];
     }
     
     return webView;
