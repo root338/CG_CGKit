@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) CGFloat lineWidth;
 
-@property (nullable, nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong, readonly) UIView *contentView;
 
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets lineType:(LineBoxType)lineType;
 

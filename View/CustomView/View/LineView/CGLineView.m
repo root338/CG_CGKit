@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) NSArray<NSNumber *> *lineTypeKeys;
 
+@property (nonatomic, strong, readwrite) UIView *contentView;
+
 @end
 
 @implementation CGLineView
