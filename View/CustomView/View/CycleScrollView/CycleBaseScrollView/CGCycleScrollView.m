@@ -30,6 +30,9 @@
 
 @interface CGCycleScrollView ()<UIScrollViewDelegate>
 {
+    ///是否刷新过视图
+    BOOL didReloadData;
+    
     ///当前总的加载数
     NSInteger _totalViews;
     
@@ -61,6 +64,8 @@
 
 /** 分页视图的容器 */
 @property (strong, nonatomic) UIView *pageContentView;
+
+@property (nonatomic, assign, readwrite) NSInteger currentIndex;
 @end
 
 @implementation CGCycleScrollView
@@ -168,6 +173,9 @@
     [super willMoveToWindow:newWindow];
     
     [self setupTimerWithWindows:newWindow];
+    if (didReloadData == NO && self.dataSource) {
+        [self reloadAllView];
+    }
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview
@@ -200,6 +208,7 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadAllView) object:nil];
     
+    didReloadData   = YES;
     [self setupTotalNumberWithForced:YES];
     [self removeAllCacheViews];
     [self setupScrollContentView];
@@ -399,6 +408,31 @@
     return willCurrentCycleContentView;
 }
 
+- (UIView *)cycleScrollViewCellWithIndex:(NSInteger)index
+{
+    CGCycleContentView *cell    = nil;
+    if (index == _currentView.viewIndex) {
+        cell    = _currentView;
+    }else if (index == _previousView.viewIndex) {
+        cell    = _previousView;
+    }else if (index == _nextView.viewIndex) {
+        cell    = _nextView;
+    }else {
+        cell    = [self createCycleContentViewAtIndex:index];
+    }
+    return cell.contentView;
+}
+
+- (void)scrollToIndex:(NSInteger)index
+{
+    if (_currentView.viewIndex == index) {
+        return;
+    }
+    
+    self.currentIndex   = index;
+    [self reloadAllView];
+}
+
 #pragma mark - 更新布局
 - (void)setupScrollViewConentSize:(CGSize)paramContentSize
 {
@@ -520,9 +554,11 @@
         CGLog(@"没有任何需要加载的视图");
         return;
     }
-    NSNumber * previousIndex    = [self getViewIndexForType:_CGCycleSubviewTypePreviousIndex];
-    NSNumber * currentIndex     = [self getViewIndexForType:_CGCycleSubviewTypeCurrentIndex];
-    NSNumber * nextIndex        = [self getViewIndexForType:_CGCycleSubviewTypeNextIndex];
+    
+    NSNumber * currentIndex     = [self getViewIndexWithCurrentIndex:self.currentIndex type:_CGCycleSubviewTypeCurrentIndex];
+    self.currentIndex           = currentIndex.integerValue;
+    NSNumber * previousIndex    = [self getViewIndexWithCurrentIndex:self.currentIndex type:_CGCycleSubviewTypePreviousIndex];
+    NSNumber * nextIndex        = [self getViewIndexWithCurrentIndex:self.currentIndex type:_CGCycleSubviewTypeNextIndex];
     
     //重置视图
     _previousView   = nil;
@@ -839,6 +875,13 @@
 {
     _scrollEnabled  = scrollEnabled;
     self.cycleScrollView.scrollEnabled  = scrollEnabled;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    
+    self.cycleScrollView.frame  = CG_CGRectWithMargin(CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame)), self.marginEdgeInsetForScrollView);
 }
 
 //- (void)setEnableScrollDirectionMonitor:(BOOL)enableScrollDirectionMonitor

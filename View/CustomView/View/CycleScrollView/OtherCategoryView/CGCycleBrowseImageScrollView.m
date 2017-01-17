@@ -7,7 +7,10 @@
 //
 
 #import "CGCycleBrowseImageScrollView.h"
+
+#import "CGImageView.h"
 #import "CGCycleScrollView.h"
+#import "CGCycleBrowseImageScrollViewCell.h"
 
 #import "UIView+CGSetupFrame.h"
 
@@ -25,12 +28,16 @@
 {
     NSInteger _currentIndex;
 }
+@property (nonatomic, assign, readwrite) BOOL imageScrollZoom;
+
 @property (strong, nonatomic, readwrite) CGCycleScrollView *cycleScrollView;
 
 @property (strong, nonatomic, readwrite) UIPageControl *pageControl;
 @end
 
 @implementation CGCycleBrowseImageScrollView
+
+@synthesize enableSingleImageCycleScroll = _enableSingleImageCycleScroll;
 
 + (instancetype)createCycleBrowseImageScrollViewWithImages:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock
 {
@@ -39,6 +46,25 @@
     [browseImageView setupDataSourceWithObject:dataSource extractBlock:extractBlock];
     
     return browseImageView;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    return [self initWithFrame:frame imageScrollZoom:NO];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame imageScrollZoom:(BOOL)imageScrollZoom
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _imageScrollZoom    = imageScrollZoom;
+    }
+    return self;
 }
 
 - (void)initialization
@@ -53,33 +79,30 @@
         
         if (!extractBlock) {
             
-            self.dataSource = [NSMutableArray arrayWithArray:dataSource];
+            _dataSource = dataSource;
         }else {
             
-            if (!self.dataSource) {
-                self.dataSource = [NSMutableArray arrayWithCapacity:dataSource.count];
-            }else {
-                [self.dataSource removeAllObjects];
-            }
+            NSMutableArray *tempDataSource  = [NSMutableArray arrayWithCapacity:dataSource.count];
             
-            __weak __block typeof(self) weakself = self;
             [dataSource enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 NSString *imagePath = extractBlock(obj);
                 if ([imagePath isKindOfClass:[NSString class]]) {
-                    [weakself.dataSource addObject:imagePath ? imagePath : @""];
+                    [tempDataSource addObject:imagePath ? imagePath : @""];
                 }else {
-                    CGErrorLog(@"只支持NSString *类型的返回");
+                    CGErrorLog(@"只支持NSString * 类型的返回");
                 }
                 
             }];
+            _dataSource = tempDataSource;
         }
     }else {
         
-        self.dataSource = nil;
+        _dataSource = nil;
     }
     
     if (_cycleScrollView) {
+        
         [self.cycleScrollView reloadAllView];
     }
     
@@ -97,11 +120,24 @@
             [self addSubview:self.pageControl];
         }
         
-        self.pageControl.numberOfPages  = self.dataSource.count;
+        self.pageControl.numberOfPages  = _dataSource.count;
         self.pageControl.currentPage    = self.cycleScrollView.currentIndex;
         
         [self setupPageControlShowArea];
     }
+    
+    [self setupCycleScroll];
+}
+
+- (void)setupDataSourceWithObject:(NSArray *)dataSource startIndex:(NSInteger)startIndex extractBlock:(cg_getSingleValueForTargetObject)extractBlock
+{
+    [self setupDataSourceWithObject:dataSource extractBlock:extractBlock];
+    [self scrollBrowseImageCellToIndex:startIndex];
+}
+
+- (void)scrollBrowseImageCellToIndex:(NSInteger)index
+{
+    [self.cycleScrollView scrollToIndex:index];
 }
 
 #pragma mark - CGCycleScrollViewDataSource
@@ -112,12 +148,23 @@
 
 - (UIView *)cycleScrollView:(CGCycleScrollView *)cycleScrollView viewAtIndex:(NSInteger)index
 {
-    UIImageView *imageView = [UIImageView cg_createImageViewWithContentMode:self.imageViewContentMode];
-    [imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
-    if (self.setupImageViewContent) {
-        self.setupImageViewContent(imageView, index);
+    CGImageView *cell  = [[CGImageView alloc] init];
+    
+    cell.disableScale   = !self.imageScrollZoom;
+    cell.imageView.contentMode  = self.imageViewContentMode;
+    [cell.imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
+    
+    if (self.imageScrollZoom) {
+        cell.imageScrollView.maximumZoomScale   = 3.0;
+    }else {
+        cell.userInteractionEnabled = NO;
     }
-    return imageView;
+    
+    if (self.setupImageViewContent) {
+        self.setupImageViewContent(cell.imageView, index);
+    }
+    
+    return cell;
 }
 
 #pragma mark - CGCycleScrollViewDelegate
@@ -139,6 +186,11 @@
 {
     if (self.clickIndexCallback) {
         self.clickIndexCallback(index);
+    }
+    if (self.clickImageCallback) {
+        
+        CGCycleBrowseImageScrollViewCell *cell = (id)[cycleScrollView cycleScrollViewCellWithIndex:index];
+        self.clickImageCallback(index, cell.imageView);
     }
 }
 
@@ -233,6 +285,7 @@
     }
     
     _pageControl = [[UIPageControl alloc] init];
+    _pageControl.hidesForSinglePage = YES;
     return _pageControl;
 }
 
@@ -267,4 +320,31 @@
     [super setClipsToBounds:clipsToBounds];
     self.cycleScrollView.clipsToBounds  = clipsToBounds;
 }
+
+- (void)setDataSource:(NSArray<NSString *> *)dataSource
+{
+    [self setupDataSourceWithObject:dataSource extractBlock:nil];
+}
+
+- (void)setEnableSingleImageCycleScroll:(BOOL)enableSingleImageCycleScroll
+{
+    _enableSingleImageCycleScroll   = enableSingleImageCycleScroll;
+    [self setupCycleScroll];
+}
+
+- (BOOL)enableSingleImageCycleScroll
+{
+    if (self.dataSource.count == 1 && self.cycleScrollView.isCycle == YES) {
+        return NO;
+    }
+    return _enableSingleImageCycleScroll;
+}
+
+- (void)setupCycleScroll
+{
+    if (self.dataSource.count <= 1 && !self.enableSingleImageCycleScroll) {
+        self.cycleScrollView.isCycle    = NO;
+    }
+}
+
 @end

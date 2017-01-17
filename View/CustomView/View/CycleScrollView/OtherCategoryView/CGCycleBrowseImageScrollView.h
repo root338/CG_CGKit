@@ -10,6 +10,7 @@
 #import "CGBlockdDefinitionHeader.h"
 
 @class CGCycleScrollView;
+
 /**
  *  分页视图的位置
  */
@@ -28,9 +29,15 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 浏览视图 */
 @interface CGCycleBrowseImageScrollView : CGBaseView
 
+/** 开启单图片视图循环滑动 */
+@property (nonatomic, assign) BOOL enableSingleImageCycleScroll;
+
+/** 图片是否可以缩放 */
+@property (nonatomic, assign, readonly) BOOL imageScrollZoom;
+
 #pragma mark - 循环视图
 /** 加载的数据 图片链接 */
-@property (strong, nonatomic) NSMutableArray<NSString *> *dataSource;
+@property (strong, nonatomic) NSArray<NSString *> *dataSource;
 
 /** 滑动视图相对本视图的外边距 */
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInset;
@@ -43,6 +50,8 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 
 /** 点击回调 */
 @property (copy, nonatomic) cg_singleValueCallback clickIndexCallback;
+
+@property (nonatomic, copy) void (^clickImageCallback) (NSInteger index, UIImageView *imageView);
 
 /** 当前索引改变时回调 */
 @property (copy, nonatomic) cg_singleValueCallback currentIndexDidChangeCallback;
@@ -65,11 +74,14 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 分页视图的位置 */
 @property (assign, nonatomic) CGCycleBrowseImageViewPageControlPosition positionForPageControl;
 
-/** 改变pageControl视图的显示区域，优先级大于positionForPageControl */
+/** 改变 pageControl 视图的显示区域，优先级大于positionForPageControl */
 @property (copy, nonatomic) cg_setupViewRectToSuperview setupPageControlFrame;
 
 /** 分页视图 */
 @property (strong, nonatomic, readonly) UIPageControl *pageControl;
+
+/** 滑动到指定索引图片位置 */
+- (void)scrollBrowseImageCellToIndex:(NSInteger)index;
 
 /**
  *  创建图片浏览视图
@@ -81,6 +93,9 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
  */
 + (instancetype)createCycleBrowseImageScrollViewWithImages:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock;
 
+- (instancetype)initWithFrame:(CGRect)frame imageScrollZoom:(BOOL)imageScrollZoom NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
 /**
  *  设置加载图片的数据
  *
@@ -88,4 +103,6 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
  *  @param extractBlock 提取dataSource指定图片值（当dataSource为字符串数组时不需要提取）
  */
 - (void)setupDataSourceWithObject:(NSArray *)dataSource extractBlock:(cg_getSingleValueForTargetObject)extractBlock;
+- (void)setupDataSourceWithObject:(NSArray *)dataSource startIndex:(NSInteger)startIndex extractBlock:(cg_getSingleValueForTargetObject)extractBlock;
+
 @end

@@ -47,12 +47,27 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+    
+    NSString *requestURLStr = [request.URL absoluteString];
+    
+    CGPrefixRequestType type = CGPrefixRequestTypeNone;
+    if ([requestURLStr hasPrefix:@"tel:"]) {
+        
+        type = CGPrefixRequestTypeTel;
+    }
+    
+    if (type != CGPrefixRequestTypeNone && [self.delegate respondsToSelector:@selector(webView:handleOtherPrefixRequest:type:)]) {
+        
+        result  = [self.delegate webView:self.webView handleOtherPrefixRequest:request type:type];
+    }else if ([self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        
         result  = [self.delegate webView:self.webView shouldStartLoadWithRequest:request navigationType:navigationType];
     }
+    
     if (result == NO && [self.delegate respondsToSelector:@selector(webViewDidCancelRequest:)]) {
         [self.delegate webViewDidCancelRequest:self.webView];
     }
+    
     return result;
 }
 

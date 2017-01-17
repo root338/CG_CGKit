@@ -40,6 +40,7 @@
 
 @property (nullable, nonatomic, strong) UITapGestureRecognizer *doubleTapGesture;
 @property (nullable, nonatomic, strong) UITapGestureRecognizer *singleTapGesture;
+
 @end
 
 @implementation CGImageView
@@ -72,6 +73,22 @@
     return zoomRect;
 }
 
+#pragma mark - UIScrollViewDelegate
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.disableScale ? nil : self.imageView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    CGPoint viewPoint;
+    viewPoint.x = MAX(scrollView.width - view.width, 0) / 2.0;
+    viewPoint.y = MAX(scrollView.height - view.height, 0) / 2.0;
+    [UIView animateWithDuration:0.3 animations:^{
+        view.origin = viewPoint;
+    }];
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -79,12 +96,6 @@
         return !self.disableDoubleScale;
     }
     return YES;
-}
-
-#pragma mark - UIScrollViewDelegate
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return self.disableScale ? nil : self.imageView;
 }
 
 #pragma mark - 添加、设置视图和布局
@@ -143,6 +154,7 @@
 #pragma mark - 设置手势
 - (void)didMoveToWindow
 {
+    [super didMoveToWindow];
     [self setupGestureRecognizer];
 }
 

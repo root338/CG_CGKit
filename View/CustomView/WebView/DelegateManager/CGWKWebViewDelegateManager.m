@@ -107,22 +107,44 @@
 {
     BOOL isResult   = YES;
     NSString *requestURLStr = [request.URL absoluteString];
+    
+    CGPrefixRequestType type = CGPrefixRequestTypeNone;
     if ([requestURLStr hasPrefix:@"tel:"]) {
         
-        NSString *phoneStr  = [requestURLStr substringFromIndex:4];
-        UIViewController *viewController    = self.webView.viewController;
-        if (viewController == nil) {
-            viewController  = [self.webView cg_searchViewControllerOfLate];
-        }
-        
-        [viewController showAlertViewWithTitle:nil message:phoneStr cancelTitle:@"取消" otherTitle:@"呼叫" resultCallback:^(BOOL isCancel) {
-            if (!isCancel) {
-                [UIApplication callPhoneWithURL:request.URL];
-            }
-        }];
-        
+        type        = CGPrefixRequestTypeTel;
         isResult    = NO;
     }
+    
+    BOOL dealDefaltOption   = YES;
+    if (type != CGPrefixRequestTypeNone && [self.delegate respondsToSelector:@selector(webView:handleOtherPrefixRequest:type:)]) {
+        
+        dealDefaltOption    = [self.delegate webView:self.webView handleOtherPrefixRequest:request type:type];
+    }
+    
+    if (dealDefaltOption) {
+        
+        switch (type) {
+            case CGPrefixRequestTypeTel:
+            {
+                NSString *phoneStr  = [requestURLStr substringFromIndex:4];
+                UIViewController *viewController    = self.webView.viewController;
+                if (viewController == nil) {
+                    viewController  = [self.webView cg_searchViewControllerOfLate];
+                }
+                
+                [viewController showAlertViewWithTitle:nil message:phoneStr cancelTitle:@"取消" otherTitle:@"呼叫" resultCallback:^(BOOL isCancel) {
+                    if (!isCancel) {
+                        [UIApplication callPhoneWithURL:request.URL];
+                    }
+                }];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
     return isResult;
 }
 

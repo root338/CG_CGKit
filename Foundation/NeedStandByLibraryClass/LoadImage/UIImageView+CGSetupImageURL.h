@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIImageView (CGSetupImageURL)
 
 - (void)cg_setupImageWithPath:(NSString *)imagePath;
+- (void)cg_setupImageWithPath:(NSString *)imagePath completion:(void (^ _Nullable) (void))completion;
+
 
 @end
 

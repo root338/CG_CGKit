@@ -27,21 +27,21 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        [self initializationData];
+        [self initializationSubviewData];
     }
     return self;
 }
 
 - (void)awakeFromNib
 {
-    [self initializationData];
+    [self initializationSubviewData];
     [super awakeFromNib];
 }
 
-- (void)initializationData
+- (void)initializationSubviewData
 {
     _imageView  = [[UIImageView alloc] init];
-    _titleLabel = [[CGMultilineLabel alloc] init];
+    _titleLabel = [CGMultilineLabel cg_createZeroLinesLabel];
     
     [self.contentView addSubview:_titleLabel];
     [self.contentView addSubview:_imageView];

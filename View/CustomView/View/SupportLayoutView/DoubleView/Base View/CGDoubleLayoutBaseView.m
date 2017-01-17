@@ -34,7 +34,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        [self initializationData];
+        [self initializationContentViewData];
     }
     return self;
 }
@@ -42,10 +42,10 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    [self initializationData];
+    [self initializationContentViewData];
 }
 
-- (void)initializationData
+- (void)initializationContentViewData
 {
     _marginEdgeInsets           = UIEdgeInsetsZero;
     _firstTargetViewEdgeInsets  = UIEdgeInsetsZero;
@@ -178,7 +178,5 @@
         [self setupUpdateConstraints];
     }
 }
-
-
 
 @end

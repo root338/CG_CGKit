@@ -13,9 +13,22 @@
 
 - (void)cg_setupImageWithPath:(NSString *)imagePath
 {
+    [self cg_setupImageWithPath:imagePath completion:nil];
+}
+
+- (void)cg_setupImageWithPath:(NSString *)imagePath completion:(void (^)(void))completion
+{
     if (imagePath) {
         NSURL *imageUrl = [NSURL URLWithString:imagePath];
-        [self sd_setImageWithURL:imageUrl];
+        [self sd_setImageWithURL:imageUrl completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            if (completion) {
+                completion();
+            }
+        }];
+    }else {
+        if (completion) {
+            completion();
+        }
     }
 }
 

@@ -147,7 +147,7 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  *  当前显示视图的索引 
  *  @warning 在不分页或滑动时获取将不准确，建议使用cycleScrollView:didSelectRowAtIndex:方法获取
  */
-@property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, assign, readonly) NSInteger currentIndex;
 
 ///滑动视图相对父视图的四周边距
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInsetForScrollView;
@@ -182,6 +182,12 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  *  不包含滑动过程中的控制，仅控制加入离开屏幕和移除父视图的控制
  */
 @property (assign, nonatomic) BOOL isCloseDefaultTimerSetting;
+
+/** 获取指定索引 */
+- (UIView *)cycleScrollViewCellWithIndex:(NSInteger)index;
+
+/** 滑动到指定索引 */
+- (void)scrollToIndex:(NSInteger)index;
 
 #pragma mark - 缓存设置
 /**
