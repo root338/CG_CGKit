@@ -20,7 +20,7 @@
 
 @property (nonatomic, strong) NSArray<NSNumber *> *lineTypeKeys;
 
-@property (nullable, nonatomic, strong, readwrite) UIView *contentView;
+@property (nonatomic, strong, readwrite) UIView *contentView;
 
 @end
 

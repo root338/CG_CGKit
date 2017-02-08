@@ -18,4 +18,16 @@ typedef NS_OPTIONS(NSInteger, LineBoxType) {
     LineBoxTypeAll      = LineBoxTypeTop | LineBoxTypeLeft | LineBoxTypeBottom | LineBoxTypeRight,
 };
 
+typedef NS_OPTIONS(NSInteger, CGLineBoxType) {
+
+    CGLineBoxTypeNone       = 0,
+    CGLineBoxTypeTop        = 1 << 0,
+    CGLineBoxTypeLeft       = 1 << 1,
+    CGLineBoxTypeBottom     = 1 << 2,
+    CGLineBoxTypeRight      = 1 << 3,
+    
+    
+    CGLineBoxTypeAll      = LineBoxTypeTop | LineBoxTypeLeft | LineBoxTypeBottom | LineBoxTypeRight,
+};
+
 #endif /* CGLineBoxTypeHeader_h */
