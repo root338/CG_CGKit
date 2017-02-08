@@ -125,31 +125,41 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgeEqualWithViews:(NSArray<UIView *> *)views layoutAttribute:(NSLayoutAttribute)layoutAttribute
 {
+    return [self cg_autoEdgeEqualWithViews:views layoutAttribute:layoutAttribute relation:NSLayoutRelationEqual constant:0];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeEqualWithViews:(NSArray<UIView *> *)views layoutAttribute:(NSLayoutAttribute)layoutAttribute relation:(NSLayoutRelation)relation constant:(CGFloat)constant
+{
     NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:views.count];
     [views enumerateObjectsUsingBlock:^(UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [constraints addObject:[self cg_attribute:layoutAttribute toItem:obj]];
+        [constraints addObject:[self cg_attribute:layoutAttribute toItem:obj relatedBy:relation constant:constant]];
     }];
     return constraints;
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgeWithView:(UIView *)view optionEdge:(CGLayoutOptionEdge)optionEdge insets:(UIEdgeInsets)insets
 {
+    return [self cg_autoEdgeWithView:view optionEdge:optionEdge insets:insets relation:NSLayoutRelationEqual];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeWithView:(UIView *)view optionEdge:(CGLayoutOptionEdge)optionEdge insets:(UIEdgeInsets)insets relation:(NSLayoutRelation)relation
+{
     NSMutableArray *constraints = [NSMutableArray array];
     
     if (optionEdge & CGLayoutOptionEdgeTop) {
-        [constraints addObject:[self cg_attribute:NSLayoutAttributeTop toItem:view constant:insets.top]];
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeTop toItem:view relatedBy:relation constant:insets.top]];
     }
     
     if (optionEdge & CGLayoutOptionEdgeLeft || optionEdge & CGLayoutOptionEdgeLeading) {
-        [constraints addObject:[self cg_attribute:NSLayoutAttributeLeading toItem:view constant:insets.left]];
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeLeading toItem:view relatedBy:relation constant:insets.left]];
     }
     
     if (optionEdge & CGLayoutOptionEdgeBottom) {
-        [constraints addObject:[self cg_attribute:NSLayoutAttributeBottom toItem:view constant:insets.bottom]];
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeBottom toItem:view relatedBy:relation constant:insets.bottom]];
     }
     
     if (optionEdge & CGLayoutOptionEdgeRight || optionEdge & CGLayoutOptionEdgeTrailing) {
-        [constraints addObject:[self cg_attribute:NSLayoutAttributeTrailing toItem:view constant:insets.right]];
+        [constraints addObject:[self cg_attribute:NSLayoutAttributeTrailing toItem:view relatedBy:relation constant:insets.right]];
     }
     
     return constraints;

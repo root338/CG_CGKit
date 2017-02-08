@@ -24,7 +24,11 @@ typedef void (^CGSetupConstraints) (void);
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgeEqualWithViews:(NSArray<UIView *> *)views layoutAttribute:(NSLayoutAttribute)layoutAttribute;
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeEqualWithViews:(NSArray<UIView *> *)views layoutAttribute:(NSLayoutAttribute)layoutAttribute relation:(NSLayoutRelation)relation constant:(CGFloat)constant;
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgeWithView:(UIView *)view optionEdge:(CGLayoutOptionEdge)optionEdge insets:(UIEdgeInsets)insets;
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgeWithView:(UIView *)view optionEdge:(CGLayoutOptionEdge)optionEdge insets:(UIEdgeInsets)insets relation:(NSLayoutRelation)relation;
 
 @end
 

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  设置UIlabel的标题
  
@@ -19,17 +21,22 @@
 /**
  显示的标题的属性
  */
-@property (strong, nonatomic) NSAttributedString *title;
+@property (nullable, strong, nonatomic) NSAttributedString *title;
 
 /**
  显示内容的属性
  */
-@property (strong, nonatomic) NSAttributedString *content;
+@property (nullable, strong, nonatomic) NSAttributedString *content;
+
+/** 没有内容时隐藏标题, 默认为 NO */
+@property (nonatomic, assign) BOOL isNotContentIsHideTitle;
 
 /**
  设置标题与内容的间距
  
  只在有标题的情况下有效
  */
-@property (assign, nonatomic) float spacingBetweenTheTitleAndContent;
+//@property (assign, nonatomic) float spacingBetweenTheTitleAndContent;
 @end
+
+NS_ASSUME_NONNULL_END

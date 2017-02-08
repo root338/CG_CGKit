@@ -29,7 +29,6 @@
 {
     [super awakeFromNib];
     
-    _spacingBetweenTheTitleAndContent = 5;
     if (self.attributedText && self.attributedText.length) {
         self.title = self.attributedText;
     }else {
@@ -71,12 +70,17 @@
         _content = attributedText;
     }
     
+    if (self.isNotContentIsHideTitle && self.content.length == 0) {
+        [super setAttributedText:nil];
+        return;
+    }
+    
     NSMutableAttributedString *att = [[NSMutableAttributedString alloc] init];
     if (_title) {
         [att appendAttributedString:_title];
         
-        NSAttributedString *placeholderStr = [[NSAttributedString alloc] initWithString:@" " attributes:@{NSKernAttributeName : @(_spacingBetweenTheTitleAndContent)}];
-        [att appendAttributedString:placeholderStr];
+//        NSAttributedString *placeholderStr = [[NSAttributedString alloc] initWithString:@" " attributes:@{NSKernAttributeName : @(_spacingBetweenTheTitleAndContent)}];
+//        [att appendAttributedString:placeholderStr];
     }
     if (_content) {
         [att appendAttributedString:_content];

@@ -28,6 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置视图圆角、边框 */
 - (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius;
 
-
+- (void)cg_setupShadowWithOffset:(CGSize)shadowOffset color:(nullable UIColor *)shadowColor opacity:(CGFloat)shadowOpacity;
 @end
 NS_ASSUME_NONNULL_END

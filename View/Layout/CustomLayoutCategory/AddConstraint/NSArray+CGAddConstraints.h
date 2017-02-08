@@ -193,6 +193,9 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
  */
 - (NSArray<NSLayoutConstraint *> *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view;
 
+
+- (NSArray<NSLayoutConstraint *> *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c;
+
 /**
  *  子视图水平排列，且与父视图的 X 对齐
  *  @param  marginInsets                设置边界间距

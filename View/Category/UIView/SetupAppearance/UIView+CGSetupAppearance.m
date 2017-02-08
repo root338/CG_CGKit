@@ -12,15 +12,13 @@
 
 - (void)cg_setupBorderWithCornerRadius:(CGFloat)cornerRadius
 {
-    if (cornerRadius > 0) {
-        
-        if (cornerRadius == self.layer.cornerRadius) {
-            return;
-        }
-        
-        self.layer.cornerRadius = cornerRadius;
-        self.layer.masksToBounds = YES;
+    
+    if (cornerRadius == self.layer.cornerRadius) {
+        return;
     }
+    
+    self.layer.cornerRadius = cornerRadius;
+    self.layer.masksToBounds = YES;
 }
 
 - (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor
@@ -38,6 +36,13 @@
 {
     [self cg_setupBorderWithCornerRadius:cornerRadius];
     [self cg_setupBorderWithWidth:borderWidth color:borderColor];
+}
+
+- (void)cg_setupShadowWithOffset:(CGSize)shadowOffset color:(UIColor *)shadowColor opacity:(CGFloat)shadowOpacity
+{
+    self.layer.shadowOffset     = shadowOffset;
+    self.layer.shadowColor      = [shadowColor CGColor];
+    self.layer.shadowOpacity    = shadowOpacity;
 }
 
 #pragma mark - 设置属性

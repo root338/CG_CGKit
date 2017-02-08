@@ -353,9 +353,14 @@
 
 - (NSArray<NSLayoutConstraint *> *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view
 {
+    return [self cg_attribute:attribute toItem:view relatedBy:NSLayoutRelationEqual constant:0];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_attribute:(NSLayoutAttribute)attribute toItem:(UIView *)view relatedBy:(NSLayoutRelation)relation constant:(CGFloat)c
+{
     NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [constraints addObject:[obj cg_attribute:attribute toItem:view]];
+        [constraints addObject:[obj cg_attribute:attribute toItem:view relatedBy:relation constant:c]];
     }];
     return constraints;
 }
