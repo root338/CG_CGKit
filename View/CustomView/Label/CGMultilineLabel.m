@@ -23,7 +23,7 @@
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    self.preferredMaxLayoutWidth = self.width;
+    self.preferredMaxLayoutWidth = CGRectGetWidth(bounds);
 }
 
 @end

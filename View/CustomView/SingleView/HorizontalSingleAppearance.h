@@ -21,6 +21,9 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
      *  与标题宽度相等
      */
     HorizontalSingleSliderTypeTitle,
+    
+    /** 与标题宽度存在左右边距 */
+    HorizontalSingleSliderTypeTitleInsetsEdge,
     /**
      *  自定义宽度
      */
@@ -56,6 +59,15 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
  *  滑块宽度设置类型
  */
 @property (nonatomic, assign) HorizontalSingleSliderType sliderType;
+
+/// 在HorizontalSingleSliderTypeTitleInsetsEdge类型下有效
+/// 与标题的左边间距值
+@property (nonatomic, assign) CGFloat sliderLeftSpaceInsets;
+/// 与标题的右边间距值
+@property (nonatomic, assign) CGFloat sliderRightSpaceInsets;
+
+/// 设置滑块左右两边相同的值
+@property (nonatomic, assign, readwrite) CGFloat sliderSpaceInsets;
 
 #pragma mark - 主视图设置
 

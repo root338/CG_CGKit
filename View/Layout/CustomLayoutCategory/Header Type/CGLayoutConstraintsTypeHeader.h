@@ -106,6 +106,11 @@ typedef NS_OPTIONS(NSInteger, CGLayoutOptionEdge) {
     CGLayoutOptionEdgeRightTop      = CGLayoutOptionEdgeTop | CGLayoutOptionEdgeTrailing,
     CGLayoutOptionEdgeRightBottom   = CGLayoutOptionEdgeTrailing | CGLayoutOptionEdgeBottom,
     
+    CGLayoutOptionEdgeExcludingTop  = CGLayoutOptionEdgeHorizontal | CGLayoutOptionEdgeBottom,
+    CGLayoutOptionEdgeExcludingLeft = CGLayoutOptionEdgeVertical | CGLayoutOptionEdgeRight,
+    CGLayoutOptionEdgeExcludingBottom   = CGLayoutOptionEdgeHorizontal | CGLayoutOptionEdgeTop,
+    CGLayoutOptionEdgeExcludingRight    = CGLayoutOptionEdgeVertical | CGLayoutOptionEdgeLeading,
+    
     CGLayoutOptionEdgeAll           = CGLayoutOptionEdgeVertical | CGLayoutOptionEdgeHorizontal,
 };
 

@@ -81,10 +81,20 @@
 
 + (BOOL)callPhoneWithURL:(NSURL *)callPhoneURL
 {
+    return [self cg_openURL:callPhoneURL];
+}
+
++ (BOOL)cg_openURLWithString:(NSString *)paramString
+{
+    return [self cg_openURL:[NSURL URLWithString:paramString]];
+}
+
++ (BOOL)cg_openURL:(NSURL *)paramURL
+{
     BOOL isOpen;
     UIApplication *application = [UIApplication sharedApplication];
-    if ((isOpen = [application canOpenSystemAppURL:callPhoneURL])) {
-        isOpen = [application openSystemAppURL:callPhoneURL];
+    if ((isOpen = [application canOpenSystemAppURL:paramURL])) {
+        isOpen = [application openSystemAppURL:paramURL];
     }
     return isOpen;
 }

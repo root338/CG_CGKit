@@ -28,6 +28,11 @@
 
 + (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (^)(BOOL))resultCallback
 {
+    return [self createAlertControllerWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle otherTitleActionStyle:UIAlertActionStyleDefault resultCallback:resultCallback];
+}
+
++ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle otherTitleActionStyle:(UIAlertActionStyle)otherTitleActionStyle resultCallback:(void (^)(BOOL))resultCallback
+{
     if (!cancelTitle && !otherButtonTitle) {
         return nil;
     }
@@ -45,7 +50,7 @@
     
     if (otherButtonTitle) {
         
-        UIAlertAction *otherAction  = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *otherAction  = [UIAlertAction actionWithTitle:otherButtonTitle style:otherTitleActionStyle handler:^(UIAlertAction * _Nonnull action) {
             if (resultCallback) {
                 resultCallback(NO);
             }

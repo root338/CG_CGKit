@@ -25,4 +25,10 @@
     return self.sliderSize.height;
 }
 
+- (void)setSliderSpaceInsets:(CGFloat)sliderSpaceInsets
+{
+    self.sliderLeftSpaceInsets  = sliderSpaceInsets;
+    self.sliderRightSpaceInsets = sliderSpaceInsets;
+}
+
 @end

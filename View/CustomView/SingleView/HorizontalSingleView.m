@@ -172,6 +172,7 @@
     //设置滑块的宽度
     switch (self.appearance.sliderType) {
         case HorizontalSingleSliderTypeTitle:
+        case HorizontalSingleSliderTypeTitleInsetsEdge:
             sliderWidth = [self.selectedButton calculateButtonCurrentTitleSize].width;
             break;
         case HorizontalSingleSliderTypeCustom:
@@ -183,8 +184,13 @@
     }
     
     //设置滑块的 X 坐标，相对于选择按钮中心坐标减去滑块二分之一的宽度
-    CGPoint selectButtonPoint = [self.contentView convertPoint:self.selectedButton.center fromView:self];
+    CGPoint selectButtonPoint = [self.contentView convertPoint:self.selectedButton.center toView:self];
     CGFloat sliderOriginX = selectButtonPoint.x - sliderWidth / 2;
+    if (self.appearance.sliderType == HorizontalSingleSliderTypeTitleInsetsEdge) {
+        
+        sliderOriginX   -= self.appearance.sliderLeftSpaceInsets;
+        sliderWidth     += self.appearance.sliderLeftSpaceInsets + self.appearance.sliderRightSpaceInsets;
+    }
     
     frame = CGRectMake(sliderOriginX, self.bounds.size.height - self.appearance.sliderSize.height, sliderWidth, self.appearance.sliderSize.height);
     
@@ -192,7 +198,7 @@
         [UIView animateWithDuration:.3 animations:^{
             self.sliderView.frame = frame;
         } completion:^(BOOL finished) {
-
+            
         }];
     }else {
         self.sliderView.frame = frame;
@@ -209,11 +215,27 @@
     self.sliderView.frame = frame;
 }
 
+- (void)updateSelctedView:(NSInteger)selectedIndex
+{
+    //取消之前选择的控件
+    [self.selectedButton setSelected:NO];
+    
+    //设置新的选择控件
+    _selectedIndex = selectedIndex;
+    [self.selectedButton setSelected:YES];
+    [self updateSliderViewLocationIsAnmation:YES];
+}
+
 #pragma mark - 按钮事件
 - (void)handleContentViewForButtonAction:(UIButton *)sender
 {
     if (self.selectedIndex != sender.tag) {
-        self.selectedIndex = sender.tag;
+        
+        [self updateSelctedView:sender.tag];
+        //回调通知
+        if (self.didSelectedChangeCallback) {
+            self.didSelectedChangeCallback(sender.tag);
+        }
     }
 }
 
@@ -279,18 +301,7 @@
 {
     if (_selectedIndex != selectedIndex) {
         
-        //取消之前选择的控件
-        [self.selectedButton setSelected:NO];
-        
-        //设置新的选择控件
-        _selectedIndex = selectedIndex;
-        [self.selectedButton setSelected:YES];
-        [self updateSliderViewLocationIsAnmation:YES];
-        
-        //回调通知
-        if (self.didSelectedChangeCallback) {
-            self.didSelectedChangeCallback(selectedIndex);
-        }
+        [self updateSelctedView:selectedIndex];
     }
 }
 @end

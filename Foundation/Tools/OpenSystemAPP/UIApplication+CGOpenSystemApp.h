@@ -61,6 +61,10 @@ typedef NS_ENUM(NSInteger, CGOpenSystemAppType){
 
 + (BOOL)callPhoneWithURL:(NSURL *)callPhoneURL;
 
+
++ (BOOL)cg_openURLWithString:(NSString *)paramString;
+
++ (BOOL)cg_openURL:(NSURL *)paramURL;
 @end
 
 @interface UIDevice (GetSystemVersion)

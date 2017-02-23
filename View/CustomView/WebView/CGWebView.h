@@ -31,8 +31,8 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 @property (nonatomic, strong, readonly) IBOutlet ObjectType webView;
 
-@property (nonatomic, readonly) UIWebView *webViewForUIWebView;
-@property (nonatomic, readonly) WKWebView *webViewForWKWebView;
+@property (nullable, nonatomic, readonly) UIWebView *webViewForUIWebView;
+@property (nullable, nonatomic, readonly) WKWebView *webViewForWKWebView;
 
 /** 加载的webView类型 */
 @property (nonatomic, assign, readonly) CGWebViewType webViewType;
