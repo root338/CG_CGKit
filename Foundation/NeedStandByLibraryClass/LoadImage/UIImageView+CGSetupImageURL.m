@@ -20,7 +20,8 @@
 {
     if (imagePath) {
         NSURL *imageUrl = [NSURL URLWithString:imagePath];
-        [self sd_setImageWithURL:imageUrl completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        [self sd_setImageWithURL:imageUrl placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             if (completion) {
                 completion();
             }
