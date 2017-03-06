@@ -35,4 +35,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_setupWithFrame:(CGRect)frame text:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment backgroundColor:(nullable UIColor *)backgroundColor;
 @end
 
+@interface NSArray (CGSetupLabelAppearance)
+
+/** 设置UILabel（字体，字体颜色） */
+- (void)cg_setupWithFont:(nullable UIFont *)font textColor:(nullable UIColor *)textColor;
+
+/** 设置UILabel（文本，字体，字体颜色） */
+- (void)cg_setupWithText:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor;
+
+/** 设置UILabel（文本，字体，字体颜色，对齐方式） */
+- (void)cg_setupWithText:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment;
+
+/** 设置UILabel（文本，字体，字体颜色，对齐方式，背景色） */
+- (void)cg_setupWithText:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment backgroundColor:(nullable UIColor *)backgroundColor;
+
+/** 设置UILabel（显示区域，文本，字体，字体颜色，对齐方式，背景色） */
+- (void)cg_setupWithFrame:(CGRect)frame text:(nullable NSString *)text font:(nullable UIFont *)font textColor:(nullable UIColor *)textColor textAlignment:(NSTextAlignment)textAlignment backgroundColor:(nullable UIColor *)backgroundColor;
+@end
+
 NS_ASSUME_NONNULL_END
