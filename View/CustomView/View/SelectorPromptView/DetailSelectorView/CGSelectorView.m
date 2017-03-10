@@ -327,9 +327,9 @@
                 isDidUpdateContentViewLayout    = NO;
             }
         }
-        
-        [self setupCancelButton];
     }
+    
+    [self setupCancelButton];
 }
 
 - (void)setupCancelButton

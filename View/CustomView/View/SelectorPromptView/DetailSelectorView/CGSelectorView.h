@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 /** 选择的内容视图 */
 @property (nonatomic, strong, readonly) UIView *contentView;
 
-/** 立即更新 contentView 的布局，用于contentView的大小是由约束控制的  */
+/** 立即更新 contentView 的布局，用于contentView的大小是由约束控制的 默认为 NO  */
 @property (nonatomic, assign) BOOL isUpdateImmediatelyContentViewLayout;
 
 /** 选择视图大小是否等于父视图的bounds属性, 默认为 YES */
