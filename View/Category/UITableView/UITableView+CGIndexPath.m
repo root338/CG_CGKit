@@ -22,16 +22,25 @@ typedef NS_ENUM(NSInteger, CGTableViewOfIndexPathType) {
 
 - (BOOL)cg_judgeIsFirstLastCellWith:(NSIndexPath *)indexPath
 {
+    if (indexPath == nil) {
+        return NO;
+    }
     return [self cg_judgeIsFirstCellWith:indexPath] || [self cg_judgeIsLastCellWith:indexPath];
 }
 
 - (BOOL)cg_judgeIsFirstCellWith:(NSIndexPath *)indexPath
 {
+    if (indexPath == nil) {
+        return NO;
+    }
     return indexPath.row == 0;
 }
 
 - (BOOL)cg_judgeIsLastCellWith:(NSIndexPath *)indexPath
 {
+    if (indexPath == nil) {
+        return NO;
+    }
     return ([self numberOfRowsInSection:indexPath.section] - 1) == indexPath.row;
 }
 
@@ -47,6 +56,9 @@ typedef NS_ENUM(NSInteger, CGTableViewOfIndexPathType) {
 
 - (BOOL)cg_judgeTableViewWithIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath == nil) {
+        return NO;
+    }
     return [self cg_judgeTableViewWithSection:indexPath.section isExistRow:indexPath.row];
 }
 
