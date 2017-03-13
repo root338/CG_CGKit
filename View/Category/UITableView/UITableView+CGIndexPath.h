@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)cg_judgeIsFirstLastCellWith:(nullable NSIndexPath *)indexPath;
 
 /** 是否是第一个cell */
-- (BOOL)cg_judgeIsFirstCellWith:(NSIndexPath *)indexPath;
+- (BOOL)cg_judgeIsFirstCellWith:(nullable NSIndexPath *)indexPath;
 
 /** 是否是最后一个cell */
-- (BOOL)cg_judgeIsLastCellWith:(NSIndexPath *)indexPath;
+- (BOOL)cg_judgeIsLastCellWith:(nullable NSIndexPath *)indexPath;
 
 /** 判读指定组是否存在 */
 - (BOOL)cg_judgeTableViewIsExistSection:(NSUInteger)section;

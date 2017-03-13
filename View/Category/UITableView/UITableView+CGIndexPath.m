@@ -30,11 +30,17 @@ typedef NS_ENUM(NSInteger, CGTableViewOfIndexPathType) {
 
 - (BOOL)cg_judgeIsFirstCellWith:(NSIndexPath *)indexPath
 {
+    if (indexPath == nil) {
+        return NO;
+    }
     return indexPath.row == 0;
 }
 
 - (BOOL)cg_judgeIsLastCellWith:(NSIndexPath *)indexPath
 {
+    if (indexPath == nil) {
+        return NO;
+    }
     return ([self numberOfRowsInSection:indexPath.section] - 1) == indexPath.row;
 }
 
