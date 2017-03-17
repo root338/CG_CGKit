@@ -7,7 +7,7 @@
 //
 
 #import "UIImageView+CGSetupImageURL.h"
-#import "UIImageView+WebCache.h"
+#import "NSError+CGCreateError.h"
 
 @implementation UIImageView (CGSetupImageURL)
 
@@ -16,21 +16,21 @@
     [self cg_setupImageWithPath:imagePath completion:nil];
 }
 
-- (void)cg_setupImageWithPath:(NSString *)imagePath completion:(void (^)(void))completion
+- (void)cg_setupImageWithPath:(NSString *)imagePath completion:(nullable SDWebImageCompletionBlock)completion
 {
-    if (imagePath) {
-        NSURL *imageUrl = [NSURL URLWithString:imagePath];
-        
-        [self sd_setImageWithURL:imageUrl placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-            if (completion) {
-                completion();
-            }
-        }];
-    }else {
-        if (completion) {
-            completion();
-        }
-    }
+    [self cg_setupImageWithPath:imagePath progress:nil completion:completion];
+}
+
+- (void)cg_setupImageWithPath:(NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDWebImageCompletionBlock)completion
+{
+    [self cg_setupImageWithPath:imagePath options:0 progress:progress completion:completion];
+}
+
+- (void)cg_setupImageWithPath:(NSString *)imagePath options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progress completion:(SDWebImageCompletionBlock)completion
+{
+    NSURL * imageUrl = [NSURL URLWithString:imagePath];
+    
+    [self sd_setImageWithURL:imageUrl placeholderImage:nil options:SDWebImageRetryFailed progress:progress completed:completion];
 }
 
 @end

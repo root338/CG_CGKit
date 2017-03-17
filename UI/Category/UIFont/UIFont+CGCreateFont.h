@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#if __has_include(<CoreText/CoreText.h>)
+#import <CoreText/CoreText.h>
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 @interface UIFont (CGCreateFont)
 
@@ -17,5 +21,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIFont *)cg_defaultItalicFontWithSize:(CGFloat)size;
 + (UIFont *)cg_defaultBoldFontWithSize:(CGFloat)size;
 
+#if __has_include(<CoreText/CoreText.h>)
+
++ (UIFont *)fontFromCTFontRef:(CTFontRef)fontRef;
+
++ (CTFontRef)fontRefFromUIFont:(UIFont *)font;
+
+#endif
+
+
 @end
+
+
 NS_ASSUME_NONNULL_END

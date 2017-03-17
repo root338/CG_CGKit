@@ -73,7 +73,7 @@
 #pragma mark - 事件
 - (void)handleClickAction:(id)sender
 {
-    CGCycleScrollView *scrollView = [self searchSuperViewWithClass:[CGCycleScrollView class]];
+    CGCycleScrollView *scrollView = (CGCycleScrollView *)[self searchSuperViewWithClass:[CGCycleScrollView class]];
     if ([scrollView.delegate respondsToSelector:@selector(cycleScrollView:didSelectRowAtIndex:)]) {
         [scrollView.delegate cycleScrollView:scrollView didSelectRowAtIndex:self.viewIndex];
     }

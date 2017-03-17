@@ -10,7 +10,6 @@
 
 #import "CGImageView.h"
 #import "CGCycleScrollView.h"
-#import "CGCycleBrowseImageScrollViewCell.h"
 
 #import "UIView+CGSetupFrame.h"
 
@@ -189,8 +188,10 @@
     }
     if (self.clickImageCallback) {
         
-        CGCycleBrowseImageScrollViewCell *cell = (id)[cycleScrollView cycleScrollViewCellWithIndex:index];
-        self.clickImageCallback(index, cell.imageView);
+        CGImageView *cell = (id)[cycleScrollView cycleScrollViewCellWithIndex:index];
+        if ([cell isKindOfClass:[CGImageView class]]) {
+            self.clickImageCallback(index, cell.imageView);
+        }
     }
 }
 
