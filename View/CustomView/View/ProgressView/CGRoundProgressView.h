@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 进度条颜色，默认，白色 */
 @property (nonatomic, strong) UIColor *progressTintColor;
-//@property (nullable, nonatomic, strong) UIColor *trackTintColor;
+@property (nullable, nonatomic, strong) UIColor *trackTintColor;
 
 @end
 
