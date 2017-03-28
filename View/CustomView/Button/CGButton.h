@@ -68,12 +68,16 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 
 #pragma mark - 约束设置
 
+///---------------------------------------------------------------------------
+/// 舍弃该属性，通过重写intrinsicContentSize方法来实现约束下的适合大小
 /** 
  在CGButton使用约束时，系统默认计算的布局不包含图片与标题之间的间距(即实例属性space设置的值)
  */
 
-@property (nullable, nonatomic, weak) NSLayoutConstraint *heightConstraint;
-@property (nullable, nonatomic, weak) NSLayoutConstraint *widthConstraint;
+//@property (nullable, nonatomic, weak) NSLayoutConstraint *heightConstraint;
+//@property (nullable, nonatomic, weak) NSLayoutConstraint *widthConstraint;
+
+///---------------------------------------------------------------------------
 
 - (CGSize)sizeThatFits:(CGSize)size;
 

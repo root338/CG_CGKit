@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
 
 @implementation UIView (CGSearchView)
 
-- (id)searchSuperViewWithClass:(Class)className
+- (nullable __kindof UIView *)searchSuperViewWithClass:(Class)className
 {
     if (!self.superview) {
         return nil;
