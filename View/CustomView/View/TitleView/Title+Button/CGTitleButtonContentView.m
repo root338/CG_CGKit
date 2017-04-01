@@ -63,13 +63,13 @@
         self.titleButton.size   = buttonSize;
     }
     
-    CGFloat originXForTitleButton;
+    CGFloat originXForTitleButton = 0.0;
     CGFloat originYForTitleButton;
-    if (self.cancelJustified) {
+    if (self.cancelJustified == false) {
         
-    }else {
         originXForTitleButton   = self.width - (self.titleButton.width + self.titleButtonMarginEdgeInsets.right);
     }
+    
     if (self.titleButtonVerticalCenter) {
         
         originYForTitleButton   = (self.height - self.titleButton.height) / 2;

@@ -71,7 +71,7 @@
         return;
     }
     
-    BOOL isShowKeyboardMark;
+    BOOL isShowKeyboardMark = NO;
     NSString *noteName  = note.name;
     if ([noteName isEqualToString:UIKeyboardWillShowNotification] || [noteName isEqualToString:UIKeyboardDidShowNotification]) {
         

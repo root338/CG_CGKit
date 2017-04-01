@@ -306,7 +306,7 @@
                 CGInfoLog(@"添加缓存视图：%@, 视图索引：%li", paramCycleContentView, paramCycleContentView.viewIndex);
             }else {
                 
-                __block NSInteger removeViewIndex;
+                __block NSInteger removeViewIndex   = 0;
                 if (self.cacheViews.count > 3) {
                     //当缓存的视图数大于显示的视图数
                     NSArray *indexsArr = self.cacheViews.allValues;

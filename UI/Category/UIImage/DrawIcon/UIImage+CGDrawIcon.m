@@ -277,6 +277,9 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
             rightVertex = CGPointMake(horizontalOffset, verticalOffset);
             break;
         default:
+            arrowVertex = CGPointZero;
+            leftVertex  = CGPointZero;
+            rightVertex = CGPointZero;
             break;
     }
     

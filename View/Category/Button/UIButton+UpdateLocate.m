@@ -71,8 +71,8 @@
     
     //  按钮初始状态  | - 图片 - 标题 - |
     
-    UIEdgeInsets    imageEdgeInsets;
-    UIEdgeInsets    titleEdgeInsets;
+    UIEdgeInsets    imageEdgeInsets = UIEdgeInsetsZero;
+    UIEdgeInsets    titleEdgeInsets = UIEdgeInsetsZero;
     
     if (CGButtonStyleHorizonalLeft == style) {
         
