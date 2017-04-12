@@ -13,7 +13,7 @@
 
 + (BOOL)cg_verifyUserOpenRemoteNotification
 {
-    BOOL isResult;
+    BOOL isResult = false;
     
     UIApplication *application = [UIApplication sharedApplication];
     if (_CG_IOS_8_0_AFTER) {

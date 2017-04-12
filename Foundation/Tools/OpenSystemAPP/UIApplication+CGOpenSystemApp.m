@@ -68,7 +68,7 @@
 #pragma mark -
 + (BOOL)callWithPhone:(NSString *)phoneStr
 {
-    BOOL isOpen;
+    BOOL isOpen = NO;
     if (phoneStr) {
         
         phoneStr = [NSString stringWithFormat:@"tel:%@", phoneStr];

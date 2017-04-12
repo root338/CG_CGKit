@@ -480,9 +480,9 @@
         
         if (idx + 1 < self.count) {
             
-            NSLayoutAttribute att1, att2;
-            CGLayoutEdge edge1, edge2;
-            id item1, item2;
+            NSLayoutAttribute att1  = 0, att2   = 0;
+            CGLayoutEdge edge1  = CGLayoutEdgeNone, edge2 = CGLayoutEdgeNone;
+            id item1 = nil, item2 = nil;
             
             item1   = obj;
             item2   = self[idx + 1];
@@ -516,7 +516,7 @@
         if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
             
             axis    = CGAxisHorizontal;
-        }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+        }else {
             
             axis    = CGAxisVertical;
         }

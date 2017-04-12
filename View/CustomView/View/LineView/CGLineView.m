@@ -104,9 +104,9 @@
         [_lineViews setObject:lineView forKey:key];
     }
     
-    CGDimension     dimension;
-    CGLayoutEdge    lineViewEdge;
-    CGFloat         constant;
+    CGDimension     dimension       = 0;
+    CGLayoutEdge    lineViewEdge    = CGLayoutEdgeNone;
+    CGFloat         constant        = 0.0;
     
     NSValue *edgeInsetsValue  = [_lineViewsEdgeInsets objectForKey:key];
     UIEdgeInsets edgeInsets;

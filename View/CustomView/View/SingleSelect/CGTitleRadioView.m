@@ -194,7 +194,7 @@
         }
         
         height  = size.height;
-    }else if (flowLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+    }else {
         
         width   = size.width;
         if (flowLayout.itemHeightWidthEqualSuperViewHeight) {
