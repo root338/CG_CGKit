@@ -49,7 +49,7 @@
 #pragma mark - CAAnimationDelegate
 - (void)animationDidStart:(CAAnimation *)anim
 {
-    
+    [self didShow];
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
@@ -83,6 +83,16 @@
     animation == nil ?: [self.contentView.layer addAnimation:animation forKey:key];
     
     [self setupBackgroundColorWithIsShow:YES];
+}
+
+- (void)willShow
+{
+    
+}
+
+- (void)didShow
+{
+    
 }
 
 - (void)hide
@@ -134,6 +144,11 @@
         fromColor   = self.toBackgroundColor;
         toColor     = self.fromBackgroundColor;
     }
+    
+    if (isShow == YES) {
+        [self willShow];
+    }
+    
     if (self.backgroundColorAnimationStyle == CGSelectorLayerBackgroundColorAnimationsStyleDefalut) {
         //没反应
         CABasicAnimation *basicAniamtion    = [CGSelectorLayerAnimation createAnimationWithKeyPath:@"contents" fromValue:(id)[fromColor CGColor] toValue:(id)[toColor CGColor]];

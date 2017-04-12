@@ -19,13 +19,13 @@
 }
 */
 
-- (CGSize)intrinsicContentSize
-{
-    CGSize intrinsicContentSize = [super intrinsicContentSize];
-    intrinsicContentSize.width += self.textMarginEdgeInsets.left + self.textMarginEdgeInsets.right;
-    intrinsicContentSize.height += self.textMarginEdgeInsets.top + self.textMarginEdgeInsets.bottom + self.textVerticalAlignmentOffsetLength;
-    return intrinsicContentSize;
-}
+//- (CGSize)intrinsicContentSize
+//{
+//    CGSize intrinsicContentSize = [super intrinsicContentSize];
+//    intrinsicContentSize.width += self.textMarginEdgeInsets.left + self.textMarginEdgeInsets.right;
+//    intrinsicContentSize.height += self.textMarginEdgeInsets.top + self.textMarginEdgeInsets.bottom + self.textVerticalAlignmentOffsetLength;
+//    return intrinsicContentSize;
+//}
 
 - (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
 {

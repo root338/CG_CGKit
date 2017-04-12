@@ -68,6 +68,9 @@ typedef NS_ENUM(NSInteger, CGSelectorLayerContentViewAniamtionStyle) {
 - (void)show;
 - (void)hide;
 
+- (void)willShow;
+- (void)didShow;
+
 @end
 
 NS_ASSUME_NONNULL_END
