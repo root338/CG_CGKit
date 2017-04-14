@@ -30,7 +30,7 @@
 - (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
 {
     CGRect textRect     = [super textRectForBounds:bounds limitedToNumberOfLines:numberOfLines];
-    textRect            = CG_CGRectWithMargin(textRect, self.textMarginEdgeInsets);
+//    textRect            = CG_CGRectWithMargin(textRect, self.textMarginEdgeInsets);
     
     CGRect tempTextRect = textRect;
     switch (self.textVerticalAlignment) {
