@@ -8,6 +8,7 @@
 
 #import "UIViewController+CGPushViewController.h"
 #import "UINavigationController+CGPushViewController.h"
+#import "UIViewController+CGSearchNavigationController.h"
 
 #import <objc/runtime.h>
 
@@ -22,7 +23,8 @@
 {
     UIViewController *topViewController = nil;
     if (!self.disablePushVerifyCurrentTopViewController) {
-        topViewController   = self;
+        
+        topViewController = [self searchNavigationController].topViewController;
     }
     [self cgvc_pushViewController:viewController verifyCurrentTopViewController:topViewController animated:animated];
 }
@@ -34,12 +36,29 @@
 
 - (void)cgvc_pushViewController:(UIViewController *)viewController verifyCurrentTopViewController:(UIViewController *)currentTopViewController animated:(BOOL)animated
 {
+    [self cgvc_pushViewController:viewController verifyCurrentTopViewController:currentTopViewController animated:animated completion:nil];
+}
+
+- (void)cgvc_pushViewController:(UIViewController *)viewController verifyCurrentTopViewController:(UIViewController *)currentTopViewController animated:(BOOL)animated completion:(CGVCPushCallback)completion
+{
+    CGVCPushCallback callback = ^(BOOL isPush){
+        
+        if (completion) {
+            completion(isPush);
+        }
+    };
     if (viewController == nil) {
+        callback(NO);
         return;
     }
     if ((currentTopViewController == nil) || (currentTopViewController && self.navigationController.topViewController == currentTopViewController)) {
+        
         [self.navigationController pushViewController:viewController animated:animated];
+        callback(YES);
+    }else {
+        callback(NO);
     }
+    
 }
 
 - (void)cgvc_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController
