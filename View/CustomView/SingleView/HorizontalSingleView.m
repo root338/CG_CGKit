@@ -130,6 +130,10 @@
     
     //更新视图
     [self setNeedsLayout];
+    
+    if ([self.delegate respondsToSelector:@selector(didFinishUpdateSingleView:)]) {
+        [self.delegate didFinishUpdateSingleView:self];
+    }
 }
 
 - (void)layoutSubviews

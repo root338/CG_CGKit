@@ -24,21 +24,23 @@
 
 - (void)drawTextInRect:(CGRect)rect
 {
+    if (self.textAlignment == NSTextAlignmentLeft) {
+        if (CGRectGetMinX(rect) < self.marginEdgeInsets.left) {
+            rect.origin.x   = self.marginEdgeInsets.left;
+        }
+        if (CGRectGetMinY(rect) < self.marginEdgeInsets.top) {
+            rect.origin.y   = self.marginEdgeInsets.top;
+        }
+        CGFloat textMaxWidth    = CGRectGetWidth(self.bounds) - self.marginEdgeInsets.right;
+        if (CGRectGetMaxX(rect) > textMaxWidth) {
+            rect.size.width     = textMaxWidth;
+        }
+        CGFloat textMaxHeight   = CGRectGetHeight(self.bounds) - self.marginEdgeInsets.bottom;
+        if (CGRectGetMaxY(rect) > textMaxHeight) {
+            rect.size.height    = textMaxHeight;
+        }
+    }
     
-    if (CGRectGetMinX(rect) < self.marginEdgeInsets.left) {
-        rect.origin.x   = self.marginEdgeInsets.left;
-    }
-    if (CGRectGetMinY(rect) < self.marginEdgeInsets.top) {
-        rect.origin.y   = self.marginEdgeInsets.top;
-    }
-    CGFloat textMaxWidth    = CGRectGetWidth(self.bounds) - self.marginEdgeInsets.right;
-    if (CGRectGetMaxX(rect) > textMaxWidth) {
-        rect.size.width     = textMaxWidth;
-    }
-    CGFloat textMaxHeight   = CGRectGetHeight(self.bounds) - self.marginEdgeInsets.bottom;
-    if (CGRectGetMaxY(rect) > textMaxHeight) {
-        rect.size.height    = textMaxHeight;
-    }
     [super drawTextInRect:rect];
 }
 

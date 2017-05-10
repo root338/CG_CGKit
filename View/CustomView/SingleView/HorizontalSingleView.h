@@ -11,10 +11,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class HorizontalSingleView;
+
+@protocol HorizontalSingleViewDelegate <NSObject>
+
+@optional
+- (void)didFinishUpdateSingleView:(HorizontalSingleView *)singleView;
+
+@end
+
 /**
  *  水平横向视图
  */
 @interface HorizontalSingleView : UIView
+
+@property (nonatomic, weak) id<HorizontalSingleViewDelegate> delegate;
 
 #pragma mark - 内容设置
 /**

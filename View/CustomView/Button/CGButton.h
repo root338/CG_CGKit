@@ -49,6 +49,8 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 
 /** 指定imageView的大小 @warning 当图片不存在时也会占据显示区域 */
 @property (nonatomic, assign) CGSize imageViewSize;
+///** 指定titleLabel的大小 @warning 当标题不存在时也会占据显示区域 */
+//@property (nonatomic, assign) CGSize titleLabelSize;
 
 /** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
 @property (nonatomic, assign) CGFloat titleLabelMaxWidth;
