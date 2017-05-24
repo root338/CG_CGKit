@@ -270,7 +270,18 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置两对象之间的约束(边值类型，约束类型，间距，比例值) */
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c;
 
+@end
 
+#pragma mark - 与指定视图相等关系设置
+@interface UIView (CGEqualViewConstraints)
+
+/** 与指定视图相等 */
+- (NSArray<NSLayoutConstraint *> *)cg_constraintsWithEqualView:(UIView *)view;
+/** 与指定视图居中，且视图四周边不超过指定视图四周 */
+- (NSArray<NSLayoutConstraint *> *)cg_constraintsWithCenterIncludeView:(UIView *)view;
+
+/** 与指定视图居中并偏移offset坐标，不超过指定 insets */
+- (NSArray<NSLayoutConstraint *> *)cg_constraintsWithCenterIncludeView:(UIView *)view offset:(CGPoint)offset insets:(UIEdgeInsets)insets;
 
 @end
 

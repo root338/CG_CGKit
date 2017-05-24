@@ -37,6 +37,36 @@
     
 }
 
+- (void)setTitleText:(NSString *)titleText
+{
+    NSAttributedString *att = nil;
+    if (titleText != nil) {
+        att = [[NSAttributedString alloc] initWithString:titleText attributes:self.titleAttributesDic];
+    }
+    
+    [self setTitle:att];
+}
+
+- (NSString *)titleText
+{
+    return self.title.string;
+}
+
+- (void)setContentText:(NSString *)contentText
+{
+    NSAttributedString *att = nil;
+    if (contentText != nil) {
+        att = [[NSAttributedString alloc] initWithString:contentText attributes:self.contentAttributesDic];
+    }
+    
+    [self setContent:att];
+}
+
+- (NSString *)contentText
+{
+    return self.content.string;
+}
+
 - (void)setTitle:(NSAttributedString *)title
 {
     if (![_title isEqualToAttributedString:title]) {

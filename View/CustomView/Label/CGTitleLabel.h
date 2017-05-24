@@ -18,6 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface CGTitleLabel : UILabel
 
+@property (nullable, nonatomic, strong) NSDictionary<NSString *, id> *titleAttributesDic;
+@property (nullable, nonatomic, strong) NSDictionary<NSString *, id> *contentAttributesDic;
+
+@property (nullable, nonatomic, strong) NSString *titleText;
+@property (nullable, nonatomic, strong) NSString *contentText;
+
 /**
  显示的标题的属性
  */

@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (CGImage)
 
+#pragma mark - 加载图片
 + (nullable instancetype)imageNamed:(NSString *)imageName renderingMode:(UIImageRenderingMode)renderingMode;
 
 //+ (instancetype)imageNamed:(NSString *)imageName renderingMode:(UIImageRenderingMode)renderingMode
