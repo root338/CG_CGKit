@@ -40,6 +40,11 @@
  */
 + (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (^)(BOOL isCancel))resultCallback;
 
+/**
+ 创建UIAlertView并自动弹出，设置（标题，内容，其他按钮, 其他按钮2）
+ */
++ (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)title1 otherTitle2:(NSString *)title2 resultCallback:(void (^) (NSInteger index))resultCallback;
+
 ///**
 // *  创建UIAlertView并自动弹出，设置（标题，内容，取消按钮，其他按钮（多个））
 // *

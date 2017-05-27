@@ -73,7 +73,7 @@
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
-    self.layer.cornerRadius = cornerRadius;
+    [self cg_setupBorderWithCornerRadius:cornerRadius];
 }
 
 @end
