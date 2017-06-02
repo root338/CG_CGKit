@@ -18,25 +18,19 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message;
 
 
+/** 弹层提示 (标题，内容，取消按钮) */
 + (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(NSString *)cancelTitle;
 
-
-/**
- *  创建CGAlertController提示视图
- *
- *  @param title            标题
- *  @param message          提示文本
- *  @param cancelTitle      取消按钮标题
- *  @param otherButtonTitle 其他按钮标题
- *  @param resultCallback   点击的回调
- *
- */
+/** 弹层提示 (标题，内容，取消按钮，其他按钮，回调) */
 + (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
 
+/** 弹层提示 (标题，内容，取消按钮，其他按钮，其他按钮样式，回调) */
 + (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle otherTitleActionStyle:(UIAlertActionStyle)otherTitleActionStyle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
 
+/** 弹层提示 (标题，内容，输入框, 设置输入框回调，取消按钮，其他按钮(数组)，回调) */
 + (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ __nullable) (UITextField *textField, NSInteger textFieldIndex))setupTextField cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction * _Nonnull alertAction))resultCallback;
 
+/** 弹层提示 (弹层样式，标题，内容，取消按钮，其他按钮(数组)，回调) */
 + (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction *alertAction))resultCallback;
 
 @end

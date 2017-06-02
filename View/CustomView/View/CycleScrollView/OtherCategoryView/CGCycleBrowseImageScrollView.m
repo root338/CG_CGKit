@@ -151,7 +151,14 @@
     
     cell.disableScale   = !self.imageScrollZoom;
     cell.imageView.contentMode  = self.imageViewContentMode;
-    [cell.imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
+    
+    if (self.setupLoadImage) {
+        
+        self.setupLoadImage([self.dataSource cg_objectAtIndex:index], cell.imageView);
+    }else {
+        
+        [cell.imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
+    }
     
     if (self.imageScrollZoom) {
         cell.imageScrollView.maximumZoomScale   = 3.0;

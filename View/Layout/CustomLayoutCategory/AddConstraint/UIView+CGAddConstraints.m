@@ -741,3 +741,52 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 }
 
 @end
+
+@implementation UIView (CGEqualViewConstraints)
+
+- (NSArray<NSLayoutConstraint *> *)cg_constraintsWithEqualView:(UIView *)view
+{
+    NSMutableArray<NSLayoutConstraint *> *atts  = [NSMutableArray arrayWithCapacity:4];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeTop toItem:view]];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeLeading toItem:view]];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeBottom toItem:view]];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeTrailing toItem:view]];
+    return atts;
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_constraintsWithCenterIncludeView:(UIView *)view
+{
+    return [self cg_constraintsWithCenterIncludeView:view offset:CGPointZero insets:UIEdgeInsetsZero];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_constraintsWithCenterIncludeView:(UIView *)view offset:(CGPoint)offset insets:(UIEdgeInsets)insets
+{
+    NSMutableArray *atts = [NSMutableArray arrayWithCapacity:6];
+    
+    [atts addObjectsFromArray:[self cg_autoCenterToSameAxisOfView:view withOffset:offset]];
+    
+    [atts addObject:[self cg_attribute:NSLayoutAttributeTop
+                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                toItem:view
+                             attribute:NSLayoutAttributeTop
+                              constant:insets.top]];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeLeading
+                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                toItem:view
+                             attribute:NSLayoutAttributeLeading
+                              constant:insets.left]];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeBottom
+                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                toItem:view
+                             attribute:NSLayoutAttributeBottom
+                              constant:insets.bottom]];
+    [atts addObject:[self cg_attribute:NSLayoutAttributeTrailing
+                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                toItem:view
+                             attribute:NSLayoutAttributeTrailing
+                              constant:insets.right]];
+    
+    return atts;
+}
+
+@end

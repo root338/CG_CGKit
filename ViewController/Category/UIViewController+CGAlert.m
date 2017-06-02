@@ -48,4 +48,29 @@
     return targetView;
 }
 
+- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void (^)(NSInteger))resultCallback
+{
+    id targetView = nil;
+    if (_CG_IOS_8_0_BEFORE) {
+        targetView  = [CGAlertView showAlertViewWithTitle:title message:message otherTitle1:otherTitle1 otherTitle2:otherTitle2 resultCallback:resultCallback];
+    }else {
+        
+        UIAlertController *alertController = [CGAlertController createAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:title message:message cancelTitle:nil otherTitles:[NSArray arrayWithObjects:otherTitle1, otherTitle2, nil] resultCallback:^(UIAlertAction * _Nonnull alertAction) {
+            
+            NSInteger index = 0;
+            if ([alertAction.title isEqualToString:otherTitle2]) {
+                index = 1;
+            }
+            
+            if (resultCallback) {
+                resultCallback(index);
+            }
+        }];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    
+    return targetView;
+}
+
 @end

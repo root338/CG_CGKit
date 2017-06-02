@@ -15,6 +15,8 @@
 
 @property (copy, nonatomic) void (^resultCallback) (BOOL isCancel);
 
+@property (nonatomic, copy) void (^didClickIndexCallback) (NSInteger clickIndex);
+
 @end
 
 @implementation CGAlertView
@@ -47,6 +49,19 @@
     [alertView show];
     alertView.delegate = alertView;
     alertView.resultCallback = resultCallback;
+    return alertView;
+}
+
++ (instancetype)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)title1 otherTitle2:(NSString *)title2 resultCallback:(void (^)(NSInteger))resultCallback
+{
+    CGAlertView *alertView = [[CGAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:title1, title2, nil];
+    [alertView show];
+    alertView.delegate = alertView;
+    alertView.didClickIndexCallback = resultCallback;
     return alertView;
 }
 
@@ -108,6 +123,10 @@
     
     if (self.clickCallback) {
         self.clickCallback(isCancel, buttonIndex);
+    }
+    
+    if (self.didClickIndexCallback) {
+        self.didClickIndexCallback(buttonIndex);
     }
 }
 
