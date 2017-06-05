@@ -436,9 +436,9 @@
         if (idx == 0) {
             //第一个视图
             
-            CGFloat             offset;
-            NSLayoutAttribute   att;
-            CGLayoutEdge        edge;
+            CGFloat             offset  = 0;
+            NSLayoutAttribute   att     = NSLayoutAttributeNotAnAttribute;
+            CGLayoutEdge        edge    = CGLayoutEdgeNone;
             if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
                 
                 offset  = marginInsets.left;
@@ -458,9 +458,9 @@
         if (idx == self.count - 1) {
             //最后一个视图
             
-            CGFloat             offset;
-            NSLayoutAttribute   att;
-            CGLayoutEdge        edge;
+            CGFloat             offset  = 0;
+            NSLayoutAttribute   att     = NSLayoutAttributeNotAnAttribute;
+            CGLayoutEdge        edge    = CGLayoutEdgeNone;
             if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
              
                 offset  = marginInsets.right;
