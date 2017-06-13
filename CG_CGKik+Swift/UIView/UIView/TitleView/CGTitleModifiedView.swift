@@ -42,15 +42,14 @@ class CGTitleModifiedView: CGBaseLayoutView {
             titleLabel.cg_autoCenterToSuperview()
             titleLabel.cg_autoConstrain(toSuperviewAttribute: .top, relation: .greaterThanOrEqual)
             
-            leftModifiedView.cg_autoAxis(.vertical, toSameAxisOf: titleLabel)
+            leftModifiedView.cg_autoAxis(.horizontal, toSameAxisOf: titleLabel)
             leftModifiedView.cg_autoEdge(with: leftModifiedView.superview!, optionEdge: .leftTop, insets: .zero, relation: .greaterThanOrEqual)
+            
             leftModifiedView.cg_autoInverseAttribute(.trailing, toItem: titleLabel, constant: titleSpace)
             
             rightModifiedView.cg_autoEdge(with: rightModifiedView.superview!, optionEdge: .rightTop, insets: .zero, relation: .greaterThanOrEqual)
-            rightModifiedView.cg_autoAxis(.vertical, toSameAxisOf: titleLabel)
+            rightModifiedView.cg_autoAxis(.horizontal, toSameAxisOf: titleLabel)
             rightModifiedView.cg_autoInverseAttribute(.leading, toItem: titleLabel, constant: titleSpace)
-            
-            leftModifiedView.cg_autoDimension(.width, equalView: rightModifiedView)
             
             didSetupConstraint = true
         }
