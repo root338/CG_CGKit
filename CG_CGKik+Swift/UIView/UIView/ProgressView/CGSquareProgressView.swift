@@ -92,10 +92,11 @@ class CGSquareProgressView: UIView {
         }
     }
     
-    override var bounds: CGRect {
+    
+    override var frame: CGRect {
         didSet {
             
-            let isUpdatePath = bounds.size.equalTo(oldValue.size) == false
+            let isUpdatePath = frame.size.equalTo(oldValue.size) == false
             
             if progressLayer != nil {
                 if isUpdatePath {
