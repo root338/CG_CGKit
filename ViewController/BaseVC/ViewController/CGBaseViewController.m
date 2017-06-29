@@ -129,6 +129,13 @@
         UINavigationItem *navigationItem    = self.navigationItem;
         navigationItem.rightBarButtonItem   = [self cg_addRightBarButtonItem];
         navigationItem.leftBarButtonItem    = [self cg_addLeftBarButtonItem];
+        
+    }
+    
+    BOOL disableResetBackTitleIsNull = [self shouldDisableResetBackTitleIsNull];
+    if (disableResetBackTitleIsNull == NO) {
+        
+        self.navigationItem.backBarButtonItem    = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     
     if (!self.view.backgroundColor) {
@@ -150,6 +157,12 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - CGBaseViewControllerDelegate
+- (BOOL)shouldDisableResetBackTitleIsNull
+{
+    return NO;
+}
 
 - (void)dealloc
 {

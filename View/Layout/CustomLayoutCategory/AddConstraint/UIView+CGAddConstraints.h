@@ -84,6 +84,12 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置与父视图四周的间距 */
 - (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
+/** 设置与父视图四周的间距为0，并设置可选约束的边 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewOptionEdge:(CGLayoutEdge)optionEdge;
+
+/** 设置与父视图四周的间距，并设置可选约束的边 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets optionEdge:(CGLayoutEdge)optionEdge;
+
 /** 设置与父视图四周的间距，并忽略哪边边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge;
 

@@ -15,8 +15,16 @@ typedef NS_ENUM(NSInteger, CGTitleBarItemType) {
     CGTitleBarItemTypeBack,
 };
 
+@protocol CGBaseViewControllerDelegate <NSObject>
+
+@required
+/** 重置回退标题为空 */
+- (BOOL)shouldDisableResetBackTitleIsNull;
+
+@end
+
 NS_ASSUME_NONNULL_BEGIN
-@interface CGBaseViewController : UIViewController
+@interface CGBaseViewController : UIViewController<CGBaseViewControllerDelegate>
 
 /** 右边导航栏标题 */
 @property (nullable, nonatomic, strong) NSString *rightItemTitle;

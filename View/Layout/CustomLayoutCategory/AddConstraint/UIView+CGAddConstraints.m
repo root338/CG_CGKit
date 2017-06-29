@@ -16,6 +16,7 @@
 #import "NSLayoutConstraint+CGConstraint.h"
 
 #import "CGPrintLogHeader.h"
+#import "CGLayoutTypeTransform.h"
 
 /** 存储约束优先级的数组 */
 static NSMutableArray<NSNumber *> *cg_constraintsLayoutPriority;
@@ -275,6 +276,24 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 - (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets
 {
     return [self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:CGLayoutEdgeNone];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewOptionEdge:(CGLayoutEdge)optionEdge
+{
+    return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero optionEdge:optionEdge];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets optionEdge:(CGLayoutEdge)optionEdge
+{
+    
+    CGFloat offset = [CGLayoutTypeTransform offsetWithInsets:insets edge:optionEdge];
+    NSLayoutAttribute attribute = [CGLayoutTypeTransform layoutAttributeWithEdge:optionEdge];
+    
+    NSMutableArray *constraints = [NSMutableArray arrayWithArray:[self cg_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:optionEdge]];
+    [UIView cg_autoSetPriority:999 forConstraints:^{
+        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:attribute withOffset:offset]];
+    }];
+    return constraints;
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge
