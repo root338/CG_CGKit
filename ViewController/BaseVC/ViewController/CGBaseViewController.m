@@ -59,9 +59,6 @@
 
 - (UIBarButtonItem *)cg_addLeftBarButtonItem
 {
-    if (![self cg_shouldAddLeftBarButtonItem]) {
-        return nil;
-    }
     
     UIBarButtonItem *leftItem   = [self cg_createBarButtonItemWithTitle:self.leftItemTitle image:self.leftItemImage landscapeImage:self.leftLandscapeImage];
     [self.leftItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
@@ -73,9 +70,6 @@
 
 - (UIBarButtonItem *)cg_addRightBarButtonItem
 {
-    if (![self cg_shouldAddRightBarButtonItem]) {
-        return nil;
-    }
     
     UIBarButtonItem *rightItem   = [self cg_createBarButtonItemWithTitle:self.rightItemTitle image:self.rightItemImage landscapeImage:self.rightLandscapeImage];
     [self.rightItemTitleAttributesDict enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSDictionary * _Nonnull obj, BOOL * _Nonnull stop) {
@@ -127,9 +121,12 @@
     if (!self.navigationController.navigationBarHidden) {
         
         UINavigationItem *navigationItem    = self.navigationItem;
-        navigationItem.rightBarButtonItem   = [self cg_addRightBarButtonItem];
-        navigationItem.leftBarButtonItem    = [self cg_addLeftBarButtonItem];
-        
+        if (![self cg_shouldAddLeftBarButtonItem]) {
+            navigationItem.rightBarButtonItem   = [self cg_addRightBarButtonItem];
+        }
+        if (![self cg_shouldAddRightBarButtonItem]) {
+            navigationItem.leftBarButtonItem    = [self cg_addLeftBarButtonItem];
+        }
     }
     
     BOOL disableResetBackTitleIsNull = [self shouldDisableResetBackTitleIsNull];
@@ -158,6 +155,26 @@
 }
 */
 
+- (void)updateLeftBarButtonItem {
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    if (!self.isViewLoaded) {
+        return;
+    }
+    
+    self.navigationItem.leftBarButtonItem = [self cg_addLeftBarButtonItem];
+}
+
+- (void)updateRightBarButtonItem {
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    if (!self.isViewLoaded) {
+        return;
+    }
+    
+    self.navigationItem.rightBarButtonItem  = [self cg_addRightBarButtonItem];
+}
+
 #pragma mark - CGBaseViewControllerDelegate
 - (BOOL)shouldDisableResetBackTitleIsNull
 {
@@ -167,6 +184,72 @@
 - (void)dealloc
 {
     CGPrintClassNameLog()
+}
+
+#pragma mark - 设置属性
+- (void)setLeftItemTitle:(NSString *)leftItemTitle
+{
+    if (![_leftItemTitle isEqualToString:leftItemTitle]) {
+        
+        _leftItemTitle  = leftItemTitle;
+        [self performSelector:@selector(updateLeftBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setLeftItemImage:(UIImage *)leftItemImage
+{
+    if (![_leftItemImage isEqual: leftItemImage]) {
+        _leftItemImage  = leftItemImage;
+        [self performSelector:@selector(updateLeftBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setLeftLandscapeImage:(UIImage *)leftLandscapeImage
+{
+    if (![_leftLandscapeImage isEqual: leftLandscapeImage]) {
+        _leftLandscapeImage = leftLandscapeImage;
+        [self performSelector:@selector(updateLeftBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setLeftItemTitleAttributesDict:(NSMutableDictionary<NSNumber *,NSDictionary<NSString *,id> *> *)leftItemTitleAttributesDict
+{
+    if (![_leftItemTitleAttributesDict isEqualToDictionary:leftItemTitleAttributesDict]) {
+        _leftItemTitleAttributesDict    = leftItemTitleAttributesDict;
+        [self performSelector:@selector(updateLeftBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setRightItemTitle:(NSString *)rightItemTitle
+{
+    if (![_rightItemTitle isEqualToString:rightItemTitle]) {
+        _rightItemTitle = rightItemTitle;
+        [self performSelector:@selector(updateRightBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setRightItemImage:(UIImage *)rightItemImage
+{
+    if (![_rightItemImage isEqual:rightItemImage]) {
+        _rightItemImage = rightItemImage;
+        [self performSelector:@selector(updateRightBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setRightLandscapeImage:(UIImage *)rightLandscapeImage
+{
+    if (![_rightLandscapeImage isEqual:rightLandscapeImage]) {
+        _rightLandscapeImage    = rightLandscapeImage;
+        [self performSelector:@selector(updateRightBarButtonItem) withObject:nil afterDelay:0];
+    }
+}
+
+- (void)setRightItemTitleAttributesDict:(NSMutableDictionary<NSNumber *,NSDictionary<NSString *,id> *> *)rightItemTitleAttributesDict
+{
+    if (![_rightItemTitleAttributesDict isEqualToDictionary:rightItemTitleAttributesDict]) {
+        _rightItemTitleAttributesDict   = rightItemTitleAttributesDict;
+        [self performSelector:@selector(updateRightBarButtonItem) withObject:nil afterDelay:0];
+    }
 }
 
 @end
