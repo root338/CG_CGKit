@@ -32,6 +32,9 @@ typedef NSLayoutRelation (^CGSetupSubviewLayoutRelation) (UIView *view, CGLayout
 /** 设置子视图相对于父视图的边约束是否忽略 */
 typedef BOOL (^CGSetupSubviewExculdingEdge) (UIView *view, CGLayoutEdge exculdingEdge);
 
+/** 设置子视图与子视图的边的约束是否忽略 */
+typedef BOOL (^CGSetupSubviewsExculdingEdge) (UIView *v1, CGLayoutEdge v1Edge, UIView *v2, CGLayoutEdge v2Edge);
+
 /** 设置子视图与父视图之间的边距 */
 typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
 
@@ -49,6 +52,15 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutWithViewController:(UIViewController *)viewController;
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupVerticalSubviewsLayoutWithViewController:(UIViewController *)viewController;
 
+/** 仅设置与父视图水平的约束，忽略其他所有约束 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupZeroHorizontalSuperviewLayout;
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupHorizontalSuperviewLayoutWithSpace:(CGFloat)space;
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupHorizontalSuperviewLayoutWithTopSpace:(CGFloat)topSpace bottomSpace:(CGFloat)bottomSpace;
+
+/** 仅设置与父视图垂直的约束，忽略其他所有约束 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupZeroVerticalSuperviewLayout;
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupVerticalSuperviewLayoutWithSpace:(CGFloat)space;
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupVerticalSuperviewLayoutWithLeadingSpace:(CGFloat)leadingSpace TrailingSpace:(CGFloat)trailingSpace;
 
 /**
  子视图水平排列，且仅设置水平状态下的约束，父父视图的 top，bottom 约束不添加
@@ -58,7 +70,7 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraints;
 
 /**
- 子视图垂直排列并设置外边距，且仅设置垂直状态下的约束，父父视图的 left，right 约束不添加
+ 子视图垂直排列并设置外边距，且仅设置垂直状态下的约束，父父视图的 top，bottom 约束不添加
  
  @return 返回创建的约束
  */

@@ -75,12 +75,27 @@
     [self cg_setupWithNormalImageName:normalImageName selectImageName:nil];
 }
 
+- (void)cg_setupWithTitle:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font defalutNormalImageName:(NSString *)normalImageName
+{
+    [self cg_setupWithTitle:title titleColor:titleColor font:font];
+    [self cg_setupWithDefalutNormalImageName:normalImageName selectImageName:nil];
+}
+
 - (void)cg_setupWithNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
 {
     UIImage *normalImage = [UIImage cg_imageName:normalImageName];
     !normalImage ?: [self setImage:normalImage forState:UIControlStateNormal];
     
     UIImage *selectImage = [UIImage cg_imageName:selectImageName];
+    !selectImage ?: [self setImage:selectImage forState:UIControlStateSelected];
+}
+
+- (void)cg_setupWithDefalutNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
+{
+    UIImage *normalImage = [UIImage imageNamed:normalImageName];
+    !normalImage ?: [self setImage:normalImage forState:UIControlStateNormal];
+    
+    UIImage *selectImage = [UIImage imageNamed:selectImageName];
     !selectImage ?: [self setImage:selectImage forState:UIControlStateSelected];
 }
 

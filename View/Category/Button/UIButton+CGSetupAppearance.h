@@ -43,6 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 设置按钮标题（颜色，字体）图像 */
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font normalImageName:(nullable NSString *)normalImageName;
 
+/** 设置按钮标题（颜色，字体）图像 */
+- (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font defalutNormalImageName:(nullable NSString *)normalImageName;
+
 /**
  *  设置按钮样式、默认图片、选中图片
  *
@@ -52,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return 返回创建好的按钮
  */
 - (void)cg_setupWithNormalImageName:(nullable NSString *)normalImageName selectImageName:(nullable NSString *)selectImageName;
+
+/** 设置按钮图片 */
+- (void)cg_setupWithDefalutNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
 
 /**
  *  设置按钮样式、标题、标题颜色、标题字体和圆角

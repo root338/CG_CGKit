@@ -198,11 +198,17 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置视图与指定视图大小的比例值 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension equalView:(UIView *)view scale:(CGFloat)scale;
 
+/** 设置视图与指定视图大小，偏差值 */
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view constant:(CGFloat)constant;
+
 /** 设置视图宽高与指定视图相等 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoDimensionEqualView:(UIView *)view;
 
 /** 设置视图与指定视图大小的关系 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation;
+
+/** 设置视图与指定视图大小的关系，且设置偏差值 */
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation constant:(CGFloat)constant;
 
 /** 设置视图宽 ： 高 = 1 : 1 */
 - (NSLayoutConstraint *)cg_autoDimensionWidthEqualHeight;

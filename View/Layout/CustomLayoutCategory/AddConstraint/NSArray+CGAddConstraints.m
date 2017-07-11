@@ -50,6 +50,44 @@
                     setupSubviewsSpace:nil];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupZeroHorizontalSuperviewLayout
+{
+    return [self cg_autoOnlySetupHorizontalSuperviewLayoutWithSpace:0];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupHorizontalSuperviewLayoutWithSpace:(CGFloat)space
+{
+    return [self cg_autoOnlySetupHorizontalSuperviewLayoutWithTopSpace:space bottomSpace:space];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupHorizontalSuperviewLayoutWithTopSpace:(CGFloat)topSpace bottomSpace:(CGFloat)bottomSpace
+{
+    return [self cg_autoViewController:nil arrangementType:CGSubviewsArrangementTypeHorizontal marginInsets:UIEdgeInsetsMake(topSpace, 0, bottomSpace, 0) setupSubviewsSpace:nil setupSubviewsLayoutRelation:nil setupSubviewLayoutRelation:nil setupSubviewExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
+        return exculdingEdge == CGLayoutEdgeLeading || exculdingEdge == CGLayoutEdgeTrailing;
+    } setupSubviewMarginEdgeInsets:nil setupSubviewsExculdingEdge:^BOOL(UIView * _Nonnull v1, CGLayoutEdge v1Edge, UIView * _Nonnull v2, CGLayoutEdge v2Edge) {
+        return YES;
+    }];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupZeroVerticalSuperviewLayout
+{
+    return [self cg_autoOnlySetupVerticalSuperviewLayoutWithSpace:0];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupVerticalSuperviewLayoutWithSpace:(CGFloat)space
+{
+    return [self cg_autoOnlySetupVerticalSuperviewLayoutWithLeadingSpace:space TrailingSpace:space];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoOnlySetupVerticalSuperviewLayoutWithLeadingSpace:(CGFloat)leadingSpace TrailingSpace:(CGFloat)trailingSpace
+{
+    return [self cg_autoViewController:nil arrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsMake(0, leadingSpace, 0, trailingSpace) setupSubviewsSpace:nil setupSubviewsLayoutRelation:nil setupSubviewLayoutRelation:nil setupSubviewExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
+        return exculdingEdge == CGLayoutEdgeTop || exculdingEdge == CGLayoutEdgeBottom;
+    } setupSubviewMarginEdgeInsets:nil setupSubviewsExculdingEdge:^BOOL(UIView * _Nonnull v1, CGLayoutEdge v1Edge, UIView * _Nonnull v2, CGLayoutEdge v2Edge) {
+        return YES;
+    }];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraints
 {
     return [self cg_autoSetupHorizontalSubviewsLayoutIsOnlyHorizontalConstraintsWithMarginInsets:UIEdgeInsetsZero];
@@ -258,6 +296,176 @@
                                                            toItem:obj
                                                         attribute:NSLayoutAttributeTop
                                                          constant:space]];
+            }
+            
+        }else {
+            //不存在上一视图，说明是顶部视图
+            
+            //顶部视图
+            if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+                
+                if (!viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeLeading)) {
+                    [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeLeading withOffset:insets.left relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeLeading)]];
+                }
+                
+            }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+                
+                if (!viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeTop)) {
+                    if (viewController) {
+                        
+                        [constraints addObject:[obj cg_topLayoutGuideOfViewController:viewController withInset:insets.top relatedBy:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeTop)]];
+                    }else {
+                        
+                        [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTop withOffset:insets.top relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeTop)]];
+                    }
+                }
+                
+            }
+        }
+        
+        if (!nextView) {
+            //底部视图
+            if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+                
+                if (!viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeTrailing)) {
+                    [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTrailing withOffset:insets.right relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeTrailing)]];
+                }
+                
+            }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+                
+                if (!viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeBottom)) {
+                    
+                    if (viewController) {
+                        
+                        [constraints addObject:[obj cg_bottomLayoutGuideOfViewController:viewController withInset:insets.bottom relatedBy:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeBottom)]];
+                    }else {
+                        
+                        [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom withOffset:insets.bottom relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeBottom)]];
+                    }
+                }
+            }
+        }
+    }];
+    
+    return constraints;
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoViewController:(nullable UIViewController *)viewController arrangementType:(CGSubviewsArrangementType)arrangementType marginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation setupSubviewExculdingEdge:(CGSetupSubviewExculdingEdge)setupSubviewExculdingEdge setupSubviewMarginEdgeInsets:(nullable CGSetupSubViewMarginEdgeInsets)setupSubviewMarginEdgeInsets setupSubviewsExculdingEdge:(CGSetupSubviewsExculdingEdge)setupSubviewsExculdingEdge
+{
+    CGSetupSubviewLayoutRelation viewForSuperviewLayoutRelation = ^(UIView *view, CGLayoutEdge layoutEdge) {
+        
+        if (setupSubviewLayoutRelation) {
+            return setupSubviewLayoutRelation(view, layoutEdge);
+        }
+        return NSLayoutRelationEqual;
+    };
+    CGSetupSubviewsLayoutRelation subviewsLayoutRelation  = ^(UIView *view1, CGLayoutEdge view1LayoutEdge, UIView *view2, CGLayoutEdge view2LayoutEdge) {
+        
+        if (setupSubviewsLayoutRelation) {
+            return setupSubviewsLayoutRelation(view1, view1LayoutEdge, view2, view2LayoutEdge);
+        }
+        return NSLayoutRelationEqual;
+    };
+    CGSetupSubviewExculdingEdge viewForSuperviewExculdingEdgeBlock  = ^(UIView *view, CGLayoutEdge exculdingEdge) {
+        
+        BOOL isExculdingEdge = NO;
+        if (setupSubviewExculdingEdge) {
+            isExculdingEdge = setupSubviewExculdingEdge(view, exculdingEdge);
+        }
+        return isExculdingEdge;
+    };
+    CGSetupSubViewMarginEdgeInsets subviewMarginEdgeInsetsForSuperview  = ^(UIView *view) {
+        UIEdgeInsets insets;
+        if (setupSubviewMarginEdgeInsets) {
+            insets  = setupSubviewMarginEdgeInsets(view);
+        }else {
+            insets  = marginInsets;
+        }
+        return insets;
+    };
+    
+    CGSetupSubviewsExculdingEdge subviewsExculdingEdgeBlock = ^(UIView *v1, CGLayoutEdge edge1, UIView *v2, CGLayoutEdge edge2) {
+        
+        BOOL isExculdingEdge = NO;
+        if (setupSubviewsExculdingEdge) {
+            isExculdingEdge = setupSubviewsExculdingEdge(v1, edge1, v2, edge2);
+        }
+        return isExculdingEdge;
+    };
+    
+    NSMutableArray *constraints = [NSMutableArray array];
+    [self enumerateObjectsUsingBlock:^(UIView *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        UIView *previousView    = [self previousViewWithObject:obj];
+        UIView *nextView        = [self nextViewWithObject:obj];
+        
+        UIEdgeInsets insets     = subviewMarginEdgeInsetsForSuperview(obj);
+        //添加必须的约束
+        if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+            
+            BOOL isExculdingEdgeTop     = viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeTop);
+            BOOL isExculdingEdgeBottom  = viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeBottom);
+            
+            if (viewController) {
+                
+                if (!isExculdingEdgeTop) {
+                    
+                    [constraints addObject:[obj cg_topLayoutGuideOfViewController:viewController withInset:insets.top relatedBy:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeTop)]];
+                }
+                
+                if (!isExculdingEdgeBottom) {
+                    [constraints addObject:[obj cg_bottomLayoutGuideOfViewController:viewController withInset:insets.bottom relatedBy:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeBottom)]];
+                }
+                
+            }else {
+                
+                if (!isExculdingEdgeTop) {
+                    [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTop withOffset:insets.top relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeTop)]];
+                }
+                if (!isExculdingEdgeBottom) {
+                    [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom withOffset:insets.bottom relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeBottom)]];
+                }
+            }
+            
+        }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+            
+            if (!viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeLeading)) {
+                
+                [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeLeading withOffset:insets.left relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeLeading)]];
+            }
+            if (!viewForSuperviewExculdingEdgeBlock(obj, CGLayoutEdgeTrailing)) {
+                [constraints addObject:[obj cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeTrailing withOffset:insets.right relation:viewForSuperviewLayoutRelation(obj, CGLayoutEdgeTrailing)]];
+            }
+        }
+        
+        if (previousView) {
+            //存在上一视图
+            
+            CGLayoutEdge previousViewEdge   = CGLayoutEdgeNone;
+            CGLayoutEdge objViewEdge        = CGLayoutEdgeNone;
+            
+            if (arrangementType == CGSubviewsArrangementTypeHorizontal) {
+                
+                previousViewEdge    = CGLayoutEdgeTrailing;
+                objViewEdge         = CGLayoutEdgeLeading;
+            }else if (arrangementType == CGSubviewsArrangementTypeVertical) {
+                
+                previousViewEdge    = CGLayoutEdgeBottom;
+                objViewEdge         = CGLayoutEdgeTop;
+            }
+            
+            BOOL isExculdingEdge = subviewsExculdingEdgeBlock(previousView, previousViewEdge, obj, objViewEdge);
+            
+            if (isExculdingEdge == NO && previousViewEdge != CGLayoutEdgeNone) {
+                
+                CGFloat space = 0;
+                if (setupSubviewsSpaceBlock) {
+                    space   = setupSubviewsSpaceBlock(previousView, obj);
+                }else {
+                    space   = self.subviewsSpaceValue;
+                }
+                
+                [constraints addObject:[obj cg_autoInverseAttribute:objViewEdge toItem:previousView relatedBy:subviewsLayoutRelation(previousView, previousViewEdge, obj, objViewEdge) constant:space]];
             }
             
         }else {

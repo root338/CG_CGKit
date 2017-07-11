@@ -89,7 +89,10 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius backgroundColor:(UIColor *)backgroundColor;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius backgroundColor:(nullable UIColor *)backgroundColor;
+
+/** 创建按钮，设置按钮样式、标题、标题颜色、标题字体，圆角，背景图片 */
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius backgroundImageTintColor:(nullable UIColor *)backgroundImageTintColor;
 
 /**
  *  创建按钮，设置按钮样式、标题、标题颜色、标题字体、外边框的宽度、颜色和圆角

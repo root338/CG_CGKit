@@ -13,6 +13,7 @@
 #import "UIView+CGSetupAppearance.h"
 #import "UIButton+CGSetupAppearance.h"
 
+#import "UIImage+CGColor.h"
 #import "UIImage+CGLoadImage.h"
 
 @implementation UIButton (CGCreateCustomButton)
@@ -48,6 +49,24 @@
                                                       font:font
                                                     radius:radius];
     button.backgroundColor  = backgroundColor;
+    return button;
+}
+
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius backgroundImageTintColor:(UIColor *)backgroundImageTintColor
+{
+    UIButton *button = [self cg_createButtonWithButtonType:type
+                                                     title:title
+                                                titleColor:titleColor
+                                                      font:font
+                                                    radius:radius];
+    
+    if (backgroundImageTintColor) {
+        UIImage *backgroundImage = [UIImage imageWithTintColor:backgroundImageTintColor];
+        backgroundImage = [backgroundImage resizableImageWithCapInsets:UIEdgeInsetsZero];
+        [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+    }
+    
+    
     return button;
 }
 

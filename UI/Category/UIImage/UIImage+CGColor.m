@@ -26,7 +26,7 @@
         return nil;
     }
     
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 2);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, tintColor.CGColor);
     CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));

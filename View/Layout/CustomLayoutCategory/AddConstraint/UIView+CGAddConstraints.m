@@ -278,6 +278,7 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:CGLayoutEdgeNone];
 }
 
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewOptionEdge:(CGLayoutEdge)optionEdge
 {
     return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero optionEdge:optionEdge];
@@ -482,6 +483,11 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_attribute:att relatedBy:NSLayoutRelationEqual toItem:view attribute:att multiplier:scale constant:0];
 }
 
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view constant:(CGFloat)constant
+{
+    return [self cg_autoDimension:dimension view:view relatedBy:NSLayoutRelationEqual constant:constant];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoDimensionEqualView:(UIView *)view
 {
     NSMutableArray *array   = [NSMutableArray arrayWithCapacity:2];
@@ -493,6 +499,11 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation
 {
     return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:0];
+}
+
+- (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension view:(UIView *)view relatedBy:(NSLayoutRelation)relation constant:(CGFloat)constant
+{
+    return [self cg_attribute:(NSLayoutAttribute)dimension toItem:view relatedBy:relation constant:constant];
 }
 
 - (NSLayoutConstraint *)cg_autoDimensionWidthEqualHeight
