@@ -20,12 +20,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable instancetype)imageNamed:(NSString *)imageName capInsets:(UIEdgeInsets)capInsets resizingMode:(UIImageResizingMode)resizingMode;
 
 + (nullable UIImage *)loadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize;
++ (nullable UIImage *)loadImageWithFilePath:(NSString *)filePath twiceAsMuchEstimatedSize:(CGSize)estimatedSize;
 + (nullable UIImage *)loadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize scale:(CGFloat)scale;
 
 + (void)asyncLoadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize completion:(void (^) (UIImage * _Nullable image))completion;
++ (void)asyncLoadImageWithFilePath:(NSString *)filePath twiceAsMuchEstimatedSize:(CGSize)estimatedSize completion:(void (^) (UIImage * _Nullable image))completion;
 + (void)asyncLoadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize completion:(void (^) (UIImage * _Nullable image))completion scale:(CGFloat)scale;
 
 - (UIImage *)scaleImageWithEstimatedSize: (CGSize) estimatedSize;
+- (UIImage *)scaleImageWithTwiceAsMuchEstimatedSize:(CGSize)estimatedSize;
 - (UIImage *)scaleImageWithEstimatedSize: (CGSize) estimatedSize scale:(CGFloat)scale;
 @end
 

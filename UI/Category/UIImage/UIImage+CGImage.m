@@ -33,6 +33,11 @@
     return [self loadImageWithFilePath:filePath estimatedSize:estimatedSize scale:1];
 }
 
++ (UIImage *)loadImageWithFilePath:(NSString *)filePath twiceAsMuchEstimatedSize:(CGSize)estimatedSize
+{
+    return [self loadImageWithFilePath:filePath estimatedSize:estimatedSize scale:2];
+}
+
 + (UIImage *)loadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize scale:(CGFloat)scale
 {
     if (filePath.length == 0) {
@@ -55,6 +60,11 @@
     [self asyncLoadImageWithFilePath:filePath estimatedSize:estimatedSize completion:completion scale:1];
 }
 
++ (void)asyncLoadImageWithFilePath:(NSString *)filePath twiceAsMuchEstimatedSize:(CGSize)estimatedSize completion:(void (^)(UIImage * _Nullable))completion
+{
+    [self asyncLoadImageWithFilePath:filePath estimatedSize:estimatedSize completion:completion scale:2];
+}
+
 + (void)asyncLoadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize completion:(void (^)(UIImage * _Nullable))completion scale:(CGFloat)scale
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -73,6 +83,11 @@
     return [self scaleImageWithEstimatedSize:estimatedSize scale:1];
 }
 
+- (UIImage *)scaleImageWithTwiceAsMuchEstimatedSize:(CGSize)estimatedSize
+{
+    return [self scaleImageWithEstimatedSize:estimatedSize scale:2];
+}
+
 - (UIImage *)scaleImageWithEstimatedSize:(CGSize)estimatedSize scale:(CGFloat)paramScale
 {
     CGSize size = self.size;
@@ -83,7 +98,7 @@
     
     CGFloat scalex = estimatedSize.width / size.width;
     CGFloat scaley = estimatedSize.height / size.height;
-    CGFloat scale = MAX(scalex, scaley);
+    CGFloat scale = MIN(scalex, scaley);
     
     UIGraphicsBeginImageContext(estimatedSize);
     
