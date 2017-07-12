@@ -118,6 +118,12 @@ UIKIT_STATIC_INLINE CGRect CG_CGFrameWithMargin(CGRect frame, UIEdgeInsets edgeI
     return CGRectMake(CGRectGetMinX(frame) - edgeInsets.left, CGRectGetMinY(frame) - edgeInsets.top, CGRectGetWidth(frame) + edgeInsets.left + edgeInsets.right, CGRectGetHeight(frame) + edgeInsets.top + edgeInsets.bottom);
 }
 
+/** 计算 { { originX + left, originY + top}, { width - left - right, height - top - bottom } } */
+UIKIT_STATIC_INLINE CGRect CG_CGFrameWithMaxFrame(CGRect frame, UIEdgeInsets edgeInsets)
+{
+    return CGRectMake(CGRectGetMinX(frame) + edgeInsets.left, CGRectGetMinY(frame) + edgeInsets.right, CG_CGWidthWithMaxWidth(CGRectGetWidth(frame), edgeInsets), CG_CGHeightWithMaxHeight(CGRectGetHeight(frame), edgeInsets));
+}
+
 /** 计算 { { 0, 0}, { width, height } } */
 UIKIT_STATIC_INLINE CGRect CG_CGBoundsWithFrame(CGRect frame)
 {

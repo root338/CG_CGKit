@@ -8,6 +8,8 @@
 
 #import "CGTextField.h"
 
+#import "UIView+CG_CGAreaCalculate.h"
+
 @implementation CGTextField
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -39,6 +41,19 @@
             self.text   = nil;
         }
     }
+}
+
+- (CGRect)textRectForBounds:(CGRect)bounds
+{
+    CGRect rect = [super textRectForBounds:bounds];
+    
+    return CG_CGFrameWithMaxFrame(rect, self.textInputMarginEdgeInsets);
+}
+
+- (CGRect)editingRectForBounds:(CGRect)bounds
+{
+    CGRect rect = [super editingRectForBounds:bounds];
+    return CG_CGFrameWithMaxFrame(rect, self.textInputMarginEdgeInsets);
 }
 
 @end

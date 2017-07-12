@@ -10,4 +10,6 @@
 
 @interface CGTextField : UITextField
 
+@property (nonatomic, assign) UIEdgeInsets textInputMarginEdgeInsets;
+
 @end
