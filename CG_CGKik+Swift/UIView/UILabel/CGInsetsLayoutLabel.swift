@@ -10,17 +10,15 @@ import UIKit
 
 class CGInsetsLayoutLabel: UILabel {
 
-    var verticalSpace : CGFloat?
-    var horizontalSpace : CGFloat?
+    var verticalSpace : CGFloat   = 0
+    var horizontalSpace : CGFloat = 0
     
     override var intrinsicContentSize: CGSize {
         var contentSize = super.intrinsicContentSize
-        if verticalSpace != nil {
-            contentSize.height += verticalSpace!
-        }
-        if horizontalSpace != nil {
-            contentSize.width += horizontalSpace!
-        }
+        
+        contentSize.height += verticalSpace
+        contentSize.width += horizontalSpace
+        
         return contentSize
     }
     
