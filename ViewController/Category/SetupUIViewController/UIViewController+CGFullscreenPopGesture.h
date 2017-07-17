@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol CGViewControllerFullscreenPopGestureDelegate <NSObject>
+
+@optional
+- (BOOL)cg_shouldSupportNavigationAppearanceProtocol:(UIViewController *)viewController;
+
+@end
+
 /** 视图控制器全屏滑动设置 */
 @interface UIViewController (CGFullscreenPopGesture)
 

@@ -114,11 +114,21 @@
 
 - (BOOL)cg_shouldSetupCurrentViewController
 {
-    if (![self.navigationController isKindOfClass:[CGNavigationController class]] && ![self conformsToProtocol:@protocol(CGNavigationAppearanceProtocol)]) {
-        //当视图没有实现CGNavigationAppearanceProtocol，或导航栏不是CGNavigationController时取消对导航栏的设置
-        return NO;
+    if ([self respondsToSelector:@selector(cg_shouldSupportNavigationAppearanceProtocol:)]) {
+        
+        id<CGViewControllerFullscreenPopGestureDelegate> delegate = (id)self;
+        return [delegate cg_shouldSupportNavigationAppearanceProtocol:self];
+    }else {
+        
+        BOOL isFlag1 = self.navigationController == nil || [self.navigationController isKindOfClass:[CGNavigationController class]];
+        BOOL isFlag2 = [self conformsToProtocol:@protocol(CGNavigationAppearanceProtocol)];
+        if ( !isFlag1 && !isFlag2 ) {
+            //当视图没有实现CGNavigationAppearanceProtocol，或导航栏不是CGNavigationController时取消对导航栏的设置
+            return NO;
+        }
+        return YES;
     }
-    return YES;
+    
 }
 @end
 
