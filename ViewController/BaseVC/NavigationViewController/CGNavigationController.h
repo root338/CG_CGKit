@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, CGInteractivePopGestureRecognizerType) {
 //@property (nonatomic, assign) BOOL enableViewControllerManager;
 
 /** 
- *  关闭全屏回退功能，开启系统默认回退功能，默认 YES
+ *  打开全屏回退功能，开启系统默认回退功能，默认 YES
  */
 @property (nonatomic, assign) BOOL enablePopGestureRecognizer;
 

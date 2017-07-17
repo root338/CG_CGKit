@@ -66,18 +66,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
  */
 - (CGSize)intrinsicContentSize
 {
-    CGSize intrinsicContentSize = [super intrinsicContentSize];
-    
-    CGFloat HLenght = intrinsicContentSize.width + (self.marginEdgeInsets.left + self.marginEdgeInsets.right);
-    CGFloat vLenght = intrinsicContentSize.height + (self.marginEdgeInsets.top + self.marginEdgeInsets.bottom);
-    
-    if (self.buttonStyle == CGButtonStyleVerticalTop || self.buttonStyle == CGButtonStyleVerticalBottom) {
-        HLenght += self.space;
-    }else {
-        HLenght  += self.space;
-    }
-    
-    return CGSizeMake(HLenght, vLenght);
+    return [self sizeThatFits:CGSizeZero];
 }
 
 #pragma mark - 重置按钮布局

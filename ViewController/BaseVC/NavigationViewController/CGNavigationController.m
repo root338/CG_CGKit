@@ -100,6 +100,11 @@
 
 - (void)setupPopGestureRecognizer
 {
+    if ([self respondsToSelector:@selector(openFullScreenPopGestureRecognizer)] == NO || [self respondsToSelector:@selector(fullScreenPopGestureRecognizer)] == NO) {
+        
+        CGErrorLog(@"没有导入UINavigationController+CGSetupGestureRecognizer.h扩展，会导致CGNavigationController 及其子类功能不完整");
+        return;
+    }
     BOOL fullScreenPopGestureRecognizerEnable   = NO;
     BOOL systemPopGestureRecognizerEnable       = NO;
     if (self.enablePopGestureRecognizer) {
@@ -121,8 +126,11 @@
     }
     
     if (fullScreenPopGestureRecognizerEnable) {
+        
         [self openFullScreenPopGestureRecognizer];
+        
     }else {
+        
         self.fullScreenPopGestureRecognizer.enabled = fullScreenPopGestureRecognizerEnable;
     }
     
