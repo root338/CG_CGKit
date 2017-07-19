@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage *)scaleImageWithEstimatedSize: (CGSize) estimatedSize;
 - (UIImage *)scaleImageWithTwiceAsMuchEstimatedSize:(CGSize)estimatedSize;
 - (UIImage *)scaleImageWithEstimatedSize: (CGSize) estimatedSize scale:(CGFloat)scale;
+
+- (UIImage *)drawImageWithSize:(CGSize)size drawRect:(CGRect)rect;
 @end
 
 NS_ASSUME_NONNULL_END

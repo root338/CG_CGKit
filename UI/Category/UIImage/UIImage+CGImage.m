@@ -117,4 +117,16 @@
     return newimg;
 }
 
+- (UIImage *)drawImageWithSize:(CGSize)size drawRect:(CGRect)rect
+{
+    UIGraphicsBeginImageContextWithOptions(size, NO, self.scale);
+    
+    [self drawInRect:rect];
+    
+    UIImage *newimg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newimg;
+}
+
 @end
