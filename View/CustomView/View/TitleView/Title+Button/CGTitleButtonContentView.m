@@ -55,7 +55,7 @@
     
     self.titleLabel.origin      = CGPointMake(self.titleLabelMarginEdgeInsets.left, originY);
     
-    [self.titleButton sizeToFit];
+    self.titleButton.size = [self.titleButton sizeThatFits:CGSizeZero];
     
     if (!CGSizeEqualToSize(self.titleButtonMaxSize, CGSizeZero)) {
         
