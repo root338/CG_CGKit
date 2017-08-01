@@ -268,6 +268,11 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:layoutEdge];
 }
 
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewExcludingEdge:(CGLayoutEdge)excludingLayoutEdge optionEdge:(CGLayoutEdge)optionEdge
+{
+    return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:excludingLayoutEdge optionEdge:optionEdge];
+}
+
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets
 {
     return [[self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets] allValues];
@@ -278,7 +283,6 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return [self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:CGLayoutEdgeNone];
 }
 
-
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewOptionEdge:(CGLayoutEdge)optionEdge
 {
     return [self cg_autoEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero optionEdge:optionEdge];
@@ -287,19 +291,43 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets optionEdge:(CGLayoutEdge)optionEdge
 {
     
-    CGFloat offset = [CGLayoutTypeTransform offsetWithInsets:insets edge:optionEdge];
-    NSLayoutAttribute attribute = [CGLayoutTypeTransform layoutAttributeWithEdge:optionEdge];
-    
-    NSMutableArray *constraints = [NSMutableArray arrayWithArray:[self cg_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:optionEdge]];
-    [UIView cg_autoSetPriority:999 forConstraints:^{
-        [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:attribute withOffset:offset]];
-    }];
-    return constraints;
+    return [self cg_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:CGLayoutEdgeNone optionEdge:optionEdge];
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge
 {
     return [[self cg_d_autoEdgesToSuperviewEdgesWithInsets:insets excludingEdge:edge] allValues];
+}
+
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)excludingEdge optionEdge:(CGLayoutEdge)optionEdge
+{
+    CGFloat offset = [CGLayoutTypeTransform offsetWithInsets:insets edge:optionEdge];
+    
+    NSLayoutAttribute optionAttribute = [CGLayoutTypeTransform layoutAttributeWithEdge:optionEdge];
+    
+    CGLayoutOptionEdge layoutOptionEdge = CGLayoutOptionEdgeNone;
+    if (CGLayoutEdgeTop != optionEdge && CGLayoutEdgeTop != excludingEdge) {
+        layoutOptionEdge |= CGLayoutOptionEdgeTop;
+    }
+    if ((CGLayoutEdgeLeading != optionEdge && CGLayoutEdgeLeading != excludingEdge) || (CGLayoutEdgeLeft != optionEdge && CGLayoutEdgeLeft != excludingEdge)) {
+        layoutOptionEdge |= CGLayoutOptionEdgeLeading;
+    }
+    if ((CGLayoutEdgeTrailing != optionEdge && CGLayoutEdgeTrailing != excludingEdge) && (CGLayoutEdgeRight != optionEdge && CGLayoutEdgeRight != excludingEdge)) {
+        layoutOptionEdge |= CGLayoutOptionEdgeTrailing;
+    }
+    
+    if (CGLayoutEdgeBottom != optionEdge && CGLayoutEdgeBottom != excludingEdge) {
+        layoutOptionEdge |= CGLayoutOptionEdgeBottom;
+    }
+    
+    NSMutableArray *constraints = [NSMutableArray arrayWithArray:[self cg_autoEdgesToSuperviewEdgesWithEdge:layoutOptionEdge insets:insets]];
+    if (optionEdge != CGLayoutEdgeNone && excludingEdge != optionEdge) {
+        [UIView cg_autoSetPriority:999 forConstraints:^{
+            [constraints addObject:[self cg_autoConstrainToSuperviewAttribute:optionAttribute withOffset:offset]];
+        }];
+    }
+    
+    return constraints;
 }
 
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingOptionEdge:(CGLayoutOptionEdge)edge

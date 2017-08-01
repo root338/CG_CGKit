@@ -17,3 +17,28 @@ struct CGTitleModifiedLineViewConfig {
     
     let titleSpace      : CGFloat
 }
+
+class CGTitleModifiedLineViewConfigModel: NSObject {
+    
+    var lineSize        : CGSize
+    var backgroundColor : UIColor
+    var cornerRadius    : CGFloat
+    
+    var titleSpace      : CGFloat
+    
+    var config : CGTitleModifiedLineViewConfig {
+        return CGTitleModifiedLineViewConfig.init(lineSize: lineSize, backgroundColor: backgroundColor, cornerRadius: cornerRadius, titleSpace: titleSpace)
+    }
+    
+    init(lineSize: CGSize, backgroundColor: UIColor, cornerRadius: CGFloat, titleSpace: CGFloat) {
+        
+        self.lineSize           = lineSize;
+        self.backgroundColor    = backgroundColor
+        self.cornerRadius       = cornerRadius
+        self.titleSpace         = titleSpace
+        
+        super.init()
+    }
+    
+    
+}

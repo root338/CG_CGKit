@@ -69,6 +69,10 @@ extension CGTitleModifiedView {
         self.init(leftModifiedView: leftView, rightModifiedView: rightView, titleSpace: lineConfig.titleSpace)
     }
     
+    convenience init(lineConfigModel: CGTitleModifiedLineViewConfigModel) {
+        self.init(lineConfig: lineConfigModel.config)
+    }
+    
     private class func createLineView(config: CGTitleModifiedLineViewConfig) -> UIView {
         
         let view = UIView.init()

@@ -78,6 +78,9 @@ typedef void (^CGSetupConstraints) (void);
 /** 设置与父视图四周的间距为0，并忽略哪边边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewExcludingEdge:(CGLayoutEdge)layoutEdge;
 
+/** 设置与父视图四周的间距为0，并忽略哪边边，设置可选约束的边 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesInsetsZeroToSuperviewExcludingEdge:(CGLayoutEdge)excludingLayoutEdge optionEdge:(CGLayoutEdge)optionEdge;
+
 /** 设置与父视图四周的间距 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets;
 
@@ -92,6 +95,9 @@ typedef void (^CGSetupConstraints) (void);
 
 /** 设置与父视图四周的间距，并忽略哪边边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)edge;
+
+/** 设置与父视图四周的间距，并忽略哪边边，设置可选约束的边 */
+- (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingEdge:(CGLayoutEdge)excludingEdge optionEdge:(CGLayoutEdge)optionEdge;
 
 /** 设置与父视图四周的间距，并忽略哪边边 */
 - (NSArray<NSLayoutConstraint *> *)cg_autoEdgesToSuperviewEdgesWithInsets:(UIEdgeInsets)insets excludingOptionEdge:(CGLayoutOptionEdge)edge;
