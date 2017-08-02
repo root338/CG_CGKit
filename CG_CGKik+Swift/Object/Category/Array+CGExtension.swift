@@ -14,7 +14,7 @@ extension Array {
         
         assert(startIndex >= self.count, "开始索引不能大于数组本身索引")
         
-        assert(startIndex > endIndex, "开始索引不能大于结束索引")
+        assert(startIndex <= endIndex, "开始索引不能大于结束索引")
         
         return Array(self[startIndex ... endIndex])
     }
