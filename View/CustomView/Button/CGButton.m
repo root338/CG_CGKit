@@ -359,6 +359,11 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     return imageRect;
 }
 
+- (void)sizeToFit
+{
+    self.size   = [self sizeThatFits:CGSizeZero];
+}
+
 - (CGSize)sizeThatFits:(CGSize)paramSize
 {
     //!!先使用imageView大小，在调用titleLabel大小，否则计算会出错，原因暂时没查

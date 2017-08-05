@@ -81,6 +81,7 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 
 ///---------------------------------------------------------------------------
 
+- (void)sizeToFit;
 - (CGSize)sizeThatFits:(CGSize)size;
 
 @end
