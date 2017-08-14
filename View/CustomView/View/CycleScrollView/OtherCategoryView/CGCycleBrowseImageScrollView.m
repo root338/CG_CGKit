@@ -100,6 +100,8 @@
         _dataSource = nil;
     }
     
+    [self setupCycleScroll];
+    
     if (_cycleScrollView) {
         
         [self.cycleScrollView reloadAllView];
@@ -124,8 +126,6 @@
         
         [self setupPageControlShowArea];
     }
-    
-    [self setupCycleScroll];
 }
 
 - (void)setupDataSourceWithObject:(NSArray *)dataSource startIndex:(NSInteger)startIndex extractBlock:(cg_getSingleValueForTargetObject)extractBlock
@@ -336,8 +336,11 @@
 
 - (void)setEnableSingleImageCycleScroll:(BOOL)enableSingleImageCycleScroll
 {
-    _enableSingleImageCycleScroll   = enableSingleImageCycleScroll;
-    [self setupCycleScroll];
+    if (_enableSingleImageCycleScroll != enableSingleImageCycleScroll) {
+        
+        _enableSingleImageCycleScroll   = enableSingleImageCycleScroll;
+        [self setupCycleScroll];
+    }
 }
 
 - (BOOL)enableSingleImageCycleScroll
