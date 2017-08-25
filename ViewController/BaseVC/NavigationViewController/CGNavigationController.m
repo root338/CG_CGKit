@@ -12,6 +12,8 @@
 
 #import "UINavigationController+CGSetupGestureRecognizer.h"
 
+#import "CGPrintLogHeader.h"
+
 @interface CGNavigationController ()
 {
     

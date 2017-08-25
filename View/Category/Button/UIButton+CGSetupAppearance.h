@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_setupWithNormalImageName:(nullable NSString *)normalImageName selectImageName:(nullable NSString *)selectImageName;
 
 /** 设置按钮图片 */
-- (void)cg_setupWithDefalutNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName;
+- (void)cg_setupWithDefalutNormalImageName:(nullable NSString *)normalImageName selectImageName:(nullable NSString *)selectImageName;
 
 /**
  *  设置按钮样式、标题、标题颜色、标题字体和圆角
