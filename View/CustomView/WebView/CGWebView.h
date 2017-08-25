@@ -83,6 +83,8 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 - (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
 
+- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^ _Nullable)(_Nullable id obj, NSError * _Nullable error))completionHandler;
+
 @property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;

@@ -292,6 +292,19 @@
     }
 }
 
+- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id _Nullable, NSError * _Nullable))completionHandler
+{
+    if (self.webViewForUIWebView) {
+        NSString *resultValue = [self.webViewForUIWebView stringByEvaluatingJavaScriptFromString:javaScriptString];
+        if (completionHandler) {
+            completionHandler(resultValue, nil);
+        }
+    }else {
+        
+        [self.webViewForWKWebView evaluateJavaScript:javaScriptString completionHandler:completionHandler];
+    }
+}
+
 #pragma mark - 兼容扩展API
 - (void)loadRequestWithURLString:(NSString *)urlString
 {
