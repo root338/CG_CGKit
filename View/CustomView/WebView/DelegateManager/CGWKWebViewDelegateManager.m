@@ -113,6 +113,10 @@
         
         type        = CGPrefixRequestTypeTel;
         isResult    = NO;
+    }else if ([requestURLStr hasPrefix:@"itms-appss://itunes.apple.com/"]) {
+        
+        type        = CGPrefixRequestTypeItunes;
+        isResult    = NO;
     }
     
     BOOL dealDefaltOption   = YES;
@@ -123,23 +127,27 @@
     
     if (dealDefaltOption) {
         
+        
         switch (type) {
             case CGPrefixRequestTypeTel:
             {
                 NSString *phoneStr  = [requestURLStr substringFromIndex:4];
-                UIViewController *viewController    = self.webView.viewController;
-                if (viewController == nil) {
-                    viewController  = [self.webView cg_searchViewControllerOfLate];
-                }
-                
-                [viewController showAlertViewWithTitle:nil message:phoneStr cancelTitle:@"取消" otherTitle:@"呼叫" resultCallback:^(BOOL isCancel) {
+                [[self viewController] showAlertViewWithTitle:nil message:phoneStr cancelTitle:@"取消" otherTitle:@"呼叫" resultCallback:^(BOOL isCancel) {
                     if (!isCancel) {
                         [UIApplication callPhoneWithURL:request.URL];
                     }
                 }];
             }
                 break;
-                
+            case CGPrefixRequestTypeItunes:
+            {
+                [[self viewController] showAlertViewWithTitle:nil message:@"在“App Store”中打开链接吗?" cancelTitle:@"取消" otherTitle:@"打开" resultCallback:^(BOOL isCancel) {
+                    if (!isCancel) {
+                        [UIApplication cg_openURL:request.URL];
+                    }
+                }];
+            }
+                break;
             default:
                 break;
         }
@@ -219,6 +227,15 @@
         
 //        self.webView.webViewForWKWebView.isDisableTouchCallout  = self.webView.isDisableTouchCallout;
     }
+}
+
+- (UIViewController *)viewController
+{
+    UIViewController *viewController    = self.webView.viewController;
+    if (viewController == nil) {
+        viewController  = [self.webView cg_searchViewControllerOfLate];
+    }
+    return viewController;
 }
 
 - (void)dealloc

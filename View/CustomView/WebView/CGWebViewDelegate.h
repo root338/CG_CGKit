@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, CGPrefixRequestType) {
     
     CGPrefixRequestTypeNone,
     CGPrefixRequestTypeTel,
-    
+    CGPrefixRequestTypeItunes,
 };
 
 @protocol CGWebViewDelegate <NSObject>
