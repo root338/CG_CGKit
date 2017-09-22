@@ -49,7 +49,9 @@
         [self.appearanceForNavigationBar setTitleVerticalPositionAdjustment:self.titleVerticalPositionAdjustment forBarMetrics:UIBarMetricsDefault];
     }
     
-    UIOffset offset = self.hideBackItemTitle ? UIOffsetMake(9999, 9999) : UIOffsetZero;
-    [self.appearanceForBackItem setBackButtonTitlePositionAdjustment:offset forBarMetrics:UIBarMetricsDefault];
+    // iOS 11 下会出现问题，导航栏会根据设置的偏移量来设置视图布局，所以这样设置会导致按钮图片，标题，右边按钮都无法看到
+    // 所以现在隐藏导航栏视图，可以在加载的视图控制器页设置 navigationItem.backBarButtonItem 来手动设置返回标题为空
+//    UIOffset offset = self.hideBackItemTitle ? UIOffsetMake(9999, 9999) : UIOffsetZero;
+//    [self.appearanceForBackItem setBackButtonTitlePositionAdjustment:offset forBarMetrics:UIBarMetricsDefault];
 }
 @end

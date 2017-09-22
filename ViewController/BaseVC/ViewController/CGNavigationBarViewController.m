@@ -47,7 +47,8 @@
         }
     }
     if (!self.isStatusBarHidden) {
-        frame.size.height += 20;
+        
+        frame.size.height += [UIApplication sharedApplication].statusBarFrame.size.height;
     }
     
     return frame;
