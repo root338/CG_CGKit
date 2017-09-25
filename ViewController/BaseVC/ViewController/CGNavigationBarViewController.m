@@ -48,7 +48,11 @@
     }
     if (!self.isStatusBarHidden) {
         
-        frame.size.height += [UIApplication sharedApplication].statusBarFrame.size.height;
+        if ([UIDevice currentDevice].systemVersion.floatValue >= 11.0) {
+            frame.origin.y += [UIApplication sharedApplication].statusBarFrame.size.height;
+        }else {
+            frame.size.height += [UIApplication sharedApplication].statusBarFrame.size.height;
+        }
     }
     
     return frame;

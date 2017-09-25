@@ -118,12 +118,17 @@
         }
         
         if (!self.isStatusBarHidden) {
-            navigationBarFrame.size.height += 20;
+            
+            if ([UIDevice currentDevice].systemVersion.floatValue >= 11.0) {
+                navigationBarFrame.origin.y += [UIApplication sharedApplication].statusBarFrame.size.height;
+            }else {
+                navigationBarFrame.size.height += [UIApplication sharedApplication].statusBarFrame.size.height;
+            }
         }
     }
     
     if (self.isNavigationBarHidden) {
-        navigationBarFrame.origin.y -= CGRectGetHeight(navigationBarFrame);
+        navigationBarFrame.origin.y = -CGRectGetMaxY(navigationBarFrame);
     }
     
     CGRect contentViewFrame;
