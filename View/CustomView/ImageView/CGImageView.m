@@ -122,7 +122,7 @@
 - (void)setupImageBrowseSize
 {
     CGSize imageBrowseSize;
-    if (!self.imageBrowseView.image) {
+    if (!self.imageBrowseView.image || self.imageViewSizeEqualViewSize) {
         
         imageBrowseSize = self.size;
     }else {

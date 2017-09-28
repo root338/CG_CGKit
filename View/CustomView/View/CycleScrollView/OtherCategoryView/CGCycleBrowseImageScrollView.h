@@ -35,6 +35,9 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 图片是否可以缩放 */
 @property (nonatomic, assign, readonly) BOOL imageScrollZoom;
 
+/** 图片大小等于视图大小，否则按照图片比例与视图比例计算图片大小, 默认根据初始化方法(initWithFrame:imageScrollZoom:)的imageScrollZoom来进行设置，当为YES时为NO，为NO时为YES */
+@property (nonatomic, assign) BOOL imageViewSizeEqualViewSize;
+
 #pragma mark - 循环视图
 /** 加载的数据 图片链接 */
 @property (strong, nonatomic) NSArray<NSString *> *dataSource;

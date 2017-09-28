@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) UIScrollView *imageScrollView;
 
+/** 图片大小等于视图大小，否则按照图片比例与视图比例计算图片大小 */
+@property (nonatomic, assign) BOOL imageViewSizeEqualViewSize;
+
 /** 是否禁止缩放 默认 NO*/
 @property (nonatomic, assign) BOOL disableScale;
 /** 是否禁止双击缩放 默认 NO  */

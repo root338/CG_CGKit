@@ -62,6 +62,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _imageScrollZoom    = imageScrollZoom;
+        _imageViewSizeEqualViewSize = !imageScrollZoom;
     }
     return self;
 }
@@ -148,6 +149,7 @@
 - (UIView *)cycleScrollView:(CGCycleScrollView *)cycleScrollView viewAtIndex:(NSInteger)index
 {
     CGImageView *cell  = [[CGImageView alloc] init];
+    cell.imageViewSizeEqualViewSize = self.imageViewSizeEqualViewSize;
     
     cell.disableScale   = !self.imageScrollZoom;
     cell.imageView.contentMode  = self.imageViewContentMode;
