@@ -14,8 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CGWebViewPrivateProxyDelegate <NSObject>
 
-
 @property (nullable, nonatomic, weak, readonly) CGWebView *webViewForPrivateObject;
+
+- (BOOL)shouldNeedJSRequestPOST;
+- (void)JSRequestPOST;
 
 @end
 NS_ASSUME_NONNULL_END

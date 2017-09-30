@@ -30,6 +30,7 @@
 
 @property (nonatomic, readonly) CGWebView *webView;
 @property (nonatomic, readonly) id<CGWebViewDelegate> delegate;
+@property (nonatomic, readonly) BOOL needJSRequestPOST;
 @end
 
 @implementation CGWKWebViewDelegateManager
@@ -51,39 +52,51 @@
     return self.webView.delegate;
 }
 
+- (BOOL)needJSRequestPOST
+{
+    return [self.webViewPrivateProxyDelegate shouldNeedJSRequestPOST];
+}
+
 #pragma mark - WKNavigationDelegate
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     BOOL result = YES;
-    NSURLRequest *request   = navigationAction.request;
-    
-    result  = [self webView:webView handleNotHTTPPrefixRequest:request];
-    
-    if (result && [self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+    if (self.needJSRequestPOST) {
         
-        UIWebViewNavigationType type;
-        switch (navigationAction.navigationType) {
-            case WKNavigationTypeLinkActivated:
-                type    = UIWebViewNavigationTypeLinkClicked;
-                break;
-            case WKNavigationTypeReload:
-                type    = UIWebViewNavigationTypeReload;
-                break;
-            case WKNavigationTypeBackForward:
-                type    = UIWebViewNavigationTypeBackForward;
-                break;
-            case WKNavigationTypeFormSubmitted:
-                type    = UIWebViewNavigationTypeFormSubmitted;
-                break;
-            case WKNavigationTypeFormResubmitted:
-                type    = UIWebViewNavigationTypeFormResubmitted;
-                break;
-            default:
-                type    = UIWebViewNavigationTypeOther;
-                break;
+        [self.webViewPrivateProxyDelegate JSRequestPOST];
+        result  = NO;
+    }else {
+        
+        NSURLRequest *request   = navigationAction.request;
+        
+        result  = [self webView:webView handleNotHTTPPrefixRequest:request];
+        
+        if (result && [self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+            
+            UIWebViewNavigationType type;
+            switch (navigationAction.navigationType) {
+                case WKNavigationTypeLinkActivated:
+                    type    = UIWebViewNavigationTypeLinkClicked;
+                    break;
+                case WKNavigationTypeReload:
+                    type    = UIWebViewNavigationTypeReload;
+                    break;
+                case WKNavigationTypeBackForward:
+                    type    = UIWebViewNavigationTypeBackForward;
+                    break;
+                case WKNavigationTypeFormSubmitted:
+                    type    = UIWebViewNavigationTypeFormSubmitted;
+                    break;
+                case WKNavigationTypeFormResubmitted:
+                    type    = UIWebViewNavigationTypeFormResubmitted;
+                    break;
+                default:
+                    type    = UIWebViewNavigationTypeOther;
+                    break;
+            }
+            result  = [self.delegate webView:self.webView shouldStartLoadWithRequest:request navigationType:type];
         }
-        result  = [self.delegate webView:self.webView shouldStartLoadWithRequest:request navigationType:type];
     }
     
     WKNavigationActionPolicy policy;
@@ -158,6 +171,7 @@
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
+    
     if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [self.delegate webViewDidStartLoad:self.webView];
     }
@@ -165,6 +179,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
+    
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [self.delegate webViewDidFinishLoad:self.webView];
     }

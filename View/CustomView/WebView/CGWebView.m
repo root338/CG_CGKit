@@ -29,12 +29,17 @@
     CGUIWebViewDelegateManager  *_delegateManagerForUIWebView;
     CGWKWebViewDelegateManager  *_delegateManagerForWKWebView;
     CGWKWebViewUIDelegateManager *_UIDelegateManagerForWKWebView;
+    
+    /// 需要js发送请求链接
+    BOOL notNeedJSPOSTRequest;
 }
 
 @property (nonatomic, strong, readwrite) IBOutlet ObjectType webView;
 
 @property (nonatomic, assign, readwrite) CGWebViewType webViewType;
 @property (nonatomic, readonly) CGWebViewType currentWebViewType;
+
+@property (nonatomic, copy) void (^loadRequestBlock) (void);
 
 @end
 
@@ -198,6 +203,20 @@
     return self;
 }
 
+- (BOOL)shouldNeedJSRequestPOST
+{
+    return !notNeedJSPOSTRequest;
+}
+
+- (void)JSRequestPOST
+{
+    if (self.loadRequestBlock) {
+        self.loadRequestBlock();
+    }else {
+        notNeedJSPOSTRequest    = YES;
+    }
+}
+
 - (void)dealloc
 {
     if (self.currentWebViewType == CGWebViewTypeWKWebView) {
@@ -216,8 +235,10 @@
     if ([self.webView respondsToSelector:@selector(loadRequest:)]) {
         
         if (self.webViewForUIWebView) {
+            
             [self.webViewForUIWebView loadRequest:request];
         }else if (self.webViewForWKWebView) {
+            
             [self.webViewForWKWebView loadRequest:request];
         }
         
@@ -313,6 +334,60 @@
         NSURLRequest *request   = [NSURLRequest requestWithURL:url];
         [self loadRequest:request];
     }
+}
+
+- (void)postLoadRequestWithURLString:(NSString *)urlString parameters:(NSDictionary<NSString *,id> * _Nullable)parameters
+{
+    if ([self.webView respondsToSelector:@selector(loadRequest:)]) {
+        
+        if (self.webViewForUIWebView) {
+            
+            
+        }else if (self.webViewForWKWebView) {
+            
+            notNeedJSPOSTRequest   = NO;
+            NSString *jsRequestPostHtmlPath = [[NSBundle mainBundle] pathForResource:@"CGWebViewRequestPostHTML" ofType:@"html"];
+            
+            NSError *error                  = nil;
+            NSString *jsRequestPostHtml     = [[NSString alloc] initWithContentsOfFile:jsRequestPostHtmlPath encoding:NSUTF8StringEncoding error:&error];
+            
+            __weak __block typeof(self) weakself = self;
+            self.loadRequestBlock = ^{
+                [weakself handleWKWebViewRequestPOSTWithURLString:urlString parameters:parameters];
+            };
+            
+            [self.webViewForWKWebView loadHTMLString:jsRequestPostHtml baseURL:[[NSBundle mainBundle] bundleURL]];
+            
+        }
+        
+    }else {
+        CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
+    }
+}
+
+- (void)handleWKWebViewRequestPOSTWithURLString:(NSString *)urlString parameters:(NSDictionary *)parameters
+{
+    
+    NSError *error      = nil;
+    NSString *content   = nil;
+    if (parameters != nil) {
+        NSData *data    = [NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error:&error];
+        
+        content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+    
+    if (content == nil) {
+        content = @"";
+    }
+    
+    NSString *js        = [NSString stringWithFormat:@"requestPOST('%@', %@)", urlString, content];
+    
+    [self.webViewForWKWebView evaluateJavaScript:js completionHandler:^(id _Nullable obj, NSError * _Nullable error) {
+        
+    }];
+    
+    notNeedJSPOSTRequest   = YES;
+    
 }
 
 #pragma mark - 设置属性
