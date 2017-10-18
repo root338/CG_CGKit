@@ -137,6 +137,11 @@ typedef void (^CGSetupConstraints) (void);
 /** 添加与 viewController 相关的约束 */
 @interface UIView (CGViewControllerConstraint)
 
+/**
+ 注意：
+     1. 在使用 UIViewController 的 bottomLayoutGuide 时，页面有时会出现跳一下的布局情况，闪一下布局才好
+*/
+
 /** 设置 topLayoutGuide 与视图顶部的约束 */
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController;
 
