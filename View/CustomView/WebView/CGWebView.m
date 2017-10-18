@@ -213,6 +213,7 @@
 #pragma mark - 兼容API方法
 - (void)loadRequest:(NSURLRequest *)request
 {
+    self.originLoadRequest  = request;
     if ([self.webView respondsToSelector:@selector(loadRequest:)]) {
         
         if (self.webViewForUIWebView) {

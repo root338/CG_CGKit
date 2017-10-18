@@ -100,6 +100,9 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 #pragma mark - 兼容扩展API
 - (void)loadRequestWithURLString:(NSString *)urlString;
 
+/** loadRequest: 方法加载的 NSURLRequest */
+@property (nullable, nonatomic, strong) NSURLRequest *originLoadRequest;
+
 @end
 
 
