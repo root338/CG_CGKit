@@ -220,6 +220,12 @@
     CGFloat contentViewWidth = self.contentView.width;
     CGFloat contentViewHeight = self.contentView.height;
     
+    UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        
+        safeAreaInsets  = self.safeAreaInsets;
+    }
+    
     if (animationType == CGSelectorContentViewAnimationTypeBottomToTop || animationType == CGSelectorContentViewAnimationTypeTopToBottom) {
         originX = self.contentView.xOrigin;
     }else if (animationType == CGSelectorContentViewAnimationTypeRightToLeft || animationType == CGSelectorContentViewAnimationTypeLeftToRight) {
@@ -230,7 +236,7 @@
         case CGSelectorContentViewAnimationTypeBottomToTop:
         {
             if (isShowContentView) {
-                originY = height - contentViewHeight;
+                originY = height - contentViewHeight - safeAreaInsets.bottom;
             }else {
                 originY = height;
             }
@@ -239,7 +245,7 @@
         case CGSelectorContentViewAnimationTypeTopToBottom:
         {
             if (isShowContentView) {
-                originY = 0;
+                originY = 0 + safeAreaInsets.top;
             }else {
                 originY = -contentViewHeight;
             }
@@ -248,7 +254,7 @@
         case CGSelectorContentViewAnimationTypeLeftToRight:
         {
             if (isShowContentView) {
-                originX = 0;
+                originX = 0 + safeAreaInsets.left;
             }else {
                 originX = -contentViewWidth;
             }
@@ -257,7 +263,7 @@
         case CGSelectorContentViewAnimationTypeRightToLeft:
         {
             if (isShowContentView) {
-                originX = width - contentViewWidth;
+                originX = width - contentViewWidth - safeAreaInsets.right;
             }else {
                 originX = width;
             }
