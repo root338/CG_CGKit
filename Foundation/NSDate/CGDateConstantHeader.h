@@ -30,14 +30,4 @@ typedef NS_ENUM(NSInteger, CGDateForStringFormatter){
     CGDateForStringFormatterTimer,
 };
 
-#pragma mark - 定义常量
-const NSCalendarUnit unit_yyyy_mm_dd = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
-const NSCalendarUnit unit_hh_mm_ss   = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
-const NSCalendarUnit unit_yyyy_mm_dd_hh_mm_ss = unit_yyyy_mm_dd | unit_hh_mm_ss;
-const NSCalendarUnit unit_yearAndWeek = unit_yyyy_mm_dd | NSCalendarUnitWeekday;
-
-
-
-
-
 #endif /* CGDateConstantHeader_h */

@@ -24,8 +24,9 @@
 
 - (NSString *)transformStringWithFormatter:(CGDateForStringFormatter)stringFormatter
 {
+    NSCalendarUnit unit = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComponent = [calendar components:unit_yyyy_mm_dd_hh_mm_ss
+    NSDateComponents *dateComponent = [calendar components:unit
                                                   fromDate:self];
     
     NSString *formatterStr = nil;
