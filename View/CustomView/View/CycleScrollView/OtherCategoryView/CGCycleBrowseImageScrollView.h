@@ -68,6 +68,9 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 /** 自定义加载图片的链接 */
 @property (nonatomic, copy) void (^setupLoadImage) (NSString *imageURLString, UIImageView *imageView);
 
+/** 刷新完成后回调 */
+@property (nonatomic, copy) void (^reloadDataDidFinishCallback) (void);
+
 @property (strong, nonatomic, readonly) CGCycleScrollView *cycleScrollView;
 
 #pragma mark - pageControl

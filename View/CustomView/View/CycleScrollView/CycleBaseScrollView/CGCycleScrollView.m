@@ -215,6 +215,10 @@
     [self reloadPageView];
     
     [self cg_scrollWithScrollView:self.cycleScrollView animationStyle:self.animationStyle];
+    
+    if ([self.delegate respondsToSelector:@selector(reloadDataDidFinishWithCycleScrollView:)]) {
+        [self.delegate reloadDataDidFinishWithCycleScrollView:self];
+    }
 }
 
 - (void)reloadPageView
@@ -578,6 +582,10 @@
     }
     
     [self updateCycleScrollViewLayoutSubviews];
+    
+    if (self.didUpdateScrollContentViewBlock) {
+        self.didUpdateScrollContentViewBlock();
+    }
 }
 
 ///滑动到下一视图

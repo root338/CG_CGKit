@@ -86,6 +86,13 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
  *  @param currentIndex    当前显示索引
  */
 - (void)cycleScrollView:(CGCycleScrollView *)cycleScrollView didChangeCurrentIndex:(NSInteger)currentIndex;
+
+
+/**
+ 循环视图 reloadData 完成后调用该方法
+ */
+- (void)reloadDataDidFinishWithCycleScrollView:(CGCycleScrollView *)cycleScrollView;
+
 @end
 
 /**
@@ -175,6 +182,11 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 
 /** 滑动视图滑动的方向 */
 //@property (nonatomic, assign, readonly) CGScrollDirectionType scrollDirectionType;
+
+/**
+ 更新滑动内容视图成功
+ */
+@property (nonatomic, copy) void (^didUpdateScrollContentViewBlock) (void);
 
 /** 
  *  关闭默认计时器设定(默认为NO)
