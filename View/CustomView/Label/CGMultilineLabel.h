@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 创建0行Label */
 + (instancetype)cg_createZeroLinesLabel;
+/** 创建指定行Label */
++ (instancetype)cg_createLabelWithNumberOfLines:(NSUInteger)numberOfLines;
 
 @end
 

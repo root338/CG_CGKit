@@ -15,8 +15,13 @@
 
 + (instancetype)cg_createZeroLinesLabel
 {
+    return [self cg_createLabelWithNumberOfLines:0];
+}
+
++ (instancetype)cg_createLabelWithNumberOfLines:(NSUInteger)numberOfLines
+{
     CGMultilineLabel *label = [self cg_createView];
-    label.numberOfLines = 0;
+    label.numberOfLines = numberOfLines;
     return label;
 }
 

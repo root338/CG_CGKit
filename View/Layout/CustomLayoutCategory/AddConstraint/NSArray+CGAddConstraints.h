@@ -164,7 +164,7 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
  *  @param  setupSubviewExculdingEdge    设置子视图与父视图需要忽略的边
  *  @param  setupSubviewMarginEdgeInsets 设置子视图与父视图的边距
  */
-- (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation setupSubviewExculdingEdge:(CGSetupSubviewExculdingEdge)setupSubviewExculdingEdge setupSubviewMarginEdgeInsets:(nullable CGSetupSubViewMarginEdgeInsets)setupSubviewMarginEdgeInsets;
+- (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation setupSubviewExculdingEdge:(nullable CGSetupSubviewExculdingEdge)setupSubviewExculdingEdge setupSubviewMarginEdgeInsets:(nullable CGSetupSubViewMarginEdgeInsets)setupSubviewMarginEdgeInsets;
 
 /**
  *  设置约束  视图控制器
