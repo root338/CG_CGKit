@@ -30,7 +30,7 @@ class CGTitleModifiedLineViewConfigModel: NSObject {
         return CGTitleModifiedLineViewConfig.init(lineSize: lineSize, backgroundColor: backgroundColor, cornerRadius: cornerRadius, titleSpace: titleSpace)
     }
     
-    init(lineSize: CGSize, backgroundColor: UIColor, cornerRadius: CGFloat, titleSpace: CGFloat) {
+    @objc init(lineSize: CGSize, backgroundColor: UIColor, cornerRadius: CGFloat, titleSpace: CGFloat) {
         
         self.lineSize           = lineSize;
         self.backgroundColor    = backgroundColor

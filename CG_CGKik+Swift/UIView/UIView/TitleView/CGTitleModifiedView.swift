@@ -10,7 +10,7 @@ import UIKit
 
 class CGTitleModifiedView: CGBaseLayoutView {
 
-    let titleLabel : UILabel
+    @objc let titleLabel : UILabel
     let leftModifiedView : UIView
     let rightModifiedView : UIView
     let titleSpace : CGFloat
@@ -69,7 +69,7 @@ extension CGTitleModifiedView {
         self.init(leftModifiedView: leftView, rightModifiedView: rightView, titleSpace: lineConfig.titleSpace)
     }
     
-    convenience init(lineConfigModel: CGTitleModifiedLineViewConfigModel) {
+    @objc convenience init(lineConfigModel: CGTitleModifiedLineViewConfigModel) {
         self.init(lineConfig: lineConfigModel.config)
     }
     
