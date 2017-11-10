@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_CLASS_DEPRECATED_IOS(2_0, 9_0, "UIAlertView is deprecated") __TVOS_PROHIBITED
 @interface CGAlertView : UIAlertView
 
 /** delegate设置为自身时回调block */
@@ -116,3 +117,4 @@
  */
 + (instancetype)showAlertViewWithOnlyMessage:(NSString *)message cancelTitle:(NSString *)cancelTitle;
 @end
+

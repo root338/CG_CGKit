@@ -36,10 +36,17 @@
     
     id targetView   = nil;
     
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
+ 
     if (_CG_IOS_8_0_BEFORE) {
         
         targetView  = [CGAlertView showAlertViewWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
     }else {
+        
+#else
+    
+    {
+#endif
         
         UIAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
         [self presentViewController:alertController animated:YES completion:nil];
@@ -51,10 +58,16 @@
 - (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void (^)(NSInteger))resultCallback
 {
     id targetView = nil;
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
     if (_CG_IOS_8_0_BEFORE) {
         targetView  = [CGAlertView showAlertViewWithTitle:title message:message otherTitle1:otherTitle1 otherTitle2:otherTitle2 resultCallback:resultCallback];
     }else {
+
+#else
         
+    {
+#endif
         UIAlertController *alertController = [CGAlertController createAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:title message:message cancelTitle:nil otherTitles:[NSArray arrayWithObjects:otherTitle1, otherTitle2, nil] resultCallback:^(UIAlertAction * _Nonnull alertAction) {
             
             NSInteger index = 0;

@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIImageView (CGSetupImageURL)
 
 - (void)cg_setupImageWithPath:(nullable NSString *)imagePath;
-- (void)cg_setupImageWithPath:(nullable NSString *)imagePath completion:(nullable SDWebImageCompletionBlock)completion;
+- (void)cg_setupImageWithPath:(nullable NSString *)imagePath completion:(nullable SDExternalCompletionBlock)completion;
 
-- (void)cg_setupImageWithPath:(nullable NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDWebImageCompletionBlock)completion;
+- (void)cg_setupImageWithPath:(nullable NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDExternalCompletionBlock)completion;
 
-- (void)cg_setupImageWithPath:(nullable NSString *)imagePath options:(SDWebImageOptions)options progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDWebImageCompletionBlock)completion;
+- (void)cg_setupImageWithPath:(nullable NSString *)imagePath options:(SDWebImageOptions)options progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDExternalCompletionBlock)completion;
 @end
 
 NS_ASSUME_NONNULL_END
