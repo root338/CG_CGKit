@@ -6,6 +6,8 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
+#if __has_include(<UIImageView+WebCache>) && __has_include(<SDWebImageManager.h>)
+
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
 
@@ -14,11 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIImageView (CGSetupImageURL)
 
 - (void)cg_setupImageWithPath:(nullable NSString *)imagePath;
-- (void)cg_setupImageWithPath:(nullable NSString *)imagePath completion:(nullable SDExternalCompletionBlock)completion;
+- (void)cg_setupImageWithPath:(nullable NSString *)imagePath completion:(nullable SDWebImageCompletionBlock)completion;
 
-- (void)cg_setupImageWithPath:(nullable NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDExternalCompletionBlock)completion;
+- (void)cg_setupImageWithPath:(nullable NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDWebImageCompletionBlock)completion;
 
-- (void)cg_setupImageWithPath:(nullable NSString *)imagePath options:(SDWebImageOptions)options progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDExternalCompletionBlock)completion;
+- (void)cg_setupImageWithPath:(nullable NSString *)imagePath options:(SDWebImageOptions)options progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDWebImageCompletionBlock)completion;
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

@@ -87,6 +87,12 @@ typedef NS_ENUM(NSInteger, CGLayoutEdge) {
     CGLayoutEdgeTrailing    = CGLayoutAttributeTrailing,
 };
 
+//typedef NS_ENUM(NSInteger, CGLayoutGuideAxis) {
+//
+//    CGLayoutGuideAxisVertical,
+//    CGLayoutGuideAxisHorizontal,
+//};
+
 typedef NS_OPTIONS(NSInteger, CGLayoutOptionEdge) {
     
     CGLayoutOptionEdgeNone      = 0,

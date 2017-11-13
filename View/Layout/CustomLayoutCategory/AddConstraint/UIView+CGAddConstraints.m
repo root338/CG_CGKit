@@ -22,6 +22,44 @@
 static NSMutableArray<NSNumber *> *cg_constraintsLayoutPriority;
 static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
+@interface UIView (_CGConstantProperty)
+
+@property (nonatomic, assign, readonly) CGFloat cg_defalutConstantProperty;
+@property (nonatomic, assign, readonly) CGFloat cg_defalutMultiplierProperty;
+@property (nonatomic, assign, readonly) UIEdgeInsets cg_defalutInsetsProperty;
+@property (nonatomic, readonly, readonly) NSLayoutRelation cg_defalutLayoutRelationProperty;
+
+@end
+
+@implementation UIView (_CGConstantProperty)
+
+@dynamic cg_defalutConstantProperty;
+@dynamic cg_defalutMultiplierProperty;
+@dynamic cg_defalutInsetsProperty;
+@dynamic cg_defalutLayoutRelationProperty;
+
+- (CGFloat)cg_defalutConstantProperty
+{
+    return 0.0;
+}
+
+- (CGFloat)cg_defalutMultiplierProperty
+{
+    return 1.0;
+}
+
+- (NSLayoutRelation)cg_defalutLayoutRelationProperty
+{
+    return NSLayoutRelationEqual;
+}
+
+- (UIEdgeInsets)cg_defalutInsetsProperty
+{
+    return UIEdgeInsetsZero;
+}
+
+@end
+
 @interface UIView (CGSetupGlobalConstraintsPriority)
 
 + (NSMutableArray<NSNumber *> *)cg_constraintsLayoutPriority;
@@ -397,6 +435,16 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     return constraints;
 }
 
+//@implementation UIView (CGSuperviewToSubviewsConstraints)
+//
+//- (NSArray<NSLayoutConstraint *> *)cg_autoConstraintsToSuperviewLayoutGuideAxis:(CGLayoutGuideAxis)layoutGuideAxis subviews:(NSArray<UIView *> *)subviews
+//{
+//    UILayoutGuide *layoutGuide = [[UILayoutGuide alloc] init];
+//    
+//}
+//
+//@end
+
 @end
 
 #pragma mark - 添加单个约束
@@ -482,7 +530,9 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength relation:(NSLayoutRelation)relation
 {
-    self.translatesAutoresizingMaskIntoConstraints  = NO;
+    if (self.translatesAutoresizingMaskIntoConstraints != NO) {
+        self.translatesAutoresizingMaskIntoConstraints  = NO;
+    }
     NSLayoutConstraint *constraint  = nil;
     
     UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
@@ -573,7 +623,9 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 {
     UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:viewController.view];
     CGDebugAssert(commonSuperview, @"self视图父视图必须是viewController.view");
-    self.translatesAutoresizingMaskIntoConstraints  = NO;
+    if (self.translatesAutoresizingMaskIntoConstraints != NO) {
+        self.translatesAutoresizingMaskIntoConstraints  = NO;
+    }
     NSLayoutConstraint *layoutConstraint    = nil;
     
     UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
@@ -610,7 +662,11 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 {
     UIView *commonSuperview = [self cg_searchCommonSuperviewWithView:viewController.view];
     CGDebugAssert(commonSuperview, @"self视图父视图必须是viewController.view");
-    self.translatesAutoresizingMaskIntoConstraints  = NO;
+    
+    if (self.translatesAutoresizingMaskIntoConstraints != NO) {
+        self.translatesAutoresizingMaskIntoConstraints  = NO;
+    }
+    
     NSLayoutConstraint *layoutConstraint    = nil;
     
     UILayoutPriority layoutPriority = [UIView cg_currentConstraintsLayoutPriority];
@@ -774,7 +830,9 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     
     NSAssert(self.superview, @"请添加到父视图中再添加约束");
     
-    self.translatesAutoresizingMaskIntoConstraints  = NO;
+    if (self.translatesAutoresizingMaskIntoConstraints != NO) {
+        self.translatesAutoresizingMaskIntoConstraints  = NO;
+    }
     // !!! warning : view2 视图不能将 translatesAutoresizingMaskIntoConstraints 自动设置为NO
     
     UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:view2];

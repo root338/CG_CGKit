@@ -159,7 +159,13 @@
         self.setupLoadImage([self.dataSource cg_objectAtIndex:index], cell.imageView);
     }else {
         
+#if __has_include(<UIImageView+WebCache>) && __has_include(<SDWebImageManager.h>)
+        
         [cell.imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
+#else
+        
+        NSAssert(nil, @"缺少自动网络加载方法cg_setupImageWithPath:, 如果添加UIImageView+CGSetupImageURL扩展，那需要 SDWebImage 第三方库");
+#endif
     }
     
     if (self.imageScrollZoom) {

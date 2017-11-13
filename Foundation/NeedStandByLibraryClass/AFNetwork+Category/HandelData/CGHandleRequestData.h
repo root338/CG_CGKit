@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 ym. All rights reserved.
 //
 
+#if __has_include(<JSONModel.h>)
+
 #import <Foundation/Foundation.h>
 #import "CGRequestDefineHeader.h"
 
@@ -47,3 +49,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithObject:(id)responseObject isAutoResolveResponse:(BOOL)isAutoResolveResponse resolveResponseClass:(Class)resolveResponseClass;
 @end
 NS_ASSUME_NONNULL_END
+
+#endif

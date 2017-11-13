@@ -115,6 +115,14 @@ typedef void (^CGSetupConstraints) (void);
 
 @end
 
+//#pragma mark - 设置父视图与多个子视图的约束
+//
+//@interface UIView (CGSuperviewToSubviewsConstraints)
+//
+//- (NSArray<NSLayoutConstraint *> *)cg_autoConstraintsToSuperviewLayoutGuideAxis:(CGLayoutGuideAxis)layoutGuideAxis subviews:(NSArray<UIView *> *)subviews;
+//
+//@end
+
 #pragma mark - 设置与父视图的单个约束
 /** 添加与父视图相关的单个约束 */
 @interface UIView (CGSuperviewConstranint)
@@ -165,6 +173,8 @@ typedef void (^CGSetupConstraints) (void);
 
 /** 设置 bottomLayoutGuide 与视图顶部的约束(间距，约束类型) */
 - (NSLayoutConstraint *)cg_bottomLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier;
+
+
 
 @end
 
