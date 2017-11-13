@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  一个视图添加多个相同视图时的全局设置
  *  @warning 数据之间不能冲突，当maxWidth,maxHeight为0时，自动使用视图的bounds属性值。
  */
-NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "暂时没有任何其他类使用")
+__deprecated_msg("暂时没有任何其他类使用")
 @interface CGCreateViewsAppearance : NSObject
 
 #pragma mark - 父视图区域设置
@@ -29,7 +29,7 @@ NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "暂时没有任何其他类使用")
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInset;
 /** 自动删除子视图，@param 自动删除子视图，默认为已加载的子视图为需要加载视图可以重用 */
 //@property (nonatomic, assign) BOOL isAutoRemoveSubviews;
-/** 自动设置视图大小 @param 设为YES时必须设置 itemSize */
+/** 自动设置视图大小 设为YES时必须设置 itemSize */
 @property (nonatomic, assign) BOOL isAutoSetupViewSize;
 
 #pragma mark - 内部子视图的设置

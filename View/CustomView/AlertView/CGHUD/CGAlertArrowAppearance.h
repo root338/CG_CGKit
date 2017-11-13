@@ -17,7 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 画布设置
 /** 画布大小 */
 @property (nonatomic, assign) CGSize canvasSize;
-/** 是否不透明 @param YES：不透明，NO：透明 */
+/**
+ *  是否不透明
+ *  YES：不透明，NO：透明
+ */
 @property (nonatomic, assign) BOOL opaque;
 /** 图片的缩放比例 */
 @property (nonatomic, assign) CGFloat scale;

@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  创建默认的图片浏览导航栏
- *  @param 自动加载相机胶卷相册视图
+ *  自动加载相机胶卷相册视图
  */
 + (instancetype)cg_createDefalutNavigationController;
 

@@ -47,7 +47,7 @@ typedef void (^CGSetupConstraints) (void);
 
 /** 
  *  设置与视图控制器视图的四周约束
- *  @param key为 @(NSLayoutAttribute) 类型
+ *  返回字典 key 为 @(NSLayoutAttribute) 类型
  */
 - (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets;
 
@@ -62,7 +62,7 @@ typedef void (^CGSetupConstraints) (void);
 
 /** 
  *  设置与视图控制器视图的四周约束，并忽略指定边
- *  @param key为 @(NSLayoutAttribute) 类型
+ *  返回字典 key为 @(NSLayoutAttribute) 类型
  */
 - (NSDictionary<NSNumber *, NSLayoutConstraint *> *)cg_d_autoEdgesToViewController:(UIViewController *)viewController withInsets:(UIEdgeInsets)insets exculdingEdge:(CGLayoutEdge)edge;
 

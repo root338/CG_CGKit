@@ -139,7 +139,6 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
  *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距，可以在其中设置返回view的其它约束
  *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
  *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
- *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
  */
 - (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType marginInsets:(UIEdgeInsets)marginInsets setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation;
 
@@ -149,7 +148,6 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
  *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距，可以在其中设置返回view的其它约束
  *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
  *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
- *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
  *  @param  setupSubviewMarginEdgeInsets 设置子视图与父视图的边距
  */
 - (NSArray<NSLayoutConstraint *> *)cg_autoArrangementType:(CGSubviewsArrangementType)arrangementType setupSubviewsSpace:(nullable CGSetupSubviewSpace)setupSubviewsSpaceBlock setupSubviewsLayoutRelation:(nullable CGSetupSubviewsLayoutRelation)setupSubviewsLayoutRelation setupSubviewLayoutRelation:(nullable CGSetupSubviewLayoutRelation)setupSubviewLayoutRelation setupSubviewMarginEdgeInsets:(nullable CGSetupSubViewMarginEdgeInsets)setupSubviewMarginEdgeInsets;
@@ -160,7 +158,6 @@ typedef UIEdgeInsets (^CGSetupSubViewMarginEdgeInsets) (UIView *view);
  *  @param  setupSubviewsSpaceBlock     设置子视图之间的间距，可以在其中设置返回view的其它约束
  *  @param  setupSubviewsLayoutRelation 设置子视图之间间距的NSLayoutRelation值
  *  @param  setupSubviewLayoutRelation  设置子视图相对于父视图的NSLayoutRelation值
- *  @param  setupSubviewsSpaceBlock 设置子视图之间的间距，可以在其中设置返回view的其它约束
  *  @param  setupSubviewExculdingEdge    设置子视图与父视图需要忽略的边
  *  @param  setupSubviewMarginEdgeInsets 设置子视图与父视图的边距
  */

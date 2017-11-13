@@ -70,13 +70,13 @@ typedef void (^CGSetupTableViewCell) (UITableView *tableView, __kindof CGTableVi
 
 /**
  *  获取 indexPath 下的cell 类名作为标识符
- *  @param      应该在多cell下使用
+ *  应该在多cell下使用
  */
 @property (nullable, copy, nonatomic) CGTableViewReusableCellClassIdentifier reusableCellClassIdentifier;
 
 /**
  *  获取 indexPath 下的 cell Identifier
- *  @param 应该在多 cell 下使用
+ *  应该在多 cell 下使用
  */
 @property (nullable, nonatomic, copy) CGTableViewReusableCellStringIdentifier reusableCellStringIdentifier;
 

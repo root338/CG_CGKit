@@ -17,6 +17,7 @@
 
 #import "NSNotificationCenter+CGCreateNotification.h"
 
+#if DEBUG
 @interface CGFCManager ()<NSCacheDelegate>
 
 @property (nonatomic, strong) NSCache *cacheManager;
@@ -133,3 +134,5 @@
     NSLog(@"%@   被释放", obj);
 }
 @end
+
+#endif

@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 /** 
  *  在使用 WKWebView 时，js 弹出提示框，警告框，输入框时需要原生处理，此 UIViewController 指在设置 UIAlertController 时弹出使用
- *  @param 在没有指定时，视图会自动搜索所在的 UIViewController
+ *  在没有指定时，视图会自动搜索所在的 UIViewController
  */
 @property (nullable, nonatomic, weak) UIViewController *viewController;
 

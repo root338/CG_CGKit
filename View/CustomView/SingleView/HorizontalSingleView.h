@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  当选择控件的选择状态发生改变时进行回调
- *  @param 已选择控件的索引
+ *  已选择控件的索引
  */
 @property (nullable, nonatomic, copy) void(^didSelectedChangeCallback)(NSInteger selectedIndex);
 

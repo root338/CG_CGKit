@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  设置视图控制器的view 
- *  @param 子类可以重写该方法重新设置视图控制器的view
+ *  子类可以重写该方法重新设置视图控制器的view
  */
 - (void)setupView;
 @end

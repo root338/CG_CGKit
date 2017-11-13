@@ -63,8 +63,6 @@ typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEd
  *  @param dataSource     需要加载的元数据
  *  @param cellIdentifier 加载cell 在TableView中的唯一标识
  *  @param setupCellBlock 设置cell的方法
- *
- *  @return 返回创建好的实例
  */
 - (void)setupDataSource:(NSArray *)dataSource cellIdentifier:(NSString *)cellIdentifier setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock;
 
@@ -74,8 +72,6 @@ typedef void (^EditTableViewCallback) (UITableView *tableView, UITableViewCellEd
  *  @param dataSource     需要加载的元数据
  *  @param cellIdentifier 加载cell 在TableView中的唯一标识
  *  @param setupCellBlock 设置cell的方法
- *
- *  @return 返回创建好的实例
  */
 - (void)setupDataSource:(NSArray *)dataSource cellIdentifierForClass:(Class)cellIdentifier setupCellBlock:(SetupSingleSectionTableViewCell)setupCellBlock;
 

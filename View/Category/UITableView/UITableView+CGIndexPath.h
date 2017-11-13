@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  获取当前视图 的上一个索引
- *  @param currentCell 表示当前cell或其子视图
+ *  currentCell 表示当前cell或其子视图
  */
 - (nullable NSIndexPath *)cg_previousIndexPathWithCurrentView:(UIView *)currentView;
 

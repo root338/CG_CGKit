@@ -24,7 +24,7 @@
 @property (nullable, nonatomic, weak) NSLayoutConstraint *targetLayoutConstraint;
 /** 
  *  约束的常量值 
- *  @param 纪录约束才开始时的常量值，因为通过键盘改变视图时都通过修改该值改变
+ *  纪录约束才开始时的常量值，因为通过键盘改变视图时都通过修改该值改变
  */
 @property (nonatomic, assign) CGFloat originalConstant;
 

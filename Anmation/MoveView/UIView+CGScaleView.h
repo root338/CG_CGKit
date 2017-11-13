@@ -23,10 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  缩放显示view到overlayView，回调
  *
- *  @param view        需要移动的视图
- *  @param overlayView 参照视图，与view在同一个坐标系
  *  @param type        移动的边距
- *  @param animation   是否执行动画
  *  @param duration    动画时间
  *  @param completion  动画执行完毕回调
  */

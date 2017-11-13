@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, CGPrefixRequestType) {
 
 /**
  *  处理非 http:// 或 https:// 开头的链接
- *  @param completion 返回是否进行默认执行， YES执行默认程序
+ *  completion 返回是否进行默认执行， YES执行默认程序
  */
 - (BOOL)webView:(CGWebView *)webView handleOtherPrefixRequest:(NSURLRequest *)request type:(CGPrefixRequestType)type;
 

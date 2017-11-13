@@ -39,7 +39,7 @@ typedef void (^CGSetupCollectionViewCell) (UICollectionView *collectionView, __k
 
 /**
  *  设置 collectionView 的 row 数，且每组 row 都为设置值
- *  @param   在不需要数据添加cell时使用
+ *  在不需要数据添加cell时使用
  *  @warning 只有当dataSource为空时，否则 numberRowForAllSections 自动为dataSource count值
  */
 @property (assign, nonatomic) NSInteger rowNumberForAllSections;
@@ -57,13 +57,13 @@ typedef void (^CGSetupCollectionViewCell) (UICollectionView *collectionView, __k
 
 /**
  *  获取 indexPath 下的cell 类名作为标识符
- *  @param      应该在多cell下使用
+ *  应该在多cell下使用
  */
 @property (nullable, copy, nonatomic) CGCollectionViewReusableCellClassIdentifier reusableCellClassIdentifier;
 
 /**
  *  获取 indexPath 下的 cell Identifier
- *  @param 应该在多 cell 下使用
+ *  应该在多 cell 下使用
  */
 @property (nullable, nonatomic, copy) CGCollectionViewReusableCellStringIdentifier reusableCellStringIdentifier;
 

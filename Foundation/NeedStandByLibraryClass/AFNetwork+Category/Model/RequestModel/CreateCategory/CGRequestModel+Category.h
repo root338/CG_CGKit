@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  合并基类请求类型
  *
- *  @param requestBaseModel 基类请求类型
+ *  @param baseRequestModel 基类请求类型
  *
  *  @return 返回合并后新的请求模型
  */

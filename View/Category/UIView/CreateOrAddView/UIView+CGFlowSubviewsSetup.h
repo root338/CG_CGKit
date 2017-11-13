@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  创建流类型的子视图
  *
  *  @param viewsRule    创建的规则
- *  @param setupSubview 创建的视图
+ *  @param createSubviewBlock 创建的视图
+ *  @param setupSubviewSizeBlock 设置视图
  *
  *  @return 返回创建子视图所需要的大小
  */

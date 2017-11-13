@@ -41,22 +41,22 @@ typedef NS_ENUM(NSInteger, CGButtonContentAlignment) {
     CGButtonContentAlignmentCenter,
     /**
      *  顶部对齐
-     *  @param CGButtonStyleHorizonalLeft, CGButtonStyleHorizonalRight 下有效
+     *  CGButtonStyleHorizonalLeft, CGButtonStyleHorizonalRight 下有效
      */
     CGButtonContentAlignmentTop,
     /**
      *  左对齐
-     *  @param CGButtonStyleVerticalTop, CGButtonStyleVerticalBottom 下有效
+     *  CGButtonStyleVerticalTop, CGButtonStyleVerticalBottom 下有效
      */
     CGButtonContentAlignmentLeft,
     /**
      *  底部对齐
-     *  @param CGButtonStyleHorizonalLeft, CGButtonStyleHorizonalRight 下有效
+     *  CGButtonStyleHorizonalLeft, CGButtonStyleHorizonalRight 下有效
      */
     CGButtonContentAlignmentBottom,
     /**
      *  右对齐
-     *  @param CGButtonStyleVerticalTop, CGButtonStyleVerticalBottom 下有效
+     *  CGButtonStyleVerticalTop, CGButtonStyleVerticalBottom 下有效
      */
     CGButtonContentAlignmentRight,
 };

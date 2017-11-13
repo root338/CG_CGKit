@@ -22,8 +22,8 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 
 /**
  *  重写UIButton布局的子类，方便图像和标题的布局
- *  @param UIButton 的子类
- *  @param 功能：  1. 方便设置图像和标题的对齐样式，图像和标题之间的间距，外边界的间距
+ *  UIButton 的子类
+ *  功能：  1. 方便设置图像和标题的对齐样式，图像和标题之间的间距，外边界的间距
  *
  */
 @interface CGButton : CGBaseButton
@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, CGButtonHandleCurrentContentType) {
 ///** 指定titleLabel的大小 @warning 当标题不存在时也会占据显示区域 */
 //@property (nonatomic, assign) CGSize titleLabelSize;
 
-/** 标题的最大宽度 @param sizeToFit下控制titleLabel的显示区域 */
+/** 标题的最大宽度 sizeToFit下控制titleLabel的显示区域 */
 @property (nonatomic, assign) CGFloat titleLabelMaxWidth;
 
 /**

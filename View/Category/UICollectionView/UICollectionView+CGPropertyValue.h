@@ -12,7 +12,7 @@
 
 /** 
  *  获取当前滑动序列值，从1开始
- *  @param scale无效
+ *  @param scale 无效
  *  @warning 仅在水平滑动时有效
  */
 - (NSInteger)cg_calculateScrollPageWithScale:(CGFloat)scale;

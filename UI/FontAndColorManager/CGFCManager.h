@@ -11,7 +11,9 @@
 
 
 /** 文字，颜色管理类 */
-NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "不要使用，只是测试，测试，。。。")
+/** NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "不要使用，只是测试，测试，。。。")*/
+#if DEBUG
+
 @interface CGFCManager : CGBaseObject
 
 + (instancetype)sharedManager;
@@ -25,3 +27,5 @@ NS_CLASS_DEPRECATED_IOS(2_0, 2_0, "不要使用，只是测试，测试，。。
 - (UIColor *)cg_colorWithValue:(KCG_16_ColorValueType)colorValue;
 
 @end
+
+#endif

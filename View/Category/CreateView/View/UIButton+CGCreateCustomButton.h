@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  创建按钮，设置按钮样式、默认图片、选中图片
  *  @warning 加载的图片是UIImageRenderingModeAlwaysOriginal样式
  *  @param type            按钮样式
- *  @param normalImage     默认图片
+ *  @param normalImageName 默认图片
  *  @param selectImageName 选中图片
  *
  *  @return 返回创建好的按钮
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回创建好的按钮
  */
-+ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(nullable NSString *)normalImage;
++ (instancetype)cg_createButtonWithButtonType:(UIButtonType)type normalImageName:(nullable NSString *)normalImageName;
 
 /**
  *  创建按钮，设置按钮样式、默认图片(并且设置按钮的大小为图片大小)
@@ -125,8 +125,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param title            标题
  *  @param titleColor       标题颜色
  *  @param font             标题字体
- *  @param borderWidth      边框宽度
- *  @param borderColor      边框颜色
  *  @param normalImageName  普通状态下的图片的名字 @warning图片名必须为本地项目，加载图片时使用[UIImage imageName:<图片名>]
  *  @param space            标题与图片之间的间距
  *

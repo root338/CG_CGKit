@@ -23,13 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  获取指定类型图片
- *  @param 适合CGAssetImageTypeSquareThumbnails, CGAssetImageTypeAspectRatioThumbnails类型的缩略图
+ *  适合CGAssetImageTypeSquareThumbnails, CGAssetImageTypeAspectRatioThumbnails类型的缩略图
  */
 - (nullable UIImage *)cg_assetImageWithType:(CGAssetImageType)type;
 
 /** 
  *  获取指定类型图片 
- *  @param  适合CGAssetImageTypeFullScreenImage, CGAssetImageTypeFullResolutionImage大尺寸图片
+ *  适合CGAssetImageTypeFullScreenImage, CGAssetImageTypeFullResolutionImage大尺寸图片
  */
 - (void)cg_assetImageWithType:(CGAssetImageType)type completion:(void (^) (UIImage * _Nullable didLoadImage))completion;
 

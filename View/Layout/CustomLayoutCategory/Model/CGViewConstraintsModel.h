@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  其他相关约束 
- *  @param key：
  */
 @property (nullable, nonatomic, strong) NSDictionary<NSString *, NSArray<NSLayoutConstraint *> *> *constraints;
 

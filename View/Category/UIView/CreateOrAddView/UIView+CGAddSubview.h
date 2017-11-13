@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  当视图的bounds为CGRectZero时不添加该视图，如果存在且bounds=CGRectZero时，移除该视图
- *  @param 返回视图是否可以添加
+ *  返回视图是否可以添加
  */
 - (BOOL)cg_addSubview:(UIView *)view;
 

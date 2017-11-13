@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  搜索当前视图的输入控件 
- *  @param 只返回当前搜索到得第一个输入控件
+ *  只返回当前搜索到得第一个输入控件
  */
 - (nullable UIView *)searchInputTextControl;
 

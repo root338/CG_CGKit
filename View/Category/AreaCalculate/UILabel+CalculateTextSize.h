@@ -10,7 +10,7 @@
 //#import "CGInputTextProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@interface UILabel (CalculateTextSize)//<CGInputTextProtocol>
+@interface UILabel (CalculateTextSize)/**<CGInputTextProtocol>*/
 
 - (CGSize)calculateLabelTextSize;
 

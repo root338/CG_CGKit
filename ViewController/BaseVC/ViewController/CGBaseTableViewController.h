@@ -11,8 +11,8 @@
 
 /**
  *  基础UITableView视图控制器
- *  @param 用于需要在和tableView同级情况下添加其他视图到视图控制器中
- #  @param tableView会在get方法中自动创建，但不会自动添加到视图上
+ *  用于需要在和tableView同级情况下添加其他视图到视图控制器中
+ *  tableView会在get方法中自动创建，但不会自动添加到视图上
  */
 @interface CGBaseTableViewController : CGBaseViewController
 

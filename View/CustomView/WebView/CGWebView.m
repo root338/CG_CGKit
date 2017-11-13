@@ -249,7 +249,15 @@
         if (self.webViewForUIWebView) {
             [self.webViewForUIWebView loadData:data MIMEType:MIMEType textEncodingName:textEncodingName baseURL:baseURL];
         }else if (self.webViewForWKWebView) {
-            [self.webViewForWKWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
+            
+            if (@available(iOS 9.0, *)) {
+                
+                [self.webViewForWKWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
+            }else {
+                
+                NSAssert(nil, @"该方法WKWebView仅 9.0 以上版本可用");
+            }
+            
         }
         
     }else {

@@ -19,7 +19,7 @@
 
 /** 
  *  当前层的状态 
- *  @param 可通过设置它来改变边框的不同值
+ *  可通过设置它来改变边框的不同值
  */
 @property (nonatomic, assign) CGViewBorderState borderState;
 

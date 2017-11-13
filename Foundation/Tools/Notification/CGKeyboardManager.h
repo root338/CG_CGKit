@@ -51,19 +51,19 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 //-----设置视图--------------------------------
 /** 
  *  设置第一响应者
- *  @param 不使用属性firstResponderView
+ *  不使用属性firstResponderView
  */
 - (nullable UIView *)firstResponderViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification;
 
 /** 
  *  设置第一响应者所在的滑动视图
- *  @param 和属性scrollView一样
+ *  和属性scrollView一样
  */
 - (nullable UIScrollView *)scrollViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification;
 
 /** 
  *  设置需要改变frame的视图
- *  @param  和属性keyboardFrameDidChangeTheNeedToChangeFrameTheView一样，表示当弹起或隐藏键盘时需要改变的视图frame
+ *  和属性keyboardFrameDidChangeTheNeedToChangeFrameTheView一样，表示当弹起或隐藏键盘时需要改变的视图frame
  */
 - (UIView *)needChangeFrameTheViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification;
 
@@ -90,7 +90,7 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 
 /** 
  *  设置目标的约束
- *  @param 和属性keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint一样
+ *  和属性keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint一样
  */
 - (NSLayoutConstraint *)targetViewBottomConstraintWithKeyboardManager:(CGKeyboardManager *)keyboardManager notification:(NSNotification *)notification needChangeFrameTheView:(nullable UIView *)needChangeFrameTheView;
 
@@ -107,13 +107,13 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 //-----计算键盘与需要改变显示区域的视图之间的重复区域------------------------------
 /** 
  *  设置此视图来计算键盘在其上的显示区域，和需要改变视图在其上的显示区域。来获取是否有覆盖且覆盖多少距离 
- *  @param 默认使用needChangeFrameTheView的父视图
+ *  默认使用needChangeFrameTheView的父视图
  */
 - (UIView *)overlayViewWithKeyboardManager:(CGKeyboardManager *)keyboardManager needChangeFrameTheView:(UIView *)needChangeFrameTheView;
 
 /** 
  *  自动布局改变frame时，以哪种方式来改变frame 
- *  @param  和keyboardChangeFrameType属性值功能一样
+ *  和keyboardChangeFrameType属性值功能一样
  */
 - (CGKeyboardChangeFrameType)changeFrameTypeWithKeyboardManager:(CGKeyboardManager *)keyboardManager needChangeFrameTheView:(UIView *)needChangeFrameTheView;
 
@@ -123,8 +123,8 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 
 /** 
  *  键盘通知管理
- *  @param 管理当键盘弹入或弹出时改变视图frame，并将第一响应者滑动到可视区域
- *  @param 简单使用
+ *  管理当键盘弹入或弹出时改变视图frame，并将第一响应者滑动到可视区域
+ *  简单使用
  *              1.使用约束时，开启键盘键盘将要弹入弹出通知 openKeyboardWillNotification;
  *              设置keyboardFrameDidChangeTheNeedToChangeFrameTheView 属性值
  *              设置keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint 属性值
@@ -161,7 +161,7 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 @property (nonatomic, assign) BOOL hideScrollAnimated;
 /** 
  *  禁止自动搜索滑动视图
- *  @param 当第一响应者不为nil且scrollView为空时，当为 NO 时，自动尝试搜索第一响应者的父视图中是否存在scrollView，当存在时执行滑动，默认为NO
+ *  当第一响应者不为nil且scrollView为空时，当为 NO 时，自动尝试搜索第一响应者的父视图中是否存在scrollView，当存在时执行滑动，默认为NO
  */
 @property (nonatomic, assign) BOOL disableAutoSearchScrollView;
 
@@ -173,7 +173,7 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 /** 键盘显示区域发生改变时需要改变的view的底部约束  @warning 改变该视图的显示区域 */
 @property (nullable, nonatomic, weak) NSLayoutConstraint *keyboardFrameDidChangeTheNeedToChangeTheViewBottomConstraint;
 
-/** 修改frame的类型 @param 默认为CGKeyboardChangeFrameTypeSize */
+/** 修改frame的类型 默认为CGKeyboardChangeFrameTypeSize */
 @property (nonatomic, assign) CGKeyboardChangeFrameType keyboardChangeFrameType;
 
 /** 计算的常量值计算的方式 */

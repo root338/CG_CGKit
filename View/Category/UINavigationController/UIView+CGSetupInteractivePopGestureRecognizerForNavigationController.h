@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  设置视图所在的导航栏的回退手势是否可用
- @param UINavigationController interactivePopGestureRecognizer 属性
+ UINavigationController interactivePopGestureRecognizer 属性
  */
 @property (nonatomic, assign) BOOL enableInteractivePopGestureRecognizerForNavigationController;
 

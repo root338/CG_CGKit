@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  关闭背景图按钮功能 默认NO
- @param 触发- (void)hideContentView方法
+ 触发- (void)hideContentView方法
  */
 @property (nonatomic, assign) BOOL disableBackgroundButtonTools;
 

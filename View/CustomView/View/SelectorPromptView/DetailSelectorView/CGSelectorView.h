@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 
 /**
  弹层选择视图 使用UIView提供的animation动画方法
- @param 内容选择器应该添加到contentView中
+ 内容选择器应该添加到contentView中
  */
 @interface CGSelectorView : CGBaseView
 
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 
 /** 
  关闭背景图按钮功能 默认NO
- @param 触发- (void)hideContentView方法 
+ 触发- (void)hideContentView方法 
  */
 @property (nonatomic, assign) BOOL disableBackgroundButtonTools;
 

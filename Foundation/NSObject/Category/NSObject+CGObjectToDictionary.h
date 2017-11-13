@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 
  *  对象转字典主体方法
- *  @param 自动过滤掉nil值和 NSNull对象
+ *  自动过滤掉nil值和 NSNull对象
  *  @warning    仅会将当前类的属性值转化为字典，父类属性不包含
  */
 - (nullable NSDictionary *)cg_objectToDictionary;
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  对象转字典主体方法
- *  @param 自动过滤掉nil值和 NSNull对象
+ *  自动过滤掉nil值和 NSNull对象
  */
 - (nullable NSDictionary *)cg_allObjectToDictionary;
 

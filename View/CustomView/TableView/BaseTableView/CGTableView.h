@@ -14,7 +14,7 @@
 
 /** 
  *  隐藏plainStyle 模式下没有数据时还会显示的线条
- *  @param 实现原理为TableView添加一个空白的footerView，当取消时需要注意没有自动添加的UIView，防止取消了自定义的添加视图
+ *  实现原理为TableView添加一个空白的footerView，当取消时需要注意没有自动添加的UIView，防止取消了自定义的添加视图
  */
 @property (nonatomic, assign) BOOL isHideOverLineForPlainStyle;
 

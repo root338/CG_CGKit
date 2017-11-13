@@ -35,8 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param title      标题
  *  @param titleColor 标题颜色
  *  @param font       标题字体
- *
- *  @return 返回创建好的按钮
  */
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font;
 
@@ -49,10 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  设置按钮样式、默认图片、选中图片
  *
- *  @param normalImage     默认图片
+ *  @param normalImageName 默认图片
  *  @param selectImageName 选中图片
- *
- *  @return 返回创建好的按钮
  */
 - (void)cg_setupWithNormalImageName:(nullable NSString *)normalImageName selectImageName:(nullable NSString *)selectImageName;
 
@@ -66,8 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param titleColor  标题颜色
  *  @param font        标题字体
  *  @param radius      圆角值
- *
- *  @return 返回创建好的按钮
  */
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font radius:(CGFloat)radius;
 
@@ -80,8 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param borderWidth 边框宽度
  *  @param borderColor 边框颜色
  *  @param radius      圆角值
- *
- *  @return 返回创建好的按钮
  */
 - (void)cg_setupWithTitle:(nullable NSString *)title titleColor:(nullable UIColor *)titleColor font:(nullable UIFont *)font borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor radius:(CGFloat)radius;
 
