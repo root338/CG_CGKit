@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 ym. All rights reserved.
 //
 
+#if __has_include(<JSONModel.h>)
+
 #import "CGHandleRequestData.h"
 #import "CGPrintLogHeader.h"
 #import "JSONModel.h"
@@ -72,3 +74,5 @@
 }
 
 @end
+
+#endif
