@@ -34,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param style      对齐状态
  *  @param paramSpace 标题与图像的间距
- *  @param maxSize    最大大小
  */
 - (void)cg_updateButtonWithStyle:(CGButtonStyle)style space:(CGFloat)paramSpace;
 @end

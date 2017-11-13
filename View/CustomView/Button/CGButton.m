@@ -491,9 +491,12 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         return [self getContentWithType:type state:controlState];
     }
     
-    controlState    = UIControlStateFocused;
-    if (controlState && (state & controlState)) {
-        return [self getContentWithType:type state:controlState];
+    if (@available(iOS 9.0, *)) {
+        
+        controlState    = UIControlStateFocused;
+        if (controlState && (state & controlState)) {
+            return [self getContentWithType:type state:controlState];
+        }
     }
     
     controlState    = UIControlStateApplication;

@@ -72,6 +72,16 @@ CGSize cg_calculateScaleSize(CGSize size, CGSize targetSize, CGScaleImageType sc
     }else if (scaleType == CGScaleImageTypeHeight || scaleType == CGScaleImageTypeHeightForIgnoreMinHeight) {
         
         aspectFitSize   = cg_imageHeightScale(size, targetSize, heightScale);
+    }else if (scaleType == CGScaleImageTypeSizeForScaleAspectFill) {
+        
+        //当根据等比宽度进行缩放时判断宽高更适合的进行缩放
+        if (widthScale < heightScale) {
+            
+            aspectFitSize   = cg_imageWidthScale(size, targetSize, widthScale);
+        }else {
+            
+            aspectFitSize   = cg_imageHeightScale(size, targetSize, heightScale);
+        }
     }else {
         
         CGErrorLog(@"设置的CGScaleImageType类型值不存在");

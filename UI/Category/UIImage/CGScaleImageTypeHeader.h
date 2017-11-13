@@ -23,6 +23,8 @@ typedef NS_ENUM(NSInteger, CGScaleImageType) {
     CGScaleImageTypeHeight,
     /** 按图片高度等比缩放，并忽略图片宽度小于指定高度的情况 */
     CGScaleImageTypeHeightForIgnoreMinHeight,
+    /** 按图片大小等比缩放，使用较小值的比例进行计算，保证充满指定大小 */
+    CGScaleImageTypeSizeForScaleAspectFill,
 };
 
 #endif /* CGScaleImageTypeHeader_h */
