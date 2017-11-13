@@ -13,7 +13,9 @@
 #import "CGBaseLayoutView.h"
 
 /** 视图扩展 */
-
+#import "UIView+CGSetupFrame.h"
 #import "UIView+CGSetupAppearance.h"
+
+#import "UIView+CGAddConstraints.h"
 
 #endif /* CGKit_SwiftBridgingHeader_h */
