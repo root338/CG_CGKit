@@ -606,17 +606,26 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController
 {
-    return [self cg_topLayoutGuideOfViewController:viewController withInset:0];
+    return [self cg_topLayoutGuideOfViewController:viewController
+                                         withInset:self.cg_defalutConstantProperty
+                                         relatedBy:self.cg_defalutLayoutRelationProperty
+                                        multiplier:self.cg_defalutMultiplierProperty];
 }
 
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset
 {
-    return [self cg_topLayoutGuideOfViewController:viewController withInset:inset relatedBy:NSLayoutRelationEqual];
+    return [self cg_topLayoutGuideOfViewController:viewController
+                                         withInset:inset
+                                         relatedBy:self.cg_defalutLayoutRelationProperty
+                                        multiplier:self.cg_defalutMultiplierProperty];
 }
 
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation
 {
-    return [self cg_topLayoutGuideOfViewController:viewController withInset:inset relatedBy:relation multiplier:1.0];
+    return [self cg_topLayoutGuideOfViewController:viewController
+                                         withInset:inset
+                                         relatedBy:relation
+                                        multiplier:self.cg_defalutMultiplierProperty];
 }
 
 - (NSLayoutConstraint *)cg_topLayoutGuideOfViewController:(UIViewController *)viewController withInset:(CGFloat)inset relatedBy:(NSLayoutRelation)relation multiplier:(CGFloat)multiplier
