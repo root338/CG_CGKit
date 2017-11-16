@@ -87,6 +87,7 @@
                 [dic setObject:value forKey:propertyName];
             }
         }
+        free(propertysList);
         
         return dic;
     }else {
