@@ -164,7 +164,7 @@
         [cell.imageView cg_setupImageWithPath:[self.dataSource cg_objectAtIndex:index]];
 #else
         
-        NSAssert(nil,r@"缺少自动网络加载方法cg_setupImageWithPath:, 如果添加UIImageView+CGSetupImageURL扩展，那需要 SDWebImage 第三方库");
+        NSAssert(nil, @"缺少自动网络加载方法cg_setupImageWithPath:, 如果添加UIImageView+CGSetupImageURL扩展，那需要 SDWebImage 第三方库");
 #endif
     }
     
