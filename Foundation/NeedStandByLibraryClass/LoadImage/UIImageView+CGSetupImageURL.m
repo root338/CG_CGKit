@@ -6,7 +6,7 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#if __has_include(<UIImageView+WebCache>) && __has_include(<SDWebImageManager.h>)
+#if __has_include(<UIImageView+WebCache.h>) && __has_include(<SDWebImageManager.h>)
 
 #import "UIImageView+CGSetupImageURL.h"
 #import "NSError+CGCreateError.h"
