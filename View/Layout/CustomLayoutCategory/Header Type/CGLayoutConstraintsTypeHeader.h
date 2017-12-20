@@ -16,6 +16,8 @@ typedef NS_ENUM(NSInteger, CGLayoutRelation) {
     CGLayoutRelationLessThanOrEqual     = NSLayoutRelationLessThanOrEqual,
     CGLayoutRelationEqual               = NSLayoutRelationEqual,
     CGLayoutRelationGreaterThanOrEqual  = NSLayoutRelationGreaterThanOrEqual,
+    
+    
 };
 
 typedef NS_ENUM(NSInteger, CGLayoutAttribute) {
