@@ -32,4 +32,6 @@
 /** 当前版本是否是9.0之后的版本 */
 #define _CG_IOS_9_0_AFTER       _CG_IOS_CURRENTVERIOS >= 9.0
 
+
+
 #endif /* CGVerifyIOSVersionHeader_h */
