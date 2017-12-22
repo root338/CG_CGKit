@@ -39,8 +39,8 @@ typedef NS_ENUM(NSInteger, CGCycleBrowseImageViewPageControlPosition) {
 @property (nonatomic, assign) BOOL imageViewSizeEqualViewSize;
 
 #pragma mark - 循环视图
-/** 加载的数据 图片链接 */
-@property (strong, nonatomic) NSArray<NSString *> *dataSource;
+/** 加载的数据， 可以是图片的链接 https:// , 图片 */
+@property (strong, nonatomic) NSArray *dataSource;
 
 /** 滑动视图相对本视图的外边距 */
 @property (assign, nonatomic) UIEdgeInsets marginEdgeInset;
