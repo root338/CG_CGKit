@@ -16,6 +16,10 @@
 // UIButton
 #import "CGButton.h"
 
+#pragma mark - controller
+
+#import "CGBaseViewController.h"
+
 /** 视图扩展 */
 
 #import "UIView+CGSearchView.h"
