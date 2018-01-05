@@ -18,8 +18,6 @@
 // UIButton
 #import "CGButton.h"
 
-
-
 /** 视图扩展 */
 
 #import "UIView+CGSearchView.h"
@@ -37,5 +35,9 @@
 
 #import "UIView+CGAddConstraints.h"
 #import "NSArray+CGAddConstraints.h"
+
+#pragma mark - controller
+
+#import "CGBaseViewController.h"
 
 #endif /* CGKit_SwiftBridgingHeader_h */
