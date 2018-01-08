@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 /** 关闭动画执行中的用户交互, 默认 NO */
 @property (nonatomic, assign) BOOL disableAnimationUserInteraction;
 /** 动画的状态 */
-@property (nonatomic, assign, readonly) CGViewAnimationStatus animationStatus;
+@property (nonatomic, assign, readonly) CGViewOperateStatus animationStatus;
 /** contentView 的状态 */
 @property (nonatomic, assign, readonly) CGViewStatus contentViewStatus;
 

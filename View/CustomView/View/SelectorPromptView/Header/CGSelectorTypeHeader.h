@@ -10,13 +10,13 @@
 #define CGSelectorTypeHeader_h
 
 /** 动画的状态 */
-typedef NS_ENUM(NSInteger, CGViewAnimationStatus) {
+typedef NS_ENUM(NSInteger, CGViewOperateStatus) {
     /** 未知 */
-    CGViewAnimationStatusUnknowe    = -1,
+    CGViewOperateStatusUnknowe    = -1,
     /** 静止 */
-    CGViewAnimationStatusStill,
+    CGViewOperateStatusStill,
     /** 动画执行中 */
-    CGViewAnimationStatusAniamtion,
+    CGViewOperateStatusAniamtion,
 };
 
 /** 视图的状态 */

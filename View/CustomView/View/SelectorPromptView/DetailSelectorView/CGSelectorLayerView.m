@@ -20,7 +20,7 @@
 }
 
 /** 动画的状态 */
-@property (nonatomic, assign, readwrite) CGViewAnimationStatus animationStatus;
+@property (nonatomic, assign, readwrite) CGViewOperateStatus animationStatus;
 /** contentView 的状态 */
 @property (nonatomic, assign, readwrite) CGViewStatus contentViewStatus;
 

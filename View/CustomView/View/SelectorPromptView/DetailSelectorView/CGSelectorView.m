@@ -26,7 +26,7 @@
 @property (nonatomic, strong, readwrite) UIView *contentView;
 
 /** 动画的状态 */
-@property (nonatomic, assign, readwrite) CGViewAnimationStatus animationStatus;
+@property (nonatomic, assign, readwrite) CGViewOperateStatus animationStatus;
 /** contentView 的状态 */
 @property (nonatomic, assign, readwrite) CGViewStatus contentViewStatus;
 @end
@@ -55,7 +55,7 @@
         _contentViewHideAnimationOptions    = UIViewAnimationOptionCurveLinear;
         
         _disableAnimationUserInteraction    = NO;
-        _animationStatus    = CGViewAnimationStatusStill;
+        _animationStatus    = CGViewOperateStatusStill;
         _contentViewStatus  = CGViewStatusHide;
         _disableInteractivePopGestureRecognizerForNavigationController  = YES;
         
@@ -126,7 +126,7 @@
     }
     
     self.contentViewStatus  = CGViewStatusHideToShow;
-    self.animationStatus    = CGViewAnimationStatusAniamtion;
+    self.animationStatus    = CGViewOperateStatusAniamtion;
 }
 //显示选择视图动画完成时的设置
 - (void)setupShowContentViewAnimationsCompletions:(BOOL)finished
@@ -136,7 +136,7 @@
     }
     
     self.contentViewStatus  = CGViewStatusShow;
-    self.animationStatus    = CGViewAnimationStatusStill;
+    self.animationStatus    = CGViewOperateStatusStill;
 }
 
 - (void)hideContentViewWithAnimationType:(CGSelectorContentViewAnimationType)animationType
@@ -178,7 +178,7 @@
     }
     
     self.contentViewStatus  = CGViewStatusShowToHide;
-    self.animationStatus    = CGViewAnimationStatusAniamtion;
+    self.animationStatus    = CGViewOperateStatusAniamtion;
 }
 //隐藏选择视图动画完成时的设置
 - (void)setupHideContentViewAnimationsCompletions:(BOOL)finished
@@ -188,7 +188,7 @@
     }
     
     self.contentViewStatus  = CGViewStatusHide;
-    self.animationStatus    = CGViewAnimationStatusStill;
+    self.animationStatus    = CGViewOperateStatusStill;
     
     if (self.didHideContentViewRemoveSuperview) {
         [self removeFromSuperview];
@@ -385,13 +385,13 @@
 }
 
 #pragma mark - 设置属性
-- (void)setAnimationStatus:(CGViewAnimationStatus)animationStatus
+- (void)setAnimationStatus:(CGViewOperateStatus)animationStatus
 {
     _animationStatus    = animationStatus;
     if (self.disableAnimationUserInteraction) {
         
         BOOL userInteractionEnabled = YES;
-        if (animationStatus == CGViewAnimationStatusAniamtion) {
+        if (animationStatus == CGViewOperateStatusAniamtion) {
             userInteractionEnabled  = NO;
         }
         self.userInteractionEnabled = userInteractionEnabled;
