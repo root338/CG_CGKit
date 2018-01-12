@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIDevice (CGSetupDevicePrivateProperty)
-
+/// 设置屏幕当前的的方向
 - (BOOL)setupScreenOrientation:(UIInterfaceOrientation)orientation;
 
 @end
