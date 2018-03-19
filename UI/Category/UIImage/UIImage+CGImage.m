@@ -10,6 +10,31 @@
 
 @implementation UIImage (CGImage)
 
+@dynamic imageSizeForPNG;
+@dynamic imageSizeForJPEG;
+
+#pragma mark - UIImage size
+
+- (NSUInteger)imageSizeForJPEG
+{
+    return [self imageSizeWithCompressionQuality:1.0];
+}
+
+- (NSUInteger)imageSizeForPNG
+{
+    NSData *data    = UIImagePNGRepresentation(self);
+    return data.length / 1024;
+}
+
+- (NSUInteger)imageSizeWithCompressionQuality:(CGFloat)compressionQuality
+{
+    NSData *data    = UIImageJPEGRepresentation(self, compressionQuality);
+    NSUInteger imageSize  = data.length / 1024;
+    return imageSize;
+}
+
+#pragma mark - 加载图片
+
 + (instancetype)imageNamed:(NSString *)imageName renderingMode:(UIImageRenderingMode)renderingMode
 {
     UIImage *image  = [UIImage imageNamed:imageName];

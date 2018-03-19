@@ -14,6 +14,9 @@
 
 - (void)cg_pushViewController:(UIViewController *)viewController
 {
+    if (viewController == nil) {
+        return;
+    }
     [self pushViewController:viewController animated:!self.disablePushHideAnimatied];
 }
 

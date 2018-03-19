@@ -12,6 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (CGImage)
 
+#pragma mark - UIImage size 
+
+/** 获取图片为JPEG时的大小(KB) */
+@property (nonatomic, assign, readonly) NSUInteger imageSizeForJPEG;
+/** 获取图片为PNG时的大小(KB) */
+@property (nonatomic, assign, readonly) NSUInteger imageSizeForPNG;
+/** 获取指定压缩值之后的图片大小 [0,1] */
+- (NSUInteger)imageSizeWithCompressionQuality:(CGFloat)compressionQuality;
+
 #pragma mark - 加载图片
 + (nullable instancetype)imageNamed:(NSString *)imageName renderingMode:(UIImageRenderingMode)renderingMode;
 
@@ -27,9 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)asyncLoadImageWithFilePath:(NSString *)filePath twiceAsMuchEstimatedSize:(CGSize)estimatedSize completion:(void (^) (UIImage * _Nullable image))completion;
 + (void)asyncLoadImageWithFilePath:(NSString *)filePath estimatedSize:(CGSize)estimatedSize completion:(void (^) (UIImage * _Nullable image))completion scale:(CGFloat)scale;
 
-- (UIImage *)scaleImageWithEstimatedSize: (CGSize) estimatedSize;
+- (UIImage *)scaleImageWithEstimatedSize:(CGSize)estimatedSize;
 - (UIImage *)scaleImageWithTwiceAsMuchEstimatedSize:(CGSize)estimatedSize;
-- (UIImage *)scaleImageWithEstimatedSize: (CGSize) estimatedSize scale:(CGFloat)scale;
+
+- (UIImage *)scaleImageWithEstimatedSize:(CGSize)estimatedSize scale:(CGFloat)scale;
 
 - (UIImage *)drawImageWithSize:(CGSize)size drawRect:(CGRect)rect;
 @end
