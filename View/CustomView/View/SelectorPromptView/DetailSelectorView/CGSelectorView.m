@@ -75,15 +75,25 @@
 
 - (void)showContentView
 {
-    [self showContentViewWithAnimatinType:self.contentViewAnimationType];
+    [self showContentViewWithAnimatied:YES];
+}
+
+- (void)showContentViewWithAnimatied:(BOOL)animatied
+{
+    [self showContentViewWithAnimatinType:self.contentViewAnimationType animatied:animatied];
 }
 
 - (void)hideContentView
 {
-    [self hideContentViewWithAnimationType:self.contentViewAnimationType];
+    [self hideContentViewWithAnimatied:YES];
 }
 
-- (void)showContentViewWithAnimatinType:(CGSelectorContentViewAnimationType)animationType
+- (void)hideContentViewWithAnimatied:(BOOL)animatied
+{
+    [self hideContentViewWithAnimationType:self.contentViewAnimationType animatied:animatied];
+}
+
+- (void)showContentViewWithAnimatinType:(CGSelectorContentViewAnimationType)animationType animatied:(BOOL)animatied
 {
     if (self.contentViewStatus == CGViewStatusShow || self.contentViewStatus == CGViewStatusHideToShow) {
         return;
@@ -94,12 +104,6 @@
     
     [self setupBackgroundColorWithIsShow:YES animations:NO];
     
-    self.contentView.frame  = [self setupContentViewFrameWithAnimationType:animationType showContentView:NO];
-    
-    if (self.selectorWillShowAnimationsBlock) {
-        self.selectorWillShowAnimationsBlock();
-    }
-    
     __weak __block typeof(self) weakself = self;
     CGSelectorAnimationBlock animations = ^{
         [weakself setupShowContentViewAnimationsWithType:animationType];
@@ -108,11 +112,34 @@
         [weakself setupShowContentViewAnimationsCompletions:finished];
     };
     
-    if (self.animationsStyle == CGSelectorViewAnimationsStyleDefalut) {
-        [UIView animateWithDuration:self.duration delay:self.delayForContentViewShow options:self.contentViewShowAnimationOptions animations:animations completion:completion];
-    }else if (self.animationsStyle == CGSelectorViewAnimationsStyleSpringEffect) {
-        [UIView animateWithDuration:self.duration delay:self.delayForContentViewShow usingSpringWithDamping:self.springDampingRatio initialSpringVelocity:self.initialSpringVelocity options:self.contentViewShowAnimationOptions animations:animations completion:completion];
+    if (animatied) {
+        
+        self.contentView.frame  = [self setupContentViewFrameWithAnimationType:animationType showContentView:NO];
+        
+        if (self.selectorWillShowAnimationsBlock) {
+            self.selectorWillShowAnimationsBlock();
+        }
+        
+        if (self.animationsStyle == CGSelectorViewAnimationsStyleDefalut) {
+            [UIView animateWithDuration:self.duration delay:self.delayForContentViewShow options:self.contentViewShowAnimationOptions animations:animations completion:completion];
+        }else if (self.animationsStyle == CGSelectorViewAnimationsStyleSpringEffect) {
+            [UIView animateWithDuration:self.duration delay:self.delayForContentViewShow usingSpringWithDamping:self.springDampingRatio initialSpringVelocity:self.initialSpringVelocity options:self.contentViewShowAnimationOptions animations:animations completion:completion];
+        }
+    }else {
+        animations();
+        completion(YES);
     }
+    
+}
+
+- (void)updateContentViewOrigin
+{
+    BOOL isShowContentView = NO;
+    if (self.contentViewStatus == CGViewStatusShow || self.contentViewStatus == CGViewStatusHideToShow) {
+        isShowContentView = YES;
+    }
+    
+    self.contentView.frame = [self setupContentViewFrameWithAnimationType:self.contentViewAnimationType showContentView:isShowContentView];
 }
 
 //显示选择视图动画时的属性变化设置
@@ -139,7 +166,7 @@
     self.animationStatus    = CGViewOperateStatusStill;
 }
 
-- (void)hideContentViewWithAnimationType:(CGSelectorContentViewAnimationType)animationType
+- (void)hideContentViewWithAnimationType:(CGSelectorContentViewAnimationType)animationType animatied:(BOOL)animatied
 {
     if (self.contentViewStatus == CGViewStatusShowToHide || self.contentViewStatus == CGViewStatusHide) {
         return;
@@ -147,10 +174,6 @@
     
     [self setupNavigationControllerPopGestureRecognizerWithisShowContentViewAnimation:NO];
     [self setupBackgroundColorWithIsShow:NO animations:NO];
-    
-    if (self.selectorWillHideAnimationsBlock) {
-        self.selectorWillHideAnimationsBlock();
-    }
     
     __weak __block typeof(self) weakself = self;
     CGSelectorAnimationBlock animations = ^{
@@ -160,11 +183,22 @@
         [weakself setupHideContentViewAnimationsCompletions:finished];
     };
     
-    if (self.animationsStyle == CGSelectorViewAnimationsStyleDefalut) {
-        [UIView animateWithDuration:self.duration delay:self.delayForContentViewHide options:self.contentViewHideAnimationOptions animations:animations completion:completion];
-    }else if (self.animationsStyle == CGSelectorViewAnimationsStyleSpringEffect) {
-        [UIView animateWithDuration:self.duration delay:self.delayForContentViewHide usingSpringWithDamping:self.springDampingRatio initialSpringVelocity:self.initialSpringVelocity options:self.contentViewHideAnimationOptions animations:animations completion:completion];
+    if (animatied) {
+        
+        if (self.selectorWillHideAnimationsBlock) {
+            self.selectorWillHideAnimationsBlock();
+        }
+        
+        if (self.animationsStyle == CGSelectorViewAnimationsStyleDefalut) {
+            [UIView animateWithDuration:self.duration delay:self.delayForContentViewHide options:self.contentViewHideAnimationOptions animations:animations completion:completion];
+        }else if (self.animationsStyle == CGSelectorViewAnimationsStyleSpringEffect) {
+            [UIView animateWithDuration:self.duration delay:self.delayForContentViewHide usingSpringWithDamping:self.springDampingRatio initialSpringVelocity:self.initialSpringVelocity options:self.contentViewHideAnimationOptions animations:animations completion:completion];
+        }
+    }else {
+        animations();
+        completion(YES);
     }
+    
 }
 
 //显示选择视图动画时的属性变化设置
@@ -205,9 +239,15 @@
  */
 - (CGRect)setupContentViewFrameWithAnimationType:(CGSelectorContentViewAnimationType)animationType showContentView:(BOOL)isShowContentView
 {
-    if (self.isUpdateImmediatelyContentViewLayout) {
+    if (self.isUpdateImmediatelyContentViewLayout || CGSizeEqualToSize(self.contentView.size, CGSizeZero)) {
         if (!isDidUpdateContentViewLayout) {
-            [self.contentView cg_viewUpdateContentLayoutIfNeeded];
+            
+            if (self.contentView.translatesAutoresizingMaskIntoConstraints) {
+                [self cg_layoutIfNeeded];
+            }else {
+                [self.contentView cg_viewUpdateContentLayoutIfNeeded];
+            }
+            
             isDidUpdateContentViewLayout    = YES;
         }
     }
@@ -221,9 +261,11 @@
     CGFloat contentViewHeight = self.contentView.height;
     
     UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
-    if (@available(iOS 11.0, *)) {
-        
-        safeAreaInsets  = self.safeAreaInsets;
+    if (!self.ignoreSafeAreaInsets) {
+        if (@available(iOS 11.0, *)) {
+            
+            safeAreaInsets  = self.safeAreaInsets;
+        }
     }
     
     if (animationType == CGSelectorContentViewAnimationTypeBottomToTop || animationType == CGSelectorContentViewAnimationTypeTopToBottom) {
@@ -375,6 +417,8 @@
 - (void)handleCancelAction:(id)sender
 {
     [self hideContentView];
+    
+    !self.cancelClickCallback ?: self.cancelClickCallback();
 }
 
 #pragma mark - 系统方法重写

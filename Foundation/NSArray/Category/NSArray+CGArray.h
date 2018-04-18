@@ -26,8 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)cg_addObjectsFromArray:(nullable NSArray<ObjectType> *)otherArray;
 
-- (void)cg_removeObjectAtIndex:(NSUInteger)index;
+- (nullable ObjectType)cg_removeObjectAtIndex:(NSUInteger)index;
 
 - (void)cg_addObject:(ObjectType)anObject;
+
 @end
 NS_ASSUME_NONNULL_END

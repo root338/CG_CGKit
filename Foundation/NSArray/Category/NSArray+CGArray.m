@@ -79,11 +79,14 @@
     return isFlag;
 }
 
-- (void)cg_removeObjectAtIndex:(NSUInteger)index
+- (id)cg_removeObjectAtIndex:(NSUInteger)index
 {
+    id value = nil;
     if (self.count > index) {
+        value = [self objectAtIndex:index];
         [self removeObjectAtIndex:index];
     }
+    return value;
 }
 
 - (void)cg_addObject:(id)anObject

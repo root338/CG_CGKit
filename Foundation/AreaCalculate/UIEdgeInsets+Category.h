@@ -47,3 +47,13 @@ UIKIT_STATIC_INLINE UIEdgeInsets UIEdgeInsetsZeroMakeExcludeHorizontal(CGFloat h
 UIKIT_STATIC_INLINE UIEdgeInsets UIEdgeInsetsZeroMakeExcludeVertical(CGFloat verticalValue) {
     return UIEdgeInsetsMake(verticalValue, 0, verticalValue, 0);
 }
+
+/** 计算 left + right */
+UIKIT_STATIC_INLINE CGFloat CG_CGUIEdgeInsetsHorizontal(UIEdgeInsets insets) {
+    return insets.left + insets.right;
+}
+
+/** 计算 top + bottom */
+UIKIT_STATIC_INLINE CGFloat CG_CGUIEdgeInsetsVertical(UIEdgeInsets insets) {
+    return insets.top + insets.bottom;
+}

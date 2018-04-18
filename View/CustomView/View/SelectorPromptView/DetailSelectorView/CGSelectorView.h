@@ -52,6 +52,9 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 /** 立即更新 contentView 的布局，用于contentView的大小是由约束控制的 默认为 NO  */
 @property (nonatomic, assign) BOOL isUpdateImmediatelyContentViewLayout;
 
+/** 忽略安全区域， 默认为NO */
+@property (nonatomic, assign) BOOL ignoreSafeAreaInsets;
+
 /** 选择视图大小是否等于父视图的bounds属性, 默认为 YES */
 @property (nonatomic, assign) BOOL frameEqualSuperviewBounds;
 
@@ -80,6 +83,9 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 @property (nonatomic, assign, readonly) CGViewOperateStatus animationStatus;
 /** contentView 的状态 */
 @property (nonatomic, assign, readonly) CGViewStatus contentViewStatus;
+
+/// 取消按钮的回调
+@property (nonatomic, copy) void (^cancelClickCallback) (void);
 
 #pragma mark - 背景设置
 /** 动画执行选择视图背景色的改变，默认 YES */
@@ -132,6 +138,10 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 - (void)showContentView;
 - (void)hideContentView;
 
+- (void)showContentViewWithAnimatied:(BOOL)animatied;
+- (void)hideContentViewWithAnimatied:(BOOL)animatied;
+
+- (void)updateContentViewOrigin;
 @end
 
 NS_ASSUME_NONNULL_END
