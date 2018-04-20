@@ -18,14 +18,6 @@ UIKIT_EXTERN const UIViewAutoresizing UIViewAutoresizingFlexibleSize;
 
 @interface UIView (CGValueConstant)
 
-#if UIKIT_DEFINE_AS_PROPERTIES
-
 @property (class, nonatomic, readonly) CGFloat onePixlesForCGKitUIScreenScale;
-
-#else
-
-+ (CGFloat)onePixlesForCGKitUIScreenScale;
-
-#endif
 
 @end

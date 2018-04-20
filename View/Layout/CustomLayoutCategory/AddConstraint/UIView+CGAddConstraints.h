@@ -204,6 +204,13 @@ typedef void (^CGSetupConstraints) (void);
 #pragma mark - 设置视图自身的大小
 
 @interface UIView (CGViewDimensionConstraint)
+/** 设置指定宽度的长度 */
+- (NSLayoutConstraint *)cg_autoDimensionWidth:(CGFloat)width;
+/** 设置指定高度的长度 */
+- (NSLayoutConstraint *)cg_autoDimensionHeight:(CGFloat)height;
+
+- (NSLayoutConstraint *)cg_autoDimensionWidthEqualView:(UIView *)view;
+- (NSLayoutConstraint *)cg_autoDimensionHeightEqualView:(UIView *)view;
 
 /** 设置指定大小的长度 */
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength;

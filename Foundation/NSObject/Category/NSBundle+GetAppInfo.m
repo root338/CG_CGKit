@@ -21,14 +21,14 @@
 {
     NSDictionary *appInfo = [self getAppInfo];
     NSString *appVersion = [appInfo objectForKey:@"CFBundleShortVersionString"];
-    return appVersion ? appVersion : @"";
+    return appVersion;
 }
 
 + (NSString *)getAppInfoForVersion
 {
     NSDictionary *appInfo = [self getAppInfo];
     NSString *appVersion = [appInfo objectForKey:(__bridge NSString *)kCFBundleVersionKey];
-    return appVersion ? appVersion : @"";
+    return appVersion;
 }
 
 + (NSArray *)getLaunchImages

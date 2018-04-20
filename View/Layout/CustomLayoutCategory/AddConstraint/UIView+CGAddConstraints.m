@@ -513,6 +513,26 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
 @implementation UIView (CGViewDimensionConstraint)
 
+- (NSLayoutConstraint *)cg_autoDimensionWidth:(CGFloat)width
+{
+    return [self cg_autoDimension:CGDimensionWidth fixedLength:width];
+}
+
+- (NSLayoutConstraint *)cg_autoDimensionHeight:(CGFloat)height
+{
+    return [self cg_autoDimension:CGDimensionHeight fixedLength:height];
+}
+
+- (NSLayoutConstraint *)cg_autoDimensionWidthEqualView:(UIView *)view
+{
+    return [self cg_autoDimension:CGDimensionWidth equalView:view];
+}
+
+- (NSLayoutConstraint *)cg_autoDimensionHeightEqualView:(UIView *)view
+{
+    return [self cg_autoDimension:CGDimensionHeight equalView:view];
+}
+
 - (NSLayoutConstraint *)cg_autoDimension:(CGDimension)dimension fixedLength:(CGFloat)fixedLength
 {
     return [self cg_autoDimension:dimension fixedLength:fixedLength relation:NSLayoutRelationEqual];

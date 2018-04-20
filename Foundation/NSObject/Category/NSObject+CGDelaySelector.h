@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 0s后执行 */
 - (void)cg_performAfterZeroDelaySelector:(SEL)aSelector;
 
+- (void)cg_preformWithAfterDelay:(NSTimeInterval)afterDelay block:(void (^) (void))block;
+
 @end
 
 NS_ASSUME_NONNULL_END

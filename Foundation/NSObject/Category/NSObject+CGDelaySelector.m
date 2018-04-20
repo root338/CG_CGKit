@@ -15,4 +15,11 @@
     [self performSelector:aSelector withObject:nil afterDelay:0];
 }
 
+- (void)cg_preformWithAfterDelay:(NSTimeInterval)afterDelay block:(void (^)(void))block
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(afterDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        !block ?: block();
+    });
+}
+
 @end
