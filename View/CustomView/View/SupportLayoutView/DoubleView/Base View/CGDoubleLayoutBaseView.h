@@ -22,6 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSLayoutRelation  betweenSpaceRelation;
 /** 外边距 */
 @property (nonatomic, assign) UIEdgeInsets marginEdgeInsets;
+
+//设置两个视图是否居中显示
+//当水平对齐时，居中代表垂直居中
+//当垂直对齐时，居中代表水平居中
+
+@property (nonatomic, assign) BOOL firstViewCenter;
+@property (nonatomic, assign) BOOL secondViewCenter;
+
 /** 第一个视图的外边距 */
 @property (nonatomic, assign) UIEdgeInsets firstTargetViewEdgeInsets;
 /** 第二个视图的外边距 */

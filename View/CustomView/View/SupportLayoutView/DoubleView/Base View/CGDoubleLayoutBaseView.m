@@ -179,4 +179,24 @@
     }
 }
 
+- (void)setFirstViewCenter:(BOOL)firstViewCenter
+{
+    if (_firstViewCenter != firstViewCenter) {
+        _firstViewCenter = firstViewCenter;
+        config.firstViewCenter = firstViewCenter;
+        [self.contentView removeConstraints:self.contentView.constraints];
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setSecondViewCenter:(BOOL)secondViewCenter
+{
+    if (_secondViewCenter != secondViewCenter) {
+        _secondViewCenter = secondViewCenter;
+        config.secondViewCenter = secondViewCenter;
+        [self.contentView removeConstraints:self.contentView.constraints];
+        [self setupUpdateConstraints];
+    }
+}
+
 @end

@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 //
 
-- (CGPoint)cg_convertPoint:(CGPoint)point toView:(nullable UIView *)view;
-- (CGPoint)cg_convertPoint:(CGPoint)point fromView:(nullable UIView *)view;
-- (CGRect)cg_convertRect:(CGRect)rect toView:(nullable UIView *)view;
-- (CGRect)cg_convertRect:(CGRect)rect fromView:(nullable UIView *)view;
+- (CGPoint)cg_convertPoint:(CGPoint)point toView:(nullable UIView *)view __deprecated_msg("舍弃");
+- (CGPoint)cg_convertPoint:(CGPoint)point fromView:(nullable UIView *)view __deprecated_msg("舍弃");
+- (CGRect)cg_convertRect:(CGRect)rect toView:(nullable UIView *)view __deprecated_msg("舍弃");
+- (CGRect)cg_convertRect:(CGRect)rect fromView:(nullable UIView *)view __deprecated_msg("舍弃");
 
 @end
 

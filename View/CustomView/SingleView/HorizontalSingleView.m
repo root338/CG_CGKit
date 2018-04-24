@@ -9,6 +9,8 @@
 #import "HorizontalSingleView.h"
 #import "UIButton+AreaCalculate.h"
 
+#import "UIView+CG_CGAreaCalculate.h"
+
 @interface HorizontalSingleView ()
 {
     BOOL isChangeValue;
@@ -93,18 +95,36 @@
     [self.titles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         
         UIButton *button = nil;
+        
         if (self.setupSelecteView) {
             
             button = self.setupSelecteView(idx, obj);
-        }else if (self.selecteViewClass){
-            
-            button = [self.selecteViewClass new];
-            [button setTitle:obj forState:UIControlStateNormal];
-            
         }else {
             
-            button = [UIButton buttonWithType:self.appearance.buttonType];
-            [button setTitle:obj forState:UIControlStateNormal];
+            NSString *title = nil;
+            if ([obj isKindOfClass:[NSString class]]) {
+                title = obj;
+            }else {
+                NSAssert(self.setupButtonTitle, @"需要设置setupButtonTitle来帮助视图设置按钮标题");
+                title = self.setupButtonTitle(idx, obj);
+            }
+            
+            if (self.selecteViewClass){
+            
+                button = [self.selecteViewClass new];
+                [button setTitle:title forState:UIControlStateNormal];
+            
+            }else {
+            
+                button = [UIButton buttonWithType:self.appearance.buttonType];
+                [button setTitle:title forState:UIControlStateNormal];
+            }
+            
+            [self.appearance.titleColors enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, UIColor * _Nonnull obj, BOOL * _Nonnull stop) {
+                [button setTitleColor:obj forState:key.unsignedIntegerValue];
+            }];
+            
+            button.titleLabel.font = self.appearance.titleFont;
         }
         
         if (self.setupButtonAppearance) {
@@ -141,22 +161,71 @@
     [super layoutSubviews];
     
     UIEdgeInsets margin = self.appearance.edgeInsetForContentView;
-    CGSize viewSize = self.bounds.size;
     
-    self.contentView.frame = CGRectMake(margin.left, margin.top, viewSize.width - (margin.left + margin.right), viewSize.height - (margin.top + margin.bottom));
+    self.contentView.frame = CG_CGFrameWithMaxFrame(self.bounds, margin);
     
-    CGFloat width = (CGRectGetWidth(self.contentView.bounds) - (self.appearance.spaceForButtons * (self.titles.count - 1)));
-    CGFloat height = CGRectGetHeight(self.contentView.bounds);
-    
-    CGFloat buttonWidth = self.titles.count ? width / self.titles.count : 0;
-    CGFloat buttonHeight = height;
-    
-    CGFloat originX = 0;
-    CGFloat originY = 0;
-    for (UIView *subview in self.contentView.subviews) {
+    if (self.appearance.style == HorizontalSingleViewStyleDefault) {
         
-        subview.frame = CGRectMake(originX, originY, buttonWidth, buttonHeight);
-        originX += buttonWidth + self.appearance.spaceForButtons;
+        CGFloat width = (CGRectGetWidth(self.contentView.bounds) - (self.appearance.spaceForButtons * (self.titles.count - 1)));
+        CGFloat height = CGRectGetHeight(self.contentView.bounds);
+        
+        CGFloat buttonWidth = self.titles.count ? width / self.titles.count : 0;
+        CGFloat buttonHeight = height;
+        
+        CGFloat originX = 0;
+        CGFloat originY = 0;
+        for (UIView *subview in self.contentView.subviews) {
+            
+            subview.frame = CGRectMake(originX, originY, buttonWidth, buttonHeight);
+            originX += buttonWidth + self.appearance.spaceForButtons;
+        }
+    }else if (self.appearance.style == HorizontalSingleViewStyleValue1) {
+        
+        CGFloat width = self.contentView.width;
+        CGFloat height = self.contentView.height;
+        
+        CGFloat spaceForButton = 0;
+        UIEdgeInsets buttonMarginEdgeInsets = margin;
+        
+        if (self.titles.count > 1) {
+            
+            CGFloat subviewTotalWidth = 0;
+            
+            for (UIView *subview in self.contentView.subviews) {
+                [subview sizeToFit];
+                subviewTotalWidth += subview.width;
+            }
+            if (subviewTotalWidth > width) {
+                if (subviewTotalWidth <= self.width) {
+                    CGFloat marginTotalLenght = self.width - subviewTotalWidth;
+                    UIEdgeInsets tempMargin = margin;
+                    if (margin.left == 0 && margin.right != 0) {
+                        tempMargin.right = marginTotalLenght;
+                    }else if (margin.left != 0 && margin.right == 0) {
+                        tempMargin.left = marginTotalLenght;
+                    }else if (margin.left != 0 && margin.right != 0) {
+                        CGFloat scale = margin.left / margin.right;
+                        tempMargin.right = subviewTotalWidth / (scale + 1);
+                        tempMargin.left = subviewTotalWidth - tempMargin.right;
+                    }
+                    self.contentView.frame = CG_CGFrameWithMaxFrame(self.bounds, tempMargin);
+                    buttonMarginEdgeInsets = tempMargin;
+                }
+                
+            }else {
+                
+                spaceForButton = (width - subviewTotalWidth) / (self.titles.count - 1);
+            }
+        }
+        
+        CGFloat originX = 0;
+        CGFloat originY = 0;
+        
+        for (UIView *subview in self.contentView.subviews) {
+            
+            subview.frame = CGRectMake(originX, originY, subview.width, height);
+            originX += subview.frame.size.width + spaceForButton;
+        }
     }
     
     [self updateSliderViewLocationIsAnmation:NO];

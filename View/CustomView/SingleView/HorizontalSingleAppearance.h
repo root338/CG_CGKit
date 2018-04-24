@@ -31,9 +31,23 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 };
 
 /**
+ 样式选择
+
+ - HorizontalSingleViewStyleDefault: 默认
+ - HorizontalSingleViewStyleValue1: 按钮按照文字大小自动计算，按钮之间的间距等分,忽略其他所有属性
+ */
+typedef NS_ENUM(NSInteger, HorizontalSingleViewStyle) {
+    HorizontalSingleViewStyleDefault,
+    
+    HorizontalSingleViewStyleValue1,
+};
+
+/**
  *  水平横向视图的外观设置
  */
 @interface HorizontalSingleAppearance : NSObject
+
+
 
 #pragma mark - 滑块设置
 /**
@@ -71,6 +85,8 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 
 #pragma mark - 主视图设置
 
+@property (nonatomic, assign) HorizontalSingleViewStyle style;
+
 /** 单选视图背景 */
 @property (nonatomic, copy) UIColor * backgroundColor;
 
@@ -107,4 +123,11 @@ typedef NS_ENUM(NSInteger, HorizontalSingleSliderType){
 #pragma mark - 按钮外观设置
 /** 按钮创建的状态 */
 @property (assign, nonatomic) UIButtonType buttonType;
+
+/**
+ 按钮不同状态下的颜色
+ */
+@property (nonatomic, strong) NSDictionary<NSNumber *, UIColor *> *titleColors;
+/** 按钮字体 */
+@property (nonatomic, strong) UIFont *titleFont;
 @end

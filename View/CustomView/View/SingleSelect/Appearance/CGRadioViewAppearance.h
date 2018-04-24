@@ -19,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CGRadioViewAppearance : CGBaseObject<NSCopying, NSMutableCopying>
 
 //单选视图主视图外观设置
-@property (nullable, nonatomic, strong, readonly) UIColor         *   backgroundColor;
-@property (nonatomic, assign, readonly)           LineBoxType         lineBoxType;
-@property (nonatomic, assign, readonly)           CGFloat             lineLength;
-@property (nullable, nonatomic, strong, readonly) UIColor         *   lineColor;
+@property (nullable, nonatomic, strong, readonly) UIColor *backgroundColor;
+@property (nonatomic, assign, readonly) LineBoxType lineBoxType;
+@property (nonatomic, assign, readonly) CGFloat lineLength;
+@property (nullable, nonatomic, strong, readonly) UIColor *lineColor;
 
 /**
  仅在使用 CGTitleRadioView 下有效
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, nonatomic, strong, readonly) CGRadioViewFlowLayout *radioViewFlowLayout;
 
-@property (nonatomic, assign, readonly)           BOOL                isHideSliderView;
+@property (nonatomic, assign, readonly) BOOL isHideSliderView;
 /**
  设置滑块的配置
  */
@@ -54,15 +54,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CGMutableRadioViewAppearance : CGRadioViewAppearance
 
-@property (nullable, nonatomic) UIColor         *   backgroundColor;
-@property (nonatomic)           LineBoxType         lineBoxType;
-@property (nonatomic)           CGFloat             lineLength;
-@property (nullable, nonatomic) UIColor         *   lineColor;
+@property (nullable, nonatomic) UIColor *backgroundColor;
+@property (nonatomic) LineBoxType lineBoxType;
+@property (nonatomic) CGFloat lineLength;
+@property (nullable, nonatomic) UIColor *lineColor;
 
 @property (nullable, nonatomic) CGTitleRadioCellAppearance *titleRadioCellAppearance;
 @property (nullable, nonatomic) CGRadioViewFlowLayout *radioViewFlowLayout;
 
-@property (nonatomic)           BOOL                isHideSliderView;
+@property (nonatomic) BOOL isHideSliderView;
 @property (nullable, nonatomic) CGRadioSliderViewAppearance *radioSliderViewAppearance;
 
 /** 设置外边线 */

@@ -20,6 +20,8 @@ typedef NS_OPTIONS(NSInteger, DDrawLineType) {
 
 /**
  *  创建绘制边框的对象
+ *
+ *  需要给UIView留出边框宽度的空间，内部子视图不能遮挡
  */
 @interface UIView (DrawBoxLine)
 

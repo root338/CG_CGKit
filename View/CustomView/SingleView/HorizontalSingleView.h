@@ -92,6 +92,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  更新滑块的坐标
  */
 - (void)updateSliderViewContentOffset:(CGFloat)offset;
+
+#pragma mark - 辅助解析
+
+/** 当给的数组类型不是 NSString 时，必须设置该属性来设置按钮标题 */
+@property (nullable, nonatomic, copy) NSString * (^setupButtonTitle) (NSInteger index, id obj);
+
 @end
 
 NS_ASSUME_NONNULL_END
