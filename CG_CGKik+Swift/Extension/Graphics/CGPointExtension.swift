@@ -14,5 +14,7 @@ extension CGPoint {
         return CGPoint.init(x: self.x + x, y: self.y + y)
     }
     
-    
+    func cg_offset(point: CGPoint) -> CGPoint {
+        return CGPoint.init(x: self.x + point.x, y: self.y + point.y)
+    }
 }
