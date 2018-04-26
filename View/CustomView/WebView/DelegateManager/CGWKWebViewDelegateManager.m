@@ -243,11 +243,6 @@
     }
 }
 
-- (void)dealloc
-{
-    NSLog(@"%@", [self className]);
-}
-
 - (UIViewController *)viewController
 {
     UIViewController *viewController    = self.webView.viewController;
