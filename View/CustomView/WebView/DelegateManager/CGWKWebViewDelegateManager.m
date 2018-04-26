@@ -30,6 +30,8 @@
 
 @property (nonatomic, readonly) CGWebView *webView;
 @property (nonatomic, readonly) id<CGWebViewDelegate> delegate;
+@property (nonatomic, strong) WKWebView *targetMonitorView;
+
 @end
 
 @implementation CGWKWebViewDelegateManager
@@ -191,22 +193,34 @@
 
 - (void)openWebViewMonitor
 {
+    WKWebView *webView      = self.webView.webViewForWKWebView;
+    if (webView != self.targetMonitorView) {
+        self.targetMonitorView  = webView;
+    }
+    
     if (monitorMark) {
         return;
     }
-    monitorMark = YES;
-    WKWebView *webView  = self.webView.webViewForWKWebView;
-    [webView addObserver:self forKeyPath:[self webViewTitleKeyPath] options:NSKeyValueObservingOptionNew context:nil];
-    [webView addObserver:self forKeyPath:[self webViewProgressKeyPath] options:NSKeyValueObservingOptionNew context:nil];
+    
+    if (webView) {
+        
+        monitorMark = YES;
+        [webView addObserver:self forKeyPath:[self webViewTitleKeyPath] options:NSKeyValueObservingOptionNew context:nil];
+        [webView addObserver:self forKeyPath:[self webViewProgressKeyPath] options:NSKeyValueObservingOptionNew context:nil];
+    }
 }
 
 - (void)closeWebViewMonitor
+{
+    self.targetMonitorView = nil;
+}
+
+- (void)closeMonitorWithWebView:(WKWebView *)webView
 {
     if (monitorMark == NO) {
         return;
     }
     monitorMark = NO;
-    WKWebView *webView  = self.webView.webViewForWKWebView;
     [webView removeObserver:self forKeyPath:[self webViewTitleKeyPath]];
     [webView removeObserver:self forKeyPath:[self webViewProgressKeyPath]];
 }
@@ -229,6 +243,11 @@
     }
 }
 
+- (void)dealloc
+{
+    NSLog(@"%@", [self className]);
+}
+
 - (UIViewController *)viewController
 {
     UIViewController *viewController    = self.webView.viewController;
@@ -238,12 +257,12 @@
     return viewController;
 }
 
-- (void)dealloc
+- (void)setTargetMonitorView:(WKWebView *)targetMonitorView
 {
-    if (monitorMark) {
-        [self closeWebViewMonitor];
+    if (_targetMonitorView) {
+        [self closeMonitorWithWebView:_targetMonitorView];
     }
-    _webViewPrivateProxyDelegate    = nil;
+    _targetMonitorView = targetMonitorView;
 }
 
 @end
