@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 开启webView的属性值监听 */
 - (void)openWebViewMonitor;
-/** 关闭webView的属性值监听 */
+/** 关闭webView的属性值监听, 结束必须调用关闭方法 */
 - (void)closeWebViewMonitor;
 
 + (instancetype)createManagerWithWebViewPrivateProxyDelegate:(id<CGWebViewPrivateProxyDelegate>)webViewPrivateProxyDelegate;
