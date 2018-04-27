@@ -76,7 +76,7 @@
         if (viewController) {
             [viewController showAlertViewWithTitle:nil message:message cancelTitle:@"取消" otherTitle:@"确定" resultCallback:^(BOOL isCancel) {
                 if (completionHandler) {
-                    completionHandler(isCancel);
+                    completionHandler(!isCancel);
                 }
             }];
         }else {
