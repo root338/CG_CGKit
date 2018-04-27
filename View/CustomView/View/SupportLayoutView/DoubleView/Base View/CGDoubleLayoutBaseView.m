@@ -150,6 +150,24 @@
     }
 }
 
+- (void)setFirstTargetViewExcludingEdge:(CGLayoutOptionEdge)firstTargetViewExcludingEdge
+{
+    if (_firstTargetViewExcludingEdge != firstTargetViewExcludingEdge) {
+        _firstTargetViewExcludingEdge = firstTargetViewExcludingEdge;
+        config.firstViewExcludingOptionEdge = firstTargetViewExcludingEdge;
+        [self setupUpdateConstraints];
+    }
+}
+
+- (void)setSecondTargetViewExcludingEdge:(CGLayoutOptionEdge)secondTargetViewExcludingEdge
+{
+    if (_secondTargetViewExcludingEdge != secondTargetViewExcludingEdge) {
+        _secondTargetViewExcludingEdge = secondTargetViewExcludingEdge;
+        config.secondViewExcludingOptionEdge = secondTargetViewExcludingEdge;
+        [self setupUpdateConstraints];
+    }
+}
+
 - (void)setFirstItemSize:(CGSize)firstItemSize
 {
     if (!CGSizeEqualToSize(firstItemSize, _firstItemSize)) {

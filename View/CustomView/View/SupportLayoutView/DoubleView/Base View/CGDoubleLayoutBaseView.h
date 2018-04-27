@@ -8,6 +8,7 @@
 
 #import "CGBaseView.h"
 #import "CGAlignmentHeader.h"
+#import "CGLayoutConstraintsTypeHeader.h"
 #import "CGLayoutMarginDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -34,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIEdgeInsets firstTargetViewEdgeInsets;
 /** 第二个视图的外边距 */
 @property (nonatomic, assign) UIEdgeInsets secondTargetViewEdgeInsets;
+/** 第一个视图的需要忽略边 */
+@property (nonatomic, assign) CGLayoutOptionEdge firstTargetViewExcludingEdge;
+/** 第二个视图的需要忽略边 */
+@property (nonatomic, assign) CGLayoutOptionEdge secondTargetViewExcludingEdge;
 
 /** 设置第一个视图的大小，大于0处理 */
 @property (nonatomic, assign) CGSize firstItemSize;

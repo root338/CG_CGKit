@@ -56,6 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL secondViewCenter;
 @property (nonatomic, readwrite) BOOL center;
 
+///设置视图居中时忽略相关约束
+//@property (nonatomic, assign) BOOL firstViewIsCenterIgnoreRelatedEdgeConstraint;
+//@property (nonatomic, assign) BOOL secondViewIsCenterIgnoreRelatedEdgeConstraint;
+
 //设置两个视图的大小
 
 @property (nonatomic, assign) CGFloat firstViewWidth;
