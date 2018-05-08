@@ -52,5 +52,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @warning 该方法设置的是sectionFooterHeight属性值，当实现tableView:viewForFooterInSection:协议方法时需要自行设置
  */
 - (void)cg_tableViewChangeSectionFooterViewZeroHeight;
+
+/**
+ *  设置表格每组的页眉页脚为_CG_TableView_ZeroHeight
+ */
+- (void)cg_tableViewChangeSectionHeaderFooterZeroHeight;
+
+- (void)cg_tableViewChangeAllHeaderFooterZeroHeight;
 @end
 NS_ASSUME_NONNULL_END

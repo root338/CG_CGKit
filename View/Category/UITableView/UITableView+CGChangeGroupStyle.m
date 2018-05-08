@@ -64,4 +64,18 @@ const CGRect    _CG_TableView_ZeroRect      = { { 0, 0 }, { 0, _CG_TableView_Zer
     self.sectionFooterHeight = _CG_TableView_ZeroHeight;
 }
 
+- (void)cg_tableViewChangeSectionHeaderFooterZeroHeight
+{
+    [self cg_tableViewChangeSectionHeaderViewZeroHeight];
+    [self cg_tableViewChangeSectionFooterViewZeroHeight];
+}
+
+- (void)cg_tableViewChangeAllHeaderFooterZeroHeight
+{
+    [self cg_tableViewChangeHeaderViewZeroHeight];
+    [self cg_tableViewChangeFooterViewZeroHeight];
+    [self cg_tableViewChangeSectionHeaderViewZeroHeight];
+    [self cg_tableViewChangeSectionFooterViewZeroHeight];
+}
+
 @end
