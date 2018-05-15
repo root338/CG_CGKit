@@ -12,87 +12,84 @@
 ////在preprocessor Macros设置
 #if DEBUG
 
-#define CGPrintLogOpen      1
-#define CGPrintInfoOpen     0
+    #define CGPrintLogOpen      1
+    #define CGPrintInfoOpen     0
 #else
 
-#define CGPrintLogOpen      0
-#define CGPrintInfoOpen     0
+    #define CGPrintLogOpen      0
+    #define CGPrintInfoOpen     0
 
 #endif
 
 #if CGPrintLogOpen //---------if
 
 
-//有条件的错误输出，只有当condition为真时输出日志
-#define CGConditionLog(condition, format, ...) do {                                 \
-    if (condition) {                                                                \
-        fprintf(stderr, "\n<%s : %d> %s\n",                                         \
-        [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
-        __LINE__, __func__);                                                        \
-        (NSLog)((format), ##__VA_ARGS__);                                           \
-        fprintf(stderr, "-------\n\n");                                             \
-    }                                                                               \
-} while (0)
+    //有条件的错误输出，只有当condition为真时输出日志
+    #define CGConditionLog(condition, format, ...) do {                                 \
+        if (condition) {                                                                \
+            fprintf(stderr, "\n<%s : %d> %s\n",                                         \
+            [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
+            __LINE__, __func__);                                                        \
+            (NSLog)((format), ##__VA_ARGS__);                                           \
+            fprintf(stderr, "-------\n\n");                                             \
+        }                                                                               \
+    } while (0)
 
-#define CGTitleConditionLog(title, condition, format, ...) do {                     \
-    if (condition) {                                                                \
-        fprintf(stderr, "\n%s", title);                                             \
-        CGConditionLog(condition, format, ##__VA_ARGS__);                           \
-    }                                                                               \
-} while (0)
+    #define CGTitleConditionLog(title, condition, format, ...) do {                     \
+        if (condition) {                                                                \
+            fprintf(stderr, "\n%s", title);                                             \
+            CGConditionLog(condition, format, ##__VA_ARGS__);                           \
+        }                                                                               \
+    } while (0)
 
-#define CGLog(format, ...)      CGConditionLog(YES, format, ##__VA_ARGS__)
+    #define CGLog(format, ...)      CGConditionLog(YES, format, ##__VA_ARGS__)
 
-#define CGDefaultLog()          CGLog(@"");
+    #define CGDefaultLog()          CGLog(@"");
 
-#define CGPrintClassNameLog()   CGLog(@"className : %@", [self class]);
-
-
-#define CGErrorConditionLog(condition, format, ...) do {    \
-    if (condition) {                                        \
-        fprintf(stderr, "\nERROR:");                        \
-        CGLog((format), ##__VA_ARGS__);                     \
-    }                                                       \
-    }while(0)
-
-#define CGErrorLog(format, ...) CGErrorConditionLog(YES, format, ##__VA_ARGS__)
-
-#if CGPrintInfoOpen  //-----------InfoOpen   if判断
-
-#define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
-#define CGInfoConditionLog(condition, format, ...) CGConditionLog(condition, format, ##__VA_ARGS__)
-#else                   //-------------Else     否则
-
-#define CGInfoLog(format, ...)
-#define CGInfoConditionLog(condition, format, ...)
-
-#endif                  //-------------end      结束
-
-//断言
-#define CGDebugAssert(condition, desc, ...)     NSAssert(condition, (desc), ##__VA_ARGS__)
-#define CGDebugAssert1(condition, desc, arg1)   CGDebugAssert(condition, (desc), (arg1))
+    #define CGPrintClassNameLog()   CGLog(@"className : %@", [self class]);
 
 
+    #define CGErrorConditionLog(condition, format, ...) do {    \
+        if (condition) {                                        \
+            fprintf(stderr, "\nERROR:");                        \
+            CGLog((format), ##__VA_ARGS__);                     \
+        }                                                       \
+        }while(0)
+
+    #define CGErrorLog(format, ...) CGErrorConditionLog(YES, format, ##__VA_ARGS__)
+
+    #if CGPrintInfoOpen  //-----------InfoOpen   if判断
+
+        #define CGInfoLog(format, ...) CGLog(format, ##__VA_ARGS__)
+        #define CGInfoConditionLog(condition, format, ...) CGConditionLog(condition, format, ##__VA_ARGS__)
+    #else                   //-------------Else     否则
+
+        #define CGInfoLog(format, ...)
+        #define CGInfoConditionLog(condition, format, ...)
+
+    #endif                  //-------------end      结束
+
+    //断言
+    #define CGDebugAssert(condition, desc, ...)     NSAssert(condition, (desc), ##__VA_ARGS__)
+    #define CGDebugAssert1(condition, desc, arg1)   CGDebugAssert(condition, (desc), (arg1))
 
 #else   //-----------else
 
-#define CGConditionLog(condition, format, ...)
-#define CGLog(format, ...)
+    #define CGConditionLog(condition, format, ...)
+    #define CGLog(format, ...)
 
-#define CGDefaultLog()
-#define CGPrintClassNameLog()
+    #define CGDefaultLog()
+    #define CGPrintClassNameLog()
 
-#define CGInfoConditionLog(condition, format, ...)
-#define CGInfoLog(format, ...)
+    #define CGInfoConditionLog(condition, format, ...)
+    #define CGInfoLog(format, ...)
 
-#define CGErrorConditionLog(condition, format, ...)
-#define CGErrorLog(format, ...)
+    #define CGErrorConditionLog(condition, format, ...)
+    #define CGErrorLog(format, ...)
 
-#define CGDebugAssert(condition, desc, ...)
-#define CGDebugAssert1(condition, desc, arg1)
-#define CGTitleConditionLog(title, condition, format, ...)
-
+    #define CGDebugAssert(condition, desc, ...)
+    #define CGDebugAssert1(condition, desc, arg1)
+    #define CGTitleConditionLog(title, condition, format, ...)
 
 #endif  //-----------end
 
