@@ -9,6 +9,7 @@
 #import "HorizontalSingleView.h"
 #import "UIButton+AreaCalculate.h"
 
+#import "UIView+CGSetupFrame.h"
 #import "UIView+CG_CGAreaCalculate.h"
 
 @interface HorizontalSingleView ()
