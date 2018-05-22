@@ -107,7 +107,7 @@
     
     [subviews cg_autoSetupHorizontalSubviewsLayoutAxisHorizontalWithMarginInsets:UIEdgeInsetsMake(verticalSpace, horizontalSpace, verticalSpace, horizontalSpace) setupSubviewsSpace:nil setupSubviewsLayoutRelation:^NSLayoutRelation(UIView * _Nonnull view1, CGLayoutEdge view1LayoutEdge, UIView * _Nonnull view2, CGLayoutEdge view2LayoutEdge) {
         NSLayoutRelation relation = NSLayoutRelationEqual;
-        if (view1 == _rightArrowButton && view2 == _finishButton) {
+        if (view1 == self->_rightArrowButton && view2 == self->_finishButton) {
             relation    = NSLayoutRelationGreaterThanOrEqual;
         }
         return relation;

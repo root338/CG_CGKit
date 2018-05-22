@@ -78,7 +78,7 @@
     [UIView cg_autoSetUpdate:isUpdateConstraints forConstraints:^{
         
         [self.contentView cg_autoEdgesToSuperviewEdgesWithInsets:self.marginEdgeInsets];
-        [self.contentView cg_autoTwoSubviewsWithConfig:config];
+        [self.contentView cg_autoTwoSubviewsWithConfig:self->config];
     }];
     
     if (!isUpdateConstraints) {
