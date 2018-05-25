@@ -19,12 +19,13 @@
 
 @interface CGInputTextView ()
 {
-    CGInputTextViewNoteType _handleNotificationFailureType;
-    CGInputTextViewScrollFailureType _scrollFailureType;
     
     /** 输入字符不大于最大字数 */
     BOOL _isInputTextNotMoreThanMaxWords;
 }
+
+@property (nonatomic, assign) CGInputTextViewNoteType handleNotificationFailureType;
+@property (nonatomic, assign) CGInputTextViewScrollFailureType scrollFailureType;
 
 @end
 
@@ -166,7 +167,7 @@
 //                    if ([self.cg_delegate respondsToSelector:@selector(cg_textView:notification:failureType:)]) {
 //                    [self.cg_delegate cg_textView:self notification:note failureType:_scrollFailureType];
 //                    }
-                    [weakself handleNotificationFailureType:_handleNotificationFailureType note:note];
+                    [weakself handleNotificationFailureType: weakself.handleNotificationFailureType note:note];
                 }];
                 
             }else {

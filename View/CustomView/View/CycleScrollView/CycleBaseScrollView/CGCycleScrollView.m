@@ -319,7 +319,7 @@
                         if ([obj isKindOfClass:[CGCycleContentView class]]) {
                             
                             NSInteger viewIndex = obj.viewIndex;
-                            if (viewIndex != _previousView.viewIndex && viewIndex != _currentView.viewIndex && viewIndex != _nextView.viewIndex) {
+                            if (viewIndex != self->_previousView.viewIndex && viewIndex != self->_currentView.viewIndex && viewIndex != self->_nextView.viewIndex) {
                                 //查找不是当前加载的视图索引
                                 removeViewIndex = viewIndex;
                                 *stop = YES;
@@ -486,7 +486,7 @@
     
     [cycleScrollViewSubviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[CGCycleContentView class]]) {
-            if (_previousView != obj && _currentView != obj && _nextView != obj) {
+            if (self->_previousView != obj && self->_currentView != obj && self->_nextView != obj) {
                 //当显示的视图不是CGCycleContentView类型且不等显示的视图时判定为多余视图，移除!!!
                 [obj removeFromSuperview];
             }

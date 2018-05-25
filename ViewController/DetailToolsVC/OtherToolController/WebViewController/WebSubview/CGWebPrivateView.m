@@ -61,13 +61,13 @@
         NSArray *subviews   = @[_webView, _webViewToolBar];
         [subviews cg_autoArrangementType:CGSubviewsArrangementTypeVertical marginInsets:UIEdgeInsetsZero setupSubviewLayoutExculdingEdge:^BOOL(UIView * _Nonnull view, CGLayoutEdge exculdingEdge) {
             BOOL isExculdingEdge    = NO;
-            if (view == _webViewToolBar && exculdingEdge == CGLayoutEdgeBottom) {
+            if (view == self->_webViewToolBar && exculdingEdge == CGLayoutEdgeBottom) {
                 isExculdingEdge     = YES;
             }
             return isExculdingEdge;
         }];
         [UIView cg_autoSetPriority:980 forConstraints:^{
-            [_webViewToolBar cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
+            [self->_webViewToolBar cg_autoConstrainToSuperviewAttribute:NSLayoutAttributeBottom];
         }];
     }
     return self;

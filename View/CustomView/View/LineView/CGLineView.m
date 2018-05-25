@@ -12,13 +12,14 @@
 
 @interface CGLineView ()
 {
-    //线视图的边距
-    NSMutableDictionary<NSNumber *, NSValue *> *_lineViewsEdgeInsets;
     //线视图
     NSMutableDictionary<NSNumber *, UIView *> *_lineViews;
 }
 
 @property (nonatomic, strong) NSArray<NSNumber *> *lineTypeKeys;
+
+//线视图的边距
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSValue *> *lineViewsEdgeInsets;
 
 @property (nonatomic, strong, readwrite) UIView *contentView;
 
@@ -35,7 +36,7 @@
         [self addSubview:_contentView];
         
         [UIView cg_autoSetPriority:999 forConstraints:^{
-            [_contentView cg_autoEdgesInsetsZeroToSuperview];
+            [self.contentView cg_autoEdgesInsetsZeroToSuperview];
         }];
     }
     return self;
@@ -59,16 +60,12 @@
         return;
     }
     
-    if (!_lineViewsEdgeInsets) {
-        _lineViewsEdgeInsets    = [NSMutableDictionary dictionary];
-    }
-    
     NSValue *edgeInsetsValue    = [NSValue valueWithUIEdgeInsets:edgeInsets];
     [self.lineTypeKeys enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         LineBoxType lineBoxType = obj.integerValue;
         if (lineType & lineBoxType) {
-            [_lineViewsEdgeInsets setObject:edgeInsetsValue forKey:obj];
+            [self.lineViewsEdgeInsets setObject:edgeInsetsValue forKey:obj];
         }
     }];
 }
@@ -192,6 +189,17 @@
         _lineType   = lineType;
         [self setupLineView];
     }
+}
+
+- (NSMutableDictionary<NSNumber *,NSValue *> *)lineViewsEdgeInsets
+{
+    if (_lineViewsEdgeInsets) {
+        return _lineViewsEdgeInsets;
+    }
+    
+    _lineViewsEdgeInsets = [NSMutableDictionary dictionary];;
+    
+    return _lineViewsEdgeInsets;
 }
 
 @end
