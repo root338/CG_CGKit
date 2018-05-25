@@ -8,6 +8,8 @@
 
 #import "UIImage+CGImage.h"
 
+#import "UIView+CG_CGAreaCalculate.h"
+
 @implementation UIImage (CGImage)
 
 @dynamic imageSizeForPNG;
@@ -152,6 +154,89 @@
     UIGraphicsEndImageContext();
     
     return newimg;
+}
+
+#pragma mark - 计算显示区域
+
+- (CGRect)imageFrameWithSize:(CGSize)size contentModel:(UIViewContentMode)contentModel
+{
+    CGRect frame = CGRectZero;
+    
+    CGSize imageSize = self.size;
+    
+    CGFloat x = 0;
+    CGFloat y = 0;
+    CGFloat width = self.size.width;
+    CGFloat height = self.size.height;
+    
+    switch (contentModel) {
+        case UIViewContentModeTop:
+            x = CG_CGCenterOriginX(imageSize.width, size.width);
+            break;
+        case UIViewContentModeTopRight:
+            x = size.width - imageSize.width;
+            break;
+        case UIViewContentModeRight:
+            x = size.width - imageSize.width;
+            y = CG_CGCenterOriginY(imageSize.height, size.height);
+            break;
+        case UIViewContentModeBottomRight:
+            x = size.width - imageSize.width;
+            y = size.height - imageSize.height;
+            break;
+        case UIViewContentModeBottom:
+            x = CG_CGCenterOriginX(imageSize.width, size.width);
+            y = size.height - imageSize.height;
+            break;
+        case UIViewContentModeBottomLeft:
+            y = size.height - imageSize.height;
+            break;
+        case UIViewContentModeLeft:
+            y = CG_CGCenterOriginY(imageSize.height, size.height);
+            break;
+        case UIViewContentModeCenter:
+            x = CG_CGCenterOriginX(imageSize.width, size.width);
+            y = CG_CGCenterOriginY(imageSize.height, size.height);
+            break;
+        case UIViewContentModeScaleToFill:
+            width = size.width;
+            height = size.height;
+            break;
+        case UIViewContentModeScaleAspectFit:
+        case UIViewContentModeScaleAspectFill:
+        {
+            
+            CGFloat s1 = imageSize.width / size.width;
+            CGFloat s2 = imageSize.height / size.height;
+            if (s1 < s2) {
+                if (UIViewContentModeScaleAspectFit == contentModel) {
+                    width   = imageSize.width / s2;
+                    height  = size.height;
+                }else {
+                    width   = size.width;
+                    height  = imageSize.height / s1;
+                }
+            }else {
+                if (UIViewContentModeScaleAspectFit == contentModel) {
+                    width   = size.width;
+                    height  = imageSize.height / s2;
+                }else {
+                    width   = imageSize.width / s1;
+                    height  = size.height;
+                }
+            }
+            
+            x = CG_CGCenterOriginX(width, size.width);
+            y = CG_CGCenterOriginY(height, size.height);
+            break;
+        }
+        default:
+            break;
+    }
+    
+    frame = CGRectMake(x, y, width, height);
+    
+    return frame;
 }
 
 @end
