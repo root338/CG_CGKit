@@ -42,6 +42,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage *)scaleImageWithEstimatedSize:(CGSize)estimatedSize scale:(CGFloat)scale;
 
 - (UIImage *)drawImageWithSize:(CGSize)size drawRect:(CGRect)rect;
+
+#pragma mark - 计算显示区域
+
+- (CGRect)imageFrameWithSize:(CGSize)size contentModel:(UIViewContentMode)contentModel;
+
 @end
 
 NS_ASSUME_NONNULL_END
