@@ -158,6 +158,13 @@
 
 #pragma mark - 计算显示区域
 
+- (CGRect)imageFrameWithFrame:(CGRect)frame contentModel:(UIViewContentMode)contentModel
+{
+    CGRect imageFrame = [self imageFrameWithSize:frame.size contentModel:contentModel];
+    imageFrame.origin   = CGPointMake(CGRectGetMinX(imageFrame) + CGRectGetMinX(frame), CGRectGetMinY(imageFrame) + CGRectGetMinY(frame));
+    return imageFrame;
+}
+
 - (CGRect)imageFrameWithSize:(CGSize)size contentModel:(UIViewContentMode)contentModel
 {
     CGRect frame = CGRectZero;
