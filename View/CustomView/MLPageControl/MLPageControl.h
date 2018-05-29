@@ -57,6 +57,8 @@ typedef NS_ENUM(NSInteger, MLPageControlStyle) {
 @property(nonatomic) NSInteger currentPage;
 /** 当只有一个分页标识的时候隐藏 */
 @property(nonatomic) BOOL hidesForSinglePage;
+/** 关闭容错, 默认 NO, 开启容错时当currentPage超出范围时自动选择最大的值，当currentPage小于返回时自动选择最小的值 */
+@property (nonatomic) BOOL disableFaultTolerant;
 ///** 当为YES时改变currentPage时，不会更新视图, 必须手动调用 updateCurrentPageDisplay, 默认为 NO */
 //@property(nonatomic) BOOL defersCurrentPageDisplay;
 ///** 更新视图 */

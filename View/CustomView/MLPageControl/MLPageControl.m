@@ -18,7 +18,8 @@
 {
     
 }
-
+/// 内部选择 page Index
+@property (nonatomic, assign) NSInteger mCurrentPage;
 @property (nonatomic, assign) BOOL updateDisplayMark;
 
 @property (nonatomic, strong) NSMutableArray<MLPageControlCell *> *pageControls;
@@ -28,6 +29,8 @@
 
 @implementation MLPageControl
 
+@synthesize currentPage = _currentPage;
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -36,6 +39,7 @@
         _insets     = UIEdgeInsetsMake(18, 8, 18, 8);
         _pageSize   = CGSizeMake(7, 7);
         _pageSpace  = 9;
+        _disableFaultTolerant       = NO;
         _pageVerticalAlignment      = CGViewVerticalAlignmentCenter;
         _pageHorizontalAlignment    = CGViewAlignmentHorizontalCenter;
     }
@@ -165,8 +169,9 @@
 
 - (void)updateCurrentPageTintColor
 {
-    if (self.currentPage > 0 && self.currentPage < self.pageControls.count) {
-        MLPageControlCell *cell = self.pageControls[self.currentPage];
+    
+    if (self.mCurrentPage >= 0 && self.mCurrentPage < self.pageControls.count) {
+        MLPageControlCell *cell = self.pageControls[self.mCurrentPage];
         if (cell.backgroundColor != self.currentPageIndicatorTintColor) {
             cell.backgroundColor = self.currentPageIndicatorTintColor;
         }
@@ -177,7 +182,7 @@
 {
     [self.pageControls enumerateObjectsUsingBlock:^(MLPageControlCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        if (idx != self.currentPage) {
+        if (idx != self.mCurrentPage) {
             if (obj.backgroundColor != self.pageIndicatorTintColor) {
                 obj.backgroundColor = self.pageIndicatorTintColor;
             }
@@ -210,17 +215,17 @@
     }
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [super touchesBegan:touches withEvent:event];
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-}
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [super touchesMoved:touches withEvent:event];
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-}
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//{
+//    [super touchesBegan:touches withEvent:event];
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
+//
+//- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//{
+//    [super touchesMoved:touches withEvent:event];
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
+//}
 
 #pragma mark - Properties
 
@@ -251,8 +256,33 @@
 - (void)setCurrentPage:(NSInteger)currentPage
 {
     if (_currentPage != currentPage) {
-        _currentPage = currentPage;
+        _currentPage    = currentPage;
+        _mCurrentPage   = currentPage;
         [self setNeedsUpdateDisplay];
+    }
+}
+
+- (NSInteger)currentPage
+{
+    if (self.disableFaultTolerant) {
+        return self.mCurrentPage;
+    }else {
+        return _currentPage;
+    }
+}
+
+- (NSInteger)mCurrentPage
+{
+    if (self.disableFaultTolerant) {
+        if (_currentPage < 0) {
+            return 0;
+        }else if (_currentPage < self.numberOfPages) {
+            return _mCurrentPage = self.numberOfPages;
+        }else {
+            return _currentPage;
+        }
+    }else {
+        return _currentPage;
     }
 }
 
