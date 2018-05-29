@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 计算显示区域
 
 - (CGRect)imageFrameWithSize:(CGSize)size contentModel:(UIViewContentMode)contentModel;
-
+- (CGRect)imageFrameWithFrame:(CGRect)frame contentModel:(UIViewContentMode)contentModel;
 @end
 
 NS_ASSUME_NONNULL_END
