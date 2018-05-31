@@ -158,10 +158,10 @@
 
 #pragma mark - 计算显示区域
 
-- (CGRect)imageFrameWithFrame:(CGRect)frame contentModel:(UIViewContentMode)contentModel
+- (CGRect)imageFrameWithRect:(CGRect)rect contentModel:(UIViewContentMode)contentModel
 {
-    CGRect imageFrame = [self imageFrameWithSize:frame.size contentModel:contentModel];
-    imageFrame.origin   = CGPointMake(CGRectGetMinX(imageFrame) + CGRectGetMinX(frame), CGRectGetMinY(imageFrame) + CGRectGetMinY(frame));
+    CGRect imageFrame = [self imageFrameWithSize:rect.size contentModel:contentModel];
+    imageFrame.origin   = CGPointMake(CGRectGetMinX(imageFrame) + CGRectGetMinX(rect), CGRectGetMinY(imageFrame) + CGRectGetMinY(rect));
     return imageFrame;
 }
 
@@ -215,6 +215,7 @@
             
             CGFloat s1 = imageSize.width / size.width;
             CGFloat s2 = imageSize.height / size.height;
+            
             if (s1 < s2) {
                 if (UIViewContentModeScaleAspectFit == contentModel) {
                     width   = imageSize.width / s2;
@@ -226,9 +227,9 @@
             }else {
                 if (UIViewContentModeScaleAspectFit == contentModel) {
                     width   = size.width;
-                    height  = imageSize.height / s2;
+                    height  = imageSize.height / s1;
                 }else {
-                    width   = imageSize.width / s1;
+                    width   = imageSize.width / s2;
                     height  = size.height;
                 }
             }
