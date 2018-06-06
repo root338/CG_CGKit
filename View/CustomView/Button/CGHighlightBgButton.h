@@ -8,8 +8,10 @@
 
 #import "CGBaseButton.h"
 
+#import "CGButton.h"
+
 /** 自定义在按钮不同状态显示不同背景色 */
-@interface CGHighlightBgButton : CGBaseButton
+@interface CGHighlightBgButton : CGButton
 
 - (void)setBackgroundColor:(nullable UIColor *)backgroundColor forState:(UIControlState)state;
 

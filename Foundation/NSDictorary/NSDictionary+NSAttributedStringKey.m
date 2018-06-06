@@ -18,4 +18,26 @@
              };
 }
 
+
+
+@end
+
+@implementation NSMutableDictionary (NSAttributedStringKey)
+
+- (NSMutableDictionary * _Nonnull (^)(UIFont * _Nonnull))setAttFont
+{
+    return ^(UIFont *font) {
+        [self setObject:font forKey:NSFontAttributeName];
+        return self;
+    };
+}
+
+- (NSMutableDictionary * _Nonnull (^)(UIColor * _Nonnull))setAttForegroundColor
+{
+    return ^(UIColor *foregroundColor) {
+        [self setObject:foregroundColor forKey:NSForegroundColorAttributeName];
+        return self;
+    };
+}
+
 @end

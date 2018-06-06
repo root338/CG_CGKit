@@ -12,8 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSDictionary (NSAttributedStringKey)
 
-
 + (NSDictionary *)ml_attDictWithFont:(UIFont *)font color:(UIColor *)color;
+
+@end
+
+@interface NSMutableDictionary (NSAttributedStringKey)
+
+@property (nonatomic, readonly) NSMutableDictionary * (^setAttFont) (UIFont *);
+@property (nonatomic, readonly) NSMutableDictionary * (^setAttForegroundColor) (UIColor *);
 
 @end
 
