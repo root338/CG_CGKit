@@ -215,6 +215,13 @@
     }
 }
 
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGFloat width = (self.numberOfPages * self.pageSize.width) + (self.numberOfPages > 1 ? ((self.numberOfPages - 1) * self.pageSpace) : 0) + self.insets.left + self.insets.right;
+    CGFloat height = self.insets.top + self.insets.bottom + self.pageSize.height;
+    return CGSizeMake(size.width <= 0 ? width : MIN(size.width, width), size.height <= 0 ? height : MIN(size.height, height));
+}
+
 //- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 //{
 //    [super touchesBegan:touches withEvent:event];
