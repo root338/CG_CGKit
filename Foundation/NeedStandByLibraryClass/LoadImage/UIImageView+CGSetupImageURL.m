@@ -18,17 +18,17 @@
     [self cg_setupImageWithPath:imagePath completion:nil];
 }
 
-- (void)cg_setupImageWithPath:(NSString *)imagePath completion:(nullable SDWebImageCompletionBlock)completion
+- (void)cg_setupImageWithPath:(NSString *)imagePath completion:(nullable SDExternalCompletionBlock)completion
 {
     [self cg_setupImageWithPath:imagePath progress:nil completion:completion];
 }
 
-- (void)cg_setupImageWithPath:(NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDWebImageCompletionBlock)completion
+- (void)cg_setupImageWithPath:(NSString *)imagePath progress:(nullable SDWebImageDownloaderProgressBlock)progress completion:(nullable SDExternalCompletionBlock)completion
 {
     [self cg_setupImageWithPath:imagePath options:0 progress:progress completion:completion];
 }
 
-- (void)cg_setupImageWithPath:(NSString *)imagePath options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progress completion:(SDWebImageCompletionBlock)completion
+- (void)cg_setupImageWithPath:(NSString *)imagePath options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progress completion:(SDExternalCompletionBlock)completion
 {
     NSURL * imageUrl = [NSURL URLWithString:imagePath];
     
