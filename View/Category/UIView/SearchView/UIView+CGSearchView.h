@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable __kindof UIView *)cg_searchCommonSuperviewWithView:(__kindof UIView *)otherView;
 
 /** 搜索最近的视图控制器，不包含自己 */
-- (nullable __kindof UIViewController *)cg_searchViewControllerOfLate;
+@property (nullable, nonatomic, readonly) __kindof UIViewController * viewControllerForLate;
+@property (nullable, nonatomic, readonly) __kindof UINavigationController * navigationControllerForLate;
 /** 搜索指定的视图控制器，不包含自己 */
 - (nullable __kindof UIViewController *)cg_searchViewControllerWithClass:(Class)className;
 

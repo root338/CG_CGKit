@@ -127,7 +127,7 @@
     if (self.webView.viewController) {
         viewController  = self.webView.viewController;
     }else {
-        viewController  = [self.webView cg_searchViewControllerOfLate];
+        viewController  = self.webView.viewControllerForLate;
     }
     return viewController;
 }

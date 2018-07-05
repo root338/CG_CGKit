@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
  * 禁止用户长按弹出提示框
  * @param 默认 Debug 环境下为 NO， Release 环境下为 YES
  */
-//@property (nonatomic, assign) BOOL isDisableTouchCallout;
+@property (nonatomic, assign) BOOL isDisableTouchCallout;
 
 //#pragma mark - 使用UIWebView类时的方法
 //

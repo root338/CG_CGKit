@@ -15,11 +15,19 @@
 - (void)setIsDisableTouchCallout:(BOOL)disable
 {
     if (self.isDisableTouchCallout != disable) {
-    
+        
+        
         NSString *statusStr = disable ? @"none" : @"yes";
         NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
+        WKUserScript *userScript = [[WKUserScript alloc] initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         
-        [self dealWithWebViewJS:jsString completionHandler:nil];
+        if (!self.configuration.userContentController) {
+            WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+            self.configuration.userContentController = userContentController;
+        }
+        [self.configuration.userContentController addUserScript:userScript];
+        
+//        [self dealWithWebViewJS:jsString completionHandler:nil];
         objc_setAssociatedObject(self, @selector(isDisableTouchCallout), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 }

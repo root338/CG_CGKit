@@ -108,14 +108,14 @@
 - (BOOL)webView:(WKWebView *)webView handleNotHTTPPrefixRequest:(NSURLRequest *)request
 {
     BOOL isResult   = YES;
-    NSString *requestURLStr = [request.URL absoluteString];
+    NSURL *targetURL = request.URL;
     
     CGPrefixRequestType type = CGPrefixRequestTypeNone;
-    if ([requestURLStr hasPrefix:@"tel:"]) {
+    if ([targetURL.scheme hasPrefix:@"tel"]) {
         
         type        = CGPrefixRequestTypeTel;
         isResult    = NO;
-    }else if ([requestURLStr hasPrefix:@"itms-appss://itunes.apple.com/"]) {
+    }else if ([targetURL.scheme isEqualToString:@"itms-appss"] && [targetURL.host isEqualToString:@"itunes.apple.com"]) {
         
         type        = CGPrefixRequestTypeItunes;
         isResult    = NO;
@@ -133,7 +133,7 @@
         switch (type) {
             case CGPrefixRequestTypeTel:
             {
-                NSString *phoneStr  = [requestURLStr substringFromIndex:4];
+                NSString *phoneStr  = targetURL.resourceSpecifier;
                 [[self viewController] showAlertViewWithTitle:nil message:phoneStr cancelTitle:@"取消" otherTitle:@"呼叫" resultCallback:^(BOOL isCancel) {
                     if (!isCancel) {
                         [UIApplication callPhoneWithURL:request.URL];
@@ -247,7 +247,7 @@
 {
     UIViewController *viewController    = self.webView.viewController;
     if (viewController == nil) {
-        viewController  = [self.webView cg_searchViewControllerOfLate];
+        viewController  = self.webView.viewControllerForLate;
     }
     return viewController;
 }

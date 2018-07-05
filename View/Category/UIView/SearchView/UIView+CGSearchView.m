@@ -50,9 +50,11 @@ typedef NS_ENUM(NSInteger, CGSearchInputViewType) {
     return paramSuperview;
 }
 
-- (nullable __kindof UIViewController *)cg_searchViewControllerOfLate
-{
+- (UIViewController *)viewControllerForLate {
     return [self cg_searchViewControllerWithClass:[UIViewController class]];
+}
+- (UINavigationController *)navigationControllerForLate {
+    return [self cg_searchViewControllerWithClass:[UINavigationController class]];
 }
 
 - (nullable __kindof UIViewController *)cg_searchViewControllerWithClass:(Class)className

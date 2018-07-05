@@ -181,10 +181,12 @@
     return NO;
 }
 
+#if DEBUG
 - (void)dealloc
 {
     CGPrintClassNameLog()
 }
+#endif
 
 #pragma mark - 设置属性
 - (void)setLeftItemTitle:(NSString *)leftItemTitle
