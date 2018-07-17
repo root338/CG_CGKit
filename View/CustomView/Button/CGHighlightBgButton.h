@@ -6,8 +6,6 @@
 //  Copyright © 2015年 ym. All rights reserved.
 //
 
-#import "CGBaseButton.h"
-
 #import "CGButton.h"
 
 /** 自定义在按钮不同状态显示不同背景色 */
