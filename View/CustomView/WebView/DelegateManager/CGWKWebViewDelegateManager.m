@@ -179,6 +179,12 @@
     }
 }
 
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
+        [self.delegate webView:self.webView didFailLoadWithError:error];
+    }
+}
+
 #pragma mark - 设置监听
 - (NSString *)webViewTitleKeyPath
 {
