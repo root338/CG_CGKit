@@ -64,6 +64,9 @@
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
     
     NSAssert1(!error, @"error :%@", [error localizedDescription]);
+    if (input == nil) {
+        return;
+    }
     
     self.captureSession = [[AVCaptureSession alloc] init];
     [self.captureSession addInput:input];
