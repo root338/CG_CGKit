@@ -62,8 +62,7 @@
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
-    
-    NSAssert1(!error, @"error :%@", [error localizedDescription]);
+    CGDebugAssert1(!error, @"error :%@", [error localizedDescription]);
     if (input == nil) {
         return;
     }
