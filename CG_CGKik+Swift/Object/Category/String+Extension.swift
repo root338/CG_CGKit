@@ -24,6 +24,7 @@ enum CGSpliceStringType : Int {
 //    case
 //}
 
+//MARK:- 拼接字符串
 extension String {
     
     static func spliceString(spliceType: CGSpliceStringType, strs: String?...) -> String? {

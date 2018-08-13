@@ -10,5 +10,7 @@ import Foundation
 
 extension CGRect {
     
-    
+    func ml_centerRect(size: CGSize) -> CGRect {
+        return CGRect.init(x: (self.size.width - size.width) / 2, y: (self.size.height - size.height) / 2, width: size.width, height: size.height)
+    }
 }

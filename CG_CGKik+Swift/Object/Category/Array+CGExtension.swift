@@ -24,3 +24,27 @@ extension Array {
         return self.subarray(startIndex: range.location, endIndex: range.location + range.length - 1)
     }
 }
+
+extension Array where Element : Equatable {
+    mutating func ml_remove(at obj: Element) -> Element? {
+        
+        if self.contains(obj) {
+            for (index, targetObj) in self.enumerated() {
+                if targetObj == obj {
+                    return self.remove(at: index)
+                }
+            }
+        }
+        return nil
+    }
+    
+    mutating func ml_remove(at subarray: [Element]) -> [Element] {
+        var removeObjs = [Element]()
+        for obj in subarray {
+            if let removeObj = ml_remove(at: obj) {
+                removeObjs.append(removeObj)
+            }
+        }
+        return removeObjs
+    }
+}
