@@ -53,21 +53,17 @@
 
 - (void)setNeedsUpdateDisplay
 {
-    self.updateDisplayMark  = YES;
-    if (self.window) {
-        [self updateDisplayIfNeeded];
-    }
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateDisplayIfNeeded) object:nil];
+    [self performSelector:@selector(updateDisplayIfNeeded) withObject:nil afterDelay:0 inModes:@[NSRunLoopCommonModes, NSDefaultRunLoopMode]];
 }
 
 - (void)updateDisplayIfNeeded
 {
-    if (!self.updateDisplayMark) {
-        return;
-    }
     [self updateContentSubviews];
     [self updateContentLayout];
-    self.updateDisplayMark  = NO;
 }
+
 /// 更新子视图
 - (void)updateContentSubviews
 {
@@ -203,16 +199,6 @@
 {
     [super layoutSubviews];
     [self updateContentLayout];
-}
-
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-    if (newWindow) {
-        if (self.updateDisplayMark) {
-            [self updateDisplayIfNeeded];
-        }
-    }
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

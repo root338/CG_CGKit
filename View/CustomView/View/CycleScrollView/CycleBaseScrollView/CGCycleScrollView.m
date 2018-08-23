@@ -786,15 +786,7 @@
 {
     if (dataSource != _dataSource) {
         _dataSource = dataSource;
-        [self performSelector:@selector(reloadAllView) withObject:nil afterDelay:0];
-    }
-}
-
-- (void)setIsCycle:(BOOL)isCycle
-{
-    if (_isCycle != isCycle) {
-        
-        _isCycle = isCycle;
+        [self performSelector:@selector(reloadAllView) withObject:nil afterDelay:0 inModes:@[NSRunLoopCommonModes, NSDefaultRunLoopMode]];
     }
 }
 
