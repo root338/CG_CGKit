@@ -16,6 +16,8 @@
 {
     CGRect frame            = self.frame;
     CGPoint oldAnchorPoint  = self.layer.anchorPoint;
+    /// 先还原一下
+    [self _setupTransformIsIdentity];
     
     self.layer.anchorPoint  = anchorPoint;
     self.frame              = frame;
@@ -42,6 +44,8 @@
 {
     CGRect frame            = self.frame;
     CGPoint oldAnchorPoint  = self.layer.anchorPoint;
+    /// 先还原一下
+    [self _setupTransformIsIdentity];
     
     self.layer.anchorPoint  = anchorPoint;
     self.frame              = frame;
@@ -100,13 +104,11 @@
     }
 }
 
-- (void)_setupTransformScaleIsZero
-{
+- (void)_setupTransformScaleIsZero {
     self.transform  = CGAffineTransformMakeScale(0.001, 0.001);
 }
 
-- (void)_setupTransformIsIdentity
-{
+- (void)_setupTransformIsIdentity {
     self.transform  = CGAffineTransformIdentity;
 }
 
