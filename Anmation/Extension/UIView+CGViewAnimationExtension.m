@@ -10,6 +10,12 @@
 
 #import "UIView+CGSetupFrame.h"
 
+@interface UIView (_CGViewAnimationExtension)
+
+@property (nonatomic, copy) NSDate *_ml_completionBlockDealWithDate;
+
+@end
+
 @implementation UIView (CGViewAnimationExtension)
 
 - (void)animateWithStyle:(CGViewAnimationStyle)style type:(CGOperateViewAnimationType)type anchorPoint:(CGPoint)anchorPoint duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay usingSpringWithDamping:(CGFloat)dampingRatio initialSpringVelocity:(CGFloat)velocity options:(UIViewAnimationOptions)options animations:(void (^ _Nullable)(void))animations completion:(void (^ _Nullable)(BOOL))completion
@@ -24,6 +30,9 @@
     
     [self _setupWillAnimationWithStyle:style type:type];
     
+    NSDate *dealWithDate = [NSDate date];
+    self._ml_completionBlockDealWithDate = dealWithDate;
+    
     [UIView animateWithDuration:duration delay:delay usingSpringWithDamping:dampingRatio initialSpringVelocity:velocity options:options animations:^{
         
         [self _setupAnimationWithStyle:style type:type];
@@ -31,11 +40,13 @@
             animations();
         }
     } completion:^(BOOL finished) {
-
-        self.layer.anchorPoint  = oldAnchorPoint;
-        self.frame              = frame;
-        if (completion) {
-            completion(finished);
+        
+        if ([self._ml_completionBlockDealWithDate isEqualToDate:dealWithDate]) {
+            self.layer.anchorPoint  = oldAnchorPoint;
+            self.frame              = frame;
+            if (completion) {
+                completion(finished);
+            }
         }
     }];
 }
@@ -52,6 +63,9 @@
     
     [self _setupWillAnimationWithStyle:style type:type];
     
+    NSDate *dealWithDate = [NSDate date];
+    self._ml_completionBlockDealWithDate = dealWithDate;
+    
     [UIView animateWithDuration:duration delay:delay options:options animations:^{
         
         [self _setupAnimationWithStyle:style type:type];
@@ -59,11 +73,12 @@
             animations();
         }
     } completion:^(BOOL finished) {
-        
-        self.layer.anchorPoint  = oldAnchorPoint;
-        self.frame              = frame;
-        if (completion) {
-            completion(finished);
+        if ([self._ml_completionBlockDealWithDate isEqualToDate:dealWithDate]) {
+            self.layer.anchorPoint  = oldAnchorPoint;
+            self.frame              = frame;
+            if (completion) {
+                completion(finished);
+            }
         }
     }];
 }
@@ -114,3 +129,16 @@
 
 @end
 
+@implementation UIView (_CGViewAnimationExtension)
+
+- (void)set_ml_completionBlockDealWithDate:(NSDate *)dealWithDate
+{
+    objc_setAssociatedObject(self, @selector(_ml_completionBlockDealWithDate), dealWithDate, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (NSDate *)_ml_completionBlockDealWithDate
+{
+    return objc_getAssociatedObject(self, _cmd);
+}
+
+@end
