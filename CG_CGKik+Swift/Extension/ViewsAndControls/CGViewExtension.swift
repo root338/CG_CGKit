@@ -30,4 +30,7 @@ extension UIView {
     var ml_estimatedMaxSize : CGSize {
         return CGSize.init(width: self.width, height: CGFloat.greatestFiniteMagnitude)
     }
+    func ml_estimatedSize(width: CGFloat) -> CGSize {
+        return CGSize.init(width: width, height: CGFloat.greatestFiniteMagnitude)
+    }
 }
