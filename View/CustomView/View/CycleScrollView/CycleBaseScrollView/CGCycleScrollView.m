@@ -20,6 +20,7 @@
 #import "UIView+CGSetupFrame.h"
 #import "UIView+CG_CGAreaCalculate.h"
 #import "UIView+CGCreate.h"
+#import "UIView+CGSearchView.h"
 
 #import "CGPrintLogHeader.h"
 #import "NSArray+CGArray.h"
@@ -425,6 +426,14 @@
         cell    = [self createCycleContentViewAtIndex:index];
     }
     return cell.contentView;
+}
+
+- (NSInteger)indexAtCellSubview:(UIView *)cellSubview {
+    CGCycleContentView *cell = [cellSubview searchSuperViewWithClass:[CGCycleContentView class]];
+    if (cell == nil) {
+        return -1;
+    }
+    return cell.viewIndex;
 }
 
 - (void)scrollToIndex:(NSInteger)index

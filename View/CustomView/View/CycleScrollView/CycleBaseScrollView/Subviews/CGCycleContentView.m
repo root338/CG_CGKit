@@ -24,13 +24,6 @@
 
 @implementation CGCycleContentView
 
-/** 固定视图样式 */
-+ (instancetype)buttonWithType:(UIButtonType)buttonType
-{
-    CGErrorConditionLog(buttonType != UIButtonTypeCustom, @"按钮样式只能是UIButtonTypeCustom，已自动转换");
-    return [super buttonWithType:UIButtonTypeCustom];
-}
-
 + (instancetype)cg_createCycleContentViewWithContentView:(UIView *)contentView index:(NSInteger)index
 {
     return [self cg_createCycleContentViewWithContentView:contentView index:index marginEdgeInsets:UIEdgeInsetsZero];
@@ -51,7 +44,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self addTarget:self action:@selector(handleClickAction:) forControlEvents:UIControlEventTouchUpInside];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleClickAction:)];
+        [self addGestureRecognizer:tap];
     }
     return self;
 }
@@ -71,7 +65,7 @@
 }
 
 #pragma mark - 事件
-- (void)handleClickAction:(id)sender
+- (void)handleClickAction:(UITapGestureRecognizer *)tap
 {
     CGCycleScrollView *scrollView = (CGCycleScrollView *)[self searchSuperViewWithClass:[CGCycleScrollView class]];
     if ([scrollView.delegate respondsToSelector:@selector(cycleScrollView:didSelectRowAtIndex:)]) {

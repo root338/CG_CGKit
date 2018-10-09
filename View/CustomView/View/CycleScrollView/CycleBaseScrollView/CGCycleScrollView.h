@@ -201,6 +201,9 @@ typedef NS_ENUM(NSInteger, CGCycleViewScrollAnimationStyle) {
 /** 滑动到指定索引 */
 - (void)scrollToIndex:(NSInteger)index;
 
+/// 给定cell中的子视图或其本身获取 cell 的索引, -1 表示无法画获取
+- (NSInteger)indexAtCellSubview:(UIView *)cellSubview;
+
 #pragma mark - 缓存设置
 /**
  *  是否缓存已创建的视图
