@@ -13,11 +13,7 @@
 
 #import "CGCalendarManager.h"
 
-const NSCalendarUnit CGCalendarUnitAll  = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
 
-const NSCalendarUnit CGCalendarUnitYear = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
-
-const NSCalendarUnit CGCalendarUnitTime = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
 
 @interface CGCalendarManager ()
 
@@ -54,6 +50,26 @@ const NSCalendarUnit CGCalendarUnitTime = NSCalendarUnitHour | NSCalendarUnitMin
 {
     NSDateComponents *dateComponents = [self.calendar components:unit fromDate:date];
     return dateComponents;
+}
+
+- (NSString *)date:(NSDate *)date formatterStyle:(CGFormatterStyle)formatterStyle {
+    if ([formatterStyle isEqualToString:CGFormatterStyleYear]) {
+        NSDateComponents *dateComponents = [self components:CGCalendarUnitYear date:date];
+        return [NSString stringWithFormat:@"%04li-%02li-%02li", (long)dateComponents.year, (long)dateComponents.month, (long)dateComponents.day];
+    }else if ([formatterStyle isEqualToString:CGFormatterStyleTime]) {
+        NSDateComponents *dateComponents = [self components:CGCalendarUnitTime date:date];
+        return [NSString stringWithFormat:@"%02li-%02li-%02li", (long)dateComponents.hour, (long)dateComponents.minute, (long)dateComponents.second];
+    }else if ([formatterStyle isEqualToString:CGFormatterStyleAll]) {
+        NSDateComponents *dateComponents = [self components:CGCalendarUnitTime date:date];
+        return [NSString stringWithFormat:@"%04li-%02li-%02li %02li-%02li-%02li", (long)dateComponents.year, (long)dateComponents.month, (long)dateComponents.day, (long)dateComponents.hour, (long)dateComponents.minute, (long)dateComponents.second];
+    }
+    else {
+        return nil;
+    }
+}
+
+- (NSDate *)formatterString:(NSString *)formatterString style:(CGFormatterStyle)style {
+    return nil;
 }
 
 #pragma mark - 私有方法

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CGDateDefineConstantsHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,6 @@ typedef NS_ENUM(NSInteger, CGCalendarType) {
     
     CGCalendarTypeGregorian,
 };
-
 
 /**
  日历的偏移类型
@@ -24,13 +24,6 @@ typedef NS_ENUM(NSInteger, CGCalendarType) {
 typedef NS_ENUM(NSInteger, CGCalendarOffsetType) {
     CGCalendarOffsetTypeDay,
 };
-
-/// CG 中默认的需要的日期的属性：公元|年|月|日|时|分|秒
-FOUNDATION_EXPORT const NSCalendarUnit CGCalendarUnitAll;
-/// CG 中默认的需要的日期的属性：公元|年|月|日
-FOUNDATION_EXPORT const NSCalendarUnit CGCalendarUnitYear;
-/// CG 中默认的需要的日期的属性：时|分|秒
-FOUNDATION_EXPORT const NSCalendarUnit CGCalendarUnitTime;
 
 @interface CGCalendarManager : NSObject
 
@@ -67,6 +60,10 @@ FOUNDATION_EXPORT const NSCalendarUnit CGCalendarUnitTime;
  @return 返回解析结果
  */
 - (NSDateComponents *)components:(NSCalendarUnit)unit date:(NSDate *)date;
+
+#pragma mark - 格式化时间
+- (nullable NSString *)date:(NSDate *)date formatterStyle:(CGFormatterStyle)formatterStyle;
+- (nullable NSDate *)formatterString:(NSString *)formatterString style:(CGFormatterStyle)style;
 
 @end
 

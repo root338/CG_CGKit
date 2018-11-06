@@ -56,4 +56,14 @@
     return CG_CGFrameWithMaxFrame(rect, self.textInputMarginEdgeInsets);
 }
 
+- (CGRect)leftViewRectForBounds:(CGRect)bounds {
+    CGRect rect = [super leftViewRectForBounds:bounds];
+    return rect;
+}
+
+- (CGRect)rightViewRectForBounds:(CGRect)bounds {
+    CGRect rect = [super rightViewRectForBounds:bounds];
+    return rect;
+}
+
 @end

@@ -260,6 +260,10 @@
     CGFloat contentViewWidth = self.contentView.width;
     CGFloat contentViewHeight = self.contentView.height;
     
+    if (contentViewWidth == 0) {
+        contentViewWidth = width;
+    }
+    
     UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
     if (!self.ignoreSafeAreaInsets) {
         if (@available(iOS 11.0, *)) {
