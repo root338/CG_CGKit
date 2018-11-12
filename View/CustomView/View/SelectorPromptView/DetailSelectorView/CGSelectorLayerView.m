@@ -106,22 +106,36 @@
     
 //    CGSelectorLayerAnimationStyle hideAnimationStyle    = CGSelectorLayerAnimationStyleNone;
 //    NSString *key                                       = nil;
-    CAAnimation *animation                              = nil;
-    switch (self.contentViewAnimationStyle) {
-        case CGSelectorLayerContentViewAniamtionStyleScale:
-        {
-            
-        }
-            
-            break;
-            
-        default:
-            break;
+    
+    __weak __block typeof(self) weakself = self;
+    void (^fromRemoveSuperview) (void);
+    if (self.didHideContentViewRemoveSuperview) {
+        fromRemoveSuperview = ^{
+            [weakself removeFromSuperview];
+        };
     }
     
-    if (animation == nil) {
-        if (self.didHideContentViewRemoveSuperview) {
-            [self removeFromSuperview];
+    if (self.customHideAnimation) {
+        self.customHideAnimation(self, ^{
+            !fromRemoveSuperview?: fromRemoveSuperview();
+        });
+    }else {
+        
+        CAAnimation *animation                              = nil;
+        switch (self.contentViewAnimationStyle) {
+            case CGSelectorLayerContentViewAniamtionStyleScale:
+            {
+                
+            }
+                
+                break;
+                
+            default:
+                break;
+        }
+        
+        if (animation == nil) {
+            !fromRemoveSuperview?: fromRemoveSuperview();
         }
     }
 }

@@ -57,6 +57,8 @@ typedef NS_ENUM(NSInteger, CGSelectorLayerContentViewAniamtionStyle) {
 /** contentView 的状态 */
 @property (nonatomic, assign, readonly) CGViewStatus contentViewStatus;
 
+@property (nullable, nonatomic, copy) void (^customHideAnimation) (CGSelectorLayerView *view, void (^completion) (void));
+
 #pragma mark - 背景色的设置
 
 @property (nonatomic, assign) CGSelectorLayerBackgroundColorAnimationsStyle backgroundColorAnimationStyle;
@@ -64,6 +66,7 @@ typedef NS_ENUM(NSInteger, CGSelectorLayerContentViewAniamtionStyle) {
 @property (nullable, nonatomic, strong) UIColor *fromBackgroundColor;
 
 @property (nullable, nonatomic, strong) CAAnimation *backgroundColorAnimation;
+
 
 - (void)show;
 - (void)hide;
