@@ -8,20 +8,27 @@
 
 import Foundation
 
+enum CGArrayError : Error {
+    case index
+    
+}
+
 extension Array {
     
-    func subarray(startIndex: Int, endIndex: Int) -> Array {
-        
-        assert(startIndex >= self.count, "开始索引不能大于数组本身索引")
-        
-        assert(startIndex <= endIndex, "开始索引不能大于结束索引")
+    func subarray(startIndex: Int, endIndex: Int) throws -> Array {
+        guard startIndex < self.count else {
+            throw CGArrayError.index
+        }
+        guard startIndex <= endIndex else {
+            throw CGArrayError.index
+        }
         
         return Array(self[startIndex ... endIndex])
     }
     
-    func subarray(range: NSRange) -> Array {
+    func subarray(range: NSRange) throws -> Array {
         
-        return self.subarray(startIndex: range.location, endIndex: range.location + range.length - 1)
+        return try self.subarray(startIndex: range.location, endIndex: range.location + range.length - 1)
     }
 }
 
