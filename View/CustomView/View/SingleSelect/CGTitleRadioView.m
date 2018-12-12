@@ -211,8 +211,10 @@
 
 - (CGRect)radioView:(CGRadioView *)radioView sliderViewFrameBeforeSelectedCell:(__kindof UICollectionViewCell *)beforeSelectedCell currentSelectedCell:(__kindof UICollectionViewCell *)currentSelectedCell
 {
-    CGSize sliderViewSize = CGSizeMake(currentSelectedCell.width, self.appearance.radioSliderViewAppearance.sliderViewHeight);
-    CGPoint sliderViewOrigin    = CGPointMake(currentSelectedCell.xCenter - sliderViewSize.width / 2.0, currentSelectedCell.height - sliderViewSize.height);
+    CGRadioSliderViewAppearance *appearance = self.appearance.radioSliderViewAppearance;
+    CGSize sliderViewSize = CGSizeMake(currentSelectedCell.width, appearance.sliderViewHeight);
+    CGPoint sliderViewOrigin    = CGPointMake(currentSelectedCell.xCenter - sliderViewSize.width / 2.0 + appearance.offset.x, currentSelectedCell.height - sliderViewSize.height + appearance.offset.y);
+    
     return (CGRect){sliderViewOrigin, sliderViewSize};
 }
 

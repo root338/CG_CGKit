@@ -8,12 +8,12 @@
 
 #import "CGDateDefineConstantsHeader.h"
 
-const NSCalendarUnit CGCalendarUnitAll  = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+NSCalendarUnit const CGCalendarUnitAll  = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
 
-const NSCalendarUnit CGCalendarUnitYear = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
+NSCalendarUnit const CGCalendarUnitYear = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
 
-const NSCalendarUnit CGCalendarUnitTime = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+NSCalendarUnit const CGCalendarUnitTime = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
 
-const CGFormatterStyle CGFormatterStyleYear = @"GMLFormatterStyleYear";
-const CGFormatterStyle CGFormatterStyleTime = @"GMLFormatterStyleTime";
-const CGFormatterStyle CGFormatterStyleAll = @"GMLFormatterStyleAll";
+CGFormatterStyle const CGFormatterStyleYear = @"GMLFormatterStyleYear";
+CGFormatterStyle const CGFormatterStyleTime = @"GMLFormatterStyleTime";
+CGFormatterStyle const CGFormatterStyleAll = @"GMLFormatterStyleAll";

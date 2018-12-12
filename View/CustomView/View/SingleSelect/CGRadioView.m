@@ -288,7 +288,7 @@
     if (self.appearance.isHideSliderView !=  sliderView.hidden) {
         sliderView.hidden   = self.appearance.isHideSliderView;
     }
-        
+    
     CGRect sliderViewFrame  = CGRectZero;
     if ([self.delegate respondsToSelector:@selector(radioView:sliderViewFrameBeforeSelectedCell:currentSelectedCell:)]) {
         sliderViewFrame = [self.delegate radioView:self sliderViewFrameBeforeSelectedCell:beforeSelectedCell currentSelectedCell:currentSelectedCell];

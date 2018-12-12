@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) CGFloat sliderViewBorderWidth;
 @property (nonatomic, assign, readonly) CGFloat sliderViewHeight;
 @property (nonatomic, assign, readonly) CGFloat sliderViewWidth;
+@property (nonatomic, assign, readonly) CGPoint offset;
 
 @property (nonatomic, assign, readonly) CGSliderViewPositionType sliderViewPositionType;
 
@@ -39,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat sliderViewWidth;
 @property (nonatomic) CGSliderViewPositionType sliderViewPositionType;
 @property (nonatomic) BOOL moveSliderViewIsAnimation;
+@property (nonatomic) CGPoint offset;
 
 /** 设置滑块边框／圆角 */
 - (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius;

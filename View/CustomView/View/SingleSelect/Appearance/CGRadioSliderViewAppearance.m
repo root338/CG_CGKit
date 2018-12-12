@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 移动滑块是否动画执行 */
 @property (nonatomic, assign, readwrite)           BOOL                moveSliderViewIsAnimation;
+@property (nonatomic, assign, readwrite) CGPoint offset;
 
 @end
 
@@ -57,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
     appearance.sliderViewPositionType       = self.sliderViewPositionType;
     appearance.sliderViewBackgroundColor    = [self.sliderViewBackgroundColor copy];
     appearance.moveSliderViewIsAnimation    = self.moveSliderViewIsAnimation;
+    appearance.offset = self.offset;
 }
 
 @end
@@ -71,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic sliderViewPositionType;
 @dynamic sliderViewBackgroundColor;
 @dynamic moveSliderViewIsAnimation;
+@dynamic offset;
 
 - (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius
 {
