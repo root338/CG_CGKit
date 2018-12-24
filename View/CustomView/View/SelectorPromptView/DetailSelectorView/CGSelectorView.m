@@ -282,7 +282,7 @@
         case CGSelectorContentViewAnimationTypeBottomToTop:
         {
             if (isShowContentView) {
-                originY = height - contentViewHeight - safeAreaInsets.bottom;
+                originY = height - contentViewHeight - safeAreaInsets.bottom + _contentViewBorderSpace;
             }else {
                 originY = height;
             }
@@ -291,7 +291,7 @@
         case CGSelectorContentViewAnimationTypeTopToBottom:
         {
             if (isShowContentView) {
-                originY = 0 + safeAreaInsets.top;
+                originY = 0 + safeAreaInsets.top + _contentViewBorderSpace;
             }else {
                 originY = -contentViewHeight;
             }
@@ -300,7 +300,7 @@
         case CGSelectorContentViewAnimationTypeLeftToRight:
         {
             if (isShowContentView) {
-                originX = 0 + safeAreaInsets.left;
+                originX = 0 + safeAreaInsets.left + _contentViewBorderSpace;
             }else {
                 originX = -contentViewWidth;
             }
@@ -309,7 +309,7 @@
         case CGSelectorContentViewAnimationTypeRightToLeft:
         {
             if (isShowContentView) {
-                originX = width - contentViewWidth - safeAreaInsets.right;
+                originX = width - contentViewWidth - safeAreaInsets.right + _contentViewBorderSpace;
             }else {
                 originX = width;
             }

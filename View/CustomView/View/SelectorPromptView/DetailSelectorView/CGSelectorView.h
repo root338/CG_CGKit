@@ -46,6 +46,8 @@ typedef NS_ENUM(NSInteger, CGSelectorViewAnimationsStyle) {
 @interface CGSelectorView : CGBaseView
 
 #pragma mark - 视图设置
+/// contentView 动画之后与边界的间距
+@property (nonatomic, assign) CGFloat contentViewBorderSpace;
 /** 选择的内容视图 */
 @property (nonatomic, strong, readonly) UIView *contentView;
 
