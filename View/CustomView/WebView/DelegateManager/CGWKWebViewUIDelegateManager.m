@@ -107,7 +107,7 @@
             __weak __block typeof(self) weakself = self;
             self.alertController = [viewController showAlertControllerWithTitle:nil message:prompt textInputsCount:1 setupTextField:^(UITextField * _Nonnull textField, NSInteger textFieldIndex) {
                 textField.text  = defaultText;
-            } cancelTitle:@"取消" otherTitles:@[@"确定"] resultCallback:^(UIAlertAction * _Nonnull alertAction) {
+            } cancelTitle:@"取消" otherTitles:@[@"确定"] resultCallback:^(UIAlertAction * _Nonnull alertAction, NSArray<UITextField *> * _Nullable textFields) {
                 
                 NSString *inputText = nil;
                 if (alertAction.style != UIAlertActionStyleCancel) {

@@ -22,16 +22,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(NSString *)cancelTitle;
 
 /** 弹层提示 (标题，内容，取消按钮，其他按钮，回调) */
-+ (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
++ (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void (NS_NOESCAPE ^ _Nullable)(BOOL isCancel))resultCallback;
 
 /** 弹层提示 (标题，内容，取消按钮，其他按钮，其他按钮样式，回调) */
-+ (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle otherTitleActionStyle:(UIAlertActionStyle)otherTitleActionStyle resultCallback:(void (^ _Nullable)(BOOL isCancel))resultCallback;
++ (nullable instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle otherTitleActionStyle:(UIAlertActionStyle)otherTitleActionStyle resultCallback:(void (NS_NOESCAPE ^ _Nullable)(BOOL isCancel))resultCallback;
 
 /** 弹层提示 (标题，内容，输入框, 设置输入框回调，取消按钮，其他按钮(数组)，回调) */
-+ (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ __nullable) (UITextField *textField, NSInteger textFieldIndex))setupTextField cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction * _Nonnull alertAction))resultCallback;
++ (instancetype)createAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ __nullable) (UITextField *textField, NSInteger textFieldIndex))setupTextField cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (NS_NOESCAPE ^ _Nullable)(UIAlertAction * _Nonnull alertAction, NSArray<UITextField *> * _Nullable textFields))resultCallback;
 
 /** 弹层提示 (弹层样式，标题，内容，取消按钮，其他按钮(数组)，回调) */
-+ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (^ _Nullable)(UIAlertAction *alertAction))resultCallback;
++ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void (NS_NOESCAPE ^ _Nullable)(UIAlertAction *alertAction))resultCallback;
 
 @end
 
