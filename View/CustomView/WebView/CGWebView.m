@@ -45,21 +45,6 @@
     return [WKWebView class] == nil ? NO : YES;
 }
 
-#pragma mark - 重写系统方法
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-    [self willAddToWindow:newWindow];
-}
-
-- (void)willAddToWindow:(UIWindow *)newWindow
-{
-    if (newWindow) {
-        
-        [self setupDelegateManager];
-    }
-}
-
 #pragma mark - 初始化CGWebView
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -222,7 +207,6 @@
         }else if (self.webViewForWKWebView) {
             [self.webViewForWKWebView loadRequest:request];
         }
-        
     }else {
         CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
     }
@@ -331,7 +315,7 @@
     if (_delegate != delegate) {
         
         _delegate   = delegate;
-        [self willAddToWindow:self.window];
+        [self setupDelegateManager];
     }
 }
 
