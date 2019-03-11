@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** 滑块的位置类型 */
 @property (nonatomic, assign) CGSliderViewPositionType positionType;
 
+@property (nullable, nonatomic, strong) CAGradientLayer *backgroundGradientLayout;
+
 @end
 
 NS_ASSUME_NONNULL_END

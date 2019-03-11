@@ -27,6 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readwrite)           BOOL                moveSliderViewIsAnimation;
 @property (nonatomic, assign, readwrite) CGPoint offset;
 
+@property (nonatomic, strong, readwrite) NSArray<UIColor *> *sliderViewBackgroundColors;
+@property (nonatomic, strong, readwrite) NSArray<NSNumber *> *sliderViewBackgroundColorLocations;
+@property (nonatomic, assign, readwrite) CGPoint startPoint;
+@property (nonatomic, assign, readwrite) CGPoint endPoint;
+
 @end
 
 @implementation CGRadioSliderViewAppearance
@@ -59,6 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
     appearance.sliderViewBackgroundColor    = [self.sliderViewBackgroundColor copy];
     appearance.moveSliderViewIsAnimation    = self.moveSliderViewIsAnimation;
     appearance.offset = self.offset;
+    appearance.sliderViewBackgroundColors   = self.sliderViewBackgroundColors;
+    appearance.sliderViewBackgroundColorLocations = self.sliderViewBackgroundColorLocations;
+    appearance.startPoint = self.startPoint;
+    appearance.endPoint = self.endPoint;
 }
 
 @end
@@ -74,6 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic sliderViewBackgroundColor;
 @dynamic moveSliderViewIsAnimation;
 @dynamic offset;
+@dynamic sliderViewBackgroundColors;
+@dynamic sliderViewBackgroundColorLocations;
+@dynamic startPoint;
+@dynamic endPoint;
 
 - (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius
 {

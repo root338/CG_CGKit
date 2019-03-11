@@ -10,4 +10,16 @@
 
 @implementation CGRadioSliderView
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (_backgroundGradientLayout) {
+        (_backgroundGradientLayout.superlayer == self.layer)?: [self.layer addSublayer:_backgroundGradientLayout];
+        if (!CGRectEqualToRect(_backgroundGradientLayout.frame, self.bounds)) {
+            _backgroundGradientLayout.frame = self.bounds;
+        }
+    }
+}
+
 @end

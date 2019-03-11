@@ -23,6 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) CGFloat sliderViewWidth;
 @property (nonatomic, assign, readonly) CGPoint offset;
 
+// 渐变的颜色集合
+@property (nullable, nonatomic, strong, readonly) NSArray<UIColor *> *sliderViewBackgroundColors;
+@property (nullable, nonatomic, strong, readonly) NSArray<NSNumber *> *sliderViewBackgroundColorLocations;
+@property (nonatomic, assign, readonly) CGPoint startPoint;
+@property (nonatomic, assign, readonly) CGPoint endPoint;
+
 @property (nonatomic, assign, readonly) CGSliderViewPositionType sliderViewPositionType;
 
 /** 移动滑块是否动画执行 */
@@ -41,6 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGSliderViewPositionType sliderViewPositionType;
 @property (nonatomic) BOOL moveSliderViewIsAnimation;
 @property (nonatomic) CGPoint offset;
+
+@property (nonatomic) NSArray<UIColor *> *sliderViewBackgroundColors;
+@property (nonatomic) NSArray<NSNumber *> *sliderViewBackgroundColorLocations;
+@property (nonatomic) CGPoint startPoint;
+@property (nonatomic) CGPoint endPoint;
 
 /** 设置滑块边框／圆角 */
 - (void)setupSliderViewBorderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornerRadius:(CGFloat)cornerRadius;

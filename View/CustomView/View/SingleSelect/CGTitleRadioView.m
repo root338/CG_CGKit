@@ -76,6 +76,19 @@
             sliderView.backgroundColor      = radioSliderViewAppearance.sliderViewBackgroundColor;
             [sliderView cg_setupBorderWithWidth:radioSliderViewAppearance.sliderViewBorderWidth color:radioSliderViewAppearance.sliderViewBorderColor cornerRadius:radioSliderViewAppearance.sliderViewCornerRadius];
             sliderView.hidden               = appearance.isHideSliderView;
+            
+            if (radioSliderViewAppearance.sliderViewBackgroundColors.count > 1) {
+                NSMutableArray *backgrounds = NSMutableArray.array;
+                for (UIColor *bgColor in radioSliderViewAppearance.sliderViewBackgroundColors) {
+                    [backgrounds addObject:(id)bgColor.CGColor];
+                }
+                CAGradientLayer *gradientLayer = CAGradientLayer.layer;
+                gradientLayer.colors = backgrounds;
+                gradientLayer.locations = radioSliderViewAppearance.sliderViewBackgroundColorLocations;
+                gradientLayer.startPoint = radioSliderViewAppearance.startPoint;
+                gradientLayer.endPoint = radioSliderViewAppearance.endPoint;
+                sliderView.backgroundGradientLayout = gradientLayer;
+            }
         }
         
         _radioView  = [[CGRadioView alloc] initWithFrame:frame appearance:appearance];

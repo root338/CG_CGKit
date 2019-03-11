@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 
 @property (nonatomic, strong, readwrite) CGRadioViewAppearance *appearance;
+@property (nonatomic, copy) void (^updateCollectionSelectedBlock) (void);
 @end
 
 @implementation CGRadioView
@@ -221,6 +222,33 @@
     [_collectionView setCollectionViewLayout:flowLayout animated:animated completion:completion];
 }
 
+- (BOOL)isShouldReloadData {
+    
+    return CGRectGetWidth(_collectionView.frame) > CGFLOAT_MIN && CGRectGetHeight(_collectionView.frame) > CGFLOAT_MIN;
+}
+
+- (void)setUpdateCollectionSelected {
+    if ([_collectionView numberOfItemsInSection:0] > _currentSelectedIndex && [self isShouldReloadData]) {
+        [self setCurrentSelectedIndexPath:[NSIndexPath indexPathForRow:self.currentSelectedIndex inSection:0]];
+    }else {
+        UICollectionView *collecitonView = _collectionView;
+        __weak __block typeof(self) weakself = self;
+        self.updateCollectionSelectedBlock = ^{
+            [collecitonView performBatchUpdates:^{
+                [collecitonView reloadData];
+            } completion:^(BOOL finished) {
+                [weakself setCurrentSelectedIndexPath:[NSIndexPath indexPathForRow:weakself.currentSelectedIndex inSection:0]];
+            }];
+            weakself.updateCollectionSelectedBlock = nil;
+        };
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    !_updateCollectionSelectedBlock?: _updateCollectionSelectedBlock();
+}
+
 #pragma mark - setup Slider View
 
 /** 更新滑块，返回更新是否成功 */
@@ -245,6 +273,9 @@
     }
     
     if (isResult) {
+        if (!self.disableCurrentSelectedIndexToCenterHorizontalPosition) {
+            [_collectionView scrollToItemAtIndexPath:currentSelectedIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+        }
         return NO;
     }
     
@@ -347,10 +378,8 @@
     if (_currentSelectedIndex != currentSelectedIndex || !_currentSelectedIndexPath) {
         
         _currentSelectedIndex   = currentSelectedIndex;
-        
-        if ([_collectionView numberOfItemsInSection:0] > _currentSelectedIndex) {
-            [self setCurrentSelectedIndexPath:[NSIndexPath indexPathForRow:currentSelectedIndex inSection:0]];
-        }
+        _updateCollectionSelectedBlock = nil;
+        [self setUpdateCollectionSelected];
     }
 }
 
