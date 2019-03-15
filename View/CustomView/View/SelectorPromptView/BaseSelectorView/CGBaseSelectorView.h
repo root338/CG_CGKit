@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL disableBackgroundButtonTools;
 
 - (void)show;
+- (void)showToView:(UIView *)toView;
 - (void)hide;
 @end
 

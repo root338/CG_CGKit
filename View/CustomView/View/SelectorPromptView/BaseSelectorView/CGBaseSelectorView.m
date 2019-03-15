@@ -27,6 +27,7 @@
     if (self) {
         
         _contentView    = [[UIView alloc] init];
+        [self addSubview:_contentView];
         
         _frameEqualSuperviewBounds          = YES;
         _didHideContentViewRemoveSuperview  = YES;
@@ -40,6 +41,11 @@
     [self setupSelfContent];
     [self setupCancelButton];
     [self setupContentView];
+}
+
+- (void)showToView:(UIView *)toView {
+    self.targetSuperview = toView;
+    [self show];
 }
 
 - (void)hide
