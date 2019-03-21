@@ -26,12 +26,12 @@
                                  resultCallback:nil];
 }
 
-+ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (NS_NOESCAPE ^)(BOOL))resultCallback
++ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void ( ^)(BOOL))resultCallback
 {
     return [self createAlertControllerWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle otherTitleActionStyle:UIAlertActionStyleDefault resultCallback:resultCallback];
 }
 
-+ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle otherTitleActionStyle:(UIAlertActionStyle)otherTitleActionStyle resultCallback:(void (NS_NOESCAPE ^)(BOOL))resultCallback
++ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle otherTitleActionStyle:(UIAlertActionStyle)otherTitleActionStyle resultCallback:(void ( ^)(BOOL))resultCallback
 {
     if (!cancelTitle && !otherButtonTitle) {
         return nil;
@@ -61,19 +61,19 @@
     return alertController;
 }
 
-+ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void (NS_NOESCAPE ^ _Nullable)(UIAlertAction * _Nonnull))resultCallback
++ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void ( ^ _Nullable)(UIAlertAction * _Nonnull))resultCallback
 {
     return [self createAlertControllerWithPreferredStyle:preferredStyle title:title message:message textInputsCount:0 setupTextField:nil cancelTitle:cancelTitle otherTitles:otherButtonTitles resultCallback:^(UIAlertAction * _Nonnull action, NSArray<UITextField *> * _Nullable textFields) {
         !resultCallback?: resultCallback(action);
     }];
 }
 
-+ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void (NS_NOESCAPE ^)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
++ (instancetype)createAlertControllerWithTitle:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void ( ^)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
 {
     return [self createAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:title message:message textInputsCount:textInputsCount setupTextField:setupTextField cancelTitle:cancelTitle otherTitles:otherButtonTitles resultCallback:resultCallback];
 }
 
-+ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ _Nullable)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void (NS_NOESCAPE ^)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
++ (instancetype)createAlertControllerWithPreferredStyle:(UIAlertControllerStyle)preferredStyle title:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ _Nullable)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void ( ^)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
 {
     CGAlertController *alertController  = [CGAlertController alertControllerWithTitle:title message:message preferredStyle:preferredStyle];
     

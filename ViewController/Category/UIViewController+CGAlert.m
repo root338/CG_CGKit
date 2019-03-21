@@ -15,7 +15,7 @@
 
 @implementation UIViewController (CGAlert)
 
-- (UIAlertController *)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void (NS_NOESCAPE ^ _Nullable)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
+- (UIAlertController *)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void ( ^ _Nullable)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
 {
     CGAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message textInputsCount:textInputsCount setupTextField:setupTextField cancelTitle:cancelTitle otherTitles:otherButtonTitles resultCallback:resultCallback];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -31,7 +31,7 @@
                          resultCallback:nil];
 }
 
-- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void (NS_NOESCAPE ^)(BOOL))resultCallback
+- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void ( ^)(BOOL))resultCallback
 {
     
     id targetView   = nil;
@@ -55,7 +55,7 @@
     return targetView;
 }
 
-- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void (NS_NOESCAPE ^)(NSInteger))resultCallback
+- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void ( ^)(NSInteger))resultCallback
 {
     id targetView = nil;
     
