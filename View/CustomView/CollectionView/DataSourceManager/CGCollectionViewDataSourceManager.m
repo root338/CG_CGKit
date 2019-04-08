@@ -37,21 +37,12 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = nil;
-    if (self.reusableCellClassIdentifier) {
-        
-        Class value     = self.reusableCellClassIdentifier(collectionView, indexPath);
-        cellIdentifier  = NSStringFromClass(value);
-    }else if (self.reusableCellStringIdentifier) {
-        
-        cellIdentifier  = self.reusableCellStringIdentifier(collectionView, indexPath);
-    }else if (self.cellIdentifier) {
-        
-        cellIdentifier = self.cellIdentifier;
+    if (_cellItemBlock) {
+        return _cellItemBlock(collectionView, indexPath);
     }
     
+    NSString *cellIdentifier = self.cellIdentifier;
     CGDebugAssert(cellIdentifier, @"cell 的标识不能为空");
-    
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     CGDebugAssert(cell, @"没有注册 cell");
     
@@ -61,7 +52,6 @@
     }else if (self.dataSource) {
         data = [self.dataSource cg_objectAtIndex:indexPath.row];
     }
-    
     if (self.setupCollectionViewCell) {
         self.setupCollectionViewCell(collectionView, (id)cell, indexPath, data);
     }

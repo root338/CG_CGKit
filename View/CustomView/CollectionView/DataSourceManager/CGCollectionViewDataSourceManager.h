@@ -28,6 +28,8 @@ typedef _Nonnull id (^CGCollectionViewDataSourceAtIndexPath) (UICollectionView *
 
 /** 设置cell的block  */
 typedef void (^CGSetupCollectionViewCell) (UICollectionView *collectionView, __kindof CGCollectionViewCell *cell, NSIndexPath *indexPath, id data);
+/** 重写collectionView:cellForItemAtIndexPath:方法 */
+typedef UICollectionViewCell * (^CGCollectionViewCellItemBlock) (UICollectionView *collectionView, NSIndexPath *indexPath);
 
 @interface CGCollectionViewDataSourceManager : CGBaseObject<UICollectionViewDataSource>
 
@@ -59,13 +61,15 @@ typedef void (^CGSetupCollectionViewCell) (UICollectionView *collectionView, __k
  *  获取 indexPath 下的cell 类名作为标识符
  *  应该在多cell下使用
  */
-@property (nullable, copy, nonatomic) CGCollectionViewReusableCellClassIdentifier reusableCellClassIdentifier;
+//@property (nullable, copy, nonatomic) CGCollectionViewReusableCellClassIdentifier reusableCellClassIdentifier;
 
 /**
  *  获取 indexPath 下的 cell Identifier
  *  应该在多 cell 下使用
  */
-@property (nullable, nonatomic, copy) CGCollectionViewReusableCellStringIdentifier reusableCellStringIdentifier;
+//@property (nullable, nonatomic, copy) CGCollectionViewReusableCellStringIdentifier reusableCellStringIdentifier;
+
+@property (nonatomic, copy) CGCollectionViewCellItemBlock cellItemBlock;
 
 /**
  *  获取 collectionView 中 indexPath 下的数据
