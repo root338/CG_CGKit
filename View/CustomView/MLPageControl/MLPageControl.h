@@ -66,6 +66,8 @@ typedef NS_ENUM(NSInteger, MLPageControlStyle) {
 
 //- (CGSize)sizeForNumberOfPages:(NSInteger)pageCount;
 
+@property (nullable, nonatomic, copy) void(^setPageViewAppearanceBlock) (UIView *pageView);
+
 @property(nullable, nonatomic,strong) UIColor *pageIndicatorTintColor NS_AVAILABLE_IOS(6_0) UI_APPEARANCE_SELECTOR;
 @property(nullable, nonatomic,strong) UIColor *currentPageIndicatorTintColor NS_AVAILABLE_IOS(6_0) UI_APPEARANCE_SELECTOR;
 

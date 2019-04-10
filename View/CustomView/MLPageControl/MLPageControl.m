@@ -156,6 +156,7 @@
         [_cachePageControls removeLastObject];
     }else {
         cell = [[MLPageControlCell alloc] init];
+        !_setPageViewAppearanceBlock?: _setPageViewAppearanceBlock(cell);
     }
     
     [self.pageControls addObject:cell];
