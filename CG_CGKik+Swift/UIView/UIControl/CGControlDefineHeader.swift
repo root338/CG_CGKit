@@ -17,9 +17,9 @@ public enum CGControlState : Int {
     case application
     case reserved
     
-    public func state() -> UIControlState {
+    public func state() -> UIControl.State {
         
-        let state : UIControlState
+        let state : UIControl.State
         switch self {
         case .normal:
             state   = .normal
