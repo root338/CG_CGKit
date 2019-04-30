@@ -29,7 +29,7 @@ typedef _Nonnull id (^CGCollectionViewDataSourceAtIndexPath) (UICollectionView *
 /** 设置cell的block  */
 typedef void (^CGSetupCollectionViewCell) (UICollectionView *collectionView, __kindof CGCollectionViewCell *cell, NSIndexPath *indexPath, id data);
 /** 重写collectionView:cellForItemAtIndexPath:方法 */
-typedef UICollectionViewCell * (^CGCollectionViewCellItemBlock) (UICollectionView *collectionView, NSIndexPath *indexPath);
+typedef UICollectionViewCell * _Nonnull (^CGCollectionViewCellItemBlock) (UICollectionView *collectionView, NSIndexPath *indexPath);
 
 @interface CGCollectionViewDataSourceManager : CGBaseObject<UICollectionViewDataSource>
 

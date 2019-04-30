@@ -79,14 +79,22 @@
     return self.disableScale ? nil : self.imageView;
 }
 
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
-{
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    UIView *view = [self viewForZoomingInScrollView:scrollView];
+    if (view == nil) {
+        return;
+    }
     CGPoint viewPoint;
     viewPoint.x = MAX(scrollView.width - view.width, 0) / 2.0;
     viewPoint.y = MAX(scrollView.height - view.height, 0) / 2.0;
-    [UIView animateWithDuration:0.3 animations:^{
-        view.origin = viewPoint;
-    }];
+    //    [UIView animateWithDuration:0.3 animations:^{
+    view.origin = viewPoint;
+    //    }];
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    
 }
 
 #pragma mark - UIGestureRecognizerDelegate
