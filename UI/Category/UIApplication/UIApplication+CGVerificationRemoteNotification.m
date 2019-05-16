@@ -40,23 +40,24 @@
 + (void)cg_notificationAuthorizationStatusWithCompletionHandle:(void (^)(CGUNAuthorizationStatus))completion
 {
     [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-        
-        UNAuthorizationStatus status = settings.authorizationStatus;
-        CGUNAuthorizationStatus state   = CGUNAuthorizationStatusNotDetermined;
-        switch (status) {
-            case UNAuthorizationStatusDenied:
-                state   = CGUNAuthorizationStatusDenied;
-                break;
-            case UNAuthorizationStatusAuthorized:
-                state   = CGUNAuthorizationStatusAuthorized;
-                break;
-            default:
-                
-                break;
-        }
-        if (completion) {
-            completion(state);
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UNAuthorizationStatus status = settings.authorizationStatus;
+            CGUNAuthorizationStatus state   = CGUNAuthorizationStatusNotDetermined;
+            switch (status) {
+                case UNAuthorizationStatusDenied:
+                    state   = CGUNAuthorizationStatusDenied;
+                    break;
+                case UNAuthorizationStatusAuthorized:
+                    state   = CGUNAuthorizationStatusAuthorized;
+                    break;
+                default:
+                    
+                    break;
+            }
+            if (completion) {
+                completion(state);
+            }
+        });
     }];
 }
 
