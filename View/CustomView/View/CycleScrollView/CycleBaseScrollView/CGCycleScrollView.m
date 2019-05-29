@@ -164,7 +164,10 @@
     }else {
         contentOffset = CGPointMake(0, (self.cycleScrollView.height + self.subviewSpace) * 2);
     }
-    
+    if (contentOffset.x - CGRectGetWidth(self.cycleScrollView.frame) > self.cycleScrollView.contentSize.width) {
+        // 防止超出滑动区域
+        return;
+    }
     [self.cycleScrollView setContentOffset:contentOffset animated:YES];
 }
 
@@ -216,10 +219,13 @@
     [self reloadPageView];
     
     [self cg_scrollWithScrollView:self.cycleScrollView animationStyle:self.animationStyle];
-    
+    if (!_isCycle && self.cycleScrollView.contentOffset.x + self.cycleScrollView.width > self.cycleScrollView.contentSize.width) {
+        [self.cycleScrollView setContentOffset:CGPointZero animated:NO];
+    }
     if ([self.delegate respondsToSelector:@selector(reloadDataDidFinishWithCycleScrollView:)]) {
         [self.delegate reloadDataDidFinishWithCycleScrollView:self];
     }
+    
 }
 
 - (void)reloadPageView

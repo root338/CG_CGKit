@@ -77,6 +77,11 @@
     }
     [self updateCurrentPageTintColor];
     [self updateOtherPageTintColor];
+    
+    BOOL hiddenFirstCell = _hidesForSinglePage && _pageControls.count == 1;
+    if (hiddenFirstCell != _pageControls.firstObject.isHidden) {
+        _pageControls.firstObject.hidden = hiddenFirstCell;
+    }
 }
 /// 更新布局
 - (void)updateContentLayout
@@ -135,7 +140,9 @@
 - (MLPageControlCell *)removePageControlCellAtIndex:(NSInteger)index
 {
     MLPageControlCell *cell = self.pageControls[index];
-    [cell removeFromSuperview];
+    if (cell.hidden != YES) {
+        cell.hidden = YES;
+    }
     [self.pageControls removeObject:cell];
     [self.cachePageControls addObject:cell];
     return cell;
@@ -160,7 +167,13 @@
     }
     
     [self.pageControls addObject:cell];
-    [self addSubview:cell];
+    if (cell.superview != self) {
+        [self addSubview:cell];
+    }
+    if (cell.hidden != NO) {
+        cell.hidden = NO;
+    }
+    
     return cell;
 }
 
@@ -244,6 +257,15 @@
     if (!UIEdgeInsetsEqualToEdgeInsets(_insets, insets)) {
         _insets = insets;
         [self setNeedsUpdateDisplay];
+    }
+}
+
+- (void)setHidesForSinglePage:(BOOL)hidesForSinglePage {
+    if (_hidesForSinglePage != hidesForSinglePage) {
+        _hidesForSinglePage = hidesForSinglePage;
+        if (_pageControls.count == 1 && _pageControls.firstObject.hidden != hidesForSinglePage) {
+            _pageControls.firstObject.hidden = hidesForSinglePage;
+        }
     }
 }
 

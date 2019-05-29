@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, MLPageControlStyle) {
 @property(nonatomic) NSInteger numberOfPages;
 /** 当前分页的索引 */
 @property(nonatomic) NSInteger currentPage;
-/** 当只有一个分页标识的时候隐藏 */
+/** 当只有一个分页标识的时候隐藏，默认 NO */
 @property(nonatomic) BOOL hidesForSinglePage;
 /** 关闭容错, 默认 NO, 开启容错时当currentPage超出范围时自动选择最大的值，当currentPage小于返回时自动选择最小的值 */
 @property (nonatomic) BOOL disableFaultTolerant;
