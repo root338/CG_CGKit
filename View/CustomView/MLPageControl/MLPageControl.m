@@ -128,13 +128,28 @@
 
 - (void)removePageControlCellWithRange:(NSRange)range
 {
+    NSRange removeRange = range;
     for (NSInteger index = range.location; index < range.location + range.length; index++) {
         if (self.pageControls.count > index) {
-            [self removePageControlCellAtIndex:index];
+            MLPageControlCell *cell = self.pageControls[index];
+            if (cell.hidden != YES) {
+                cell.hidden = YES;
+            }
         }else {
+            if (removeRange.location == index) {
+                removeRange.location = NSNotFound;
+            }else {
+                removeRange.length = index - removeRange.location;
+            }
             break;
         }
     }
+    if (removeRange.location == NSNotFound) {
+        return;
+    }
+    NSArray* views = [self.pageControls subarrayWithRange:removeRange];
+    [self.pageControls removeObjectsInRange:removeRange];
+    [self.cachePageControls addObjectsFromArray:views];
 }
 
 - (MLPageControlCell *)removePageControlCellAtIndex:(NSInteger)index

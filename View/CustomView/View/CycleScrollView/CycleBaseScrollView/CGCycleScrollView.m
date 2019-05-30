@@ -164,7 +164,7 @@
     }else {
         contentOffset = CGPointMake(0, (self.cycleScrollView.height + self.subviewSpace) * 2);
     }
-    if (contentOffset.x - CGRectGetWidth(self.cycleScrollView.frame) > self.cycleScrollView.contentSize.width) {
+    if (contentOffset.x + CGRectGetWidth(self.cycleScrollView.frame) > self.cycleScrollView.contentSize.width) {
         // 防止超出滑动区域
         return;
     }
