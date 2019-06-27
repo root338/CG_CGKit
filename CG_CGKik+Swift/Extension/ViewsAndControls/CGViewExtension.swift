@@ -23,6 +23,19 @@ extension UIView {
             self.isHidden = false
         }
     }
+    
+    /// 设置UIView的frame，hidden，当isHidden == true 时，不设置 frame
+    open func ml_set(isHidden: Bool, frame: CGRect) {
+        if self.isHidden != isHidden {
+            self.isHidden = isHidden
+        }
+        if isHidden {
+            return
+        }
+        if !frame.equalTo(self.frame) {
+            self.frame = frame
+        }
+    }
 }
 
 //MARK:- 常量
