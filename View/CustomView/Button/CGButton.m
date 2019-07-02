@@ -144,7 +144,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         //当使用setTitle:forState:方法设置标题时，button不会立即刷新，当立即重新刷新button大小时，会出错
         titleView   = nil;
     }
-    CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:titleView];
+    CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:titleView maxSize:tempLabelSize];
     
     titleSize   = CG_CGMinSize(tempLabelSize, titleSize);
     
@@ -375,7 +375,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     }
     
     //当使用setTitle:forState:方法设置标题时，button不会立即刷新，当立即重新刷新button大小时，会使用原标题进行计算出错
-    CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:self.titleLabel];
+    CGSize titleSize    = [self calculateCurrentTitleAreaWithTitleLabel:self.titleLabel maxSize:CGSizeEqualToSize(paramSize, CGSizeZero) ? CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) : paramSize];
     CGFloat space       = self.didHandleSpace;
     
     CGSize size;
@@ -397,10 +397,9 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     return size;
 }
 
-- (CGSize)calculateCurrentTitleAreaWithTitleLabel:(UILabel *)titleLabel
+- (CGSize)calculateCurrentTitleAreaWithTitleLabel:(UILabel *)titleLabel maxSize:(CGSize)maxSize;
 {
     CGSize titleSize        = CGSizeZero;
-    CGSize compressedSize   = CGSizeMake(FLT_MAX, FLT_MAX);
     
     id currentTitleValue                        = self.getCurrentTitleContent;
     
@@ -416,9 +415,9 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         
         if (titleLabel) {
             [titleLabel setAttributedText:currentAttributedTitle];
-            titleSize   = [titleLabel sizeThatFits:compressedSize];
+            titleSize   = [titleLabel sizeThatFits:maxSize];
         }else {
-            titleSize           = [currentAttributedTitle size];
+            titleSize           = [currentAttributedTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
         }
     }else {
         
@@ -426,7 +425,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
             [titleLabel setText:currentTitle];
             //iOS7 下如果不设置会导致按钮颜色变为默认的蓝色
             [titleLabel setTextColor:self.currentTitleColor];
-            titleSize   = [titleLabel sizeThatFits:compressedSize];
+            titleSize   = [titleLabel sizeThatFits:maxSize];
         }else {
             
             if (_defaultAttributedDictIdentifier != titleLabel.font) {
@@ -445,7 +444,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
                 _defaultAttributedDictIdentifier    = titleFont;
             }
             
-            titleSize   = [currentTitle sizeWithAttributes:_defaultAttributedDict];
+            titleSize = [currentTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:_defaultAttributedDict context:nil].size;
         }
     }
     
