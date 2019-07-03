@@ -21,6 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) BOOL isBorderColorSyncTitle;
 
+/**
+ 同步高亮状态为按钮最终的主要状态，默认为NO
+ !!! 注意：当开启此属性已经设置的高亮状态会失效
+ */
+//@property (nonatomic, assign) BOOL enableHighlightedStatusSyncFinalStatus;
+
 /** 
  *  全局设置边框宽度，使用时需要提前设置
  *  @warning 暂时取消掉使用__K_Button_AutoBorderWidth值 (当使用单独设置宽度方法时设置为__K_Button_AutoBorderWidth会自动替换为该值)

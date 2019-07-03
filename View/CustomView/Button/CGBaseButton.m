@@ -18,7 +18,8 @@
 
 @interface CGBaseButton ()
 {
-    
+    /// 已经设置的高亮等于的其他状态
+    UIControlState _didSetHighlightedEqualState;
 }
 
 @end
@@ -79,11 +80,59 @@
     }
 }
 
+//- (void)_changeHighlightedStatusToState:(UIControlState)state {
+//    if (_didSetHighlightedEqualState == state) {
+//        return;
+//    }
+//    
+//    NSString *title = [self titleForState:state];
+//    UIColor *titleColor = [self titleColorForState:state];
+//    UIColor *titleShadowColor = [self titleShadowColorForState:state];
+//    UIImage *image = [self imageForState:state];
+//    UIImage *backgroundImage = [self backgroundImageForState:state];
+//    NSAttributedString *attributedTitle = [self attributedTitleForState:state];
+//    
+//    UIControlState highlightedState = UIControlStateHighlighted;
+//    NSString *highlightedTitle = [self titleForState:highlightedState];
+//    UIColor *highlightedTitleColor = [self titleColorForState:highlightedState];
+//    UIColor *highlightedTitleShadowColor = [self titleShadowColorForState:highlightedState];
+//    UIImage *highlightedImage = [self imageForState:highlightedState];
+//    UIImage *highlightedBackgroundImage = [self backgroundImageForState:highlightedState];
+//    NSAttributedString *highlightedAttributedTitle = [self attributedTitleForState:highlightedState];
+//    
+//    if (title != highlightedTitle) {
+//        [self setTitle:title forState:highlightedState];
+//    }
+//    if (attributedTitle != highlightedAttributedTitle) {
+//        [self setAttributedTitle:attributedTitle forState:highlightedState];
+//    }
+//    if (titleColor != highlightedTitleColor) {
+//        [self setTitleColor:titleColor forState:highlightedState];
+//    }
+//    if (titleShadowColor != highlightedTitleShadowColor) {
+//        [self setTitleShadowColor:titleShadowColor forState:highlightedState];
+//    }
+//    if (image != highlightedImage) {
+//        [self setImage:image forState:highlightedState];
+//    }
+//    if (backgroundImage != highlightedBackgroundImage) {
+//        [self setBackgroundImage:backgroundImage forState:highlightedState];
+//    }
+//    _didSetHighlightedEqualState = state;
+//}
+
 #pragma mark - 重写系统状态改变方法
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
     [self cg_borderSyncTitle];
+//    if (_enableHighlightedStatusSyncFinalStatus) {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            if (self.selected == selected) {
+//                [self _changeHighlightedStatusToState:self.selected ? UIControlStateSelected : UIControlStateNormal];
+//            }
+//        });
+//    }
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -94,7 +143,6 @@
             return;
         }
     }
-    
     [self cg_borderSyncTitle];
 }
 
