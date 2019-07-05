@@ -399,72 +399,54 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 - (CGSize)calculateCurrentTitleAreaWithTitleLabel:(UILabel *)titleLabel maxSize:(CGSize)maxSize;
 {
-    UILabel *targetLabel = nil;
+    CGSize titleSize        = CGSizeZero;
     
-    if (titleLabel) {
-        targetLabel = titleLabel;
+    id currentTitleValue                        = self.getCurrentTitleContent;
+    
+    NSAttributedString *currentAttributedTitle  = nil;
+    NSString *currentTitle                      = nil;
+    if ([currentTitleValue isKindOfClass:[NSAttributedString class]]) {
+        currentAttributedTitle  = currentTitleValue;
     }else {
-        static UILabel *calculateLabel = nil;
-        if (calculateLabel == nil) {
-            calculateLabel = UILabel.new;
-            calculateLabel.font = [UIFont systemFontOfSize:15];
-        }
-        id currentTitleValue = self.getCurrentTitleContent;
-        if ([currentTitleValue isKindOfClass:[NSAttributedString class]]) {
-            calculateLabel.attributedText  = currentTitleValue;
-        }else {
-            calculateLabel.text = currentTitleValue;
-        }
-        targetLabel = calculateLabel;
+        currentTitle    = currentTitleValue;
     }
-    CGSize titleSize = [targetLabel sizeThatFits:maxSize];
     
-//    id currentTitleValue                        = self.getCurrentTitleContent;
-//
-//    NSAttributedString *currentAttributedTitle  = nil;
-//    NSString *currentTitle                      = nil;
-//    if ([currentTitleValue isKindOfClass:[NSAttributedString class]]) {
-//        currentAttributedTitle  = currentTitleValue;
-//    }else {
-//        currentTitle    = currentTitleValue;
-//    }
-//
-//    if (currentAttributedTitle) {
-//
-//        if (titleLabel) {
-//            [titleLabel setAttributedText:currentAttributedTitle];
-//            titleSize   = [titleLabel sizeThatFits:maxSize];
-//        }else {
-//            titleSize           = [currentAttributedTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
-//        }
-//    }else {
-//
-//        if (titleLabel) {
-//            [titleLabel setText:currentTitle];
-//            //iOS7 下如果不设置会导致按钮颜色变为默认的蓝色
-//            [titleLabel setTextColor:self.currentTitleColor];
-//            titleSize   = [titleLabel sizeThatFits:maxSize];
-//        }else {
-//
-//            if (_defaultAttributedDictIdentifier != titleLabel.font) {
-//                _defaultAttributedDict  = nil;
-//            }
-//            if (_defaultAttributedDict == nil) {
-//
-//                UIFont *titleFont       = titleLabel.font;
-//                if (!titleFont) {
-//                    titleFont   = [UIFont systemFontOfSize:15];
-//                }
-//                _defaultAttributedDict  = @{
-//                                            NSFontAttributeName : titleFont,
-//                                            NSParagraphStyleAttributeName : [NSParagraphStyle defaultParagraphStyle],
-//                                            };
-//                _defaultAttributedDictIdentifier    = titleFont;
-//            }
-//
-//            titleSize = [currentTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:_defaultAttributedDict context:nil].size;
-//        }
-//    }
+    if (currentAttributedTitle) {
+        
+        if (titleLabel) {
+            [titleLabel setAttributedText:currentAttributedTitle];
+            titleSize   = [titleLabel sizeThatFits:maxSize];
+        }else {
+            titleSize           = [currentAttributedTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
+        }
+    }else {
+        
+        if (titleLabel) {
+            [titleLabel setText:currentTitle];
+            //iOS7 下如果不设置会导致按钮颜色变为默认的蓝色
+            [titleLabel setTextColor:self.currentTitleColor];
+            titleSize   = [titleLabel sizeThatFits:maxSize];
+        }else {
+            
+            if (_defaultAttributedDictIdentifier != titleLabel.font) {
+                _defaultAttributedDict  = nil;
+            }
+            if (_defaultAttributedDict == nil) {
+                
+                UIFont *titleFont       = titleLabel.font;
+                if (!titleFont) {
+                    titleFont   = [UIFont systemFontOfSize:15];
+                }
+                _defaultAttributedDict  = @{
+                                            NSFontAttributeName : titleFont,
+                                            NSParagraphStyleAttributeName : [NSParagraphStyle defaultParagraphStyle],
+                                            };
+                _defaultAttributedDictIdentifier    = titleFont;
+            }
+            
+            titleSize = [currentTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:_defaultAttributedDict context:nil].size;
+        }
+    }
     
     if (!titleLabel) {
         //单纯使用富文本进行计算，与Label的 sizeThatFits: 方法计算会出现稍微的偏差，从而导致内容显示不全
