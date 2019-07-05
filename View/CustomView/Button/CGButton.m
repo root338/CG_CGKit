@@ -399,60 +399,28 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 - (CGSize)calculateCurrentTitleAreaWithTitleLabel:(UILabel *)titleLabel maxSize:(CGSize)maxSize;
 {
-    CGSize titleSize        = CGSizeZero;
-    
-    id currentTitleValue                        = self.getCurrentTitleContent;
-    
-    NSAttributedString *currentAttributedTitle  = nil;
-    NSString *currentTitle                      = nil;
+    /// 使用静态文本计算是因为还没有想到计算指定行的大小
+    static UILabel *calculateLabel = nil;
+    if (calculateLabel == nil) {
+        calculateLabel = UILabel.new;
+    }
+    if (titleLabel == nil) {
+        calculateLabel.font = [UIFont systemFontOfSize:15];
+    }else {
+        calculateLabel.numberOfLines = titleLabel.numberOfLines;
+        calculateLabel.font = titleLabel.font;
+    }
+    /// 重新赋值，是因为Button的titleLabel赋值不是实时的，在计算时有可能是以前设置的文本
+    id currentTitleValue = self.getCurrentTitleContent;
     if ([currentTitleValue isKindOfClass:[NSAttributedString class]]) {
-        currentAttributedTitle  = currentTitleValue;
+        calculateLabel.attributedText  = currentTitleValue;
     }else {
-        currentTitle    = currentTitleValue;
+        calculateLabel.text = currentTitleValue;
     }
-    
-    if (currentAttributedTitle) {
-        
-        if (titleLabel) {
-            [titleLabel setAttributedText:currentAttributedTitle];
-            titleSize   = [titleLabel sizeThatFits:maxSize];
-        }else {
-            titleSize           = [currentAttributedTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
-        }
-    }else {
-        
-        if (titleLabel) {
-            [titleLabel setText:currentTitle];
-            //iOS7 下如果不设置会导致按钮颜色变为默认的蓝色
-            [titleLabel setTextColor:self.currentTitleColor];
-            titleSize   = [titleLabel sizeThatFits:maxSize];
-        }else {
-            
-            if (_defaultAttributedDictIdentifier != titleLabel.font) {
-                _defaultAttributedDict  = nil;
-            }
-            if (_defaultAttributedDict == nil) {
-                
-                UIFont *titleFont       = titleLabel.font;
-                if (!titleFont) {
-                    titleFont   = [UIFont systemFontOfSize:15];
-                }
-                _defaultAttributedDict  = @{
-                                            NSFontAttributeName : titleFont,
-                                            NSParagraphStyleAttributeName : [NSParagraphStyle defaultParagraphStyle],
-                                            };
-                _defaultAttributedDictIdentifier    = titleFont;
-            }
-            
-            titleSize = [currentTitle boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:_defaultAttributedDict context:nil].size;
-        }
-    }
-    
-    if (!titleLabel) {
-        //单纯使用富文本进行计算，与Label的 sizeThatFits: 方法计算会出现稍微的偏差，从而导致内容显示不全
-        titleSize.width     = ceil(titleSize.width);
-        titleSize.height    = ceil(titleSize.height);
-    }
+    CGSize titleSize = [calculateLabel sizeThatFits:maxSize];
+    //单纯使用富文本进行计算，与Label的 sizeThatFits: 方法计算会出现稍微的偏差，从而导致内容显示不全
+    titleSize.width     = ceil(titleSize.width);
+    titleSize.height    = ceil(titleSize.height);
     
     return titleSize;
 }
