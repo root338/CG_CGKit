@@ -19,6 +19,6 @@
 #import "UITableView+FirstLastCell.h"
 
 //设置表格背景视图
-#import "UITableView+SetupBackgroundView.h"
+#import "UIScrollView+SetupBackgroundView.h"
 
 #endif /* CGTableViewHeader_h */
