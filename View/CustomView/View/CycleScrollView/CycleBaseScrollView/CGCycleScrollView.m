@@ -468,7 +468,7 @@
         
         //循环滑动下滑动区域始终为 maxWidth * 3 或 maxHeight * 3
         CGSize scrollViewContentSize = CGSizeZero;
-        scrollViewContentSize = self.size;
+        scrollViewContentSize = self.cycleScrollView.size;
         
         if (self.scrollDirection == CGCycleViewScrollDirectionHorizontal) {
             
