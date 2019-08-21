@@ -67,6 +67,16 @@ UIKIT_STATIC_INLINE CGSize CG_CGMaxSize(CGSize s1, CGSize s2)
 {
     return CGSizeMake(MAX(s1.width, s2.width), MAX(s1.height, s2.height));
 }
+/// {s1.width + s2.width, s1.height + s2.height}
+UIKIT_STATIC_INLINE CGSize CG_CGSizeAddSize(CGSize s1, CGSize s2)
+{
+    return CGSizeMake(s1.width + s2.width, s1.height + s2.height);
+}
+/// {s1.width + width, s1.height + height}
+UIKIT_STATIC_INLINE CGSize CG_CGSizeAddValue(CGSize s1, CGFloat width, CGFloat height)
+{
+    return CGSizeMake(s1.width + width, s1.height + height);
+}
 
 #pragma mark - CGPoint
 
@@ -106,6 +116,12 @@ UIKIT_STATIC_INLINE CGPoint CG_CGMidPointWith(CGPoint p1, CGPoint p2)
 }
 
 #pragma mark - CGRect
+
+UIKIT_STATIC_INLINE CGRect CG_CGRect(CGPoint p, CGSize s)
+{
+    return CGRectMake(p.x, p.y, s.width, s.height);
+}
+
 /** 计算 { { left, top }, { width - (left + right), height - (top + bottom) } } */
 UIKIT_STATIC_INLINE CGRect CG_CGRectWithMargin(CGRect rect, UIEdgeInsets edgeInsets)
 {
