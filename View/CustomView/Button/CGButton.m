@@ -160,6 +160,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     switch (self.contentHorizontalAlignment) {
             
         case UIControlContentHorizontalAlignmentLeft:
+        case UIControlContentHorizontalAlignmentFill:
             contentPoint.x  = 0;
             break;
         case UIControlContentHorizontalAlignmentRight:
@@ -172,6 +173,7 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     
     switch (self.contentVerticalAlignment) {
         case UIControlContentVerticalAlignmentTop:
+        case UIControlContentVerticalAlignmentFill:
             contentPoint.y  = 0;
             break;
         case UIControlContentVerticalAlignmentBottom:
@@ -257,12 +259,17 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         if (self.buttonStyle == CGButtonStyleHorizonalLeft) {
             
             if (paramContentType == _CGButtonContentTypeImageView) {
-                targetPoint.x   += space + titleSize.width;
+                targetPoint.x += space + titleSize.width;
+                if (self.contentHorizontalAlignment == UIControlContentHorizontalAlignmentFill) {
+                    targetPoint.x = MAX(targetPoint.x, CGRectGetMinX(contentRect) + contentWidth - imageSize.width);
+                }
             }
         }else {
-            
             if (paramContentType == _CGButtonContentTypeTitleLabel) {
                 targetPoint.x   += space + imageSize.width;
+                if (self.contentHorizontalAlignment == UIControlContentHorizontalAlignmentFill) {
+                    targetPoint.x = MAX(targetPoint.x, CGRectGetMinX(contentRect) + contentWidth - titleSize.width);
+                }
             }
         }
     }else {
@@ -312,14 +319,18 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
         targetPoint  = CGPointMake(CGRectGetMinX(contentRect) + contentPoint.x + originTargetX, CGRectGetMinY(contentRect) + contentPoint.y);
         
         if (self.buttonStyle == CGButtonStyleVerticalTop) {
-            
             if (paramContentType == _CGButtonContentTypeImageView) {
-                targetPoint.y   += space + titleSize.height;
+                targetPoint.y += space + titleSize.height;
+                if (self.contentVerticalAlignment == UIControlContentVerticalAlignmentFill) {
+                    targetPoint.y = MAX(targetPoint.y, CGRectGetMinY(contentRect) + contentHeight - imageSize.height);
+                }
             }
         }else {
-            
             if (paramContentType == _CGButtonContentTypeTitleLabel) {
-                targetPoint.y   += space + imageSize.height;
+                targetPoint.y += space + imageSize.height;
+                if (self.contentVerticalAlignment == UIControlContentVerticalAlignmentFill) {
+                    targetPoint.y = MAX(targetPoint.y, CGRectGetMinY(contentRect) + contentHeight - titleSize.height);
+                }
             }
         }
     }
