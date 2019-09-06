@@ -121,7 +121,18 @@
 //    _didSetHighlightedEqualState = state;
 //}
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (self.isEnableFillet) {
+        CGFloat cornerRadius = CGRectGetHeight(self.bounds) / 2;
+        if (self.layer.cornerRadius != cornerRadius) {
+            self.layer.cornerRadius = cornerRadius;
+        }
+    }
+}
+
 #pragma mark - 重写系统状态改变方法
+
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];

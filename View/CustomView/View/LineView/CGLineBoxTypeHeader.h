@@ -26,8 +26,7 @@ typedef NS_OPTIONS(NSInteger, CGLineBoxType) {
     CGLineBoxTypeBottom     = 1 << 2,
     CGLineBoxTypeRight      = 1 << 3,
     
-    
-    CGLineBoxTypeAll      = LineBoxTypeTop | LineBoxTypeLeft | LineBoxTypeBottom | LineBoxTypeRight,
+    CGLineBoxTypeAll      = CGLineBoxTypeTop | CGLineBoxTypeLeft | CGLineBoxTypeBottom | CGLineBoxTypeRight,
 };
 
 #endif /* CGLineBoxTypeHeader_h */

@@ -28,7 +28,7 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    if (self.appearance.lineType != DDrawLineTypeNone) {
+    if (self.appearance.lineType != CGLineBoxTypeNone) {
         
         self.lineColor = self.appearance.lineColor;
         self.lineWidth = self.appearance.lineWidth;

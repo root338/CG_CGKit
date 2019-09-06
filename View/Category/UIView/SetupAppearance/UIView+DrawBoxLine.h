@@ -7,16 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef NS_OPTIONS(NSInteger, DDrawLineType) {
-    
-    DDrawLineTypeNone    = 0,
-    DDrawLineTypeTop     = 1 << 0,
-    DDrawLineTypeLeft    = 1 << 1,
-    DDrawLineTypeBottom  = 1 << 2,
-    DDrawLineTypeRight   = 1 << 3,
-    DDrawLineTypeAll     = DDrawLineTypeTop | DDrawLineTypeLeft | DDrawLineTypeBottom | DDrawLineTypeRight,
-};
+#import "CGLineBoxTypeHeader.h"
 
 /**
  *  创建绘制边框的对象
@@ -35,7 +26,7 @@ typedef NS_OPTIONS(NSInteger, DDrawLineType) {
  */
 @property (strong, nonatomic) UIColor *lineColor;
 
-@property (nonatomic, assign) DDrawLineType drawLineType;
+@property (nonatomic, assign) CGLineBoxType drawLineType;
 
 /**
  *  创建绘制对象
@@ -45,7 +36,7 @@ typedef NS_OPTIONS(NSInteger, DDrawLineType) {
  *
  *  @return 返回创建好的绘图对象
  */
-- (UIBezierPath *)createBoxType:(DDrawLineType)type edge:(UIEdgeInsets)edgeInsets;
+- (UIBezierPath *)createBoxType:(CGLineBoxType)type edge:(UIEdgeInsets)edgeInsets;
 
 //- (void)drawRect:(CGRect)rect;
 @end

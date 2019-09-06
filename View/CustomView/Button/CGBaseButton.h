@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 //UIKIT_EXTERN const CGFloat __K_Button_AutoBorderWidth;
 @interface CGBaseButton : UIButton<CGViewInitializationProtocol>
 
+@property (nonatomic, assign) BOOL isEnableFillet;
 /** 
  *  边框的颜色同步标题的颜色，默认为NO
  *  @warning 当设置为YES时会覆盖已设置的边框属性，边框宽度自动设置为borderWidth

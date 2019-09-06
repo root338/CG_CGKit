@@ -16,32 +16,32 @@
 @dynamic lineWidth;
 @dynamic drawLineType;
 
-- (UIBezierPath *)createBoxType:(DDrawLineType)type edge:(UIEdgeInsets)edgeInsets
+- (UIBezierPath *)createBoxType:(CGLineBoxType)type edge:(UIEdgeInsets)edgeInsets
 {
-    if (type == DDrawLineTypeNone) {
+    if (type == CGLineBoxTypeNone) {
         return nil;
     }
     
     CGSize size = self.bounds.size;
     CGMutablePathRef path = CGPathCreateMutable();
     
-    if (type & DDrawLineTypeTop) {
+    if (type & CGLineBoxTypeTop) {
         
         CGPathMoveToPoint(path, NULL, edgeInsets.left, 0);
         CGPathAddLineToPoint(path, NULL, size.width - edgeInsets.right, 0);
     }
     
-    if (type & DDrawLineTypeRight) {
+    if (type & CGLineBoxTypeRight) {
         CGPathMoveToPoint(path, NULL, size.width, edgeInsets.top);
         CGPathAddLineToPoint(path, NULL, size.width, size.height - edgeInsets.bottom);
     }
     
-    if (type & DDrawLineTypeBottom) {
+    if (type & CGLineBoxTypeBottom) {
         CGPathMoveToPoint(path, NULL, size.width - edgeInsets.right, size.height);
         CGPathAddLineToPoint(path, NULL, edgeInsets.left, size.height);
     }
     
-    if (type & DDrawLineTypeLeft) {
+    if (type & CGLineBoxTypeLeft) {
         CGPathMoveToPoint(path, NULL, 0, size.height - edgeInsets.bottom);
         CGPathAddLineToPoint(path, NULL, 0, edgeInsets.top);
     }
@@ -83,12 +83,12 @@
     return [objc_getAssociatedObject(self, @selector(lineWidth)) floatValue];
 }
 
-- (void)setDrawLineType:(DDrawLineType)lineType
+- (void)setDrawLineType:(CGLineBoxType)lineType
 {
     objc_setAssociatedObject(self, @selector(drawLineType), @(lineType), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (DDrawLineType)drawLineType
+- (CGLineBoxType)drawLineType
 {
     return [objc_getAssociatedObject(self, _cmd) integerValue];
 }

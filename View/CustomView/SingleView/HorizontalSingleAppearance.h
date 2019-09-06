@@ -97,7 +97,7 @@ typedef NS_ENUM(NSInteger, HorizontalSingleViewStyle) {
 @property (assign, nonatomic) UIViewContentMode *backgroundImageMode;
 
 /** 单选视图边线框的样式 */
-@property (assign, nonatomic) DDrawLineType lineType;
+@property (assign, nonatomic) CGLineBoxType lineType;
 
 /** 单选视图边线框的颜色 */
 @property (strong, nonatomic) UIColor *lineColor;
