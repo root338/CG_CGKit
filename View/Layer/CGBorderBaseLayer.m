@@ -69,7 +69,7 @@
 #pragma mark - 状态值转换、保存
 - (CGBorderObject *)borderObjectForState:(CGViewBorderState)state
 {
-    return self.borderDict[[self cg_keyWithState:state]];
+    return _borderDict[[self cg_keyWithState:state]];
 }
 
 /** 保存输入参数颜色（UIColor）、宽度（CGFloat） */
@@ -111,10 +111,9 @@
 - (void)cg_updateBorderColor:(UIColor *)color state:(CGViewBorderState)state
 {
     NSNumber *key = [self cg_keyWithState:state];
-    
-    if (self.borderDict[key]) {
-        
-        [self.borderDict[key] setBorderColor:color];
+    CGBorderObject *borderObject = _borderDict[key];
+    if (borderObject) {
+        [borderObject setBorderColor:color];
     }else {
         
         if ([self cg_updateFaildIsCreateBorderObjectWithState:state]) {
@@ -126,13 +125,13 @@
 - (void)cg_updateBorderWidth:(CGFloat)width state:(CGViewBorderState)state
 {
     NSNumber *key = [self cg_keyWithState:state];
-    if (self.borderDict[key]) {
+    CGBorderObject *borderObject = _borderDict[key];
+    if (borderObject) {
         
-        [self.borderDict[key] setBorderWidth:width];
+        [borderObject setBorderWidth:width];
     }else {
         
         if ([self cg_updateFaildIsCreateBorderObjectWithState:state]) {
-            
             [self cg_setupBorderWithColor:nil borderWidth:width state:state];
         }
     }
@@ -145,10 +144,14 @@
 
 - (void)cg_updateBorder
 {
-    
-    CGBorderObject *borderObject = [self borderObjectForState:self.borderState];
-    [self cg_setupBorderColor:[borderObject.borderColor CGColor]];
-    [self cg_setupBorderWidth:borderObject.borderWidth];
+    if (_borderDict == nil) {
+        return;
+    }
+    CGBorderObject *borderObject = [self borderObjectForState:self.borderState]?: [self borderObjectForState:CGViewBorderStateNormal];
+    if (borderObject == nil) {
+        [self cg_setupBorderColor:[borderObject.borderColor CGColor]];
+        [self cg_setupBorderWidth:borderObject.borderWidth];
+    }
 }
 
 - (void)cg_setupBorderWidth:(CGFloat)borderWidth
