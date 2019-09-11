@@ -11,7 +11,7 @@ import Foundation
 //MARK:- 设置布局
 extension UIView {
     
-    open func ml_set(frame: CGRect, addTo superview: UIView? = nil) {
+    open func ml_set(frame: CGRect, addTo superview: UIView? = nil, isHidden: Bool? = false) {
         if !frame.equalTo(self.frame) {
             self.frame = frame
         }
@@ -19,8 +19,10 @@ extension UIView {
         if superview != nil && self.superview != superview {
             superview!.addSubview(self)
         }
-        if self.isHidden {
-            self.isHidden = false
+        if isHidden != nil {
+            if self.isHidden != isHidden! {
+                self.isHidden = isHidden!
+            }
         }
     }
     
