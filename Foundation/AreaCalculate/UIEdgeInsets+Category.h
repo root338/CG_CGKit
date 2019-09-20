@@ -57,3 +57,7 @@ UIKIT_STATIC_INLINE CGFloat CG_CGUIEdgeInsetsHorizontal(UIEdgeInsets insets) {
 UIKIT_STATIC_INLINE CGFloat CG_CGUIEdgeInsetsVertical(UIEdgeInsets insets) {
     return insets.top + insets.bottom;
 }
+
+UIKIT_STATIC_INLINE UIEdgeInsets CG_CGUIEdgeInsetsAdd(UIEdgeInsets insets1, UIEdgeInsets insets2) {
+    return UIEdgeInsetsMake(insets1.top + insets2.top, insets1.left + insets2.left, insets1.bottom + insets2.bottom, insets1.right + insets2.right);
+}

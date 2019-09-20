@@ -12,58 +12,62 @@
 
 @implementation CGTextField
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self    = [super initWithFrame:frame];
-    if (self) {
-        [self setupTextContent];
-    }
-    return self;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    [self setupTextContent];
-}
-
-- (void)setupTextContent
-{
-    //初始化文本框时，设置UITextField的文本内容为@"  "，在经过0零秒后重新设置text
-    //原因，在iOS 9 以上版本使用CGKeyboardManager，约束控制视图显示时，在第一次输入内容并切换文本框时文字会出现飞入想象，此功能时消除这种飞入现象
-    NSString *tempText  = @"  ";
-    if (self.text.length == 0) {
-        self.text   = tempText;
-        [self performSelector:@selector(setupTextContent) withObject:nil afterDelay:0];
-    }else {
-        
-        if ([self.text isEqualToString:tempText]) {
-            self.text   = nil;
-        }
-    }
-}
-
-- (CGRect)textRectForBounds:(CGRect)bounds
-{
+- (CGRect)textRectForBounds:(CGRect)bounds {
     CGRect rect = [super textRectForBounds:bounds];
-    
-    return CG_CGFrameWithMaxFrame(rect, self.textInputMarginEdgeInsets);
+    return [self _handleTextRect:rect];
 }
 
-- (CGRect)editingRectForBounds:(CGRect)bounds
-{
+- (CGRect)editingRectForBounds:(CGRect)bounds {
     CGRect rect = [super editingRectForBounds:bounds];
-    return CG_CGFrameWithMaxFrame(rect, self.textInputMarginEdgeInsets);
+    return [self _handleTextRect:rect];
 }
 
 - (CGRect)leftViewRectForBounds:(CGRect)bounds {
     CGRect rect = [super leftViewRectForBounds:bounds];
-    return rect;
+    if (CGRectGetWidth(rect) == 0) {
+        return rect;
+    }
+    CGRect leftViewRect = CGRectMake(_leftViewMarginEdgeInsets.left, CGRectGetMinY(rect), CGRectGetWidth(rect), CGRectGetHeight(rect));
+    if (_leftViewMarginEdgeInsets.top || _rightViewMarginEdgeInsets.bottom) {
+        leftViewRect.origin.y = _leftViewMarginEdgeInsets.top;
+        leftViewRect.size.height = CG_CGHeightWithMaxHeight(CGRectGetHeight(bounds), _leftViewMarginEdgeInsets);
+    }
+    return leftViewRect;
 }
 
 - (CGRect)rightViewRectForBounds:(CGRect)bounds {
     CGRect rect = [super rightViewRectForBounds:bounds];
     return rect;
+}
+
+- (CGRect)_handleTextRect:(CGRect)rect {
+    CGRect textRect = CG_CGFrameWithMaxFrame(rect, self.textInputMarginEdgeInsets);
+    if (_leftViewMarginEdgeInsets.right > 0) {
+        BOOL isShowLeftView = [self _verifyShowView:self.leftView mode:self.leftViewMode];
+        if (isShowLeftView) {
+            textRect.origin.x += _leftViewMarginEdgeInsets.right;
+            textRect.size.width -= _leftViewMarginEdgeInsets.right;
+        }
+    }
+    return textRect;
+}
+
+- (BOOL)_verifyShowView:(UIView *)view mode:(UITextFieldViewMode)viewMode {
+    if (view == nil) {
+        return NO;
+    }
+    BOOL result = NO;
+    switch (viewMode) {
+        case UITextFieldViewModeNever: return NO;
+        case UITextFieldViewModeWhileEditing:
+            result = self.isEditing;
+            break;
+        case UITextFieldViewModeUnlessEditing:
+            result = !self.isEditing;
+            break;
+        case UITextFieldViewModeAlways: return YES;
+    }
+    return result;
 }
 
 @end
