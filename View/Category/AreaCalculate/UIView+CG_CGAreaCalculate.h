@@ -80,6 +80,10 @@ UIKIT_STATIC_INLINE CGSize CG_CGSizeAddValue(CGSize s1, CGFloat width, CGFloat h
 
 #pragma mark - CGPoint
 
+UIKIT_STATIC_INLINE BOOL CG_CGPointIsNAN(CGPoint p1) {
+    return isnan(p1.x) || isnan(p1.y);
+}
+
 /** 计算 { p1.x + x, p1.y + y } */
 UIKIT_STATIC_INLINE CGPoint CG_CGPointWithOffset(CGPoint p1, CGFloat x, CGFloat y)
 {
@@ -113,6 +117,14 @@ UIKIT_STATIC_INLINE CGPoint CG_CGCenterPointWith(UIView *superview, UIView *view
 UIKIT_STATIC_INLINE CGPoint CG_CGMidPointWith(CGPoint p1, CGPoint p2)
 {
     return CGPointMake((p1.x + p2.x) / 2.0, (p1.y + p2.y) / 2.0);
+}
+/// {MIN(p1.x, p2.x), MIN(p1.y, p2.y)}
+UIKIT_STATIC_INLINE CGPoint CG_CGMinPoint(CGPoint p1, CGPoint p2) {
+    return CGPointMake(MIN(p1.x, p2.x), MIN(p1.y, p2.y));
+}
+// {MAX(p1.x, p2.x), MAX(p1.y, p2.y)}
+UIKIT_STATIC_INLINE CGPoint CG_CGMaxPoint(CGPoint p1, CGPoint p2) {
+    return CGPointMake(MAX(p1.x, p2.x), MAX(p1.y, p2.y));
 }
 
 #pragma mark - CGRect
