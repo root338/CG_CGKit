@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //UIKIT_EXTERN const CGFloat __K_Button_AutoBorderWidth;
 @interface CGBaseButton : UIButton<CGViewInitializationProtocol>
-
+/// 开启半圆角
 @property (nonatomic, assign) BOOL isEnableFillet;
 /** 
  *  边框的颜色同步标题的颜色，默认为NO
