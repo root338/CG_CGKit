@@ -239,12 +239,9 @@
                 
                 [self.webViewForWKWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
             }else {
-                
-                NSAssert(nil, @"该方法WKWebView仅 9.0 以上版本可用");
+                CGDebugAssert(nil, @"该方法WKWebView仅 9.0 以上版本可用");
             }
-            
         }
-        
     }else {
         CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
     }
