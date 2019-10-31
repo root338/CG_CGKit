@@ -148,7 +148,7 @@
         return;
     }
     CGBorderObject *borderObject = [self borderObjectForState:self.borderState]?: [self borderObjectForState:CGViewBorderStateNormal];
-    if (borderObject == nil) {
+    if (borderObject != nil) {
         [self cg_setupBorderColor:[borderObject.borderColor CGColor]];
         [self cg_setupBorderWidth:borderObject.borderWidth];
     }

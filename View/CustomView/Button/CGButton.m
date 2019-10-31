@@ -405,7 +405,8 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
     if (paramSize.height > CGZeroFloatValue && paramSize.height < size.height) {
         size.height = paramSize.height;
     }
-    return size;
+    
+    return CGSizeMake(ceil(size.width), ceil(size.height));
 }
 
 - (CGSize)calculateCurrentTitleAreaWithTitleLabel:(UILabel *)titleLabel maxSize:(CGSize)maxSize;
