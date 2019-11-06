@@ -372,7 +372,10 @@ typedef NS_ENUM(NSInteger, _CGButtonContentType) {
 
 - (void)sizeToFit
 {
-    self.size   = [self sizeThatFits:CGSizeZero];
+    CGSize viewSize = [self sizeThatFits:CGSizeZero];
+    if (!CGSizeEqualToSize(viewSize, self.size)) {
+        self.size = viewSize;
+    }
 }
 
 - (CGSize)sizeThatFits:(CGSize)paramSize
