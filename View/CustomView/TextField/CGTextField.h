@@ -16,5 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIEdgeInsets leftViewMarginEdgeInsets;
 @property (nonatomic, assign) UIEdgeInsets rightViewMarginEdgeInsets;
 
+@property (nonatomic, assign) BOOL disableAllPerformActionMenu;
 @end
 NS_ASSUME_NONNULL_END
