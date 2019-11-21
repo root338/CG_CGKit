@@ -6,15 +6,16 @@
 import Foundation
 
 extension Dictionary where Key : Hashable {
-    @discardableResult mutating func ml_append(dict: [Key : Value]) -> [Key : Value]? {
-        var tmpSelf = self
+    
+    /// 追加 Dictionary 数据
+    @discardableResult
+    mutating func ml_append(dict: [Key : Value]) -> [Key : Value]? {
         var didAddValue = [Key : Value]()
         for (key, value) in dict {
-            if let addValue = tmpSelf.updateValue(value, forKey: key) {
+            if let addValue = self.updateValue(value, forKey: key) {
                 didAddValue[key] = addValue
             }
         }
-        self = tmpSelf
         return didAddValue.count == 0 ? nil : didAddValue
     }
 }
