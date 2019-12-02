@@ -856,8 +856,8 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
 
 - (NSLayoutConstraint *)cg_attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nonnull UIView *)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c
 {
-    
-    NSAssert(self.superview, @"请添加到父视图中再添加约束");
+    CGDebugAssert(self.superview, @"请添加到父视图中再添加约束");
+    if (self.superview == nil) return nil;
     
     if (self.translatesAutoresizingMaskIntoConstraints != NO) {
         self.translatesAutoresizingMaskIntoConstraints  = NO;
@@ -865,7 +865,8 @@ static NSMutableArray<NSNumber *> *cg_constraintsLayoutIsUpdate;
     // !!! warning : view2 视图不能将 translatesAutoresizingMaskIntoConstraints 自动设置为NO
     
     UIView *commonSuperview  = [self cg_searchCommonSuperviewWithView:view2];
-    NSAssert(commonSuperview, @"添加约束的两视图没有共同父视图");
+    CGDebugAssert(commonSuperview, @"添加约束的两视图没有共同父视图");
+    if (commonSuperview == nil) return nil;
     
     NSLayoutConstraint *layoutConstraint    = nil;
     
