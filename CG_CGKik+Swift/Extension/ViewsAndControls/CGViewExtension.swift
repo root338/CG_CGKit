@@ -11,6 +11,12 @@ import Foundation
 //MARK:- 设置布局
 extension UIView {
     
+    var shouldSetSubviewsLayout : Bool {
+        let size = self.frame.size
+        let minValue = CGFloat.leastNormalMagnitude
+        return size.width <= minValue || size.height <= minValue
+    }
+    
     open func ml_set(frame: CGRect, addTo superview: UIView? = nil, isHidden: Bool? = false) {
         if !frame.equalTo(self.frame) {
             self.frame = frame
