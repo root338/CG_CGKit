@@ -23,17 +23,18 @@ extension Array {
             throw CGArrayError.index
         }
         
-        return Array(self[startIndex ... endIndex])
+        return Array(self[startIndex..<endIndex])
     }
     
     func subarray(range: NSRange) throws -> Array {
         
-        return try self.subarray(startIndex: range.location, endIndex: range.location + range.length - 1)
+        return try self.subarray(startIndex: range.location, endIndex: range.location + range.length)
     }
 }
 
 extension Array where Element : Equatable {
-    @discardableResult mutating func ml_remove(at obj: Element) -> Element? {
+    @discardableResult
+    mutating func ml_remove(at obj: Element) -> Element? {
         
         if self.contains(obj) {
             for (index, targetObj) in self.enumerated() {
@@ -45,7 +46,8 @@ extension Array where Element : Equatable {
         return nil
     }
     
-    @discardableResult mutating func ml_remove(at subarray: [Element]) -> [Element] {
+    @discardableResult
+    mutating func ml_remove(at subarray: [Element]) -> [Element] {
         var removeObjs = [Element]()
         for obj in subarray {
             if let removeObj = ml_remove(at: obj) {

@@ -27,16 +27,8 @@
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        [self awakeFromNib];
-        _rectCorner = UIRectCornerAllCorners;
     }
     return self;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
 }
 
 // Only override drawRect: if you perform custom drawing.

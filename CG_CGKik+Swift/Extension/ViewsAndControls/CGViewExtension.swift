@@ -11,10 +11,9 @@ import Foundation
 //MARK:- 设置布局
 extension UIView {
     
-    var shouldSetSubviewsLayout : Bool {
+    var viewableAreaNotZero : Bool {
         let size = self.frame.size
-        let minValue = CGFloat.leastNormalMagnitude
-        return size.width <= minValue || size.height <= minValue
+        return size.ml_areaGreaterZero
     }
     
     open func ml_set(frame: CGRect, addTo superview: UIView? = nil, isHidden: Bool? = false) {
@@ -54,4 +53,23 @@ extension UIView {
     func ml_estimatedSize(width: CGFloat) -> CGSize {
         return CGSize.init(width: width, height: CGFloat.greatestFiniteMagnitude)
     }
+    
+    var ml_safeAreaInsets : UIEdgeInsets {
+        if #available(iOS 11.0, *) {
+            return self.safeAreaInsets
+        }else {
+            return UIEdgeInsets.init(value: UIApplication.shared.statusBarFrame.maxY, type: .top)
+        }
+    }
+    
+    var ml_safeAreaInsetsForIgnoreStatusBar : UIEdgeInsets {
+        if #available(iOS 11.0, *) {
+            var insets = self.safeAreaInsets
+            insets.top = 0
+            return insets
+        }else {
+            return UIEdgeInsets.zero
+        }
+    }
 }
+
