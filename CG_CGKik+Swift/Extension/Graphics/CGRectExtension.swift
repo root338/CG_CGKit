@@ -75,8 +75,61 @@ extension CGRect {
     func ml_verticalCenterRect(size: CGSize, x: CGFloat, offsetY: CGFloat = 0) -> CGRect {
         return CGRect.init(x: x, y: (self.size.height - size.height) / 2, width: size.width, height: size.height)
     }
+    func ml_horizontalFullRect(y: CGFloat, height: CGFloat) -> CGRect {
+        return CGRect.init(x: self.minX, y: y, width: self.width, height: height)
+    }
+    func ml_verticalFullRect(x: CGFloat, width: CGFloat) -> CGRect {
+        return CGRect.init(x: x, y: self.minY, width: width, height: self.height)
+    }
 }
 
+extension CGRect {
+    
+    ///
+    func ml_mirror(y: CGFloat) -> CGRect {
+        var rect = self
+        let originY : CGFloat
+        
+        if y <= self.minY {
+            originY = y - self.height - (self.minY - y)
+        }else if y >= self.maxY {
+            originY = y + (y - self.maxY)
+        }else if y < self.midY {
+            originY = y - (y - self.minY)
+        }else {
+            originY = y - (self.maxY - y)
+        }
+        rect.origin.y = originY
+        return rect
+    }
+    func ml_mirror(x: CGFloat) -> CGRect {
+        var rect = self
+        let originX : CGFloat
+        if x <= self.minX {
+            originX = x - self.width - (self.minX - x)
+        }else if x >= self.maxX {
+            originX = x + (x - self.maxX)
+        }else if x < self.midX {
+            originX = x - (x - self.minX)
+        }else {
+            originX = x - (self.maxX - x)
+        }
+        rect.origin.x = originX
+        return rect
+    }
+    var ml_mirrorMaxY : CGRect {
+        return ml_mirror(y: self.maxY)
+    }
+    var ml_mirrorMinY : CGRect {
+        return ml_mirror(y: self.minY)
+    }
+    var ml_mirrorMaxX : CGRect {
+        return ml_mirror(x: self.maxX)
+    }
+    var ml_mirrorMinX : CGRect {
+        return ml_mirror(x: self.minX)
+    }
+}
 
 extension CGRect {
     mutating func ml_setOffset(point: CGPoint) {

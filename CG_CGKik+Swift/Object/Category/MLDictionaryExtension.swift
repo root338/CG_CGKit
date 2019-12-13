@@ -18,4 +18,11 @@ extension Dictionary where Key : Hashable {
         }
         return didAddValue.count == 0 ? nil : didAddValue
     }
+    func ml_splice(dict: [Key : Value]) -> Self {
+        var newValue = self
+        for (key, value) in dict {
+            newValue.updateValue(value, forKey: key)
+        }
+        return newValue
+    }
 }

@@ -13,6 +13,15 @@ enum GMLEdgeType {
     case bottom
     case left
     case right
+    
+    var reverseEdge : GMLEdgeType {
+        switch self {
+        case .top: return .bottom
+        case .bottom: return .top
+        case .left: return .right
+        case .right: return .left
+        }
+    }
 }
 
 enum GMLEdgeVerticalType {
