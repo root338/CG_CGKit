@@ -82,7 +82,8 @@ typedef NS_ENUM(NSInteger, HorizontalSingleViewStyle) {
 
 /// 设置滑块左右两边相同的值
 @property (nonatomic, assign, readwrite) CGFloat sliderSpaceInsets;
-
+/// 滑块底部间距
+@property (nonatomic, assign) CGFloat sliderBottom;
 #pragma mark - 主视图设置
 
 @property (nonatomic, assign) HorizontalSingleViewStyle style;

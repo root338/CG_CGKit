@@ -67,14 +67,35 @@
 }
 
 #pragma mark - 页面设置
+
+- (BOOL)canReloadData {
+    CGRect frame = self.frame;
+    return _titles.count > 0 && CGRectGetHeight(frame) > CGFLOAT_MIN && CGRectGetWidth(frame) > CGFLOAT_MIN && self.window != nil;
+}
+
+- (void)setNeedReloadData {
+    isChangeValue = YES;
+    if (![self canReloadData]) {
+        return;
+    }
+    [self reloadDataIfNeeded];
+}
+
+- (BOOL)reloadDataIfNeeded {
+    if (!isChangeValue || ![self canReloadData]) {
+        return NO;
+    }
+    [self updateContentView];
+    [self updateAllSubviewsLayout];
+    isChangeValue = NO;
+    return YES;
+}
+
 /**
  *  更新视图
  */
 - (void)updateContentView
 {
-    //防止短时间内重复更新
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateContentView) object:nil];
-    
     //当没有添加视图时，添加内容视图、滑块视图
     if (!self.contentView.superview) {
         
@@ -148,10 +169,6 @@
     if (self.appearance.backgroundColor) {
         self.backgroundColor = self.appearance.backgroundColor;
     }
-    
-    //更新视图
-    [self setNeedsLayout];
-    
     if ([self.delegate respondsToSelector:@selector(didFinishUpdateSingleView:)]) {
         [self.delegate didFinishUpdateSingleView:self];
     }
@@ -160,11 +177,61 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    if (![self reloadDataIfNeeded]) {
+        [self updateAllSubviewsLayout];
+    }
+    [super layoutSubviews];
+}
+
+- (void)updateSliderViewLocationIsAnmation:(BOOL)isAnmation
+{
+
+    if (!self.selectedButton) {
+        return;
+    }
+    CGRect frame = self.sliderView.frame;
+    CGFloat sliderWidth = 0;
     
+    //设置滑块的宽度
+    switch (self.appearance.sliderType) {
+        case HorizontalSingleSliderTypeTitle:
+        case HorizontalSingleSliderTypeTitleInsetsEdge:
+            sliderWidth = [self.selectedButton calculateButtonCurrentTitleSize].width;
+            break;
+        case HorizontalSingleSliderTypeCustom:
+            sliderWidth = self.appearance.sliderSize.width;
+            break;
+        default:
+            sliderWidth = self.selectedButton.bounds.size.width;
+            break;
+    }
+    
+    //设置滑块的 X 坐标，相对于选择按钮中心坐标减去滑块二分之一的宽度
+    CGPoint selectButtonPoint = [self.contentView convertPoint:self.selectedButton.center toView:self];
+    CGFloat sliderOriginX = selectButtonPoint.x - sliderWidth / 2;
+    if (self.appearance.sliderType == HorizontalSingleSliderTypeTitleInsetsEdge) {
+        
+        sliderOriginX   -= self.appearance.sliderLeftSpaceInsets;
+        sliderWidth     += self.appearance.sliderLeftSpaceInsets + self.appearance.sliderRightSpaceInsets;
+    }
+    
+    frame = CGRectMake(sliderOriginX, self.bounds.size.height - self.appearance.sliderSize.height - self.appearance.sliderBottom, sliderWidth, self.appearance.sliderSize.height);
+    
+    if (isAnmation) {
+        [UIView animateWithDuration:.3 animations:^{
+            self.sliderView.frame = frame;
+        } completion:^(BOOL finished) {
+            
+        }];
+    }else {
+        self.sliderView.frame = frame;
+    }
+}
+
+- (void)updateAllSubviewsLayout {
     UIEdgeInsets margin = self.appearance.edgeInsetForContentView;
     
     self.contentView.frame = CG_CGFrameWithMaxFrame(self.bounds, margin);
-    
     if (self.appearance.style == HorizontalSingleViewStyleDefault) {
         
         CGFloat width = (CGRectGetWidth(self.contentView.bounds) - (self.appearance.spaceForButtons * (self.titles.count - 1)));
@@ -230,53 +297,6 @@
     }
     
     [self updateSliderViewLocationIsAnmation:NO];
-    
-    [super layoutSubviews];
-}
-
-- (void)updateSliderViewLocationIsAnmation:(BOOL)isAnmation
-{
-
-    if (!self.selectedButton) {
-        return;
-    }
-    CGRect frame = self.sliderView.frame;
-    CGFloat sliderWidth = 0;
-    
-    //设置滑块的宽度
-    switch (self.appearance.sliderType) {
-        case HorizontalSingleSliderTypeTitle:
-        case HorizontalSingleSliderTypeTitleInsetsEdge:
-            sliderWidth = [self.selectedButton calculateButtonCurrentTitleSize].width;
-            break;
-        case HorizontalSingleSliderTypeCustom:
-            sliderWidth = self.appearance.sliderSize.width;
-            break;
-        default:
-            sliderWidth = self.selectedButton.bounds.size.width;
-            break;
-    }
-    
-    //设置滑块的 X 坐标，相对于选择按钮中心坐标减去滑块二分之一的宽度
-    CGPoint selectButtonPoint = [self.contentView convertPoint:self.selectedButton.center toView:self];
-    CGFloat sliderOriginX = selectButtonPoint.x - sliderWidth / 2;
-    if (self.appearance.sliderType == HorizontalSingleSliderTypeTitleInsetsEdge) {
-        
-        sliderOriginX   -= self.appearance.sliderLeftSpaceInsets;
-        sliderWidth     += self.appearance.sliderLeftSpaceInsets + self.appearance.sliderRightSpaceInsets;
-    }
-    
-    frame = CGRectMake(sliderOriginX, self.bounds.size.height - self.appearance.sliderSize.height, sliderWidth, self.appearance.sliderSize.height);
-    
-    if (isAnmation) {
-        [UIView animateWithDuration:.3 animations:^{
-            self.sliderView.frame = frame;
-        } completion:^(BOOL finished) {
-            
-        }];
-    }else {
-        self.sliderView.frame = frame;
-    }
 }
 
 #pragma mark - 滑块位置更新
@@ -313,35 +333,26 @@
     }
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-    if (newWindow) {
-        if (isChangeValue) {
-            [self updateContentView];
-            isChangeValue   = NO;
-        }
-        
-    }
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    [self reloadDataIfNeeded];
 }
 
 #pragma mark - 设置属性
 
 - (void)setAppearance:(HorizontalSingleAppearance *)appearance
 {
-    if (![appearance isEqual:_appearance]) {
-        _appearance     = appearance;
-        isChangeValue   = YES;
-    }
+    _appearance = appearance;
+    [self setNeedReloadData];
 }
 
 - (void)setTitles:(NSArray *)titles
 {
-    if (![_titles isEqualToArray:titles]) {
-        
-        _titles         = titles;
-        isChangeValue   = YES;
+    if (titles != nil && [_titles isEqualToArray:titles]) {
+        return;
     }
+    _titles = titles;
+    [self setNeedReloadData];
 }
 
 - (UIView *)contentView
@@ -349,9 +360,7 @@
     if (_contentView) {
         return _contentView;
     }
-    
     _contentView = [[UIView alloc] init];
-    
     return self.contentView;
 }
 
@@ -360,9 +369,7 @@
     if (_sliderView) {
         return _sliderView;
     }
-    
     _sliderView = [[UIView alloc] init];
-    
     return _sliderView;
 }
 
