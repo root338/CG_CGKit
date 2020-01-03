@@ -42,12 +42,20 @@
 
 - (NSDateComponents *)components:(NSCalendarUnit)unit fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
+    if (fromDate == nil || toDate == nil) {
+        return nil;
+    }
+    if (![fromDate isKindOfClass:[NSDate class]] || ![toDate isKindOfClass:[NSDate class]]) {
+        return nil;
+    }
     NSDateComponents *dateComponents = [self.calendar components:unit fromDate:fromDate toDate:toDate options:NSCalendarMatchStrictly];
     return dateComponents;
 }
 
 - (NSDateComponents *)components:(NSCalendarUnit)unit date:(NSDate *)date
 {
+    if (date == nil) { return nil; }
+    if (![date isKindOfClass:[NSDate class]]) { return nil; }
     NSDateComponents *dateComponents = [self.calendar components:unit fromDate:date];
     return dateComponents;
 }

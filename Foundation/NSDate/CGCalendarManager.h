@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, CGCalendarOffsetType) {
  @param toDate 结束日记
  @return 返回偏差值结果
  */
-- (NSDateComponents *)components:(NSCalendarUnit)unit fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
+- (nullable NSDateComponents *)components:(NSCalendarUnit)unit fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 
 /**
  对时间进行解析
@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, CGCalendarOffsetType) {
  @param date 需要解析的时间
  @return 返回解析结果
  */
-- (NSDateComponents *)components:(NSCalendarUnit)unit date:(NSDate *)date;
+- (nullable NSDateComponents *)components:(NSCalendarUnit)unit date:(NSDate *)date;
 
 #pragma mark - 格式化时间
 - (nullable NSString *)date:(NSDate *)date formatterStyle:(CGFormatterStyle)formatterStyle;
