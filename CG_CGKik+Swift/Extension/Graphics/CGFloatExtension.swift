@@ -21,4 +21,7 @@ extension CGFloat {
     func cg_add(verticalInsets: UIEdgeInsets) ->CGFloat {
         return self + verticalInsets.cg_verticalValue
     }
+    func mid(lessValue value: CGFloat = 0) -> CGFloat {
+        return (self - value) / 2
+    }
 }

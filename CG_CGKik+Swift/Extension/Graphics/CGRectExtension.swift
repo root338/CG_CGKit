@@ -6,13 +6,23 @@
 //  Copyright © 2018年 ym. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension CGRect {
     
     func ml_offset(point: CGPoint) -> CGRect {
         var rect = self
         rect.origin = CGPoint.init(x: self.minX + point.x, y: self.minY + point.y)
+        return rect
+    }
+    func ml_offsetY(_ y: CGFloat) -> CGRect {
+        var rect = self
+        rect.origin.y += y
+        return rect
+    }
+    func ml_offsetX(_ x: CGFloat) -> CGRect {
+        var rect = self
+        rect.origin.x += x
         return rect
     }
     
@@ -59,12 +69,71 @@ extension CGRect {
     }
 }
 
-//MARK:- 居中计算
+//MARK:- 对齐计算
 extension CGRect {
     
     /// size 在 CGRect 中的居中区域
     func ml_centerRect(size: CGSize) -> CGRect {
         return CGRect.init(x: (self.size.width - size.width) / 2, y: (self.size.height - size.height) / 2, width: size.width, height: size.height)
+    }
+    
+    func ml_size(_ size: CGSize, contentMode: UIView.ContentMode) -> CGRect {
+        
+        var x : CGFloat = 0
+        var y : CGFloat = 0
+        var width = size.width
+        var height = size.height
+        
+        switch contentMode {
+        case .scaleToFill:
+            width = self.width
+            height = self.height
+        case .scaleAspectFit: fallthrough
+        case .scaleAspectFill:
+            let s1 = size.width / self.width
+            let s2 = size.height / self.height
+            if (s1 < s2) {
+                if (contentMode == .scaleAspectFit) {
+                    width   = size.width / s2;
+                    height  = size.height;
+                }else {
+                    width   = size.width;
+                    height  = size.height / s1;
+                }
+            }else {
+                if (contentMode == .scaleAspectFit) {
+                    width   = size.width;
+                    height  = size.height / s1;
+                }else {
+                    width   = size.width / s2;
+                    height  = size.height;
+                }
+            }
+            x = self.width.mid(lessValue: width)
+            y = self.height.mid(lessValue: height)
+        case .redraw: break
+        case .center: return ml_centerRect(size: size)
+        case .top:
+            x = self.width.mid(lessValue: width)
+        case .bottom:
+            x = self.width.mid(lessValue: width)
+            y = self.height - height
+        case .left:
+            y = self.height.mid(lessValue: height)
+        case .right:
+            x = self.width - width
+            y = self.height.mid(lessValue: height)
+        case .topLeft: break
+        case .topRight:
+            x = self.width - width
+        case .bottomLeft:
+            y = self.height - height
+        case .bottomRight:
+            x = self.width - width
+            y = self.height - height
+        @unknown default: break
+        }
+        return CGRect(x: x, y: y, width: width, height: height)
     }
     
     /// size 在 CGRect 中的水平区域，需要提供 x
@@ -85,7 +154,7 @@ extension CGRect {
 
 extension CGRect {
     
-    ///
+    /// 已给定 y 轴值转换的镜像
     func ml_mirror(y: CGFloat) -> CGRect {
         var rect = self
         let originY : CGFloat
@@ -102,6 +171,7 @@ extension CGRect {
         rect.origin.y = originY
         return rect
     }
+    /// 已给定 x 轴值转换的镜像
     func ml_mirror(x: CGFloat) -> CGRect {
         var rect = self
         let originX : CGFloat
