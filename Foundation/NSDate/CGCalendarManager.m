@@ -37,7 +37,13 @@
 
 - (NSInteger)dayWithFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
-    return [self components:NSCalendarUnitDay fromDate:fromDate toDate:toDate].day;
+    NSCalendarUnit unit = NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
+    NSDateComponents *fromDateComponents = [self components:unit date:fromDate];
+    if (fromDateComponents == nil) return 0;
+    NSDateComponents *toDateComponents = [self components:unit date:toDate];
+    if (toDateComponents == nil) return 0;
+    NSDateComponents *dateComponents = [self.calendar components:NSCalendarUnitDay fromDateComponents:fromDateComponents toDateComponents:toDateComponents options:NSCalendarMatchStrictly];
+    return dateComponents.day;
 }
 
 - (NSDateComponents *)components:(NSCalendarUnit)unit fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
