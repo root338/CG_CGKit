@@ -14,6 +14,13 @@ enum CGArrayError : Error {
 }
 
 extension Array {
+    func ml_toJSONString(encoding: String.Encoding = String.Encoding.utf8) throws -> String? {
+        let data = try JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
+        return String(data: data, encoding: .utf8)
+    }
+}
+
+extension Array {
     
     func subarray(startIndex: Int, endIndex: Int) throws -> Array {
         guard startIndex < self.count else {
