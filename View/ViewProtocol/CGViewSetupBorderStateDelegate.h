@@ -16,7 +16,7 @@
 @property (nonatomic, assign) CGViewBorderState borderState;
 
 /** CGViewBorderStateDisabled状态下关闭用户交互 */
-@property (nonatomic, assign) BOOL isDisableStateOfDisableUserInteraction;
+//@property (nonatomic, assign) BOOL isDisableStateOfDisableUserInteraction;
 
 /** 获取指定状态的视图边框值 */
 - (CGBorderObject *)borderLayerForState:(CGViewBorderState)state;
