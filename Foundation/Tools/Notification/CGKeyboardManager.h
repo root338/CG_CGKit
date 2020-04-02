@@ -119,6 +119,10 @@ typedef NS_ENUM(NSInteger, CGKeyboardConstraintConstantType) {
 
 /** 由于约束的第一个对象的边与第二个对象的边的不同对常量的加减也不相同，所以需要指定计算的常量值如何设置 */
 //- (CGKeyboardConstraintConstantType)keyboardManager:(CGKeyboardManager *)keyboardManager targetConstraint:(NSLayoutConstraint *)constraint constantSpace:(CGFloat)constantSpace;
+
+/// 即将设置视图frame时，给予最后的修正
+/// @param frame 即将设置的frame
+- (CGRect)keyboardManager:(CGKeyboardManager *)keyboardManager willSetFrame:(CGRect)frame;
 @end
 
 /** 

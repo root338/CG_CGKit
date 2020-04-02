@@ -140,6 +140,10 @@
         }
     }
     
+    if ([self.delegate respondsToSelector:@selector(keyboardManager:willSetFrame:)]) {
+        keyboardFrameDidChangeNeedChangeViewFrame = [self.delegate keyboardManager:self willSetFrame:keyboardFrameDidChangeNeedChangeViewFrame];
+    }
+    
     if (bottomLayoutConstraint) {
         
         CGFloat constant    = bottomLayoutConstraint.constant - bottomConstraintConstant;
@@ -176,7 +180,6 @@
         [UIView animateWithDuration:duration delay:0 options:curve animations:^{
             
             if (!bottomLayoutConstraint) {
-                
                 theNeedChangeFrameTheView.frame = keyboardFrameDidChangeNeedChangeViewFrame;
             }else {
                 //应使用父视图来视图更新结构
