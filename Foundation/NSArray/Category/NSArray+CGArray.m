@@ -10,38 +10,38 @@
 
 @implementation NSArray (CGArray)
 
-- (BOOL)cg_veriftyArray
-{
-    return [self isKindOfClass:[NSArray class]];
-}
-
-- (BOOL)cg_judgeIsZeroLengthArray
-{
-    return self.count == 0;
-}
-
 /** 是否越界 */
-- (BOOL)isTransboundaryAtIndex:(NSUInteger)index
-{
-    
-    return index >= self.count;
+- (BOOL)isAvailableAtIndex:(NSInteger)index {
+    return self.count > index && index >= 0;
 }
 
 - (id)cg_objectAtIndex:(NSUInteger)index
 {
-    if ([self isTransboundaryAtIndex:index]) {
+    if (![self isAvailableAtIndex:index]) {
         return nil;
     }
-    
     return [self objectAtIndex:index];
 }
 
-- (NSArray <id> *)cg_arrayByAddingObjectsFromArray:(NSArray *)otherArray
-{
-    if ([otherArray cg_veriftyArray]) {
+- (NSArray <id> *)cg_arrayByAddingObjectsFromArray:(NSArray *)otherArray {
+    if (CGIsNotEmptyArray(otherArray)) {
         return [self arrayByAddingObjectsFromArray:otherArray];
     }
     return self;
+}
+
+- (NSRange)cg_rangeToIndex:(NSInteger)index {
+    if (index < 0 || index >= self.count) {
+        return NSMakeRange(NSNotFound, NSNotFound);
+    }
+    return NSMakeRange(0, index);
+}
+
+- (NSRange)cg_rangeFromIndex:(NSInteger)index {
+    if (index < 0 || index >= self.count) {
+        return NSMakeRange(NSNotFound, NSNotFound);
+    }
+    return NSMakeRange(index, self.count - index);
 }
 
 + (instancetype)cg_arrayWithObjects:firstObj, ... NS_REQUIRES_NIL_TERMINATION
@@ -66,13 +66,19 @@
     }
     return arr;
 }
+
+
+- (BOOL)isEmptyCG {
+    return self.count == 0;
+}
+
 @end
 
 @implementation NSMutableArray (CGMutableArray)
 
 - (BOOL)cg_addObjectsFromArray:(NSArray *)otherArray
 {
-    BOOL isFlag = ([otherArray cg_veriftyArray] && self);
+    BOOL isFlag = CGIsNotEmptyArray(otherArray);
     if (isFlag) {
         [self addObjectsFromArray:otherArray];
     }

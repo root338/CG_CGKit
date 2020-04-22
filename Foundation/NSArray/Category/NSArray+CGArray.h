@@ -9,15 +9,22 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+#define CGIsArray(a) ((a) != nil && [(a) isKindOfClass:NSArray.class])
+#define CGIsNotEmptyArray(a) ((CGIsArray(a)) && [(a) count] > 0)
+
 @interface NSArray<ObjectType> (CGArray)
 
-- (BOOL)cg_veriftyArray;
+@property (nonatomic, assign, readonly) BOOL isEmptyCG;
 
-- (BOOL)cg_judgeIsZeroLengthArray;
-
+/// 等价 arrayByAddingObjectsFromArray:
 - (nullable NSArray<ObjectType> *)cg_arrayByAddingObjectsFromArray:(nullable NSArray<ObjectType> *)otherArray;
 
 - (ObjectType)cg_objectAtIndex:(NSUInteger)index;
+/// 从 0 到 index, 没有 location == NSNotFound
+- (NSRange)cg_rangeToIndex:(NSInteger)index;
+/// 从 index 到数组结尾，没有 location == NSNotFound
+- (NSRange)cg_rangeFromIndex:(NSInteger)index;
 
 + (instancetype)cg_arrayWithObjects:(ObjectType)firstObj, ... NS_REQUIRES_NIL_TERMINATION;
 @end

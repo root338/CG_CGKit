@@ -73,8 +73,8 @@ extension CGRect {
 extension CGRect {
     
     /// size 在 CGRect 中的居中区域
-    func ml_centerRect(size: CGSize) -> CGRect {
-        return CGRect.init(x: (self.size.width - size.width) / 2, y: (self.size.height - size.height) / 2, width: size.width, height: size.height)
+    func ml_centerRect(size: CGSize, offset: CGPoint = CGPoint.zero) -> CGRect {
+        return CGRect.init(x: (self.size.width - size.width) / 2 + offset.x, y: (self.size.height - size.height) / 2 + offset.y, width: size.width, height: size.height)
     }
     
     func ml_size(_ size: CGSize, contentMode: UIView.ContentMode) -> CGRect {
