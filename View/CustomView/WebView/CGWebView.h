@@ -54,7 +54,13 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
  * 禁止用户长按弹出提示框
  * @param 默认 Debug 环境下为 NO， Release 环境下为 YES
  */
-@property (nonatomic, assign) BOOL isDisableTouchCallout;
+@property (nonatomic, assign) BOOL disableTouchCallout;
+
+/**
+ * 禁止用户选择
+ * @param 默认 Debug 环境下为 NO， Release 环境下为 YES
+*/
+@property (nonatomic, assign) BOOL disableUserSelect;
 
 //#pragma mark - 使用UIWebView类时的方法
 //
@@ -77,7 +83,7 @@ typedef NS_ENUM(NSInteger, CGWebViewType) {
 
 #pragma mark - 兼容API
 
-@property (nullable, nonatomic, readonly) UIScrollView *scrollView NS_AVAILABLE_IOS(5_0);
+@property (nullable, nonatomic, readonly) UIScrollView *scrollView API_AVAILABLE(ios(5.0));
 
 - (void)loadRequest:(NSURLRequest *)request;
 - (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;

@@ -12,40 +12,32 @@
 @implementation UIWebView (CGValue)
 
 //禁止长按弹出选择框
-- (void)setIsDisableTouchCallout:(BOOL)disable
+- (void)setDisableTouchCallout:(BOOL)disable
 {
-//    if (self.isDisableTouchCallout != disable) {
+    NSString *statusStr = disable ? @"none" : @"yes";
+    NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
     
-        NSString *statusStr = disable ? @"none" : @"yes";
-        NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
-        
-        [self dealWithWebViewJS:jsString];
-        objc_setAssociatedObject(self, @selector(isDisableTouchCallout), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//    }
+    [self stringByEvaluatingJavaScriptFromString:jsString];
 }
 
 - (BOOL)isDisableTouchCallout
 {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
+    CGDebugAssert(NO, @"获取不到 webkitTouchCallout 状态");
+    return YES;
 }
 
 //禁止用户选择
-- (void)setIsDisableUserSelect:(BOOL)disable
+- (void)setDisableUserSelect:(BOOL)disable
 {
-    if (self.isDisableUserSelect != disable) {
-    
-        NSString *statusStr = disable ? @"none" : @"yes";
-        NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitUserSelect='%@';", statusStr];
-    
-        [self dealWithWebViewJS:jsString];
-    
-        objc_setAssociatedObject(self, @selector(isDisableUserSelect), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+    NSString *statusStr = disable ? @"none" : @"yes";
+    NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitUserSelect='%@';", statusStr];
+    [self stringByEvaluatingJavaScriptFromString:jsString];
 }
 
 - (BOOL)isDisableUserSelect
 {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
+    CGDebugAssert(NO, @"获取不到 webkitUserSelect 状态");
+    return YES;
 }
 
 - (NSString *)title

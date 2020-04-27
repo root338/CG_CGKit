@@ -167,6 +167,9 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
+    
+    webView.disableTouchCallout = self.webView.disableTouchCallout;
+    webView.disableUserSelect = self.webView.disableUserSelect;
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [self.delegate webViewDidFinishLoad:self.webView];
     }
@@ -244,8 +247,6 @@
         if ([self.delegate respondsToSelector:@selector(webView:updateProgress:)]) {
             [self.delegate webView:self.webView updateProgress:progress];
         }
-        
-//        self.webView.webViewForWKWebView.isDisableTouchCallout  = self.webView.isDisableTouchCallout;
     }
 }
 

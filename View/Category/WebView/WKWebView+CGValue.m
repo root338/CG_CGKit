@@ -12,48 +12,31 @@
 @implementation WKWebView (CGValue)
 
 //禁止长按弹出选择框
-- (void)setIsDisableTouchCallout:(BOOL)disable
+- (void)setDisableTouchCallout:(BOOL)disable
 {
-    if (self.isDisableTouchCallout != disable) {
-        
-        
-        NSString *statusStr = disable ? @"none" : @"yes";
-        NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
-        WKUserScript *userScript = [[WKUserScript alloc] initWithSource:jsString injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
-        
-        if (!self.configuration.userContentController) {
-            WKUserContentController *userContentController = [[WKUserContentController alloc] init];
-            self.configuration.userContentController = userContentController;
-        }
-        [self.configuration.userContentController addUserScript:userScript];
-        
-//        [self dealWithWebViewJS:jsString completionHandler:nil];
-        objc_setAssociatedObject(self, @selector(isDisableTouchCallout), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+    NSString *statusStr = disable ? @"none" : @"yes";
+    NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitTouchCallout='%@';", statusStr];
+    [self evaluateJavaScript:jsString completionHandler:nil];
 }
 
 - (BOOL)isDisableTouchCallout
 {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
+    CGDebugAssert(NO, @"通过 js 获取不到 document.documentElement.style.webkitTouchCallout 状态");
+    return YES;
 }
 
 //禁止用户选择
-- (void)setIsDisableUserSelect:(BOOL)disable
+- (void)setDisableUserSelect:(BOOL)disable
 {
-    if (self.isDisableUserSelect != disable) {
-    
-        NSString *statusStr = disable ? @"none" : @"yes";
-        NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitUserSelect='%@';", statusStr];
-        
-        [self dealWithWebViewJS:jsString completionHandler:nil];
-        
-        objc_setAssociatedObject(self, @selector(isDisableUserSelect), @(disable), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+    NSString *statusStr = disable ? @"none" : @"yes";
+    NSString *jsString  = [NSString stringWithFormat:@"document.documentElement.style.webkitUserSelect='%@';", statusStr];
+    [self evaluateJavaScript:jsString completionHandler:nil];
 }
 
 - (BOOL)isDisableUserSelect
 {
-    return [objc_getAssociatedObject(self, _cmd) boolValue];
+    CGDebugAssert(NO, @"通过 js 获取不到 document.documentElement.style.webkitUserSelect 状态");
+    return YES;
 }
 
 - (void)titleWithCompletionHandler:(CGWKWebViewRunJavaScriptCallback)completionHandler

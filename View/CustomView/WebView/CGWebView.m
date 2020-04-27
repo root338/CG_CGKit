@@ -18,6 +18,7 @@
 #import "CGWebViewPrivateProxyDelegate.h"
 
 #import "UIWebView+CGValue.h"
+#import "WKWebView+CGValue.h"
 
 #import "CGPrintLogHeader.h"
 
@@ -71,11 +72,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-//#if DEBUG
-//        _isDisableTouchCallout  = YES;
-//#else
-//        _isDisableTouchCallout  = YES;
-//#endif
+#if DEBUG
+        _disableTouchCallout = NO;
+        _disableUserSelect = NO;
+#else
+        _disableTouchCallout = YES;
+        _disableUserSelect = YES;
+#endif
         
         if (webViewType == CGWebViewTypeWKWebView) {
             if (![CGWebView isWebKitAvailable]) {
@@ -221,7 +224,6 @@
         }else if (self.webViewForWKWebView) {
             [self.webViewForWKWebView loadHTMLString:string baseURL:baseURL];
         }
-        
     }else {
         CGErrorLog(@"没有%@方法", NSStringFromSelector(_cmd));
     }
@@ -363,6 +365,22 @@
 {
     _UIDelegateForWKWebView             = UIDelegateForWKWebView;
     self.webViewForWKWebView.UIDelegate = UIDelegateForWKWebView;
+}
+
+- (void)setDisableTouchCallout:(BOOL)disableTouchCallout {
+    _disableTouchCallout = disableTouchCallout;
+    if (!self.isLoading) {
+        self.webViewForWKWebView.disableTouchCallout = disableTouchCallout;
+        self.webViewForUIWebView.disableTouchCallout = disableTouchCallout;
+    }
+}
+
+- (void)setDisableUserSelect:(BOOL)disableUserSelect {
+    _disableUserSelect = disableUserSelect;
+    if (!self.isLoading) {
+        self.webViewForWKWebView.disableUserSelect = disableUserSelect;
+        self.webViewForUIWebView.disableUserSelect = disableUserSelect;
+    }
 }
 
 #pragma mark - 兼容实例属性

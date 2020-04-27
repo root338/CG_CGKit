@@ -21,10 +21,10 @@ typedef void (^CGWKWebViewRunJavaScriptCallback) (_Nullable id resultValue, NSEr
 //**
 
 /** //禁止长按弹出选择框 */
-@property (assign, nonatomic) BOOL isDisableTouchCallout;
+@property (assign, nonatomic, getter=isDisableTouchCallout) BOOL disableTouchCallout;
 
 /** //禁止用户选择 */
-@property (assign, nonatomic) BOOL isDisableUserSelect;
+@property (assign, nonatomic, getter=isDisableUserSelect) BOOL disableUserSelect;
 
 - (void)titleWithCompletionHandler:(nullable CGWKWebViewRunJavaScriptCallback)completionHandler;
 - (void)HTMLWithCompletionHandler:(nullable CGWKWebViewRunJavaScriptCallback)completionHandler;

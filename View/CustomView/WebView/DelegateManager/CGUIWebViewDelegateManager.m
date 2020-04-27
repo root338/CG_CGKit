@@ -80,6 +80,8 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    webView.disableTouchCallout = self.webView.disableTouchCallout;
+    webView.disableUserSelect = self.webView.disableUserSelect;
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [self.delegate webViewDidFinishLoad:self.webView];
     }
@@ -105,8 +107,6 @@
         NSString *title = webView.title;
         [self.delegate webView:self.webView webViewTitle:title];
     }
-    
-//    webView.isDisableTouchCallout   = self.webView.isDisableTouchCallout;
 }
 
 - (void)resetWebViewLoad
