@@ -26,12 +26,12 @@ extension CGRect {
         return rect
     }
     
-    /// 为Rect排除外边距 {x + left, y + top, x - (left + right), y - (top + bottom)}
+    /// 为Rect排除外边距 {x + left, y + top, width - (left + right), height - (top + bottom)}
     func ml_exclude(marginInsets insets: UIEdgeInsets) -> CGRect {
         return CGRect.init(x: self.minX + insets.left, y: self.minY + insets.top, width: self.width - insets.left - insets.right, height: self.height - insets.top - insets.bottom)
     }
     
-    /// 为Rect增加外边距 {x - left, y - top, x + (left + right), y + (top + bottom)}
+    /// 为Rect增加外边距 {x - left, y - top, width + (left + right), height + (top + bottom)}
     func ml_add(marginInsets insets: UIEdgeInsets) -> CGRect {
         return CGRect.init(x: self.minX - insets.left, y: self.minY - insets.top, width: self.width + insets.left + insets.right, height: self.height + insets.top + insets.bottom)
     }
