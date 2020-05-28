@@ -53,6 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSDictionary *)cg_allObjectToDictionary;
 
+/// 获取类属性列表
++ (nullable NSArray<NSString *> *)cg_propertyNameList;
+
+/// 获取类属性列表
+/// @param includeSuperClass 是否包含父类属性
++ (NSArray<NSString *> *)cg_propertyNameListWithIncludeSuperClass:(BOOL)includeSuperClass;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -50,17 +50,19 @@
     }
     if (filterTarget) {
         
-        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        
         unsigned int propertyListCount;
-        
         objc_property_t *propertysList = class_copyPropertyList(targetClass, &propertyListCount);
+        if (propertysList == NULL) {
+            return nil;
+        }
+        
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         
         for (int i = 0; i < propertyListCount; i++) {
             
             objc_property_t property = propertysList[i];
             
-            NSString *propertyName      = [NSString stringWithUTF8String:property_getName(property)];
+            NSString *propertyName = [NSString stringWithUTF8String:property_getName(property)];
             
             id value                    = nil;
             
@@ -93,6 +95,42 @@
     }else {
         return nil;
     }
+}
+
++ (NSArray<NSString *> *)cg_propertyNameList {
+    unsigned int outCount;
+    objc_property_t *propertyT = class_copyPropertyList([self class], &outCount);
+    if (propertyT == NULL) {
+        return nil;
+    }
+    if (outCount == 0) {
+        free(propertyT);
+        return nil;
+    }
+    NSMutableArray *nameList = NSMutableArray.array;
+    for (unsigned int i = 0; i < outCount; i++) {
+        objc_property_t property = propertyT[i];
+        const char *cPropertyName = property_getName(property);
+        NSString *propertyName = [NSString stringWithUTF8String:cPropertyName];
+        if (propertyName) {
+            [nameList addObject:propertyName];
+        }
+    }
+    free(propertyT);
+    return nameList;
+}
+
++ (NSArray<NSString *> *)cg_propertyNameListWithIncludeSuperClass:(BOOL)includeSuperClass {
+    NSMutableArray *list = NSMutableArray.array;
+    Class classType = [self class];
+    while (classType) {
+        NSArray *keys = [self cg_propertyNameList];
+        if (keys) {
+            [list addObjectsFromArray:keys];
+        }
+        classType = [classType superclass];
+    }
+    return list;
 }
 
 @end

@@ -47,6 +47,7 @@
         const char *propertyName    = property_getName(property_t);
         [propertyArray addObject:[NSString stringWithUTF8String:propertyName]];
     }
+    free(propertyList);
     
     return propertyArray;
 }
