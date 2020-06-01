@@ -23,6 +23,9 @@
     unsigned int outCount;
     
     Method *methodList      = class_copyMethodList(className, &outCount);
+    if (methodList == NULL) {
+        return nil;
+    }
     NSMutableArray *SELList = [NSMutableArray arrayWithCapacity:outCount];
     
     for (int index = 0; index < outCount; index++) {
@@ -31,6 +34,7 @@
         SEL selectorName    = method_getName(method);
         [SELList addObject:NSStringFromSelector(selectorName)];
     }
+    free(methodList);
     return SELList;
 }
 
@@ -38,7 +42,9 @@
 {
     unsigned int outCount;
     objc_property_t *propertyList   = class_copyPropertyList(className, &outCount);
-    
+    if (propertyList == NULL) {
+        return nil;
+    }
     NSMutableArray *propertyArray   = [NSMutableArray arrayWithCapacity:outCount];
     
     for (unsigned int index = 0; index < outCount; index++) {
