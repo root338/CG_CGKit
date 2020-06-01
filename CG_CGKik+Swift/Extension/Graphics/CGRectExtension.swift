@@ -10,6 +10,10 @@ import UIKit
 
 extension CGRect {
     
+    var ml_bounds: CGRect {
+        return CGRect(origin: .zero, size: self.size)
+    }
+    
     func ml_offset(point: CGPoint) -> CGRect {
         var rect = self
         rect.origin = CGPoint.init(x: self.minX + point.x, y: self.minY + point.y)
@@ -36,6 +40,9 @@ extension CGRect {
         return CGRect.init(x: self.minX - insets.left, y: self.minY - insets.top, width: self.width + insets.left + insets.right, height: self.height + insets.top + insets.bottom)
     }
     
+    /// 设置 CGRect 的 y 和 height
+    /// - Parameters:
+    ///   - verticalAlignment: y 的垂直对齐方式，随着该值的变化，起始 y 值会不同
     func ml_set(height: CGFloat, verticalAlignment: GMLEdgeVerticalType = GMLEdgeVerticalType.top, offset: CGFloat = 0) -> CGRect {
         var frame = self
         frame.size.height = height
@@ -52,6 +59,9 @@ extension CGRect {
         return frame
     }
     
+    /// 设置 CGRect 的 x 和 width
+    /// - Parameters:
+    ///   - horizontalAlignment: x 的水平对齐方式，随着该值的变化，起始 x 值会不同
     func ml_set(width: CGFloat, horizontalAlignment: GMLEdgeHorizontalType = GMLEdgeHorizontalType.top, offset: CGFloat = 0) -> CGRect {
         var frame = self
         frame.size.width = height
@@ -77,6 +87,7 @@ extension CGRect {
         return CGRect.init(x: (self.size.width - size.width) / 2 + offset.x, y: (self.size.height - size.height) / 2 + offset.y, width: size.width, height: size.height)
     }
     
+    /// rect 内指定 size 在不同填充下的 rect 值
     func ml_size(_ size: CGSize, contentMode: UIView.ContentMode) -> CGRect {
         
         var x : CGFloat = 0
@@ -144,9 +155,11 @@ extension CGRect {
     func ml_verticalCenterRect(size: CGSize, x: CGFloat, offsetY: CGFloat = 0) -> CGRect {
         return CGRect.init(x: x, y: (self.size.height - size.height) / 2, width: size.width, height: size.height)
     }
+    /// 水平填充满，并设置自定义的 y 和 height
     func ml_horizontalFullRect(y: CGFloat, height: CGFloat) -> CGRect {
         return CGRect.init(x: self.minX, y: y, width: self.width, height: height)
     }
+    /// 垂直填充满，并设置自定义的 x 和 width
     func ml_verticalFullRect(x: CGFloat, width: CGFloat) -> CGRect {
         return CGRect.init(x: x, y: self.minY, width: width, height: self.height)
     }
@@ -187,15 +200,19 @@ extension CGRect {
         rect.origin.x = originX
         return rect
     }
+    /// 以 maxY 值为轴，转换的镜像（向下翻转）
     var ml_mirrorMaxY : CGRect {
         return ml_mirror(y: self.maxY)
     }
+    /// 以 minY 值为轴，转换的镜像（向上翻转）
     var ml_mirrorMinY : CGRect {
         return ml_mirror(y: self.minY)
     }
+    /// 以 maxX 值为轴，转换的镜像（向右翻转）
     var ml_mirrorMaxX : CGRect {
         return ml_mirror(x: self.maxX)
     }
+    /// 以 minX 值为轴，转换的镜像（向左翻转）
     var ml_mirrorMinX : CGRect {
         return ml_mirror(x: self.minX)
     }

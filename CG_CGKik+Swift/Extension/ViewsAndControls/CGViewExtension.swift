@@ -9,14 +9,14 @@
 import Foundation
 
 //MARK:- 设置布局
-extension UIView {
+public extension UIView {
     
     var viewableAreaNotZero : Bool {
         let size = self.frame.size
         return size.ml_areaGreaterZero
     }
     
-    open func ml_set(frame: CGRect, addTo superview: UIView? = nil, isHidden: Bool? = false) {
+    func ml_set(frame: CGRect, addTo superview: UIView? = nil, isHidden: Bool? = false) {
         if !frame.equalTo(self.frame) {
             self.frame = frame
         }
@@ -32,7 +32,7 @@ extension UIView {
     }
     
     /// 设置UIView的frame，hidden，当isHidden == true 时，不设置 frame
-    open func ml_set(isHidden: Bool, frame: CGRect) {
+    func ml_set(isHidden: Bool, frame: CGRect) {
         if self.isHidden != isHidden {
             self.isHidden = isHidden
         }
@@ -46,7 +46,7 @@ extension UIView {
 }
 
 //MARK:- 常量
-extension UIView {
+public extension UIView {
     var ml_estimatedMaxSize : CGSize {
         return CGSize.init(width: self.width, height: CGFloat.greatestFiniteMagnitude)
     }
