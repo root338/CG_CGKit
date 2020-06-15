@@ -40,6 +40,9 @@ extension UIEdgeInsets {
     init(top: CGFloat, bottom: CGFloat) {
         self.init(top: top, left: 0, bottom: bottom, right: 0)
     }
+    init(horizontalValue: CGFloat, verticalValue: CGFloat) {
+        self.init(top: verticalValue, left: horizontalValue, bottom: verticalValue, right: horizontalValue)
+    }
 }
 //MARK:- 扩展方法
 extension UIEdgeInsets {
