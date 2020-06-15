@@ -18,8 +18,6 @@
 }
 @property (strong, nonatomic) UIView *contentView;
 
-@property (strong, nonatomic) UIView *sliderView;
-
 @end
 
 @implementation HorizontalSingleView

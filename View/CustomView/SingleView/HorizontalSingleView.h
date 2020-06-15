@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, nonatomic, strong) NSArray *titles;
 
+/// 滑块视图
+@property (strong, nonatomic) UIView *sliderView;
 #pragma mark - 选择内容
 /**
  *  选择的索引，从0开始
