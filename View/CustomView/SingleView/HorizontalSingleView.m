@@ -21,7 +21,7 @@
 @end
 
 @implementation HorizontalSingleView
-
+@synthesize sliderView = _sliderView;
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
@@ -96,11 +96,9 @@
 {
     //当没有添加视图时，添加内容视图、滑块视图
     if (!self.contentView.superview) {
-        
         [self addSubview:self.contentView];
     }
     if (!self.sliderView.superview) {
-        
         [self addSubview:self.sliderView];
     }
     
@@ -369,6 +367,20 @@
     }
     _sliderView = [[UIView alloc] init];
     return _sliderView;
+}
+
+- (void)setSliderView:(UIView *)sliderView {
+    if (_sliderView == sliderView) {
+        nil;
+    }
+    UIView *oldSliderView = _sliderView;
+    _sliderView = sliderView;
+    if (!_contentView) {
+        return;
+    }
+    [oldSliderView removeFromSuperview];
+    [self addSubview:sliderView];
+    [self updateSliderViewLocationIsAnmation:NO];
 }
 
 - (UIButton *)selectedButton
