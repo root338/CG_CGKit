@@ -50,4 +50,24 @@ extension CGSize {
         return CGSize(width: self.width - size.width,
                       height: self.height - size.height)
     }
+    
+    func set(width: CGFloat) -> CGSize {
+        return CGSize.init(width: width, height: self.height)
+    }
+    func minWidth(_ width: CGFloat) -> CGSize {
+        return CGSize.init(width: max(self.width, width), height: self.height)
+    }
+    func maxWidth(_ width: CGFloat) -> CGSize {
+        return CGSize.init(width: min(self.width, width), height: self.height)
+    }
+    
+    func set(height: CGFloat) -> CGSize {
+        return CGSize.init(width: self.width, height: height)
+    }
+    func minHeight(_ height: CGFloat) -> CGSize {
+        return CGSize.init(width: self.width, height: max(self.height, height))
+    }
+    func maxHeight(_ height: CGFloat) -> CGSize {
+        return CGSize.init(width: self.width, height: min(self.height, height))
+    }
 }
