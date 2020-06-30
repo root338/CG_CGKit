@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL isEmptyCG;
 
++ (instancetype)cg_arrayWithObjects:(ObjectType)firstObj, ... NS_REQUIRES_NIL_TERMINATION;
+
 /// 等价 arrayByAddingObjectsFromArray:
 - (nullable NSArray<ObjectType> *)cg_arrayByAddingObjectsFromArray:(nullable NSArray<ObjectType> *)otherArray;
 
@@ -25,8 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSRange)cg_rangeToIndex:(NSInteger)index;
 /// 从 index 到数组结尾，没有 location == NSNotFound
 - (NSRange)cg_rangeFromIndex:(NSInteger)index;
-
-+ (instancetype)cg_arrayWithObjects:(ObjectType)firstObj, ... NS_REQUIRES_NIL_TERMINATION;
+/// 循环索引，< 0 时从最后获取
+- (ObjectType)cg_objectAtCycleIndex:(NSInteger)index;
 @end
 
 @interface NSMutableArray<ObjectType> (CGMutableArray)

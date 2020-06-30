@@ -44,6 +44,13 @@
     return NSMakeRange(index, self.count - index);
 }
 
+- (id)cg_objectAtCycleIndex:(NSInteger)index {
+    NSInteger count = self.count;
+    if (count == 0) { return nil; }
+    NSInteger i = index >= 0 ? index % self.count : (self.count + index) % self.count;
+    return self[i];
+}
+
 + (instancetype)cg_arrayWithObjects:firstObj, ... NS_REQUIRES_NIL_TERMINATION
 {
     NSMutableArray *arr = nil;
