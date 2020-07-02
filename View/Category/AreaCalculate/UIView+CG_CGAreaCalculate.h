@@ -210,3 +210,13 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectWithCenterMake(CGPoint center, CGSize size)
 {
     return CGRectMake(center.x - size.width / 2.0, center.y - size.height / 2.0, size.width, size.height);
 }
+/** size 在可用区域(availableRect)内，垂直居中 */
+UIKIT_STATIC_INLINE CGRect CG_CGRectWithCenterVertical(CGRect availableRect, CGSize size)
+{
+    return CGRectMake(CGRectGetMinX(availableRect), CGRectGetMinY(availableRect) + (CGRectGetHeight(availableRect) - size.height) / 2, size.width, size.height);
+}
+/** size 在可用区域(availableRect)内，水平居中 */
+UIKIT_STATIC_INLINE CGRect CG_CGRectWithCenterHorizontal(CGRect availableRect, CGSize size)
+{
+    return CGRectMake(CGRectGetMinX(availableRect) + (CGRectGetWidth(availableRect) - size.width) / 2, CGRectGetMinY(availableRect), size.width, size.height);
+}
