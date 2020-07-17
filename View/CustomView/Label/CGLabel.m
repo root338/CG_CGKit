@@ -11,50 +11,40 @@
 
 @implementation CGLabel
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
-//- (CGSize)intrinsicContentSize
-//{
+//- (CGSize)intrinsicContentSize {
 //    CGSize intrinsicContentSize = [super intrinsicContentSize];
-//    intrinsicContentSize.width += self.textMarginEdgeInsets.left + self.textMarginEdgeInsets.right;
-//    intrinsicContentSize.height += self.textMarginEdgeInsets.top + self.textMarginEdgeInsets.bottom + self.textVerticalAlignmentOffsetLength;
-//    return intrinsicContentSize;
+//    CGSize textSize = CG_CGMaxSizeWidthSize(intrinsicContentSize, _textMarginEdgeInsets);
+//    return textSize;
 //}
 
-- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
-{
-    CGRect textRect     = [super textRectForBounds:bounds limitedToNumberOfLines:numberOfLines];
-//    textRect            = CG_CGRectWithMargin(textRect, self.textMarginEdgeInsets);
-    
-    CGRect tempTextRect = textRect;
+- (CGSize)sizeThatFits:(CGSize)size {
+    CGSize availableSize = CG_CGSizeWidthMaxSize(size, _textMarginEdgeInsets);
+    CGSize textSize = [super sizeThatFits:availableSize];
+    CGSize resultSize = CG_CGMaxSizeWidthSize(textSize, _textMarginEdgeInsets);
+    return resultSize;
+}
+
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines {
+    CGRect textAvailableFrame = CG_CGFrameWithMaxFrame(bounds, _textMarginEdgeInsets);
+    CGRect textRect = [super textRectForBounds:textAvailableFrame limitedToNumberOfLines:numberOfLines];
     switch (self.textVerticalAlignment) {
+        case CGLabelTextVerticalAlignmentCenter:
+            textRect.origin.y += (CGRectGetHeight(textAvailableFrame) - CGRectGetHeight(textRect)) / 2;
+            break;
         case CGLabelTextVerticalAlignmentTop:
-            textRect.origin.y   = self.textVerticalAlignmentOffsetLength;
+            textRect.origin.y = CGRectGetMinY(textAvailableFrame);
             break;
         case CGLabelTextVerticalAlignmentBottom:
-            textRect.origin.y   = CGRectGetHeight(bounds) - (CGRectGetHeight(textRect) + self.textVerticalAlignmentOffsetLength);
+            textRect.origin.y = CGRectGetMaxY(textAvailableFrame) - CGRectGetHeight(textRect);
             break;
         default:
             break;
     }
-    
-    if (!CGRectContainsRect(bounds, textRect)) {
-        return tempTextRect;
-    }
-    
     return textRect;
 }
 
-- (void)drawTextInRect:(CGRect)rect
-{
+- (void)drawTextInRect:(CGRect)rect {
     CGRect textRect = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];
-    
     [super drawTextInRect:textRect];
 }
 

@@ -20,13 +20,10 @@ typedef NS_ENUM(NSInteger, CGLabelTextVerticalAlignment) {
 @interface CGLabel : UILabel
 
 /** 文本的外间距 */
-//@property (nonatomic, assign) UIEdgeInsets textMarginEdgeInsets;
+@property (nonatomic, assign) UIEdgeInsets textMarginEdgeInsets;
 
-/** label文字垂直对齐方式 @warning 需要label本身拥有足够的大小 */
+/** label文字垂直对齐方式 */
 @property (nonatomic, assign) CGLabelTextVerticalAlignment textVerticalAlignment;
-
-/** 偏移长度 */
-@property (nonatomic, assign) CGFloat textVerticalAlignmentOffsetLength;
 
 @end
 
