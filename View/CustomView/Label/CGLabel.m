@@ -11,11 +11,10 @@
 
 @implementation CGLabel
 
-//- (CGSize)intrinsicContentSize {
-//    CGSize intrinsicContentSize = [super intrinsicContentSize];
-//    CGSize textSize = CG_CGMaxSizeWidthSize(intrinsicContentSize, _textMarginEdgeInsets);
-//    return textSize;
-//}
+- (CGSize)intrinsicContentSize {
+    CGSize textSize = [self sizeThatFits:CGSizeMake(self.preferredMaxLayoutWidth, CGFLOAT_MAX)];
+    return textSize;
+}
 
 - (CGSize)sizeThatFits:(CGSize)size {
     CGSize availableSize = CG_CGSizeWidthMaxSize(size, _textMarginEdgeInsets);
