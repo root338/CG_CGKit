@@ -165,14 +165,12 @@
             
             cell.imageView.image    = value;
         }else {
-            
-#if __has_include(<UIImageView+WebCache.h>) && __has_include(<SDWebImageManager.h>)
-            
-            [cell.imageView cg_setupImageWithPath:value];
-#else
-            
-            NSAssert(nil, @"缺少自动网络加载方法cg_setupImageWithPath:, 如果添加UIImageView+CGSetupImageURL扩展，那需要 SDWebImage 第三方库");
-#endif
+            if ([value isKindOfClass:NSString.class]) {
+                value = [NSURL URLWithString:value];
+            }else if (![value isKindOfClass:NSURL.class]) {
+                value = nil;
+            }
+            [cell.imageView setImageWithURL:value options:YYWebImageOptionUseNSURLCache];
         }
     }
     
