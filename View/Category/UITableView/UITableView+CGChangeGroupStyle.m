@@ -78,4 +78,9 @@ const CGRect    _CG_TableView_ZeroRect      = { { 0, 0 }, { 0, _CG_TableView_Zer
     [self cg_tableViewChangeSectionFooterViewZeroHeight];
 }
 
+- (void)cg_headerViewHeight:(CGFloat)headerViewHeight footerViewHeight:(CGFloat)footerViewHeight {
+    [self cg_tableViewChangeHeaderViewWithHeight:headerViewHeight];
+    [self cg_tableViewChangeFooterViewWithHeight:footerViewHeight];
+}
+
 @end

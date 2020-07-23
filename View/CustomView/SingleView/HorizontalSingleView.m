@@ -307,13 +307,17 @@
 
 - (void)updateSelctedView:(NSInteger)selectedIndex
 {
+    UIButton *oldSelectedButton = self.selectedButton;
     //取消之前选择的控件
-    [self.selectedButton setSelected:NO];
+    [oldSelectedButton setSelected:NO];
     
     //设置新的选择控件
     _selectedIndex = selectedIndex;
-    [self.selectedButton setSelected:YES];
+    UIButton *newSelectedButton = self.selectedButton;
+    [newSelectedButton setSelected:YES];
     [self updateSliderViewLocationIsAnmation:YES];
+    
+    !_changeSelectedCallback?: _changeSelectedCallback(oldSelectedButton, newSelectedButton);
 }
 
 #pragma mark - 按钮事件

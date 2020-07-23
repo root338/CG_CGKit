@@ -80,6 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, copy, nonatomic) void (^setupButtonAppearance) (UIButton *button);
 
+@property (nullable, copy, nonatomic) void (^changeSelectedCallback) (UIButton *_Nullable oldSelectedButton, UIButton *_Nullable newSelectedButton);
+
 /**
  *  获取指定索引的按钮
  *

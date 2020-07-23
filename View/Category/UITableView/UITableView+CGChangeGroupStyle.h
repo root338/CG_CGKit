@@ -59,5 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_tableViewChangeSectionHeaderFooterZeroHeight;
 
 - (void)cg_tableViewChangeAllHeaderFooterZeroHeight;
+
+- (void)cg_headerViewHeight:(CGFloat)headerViewHeight footerViewHeight:(CGFloat)footerViewHeight;
 @end
 NS_ASSUME_NONNULL_END
