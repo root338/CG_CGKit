@@ -84,11 +84,11 @@ extension CGRect {
     
     /// size 在 CGRect 中的居中区域
     func ml_centerRect(size: CGSize, offset: CGPoint = CGPoint.zero) -> CGRect {
-        return CGRect.init(x: (self.size.width - size.width) / 2 + offset.x, y: (self.size.height - size.height) / 2 + offset.y, width: size.width, height: size.height)
+        return CGRect.init(x: self.minX + (self.size.width - size.width) / 2 + offset.x, y: self.minY + (self.size.height - size.height) / 2 + offset.y, width: size.width, height: size.height)
     }
     
     /// rect 内指定 size 在不同填充下的 rect 值
-    func ml_size(_ size: CGSize, contentMode: UIView.ContentMode) -> CGRect {
+    func ml_size(_ size: CGSize, contentMode: UIView.ContentMode, offset: CGPoint = CGPoint.zero) -> CGRect {
         
         var x : CGFloat = 0
         var y : CGFloat = 0
@@ -144,7 +144,7 @@ extension CGRect {
             y = self.height - height
         @unknown default: break
         }
-        return CGRect(x: x, y: y, width: width, height: height)
+        return CGRect(x: x + self.minX + offset.x, y: y + self.minY + offset.y, width: width, height: height)
     }
     
     /// size 在 CGRect 中的水平区域，需要提供 x
