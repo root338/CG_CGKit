@@ -24,26 +24,35 @@ extension CGSize {
         return self.width > minValue && self.height > minValue
     }
     
+    func ml_add(value: CGFloat) -> CGSize {
+        return CGSize(width: self.width + value,
+                      height: self.height + value)
+    }
+    func ml_add(size: CGSize) -> CGSize {
+        return CGSize(width: self.width + size.width,
+                      height: self.height + size.height)
+    }
+    
     /// 加一个UIEdgeInsets
     func ml_add(insets: UIEdgeInsets) -> CGSize {
-        return CGSize.init(width: self.width + insets.cg_horizontalValue,
-                           height: self.height + insets.cg_verticalValue)
+        return CGSize(width: self.width + insets.cg_horizontalValue,
+                      height: self.height + insets.cg_verticalValue)
     }
     /// 小于 maxSize
     func ml_lessThan(_ size: CGSize) -> CGSize {
-        return CGSize.init(width: min(self.width, size.width), height: min(self.height, size.height))
+        return CGSize(width: min(self.width, size.width), height: min(self.height, size.height))
     }
     /// 大于 minSize
     func ml_greaterThan(_ size: CGSize) -> CGSize {
-        return CGSize.init(width: max(self.width, size.width),
-                           height: max(self.height, size.height))
+        return CGSize(width: max(self.width, size.width),
+                      height: max(self.height, size.height))
     }
     /// 减一个UIEdgeInsets
     func ml_less(insets: UIEdgeInsets) -> CGRect {
-        return CGRect.init(x: insets.left,
-                           y: insets.top,
-                           width: self.width - insets.cg_horizontalValue,
-                           height: self.height - insets.cg_verticalValue)
+        return CGRect(x: insets.left,
+                      y: insets.top,
+                      width: self.width - insets.cg_horizontalValue,
+                      height: self.height - insets.cg_verticalValue)
     }
     /// 减 size
     func ml_less(size: CGSize) -> CGSize {
