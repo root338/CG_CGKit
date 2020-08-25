@@ -21,9 +21,9 @@ extension UIEdgeInsets {
         case .bottom:
             self.init(top: 0, left: 0, bottom: value, right: 0)
         case .left:
-            self.init(top: value, left: value, bottom: 0, right: 0)
+            self.init(top: 0, left: value, bottom: 0, right: 0)
         case .right:
-            self.init(top: value, left: 0, bottom: 0, right: value)
+            self.init(top: 0, left: 0, bottom: 0, right: value)
         }
     }
     
