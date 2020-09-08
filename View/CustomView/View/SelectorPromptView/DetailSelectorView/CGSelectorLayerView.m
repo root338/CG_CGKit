@@ -36,7 +36,7 @@
 //        self.disableBackgroundButtonTools   = YES;
         
         _fromBackgroundColor                = [UIColor clearColor];
-        _toBackgroundColor                  = [UIColor colorWithWhite:0 alpha:0.5];
+        _toBackgroundColor                  = [UIColor colorWithWhite:0 alpha:0.6];
         self.backgroundColor                = _toBackgroundColor;
         
         _contentViewAnimationStyle          = CGSelectorLayerContentViewAniamtionStyleScale;
