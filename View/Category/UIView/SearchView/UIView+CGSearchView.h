@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回搜索后的结果
  */
-- (nullable NSArray *)searchSubviewsInputViewsWithExcludeView:(UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne targetViewClassArray:(NSArray<Class> *)targetViewClassArray;
+- (nullable NSArray *)searchSubviewsInputViewsWithExcludeView:(nullable UIView *)excludeView isOnlyOne:(BOOL)isOnlyOne targetViewClassArray:(NSArray<Class> *)targetViewClassArray;
 @end
 
 

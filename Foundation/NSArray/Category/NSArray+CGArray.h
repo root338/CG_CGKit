@@ -22,13 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 等价 arrayByAddingObjectsFromArray:
 - (nullable NSArray<ObjectType> *)cg_arrayByAddingObjectsFromArray:(nullable NSArray<ObjectType> *)otherArray;
 
-- (ObjectType)cg_objectAtIndex:(NSUInteger)index;
+- (nullable ObjectType)cg_objectAtIndex:(NSUInteger)index;
 /// 从 0 到 index, 没有 location == NSNotFound
 - (NSRange)cg_rangeToIndex:(NSInteger)index;
 /// 从 index 到数组结尾，没有 location == NSNotFound
 - (NSRange)cg_rangeFromIndex:(NSInteger)index;
 /// 循环索引，< 0 时从最后获取
-- (ObjectType)cg_objectAtCycleIndex:(NSInteger)index;
+- (nullable ObjectType)cg_objectAtCycleIndex:(NSInteger)index;
 @end
 
 @interface NSMutableArray<ObjectType> (CGMutableArray)

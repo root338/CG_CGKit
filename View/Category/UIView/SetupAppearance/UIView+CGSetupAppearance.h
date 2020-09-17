@@ -23,10 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cg_setupBorderWithCornerRadius:(CGFloat)cornerRadius;
 
 /** 设置视图边框 */
-- (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor;
+- (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(nullable UIColor *)borderColor;
 
 /** 设置视图圆角、边框 */
-- (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius;
+- (void)cg_setupBorderWithWidth:(CGFloat)borderWidth color:(nullable UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius;
 
 - (void)cg_setupShadowWithOffset:(CGSize)shadowOffset color:(nullable UIColor *)shadowColor opacity:(CGFloat)shadowOpacity;
 @end

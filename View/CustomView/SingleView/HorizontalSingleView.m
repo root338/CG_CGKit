@@ -185,7 +185,7 @@
     if (!self.selectedButton) {
         return;
     }
-    CGRect frame = self.sliderView.frame;
+    
     CGFloat sliderWidth = 0;
     
     //设置滑块的宽度
@@ -211,7 +211,7 @@
         sliderWidth     += self.appearance.sliderLeftSpaceInsets + self.appearance.sliderRightSpaceInsets;
     }
     
-    frame = CGRectMake(sliderOriginX, self.bounds.size.height - self.appearance.sliderSize.height - self.appearance.sliderBottom, sliderWidth, self.appearance.sliderSize.height);
+    CGRect frame = CGRectMake(sliderOriginX, self.bounds.size.height - self.appearance.sliderSize.height - self.appearance.sliderBottom, sliderWidth, self.appearance.sliderSize.height);
     
     if (isAnmation) {
         [UIView animateWithDuration:.3 animations:^{
@@ -249,7 +249,7 @@
         CGFloat height = self.contentView.height;
         
         CGFloat spaceForButton = 0;
-        UIEdgeInsets buttonMarginEdgeInsets = margin;
+//        UIEdgeInsets buttonMarginEdgeInsets = margin;
         
         if (self.titles.count > 1) {
             
@@ -273,7 +273,7 @@
                         tempMargin.left = subviewTotalWidth - tempMargin.right;
                     }
                     self.contentView.frame = CG_CGFrameWithMaxFrame(self.bounds, tempMargin);
-                    buttonMarginEdgeInsets = tempMargin;
+//                    buttonMarginEdgeInsets = tempMargin;
                 }
                 
             }else {

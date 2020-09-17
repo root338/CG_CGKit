@@ -63,7 +63,7 @@
 
 - (CGRect)zoomRectForScale:(CGFloat)scale withCenter:(CGPoint)center
 {
-    CGRect  zoomRect;
+    CGRect  zoomRect = CGRectZero;
     
     zoomRect.size.width     = self.imageScrollView.width  * scale;
     zoomRect.size.height    = self.imageScrollView.height * scale;

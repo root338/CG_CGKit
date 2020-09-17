@@ -17,7 +17,7 @@ typedef void (^CGTitleRadioSelectedBlock) (NSInteger index, id obj);
 
 @interface CGTitleRadioView : CGBaseView
 
-@property (nonatomic, strong) NSArray<NSString *>     *titles;
+@property (nullable, nonatomic, strong) NSArray<NSString *>     *titles;
 @property (nonatomic, assign) NSInteger currentSelectedTitleIndex;
 //@property (nullable, nonatomic, strong, readonly) NSString *currentSelectedTitle;
 

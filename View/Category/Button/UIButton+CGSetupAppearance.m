@@ -83,10 +83,10 @@
 
 - (void)cg_setupWithNormalImageName:(NSString *)normalImageName selectImageName:(NSString *)selectImageName
 {
-    UIImage *normalImage = [UIImage cg_imageName:normalImageName];
+    UIImage *normalImage = normalImageName == nil ? nil : [UIImage cg_imageName:normalImageName];
     !normalImage ?: [self setImage:normalImage forState:UIControlStateNormal];
     
-    UIImage *selectImage = [UIImage cg_imageName:selectImageName];
+    UIImage *selectImage = selectImageName == nil ? nil : [UIImage cg_imageName:selectImageName];
     !selectImage ?: [self setImage:selectImage forState:UIControlStateSelected];
 }
 

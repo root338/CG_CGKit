@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 返回合并后新的请求模型
  */
-- (CGRequestModel *)requestWithUpdateBaseModel:(CGRequestBaseModel *)baseRequestModel;
+- (nullable CGRequestModel *)requestWithUpdateBaseModel:(CGRequestBaseModel *)baseRequestModel;
 
 @end
 NS_ASSUME_NONNULL_END

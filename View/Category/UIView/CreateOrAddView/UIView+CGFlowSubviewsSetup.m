@@ -151,9 +151,6 @@ typedef NS_ENUM(NSInteger, CGFlowSubviewsSetupType) {
                 configCacheModel                = newConfigModel;
                 configCacheModel.startViewTag   = subview.tag;
                 [subviewsCacheModel addObject:configCacheModel];
-                
-                origin  = configCacheModel.lastOrigin;
-                
             }
             
             //判断子视图是否大于最大宽度
@@ -170,7 +167,7 @@ typedef NS_ENUM(NSInteger, CGFlowSubviewsSetupType) {
         subview.origin              = origin;
         origin.x                    += subview.width;
         configCacheModel.lastOrigin = origin;
-        [configCacheModel addView:subview];
+        !subview?:[configCacheModel addView:subview];
         
         configCacheModel.maxSubviewHeight   = MAX(configCacheModel.maxSubviewHeight, subview.height);
         configCacheModel.maxSubviewWidth    = MAX(configCacheModel.maxSubviewWidth, subview.width);

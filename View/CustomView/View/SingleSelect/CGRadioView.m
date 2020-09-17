@@ -330,7 +330,7 @@
         isAnimation = [self.delegate radioView:self moveSliderViewFrameShouldAnimationWithBeforeSelectedIndex:beforeSelectedIndexPath.row currentSelectedIndex:currentSelectedIndexPath.row];
     }
     
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:isAnimation ? 0.3 : 0 animations:^{
         sliderView.frame    = sliderViewFrame;
     }];
     

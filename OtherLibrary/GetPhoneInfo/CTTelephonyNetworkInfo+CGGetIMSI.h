@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CTTelephonyNetworkInfo (CGGetIMSI)
 
 /** MCC+MNC @warning 获取的IMSI的信息不完整，MSIN获取不到 */
-+ (NSString *)getIMSI;
++ (nullable NSString *)getIMSI;
 
 @end
 

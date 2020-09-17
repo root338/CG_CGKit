@@ -322,7 +322,7 @@ typedef NS_ENUM(NSInteger, CGImageICONDrawImageType) {
     line2StartPoint = CGPointMake(horizontalOffset + horizontalValue * 2, verticalOffset);
     line2EndPoint   = CGPointMake(horizontalOffset, verticalOffset + verticalValue * 2);
     
-    CGFloat offset  = offset      = config.lineWidth * cos(radian);
+    CGFloat offset  = config.lineWidth * cos(radian);
     startPoint  = CG_CGPointWithOffset(startPoint, offset, offset);
     
     line1StartPoint = CG_CGPointWithOffsetPoint(line1StartPoint, startPoint);

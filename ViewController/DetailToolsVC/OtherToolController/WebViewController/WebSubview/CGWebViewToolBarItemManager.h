@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 网页视图item的管理 */
 @interface CGWebViewToolBarItemManager : NSObject
 
-- (UIImage *)getImageWithItemType:(CGWebViewItemType)itemType;
+- (nullable UIImage *)getImageWithItemType:(CGWebViewItemType)itemType;
 
 @end
 

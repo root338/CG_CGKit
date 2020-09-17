@@ -107,8 +107,8 @@
             self.placeholderLabel.frame = frameForPlaceholderLabel;
             if (self.adjustsPlaceholderSizeToFitSize) {
                 
-                CGSize sizeForTextView;
-                sizeForTextView.width += self.placeholderLabel.maxX + self.marginEdgeInsetsForPlaceholderView.right;
+                CGSize sizeForTextView = CGSizeZero;
+                sizeForTextView.width = self.placeholderLabel.maxX + self.marginEdgeInsetsForPlaceholderView.right;
                 sizeForTextView.height += self.placeholderLabel.maxY + self.marginEdgeInsetsForPlaceholderView.bottom;
                 if (!CGRectContainsRect(self.frame, CGRectMake(self.xOrigin, self.yOrigin, sizeForTextView.width, sizeForTextView.height))) {
                     

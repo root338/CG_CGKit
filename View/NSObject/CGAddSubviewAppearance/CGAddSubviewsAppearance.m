@@ -115,10 +115,11 @@ typedef NS_ENUM(NSInteger, _CGAddSubviewsAppearanceType){
             }else if (appearanceType == _CGAddSubviewsAppearanceTypeWidth) {
                 errorType   = CGAddSubviewsErrorTypeUnknownViewWidth;
             }
-        }else {
-            //自动推导目标长度
-            paramSuperviewTargetLength  = marginTotalSpace + subviewsTotalSpace + itemTargetLength * tempCount;
         }
+//        else {
+//            //自动推导目标长度
+//            paramSuperviewTargetLength  = marginTotalSpace + subviewsTotalSpace + itemTargetLength * tempCount;
+//        }
     }else {
         //不自动设置视图指定长度时
         //必要条件:   视图指定长度不为0

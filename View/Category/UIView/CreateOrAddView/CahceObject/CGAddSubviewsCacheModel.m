@@ -51,7 +51,7 @@
     if ([self.cacheSubviews containsObject:view]) {
         [self.cacheSubviews removeObject:view];
     }else {
-        view    = nil;
+        return nil;
     }
     return view;
 }

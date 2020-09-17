@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSUserDefaults (SaveData)
 
 + (void)cg_saveWithObject:(id)object forKey:(NSString *)key;
-+ (id)cg_getObjectForKey:(NSString *)key;
++ (nullable id)cg_getObjectForKey:(NSString *)key;
 
 + (void)cg_saveWithBool:(BOOL)boolValue forKey:(NSString *)key;
 + (BOOL)cg_getBoolForKey:(NSString *)key;
