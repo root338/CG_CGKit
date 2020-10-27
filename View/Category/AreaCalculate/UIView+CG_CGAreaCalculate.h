@@ -227,3 +227,83 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectWithCenterHorizontal(CGRect availableRect, C
 {
     return CGRectMake(CGRectGetMinX(availableRect) + (CGRectGetWidth(availableRect) - size.width) / 2, CGRectGetMinY(availableRect), size.width, size.height);
 }
+
+UIKIT_STATIC_INLINE CGRect CG_CGRectContentMode(CGRect totalRect, CGSize targetSize, UIViewContentMode mode)
+{
+    CGRect frame = CGRectZero;
+    CGSize totalSize = totalRect.size;
+    CGFloat x = 0;
+    CGFloat y = 0;
+    CGFloat width = targetSize.width;
+    CGFloat height = targetSize.height;
+    
+    switch (mode) {
+        case UIViewContentModeTop:
+            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
+            break;
+        case UIViewContentModeTopRight:
+            x = totalSize.width - targetSize.width;
+            break;
+        case UIViewContentModeRight:
+            x = totalSize.width - targetSize.width;
+            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
+            break;
+        case UIViewContentModeBottomRight:
+            x = totalSize.width - targetSize.width;
+            y = totalSize.height - targetSize.height;
+            break;
+        case UIViewContentModeBottom:
+            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
+            y = totalSize.height - targetSize.height;
+            break;
+        case UIViewContentModeBottomLeft:
+            y = totalSize.height - targetSize.height;
+            break;
+        case UIViewContentModeLeft:
+            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
+            break;
+        case UIViewContentModeCenter:
+            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
+            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
+            break;
+        case UIViewContentModeScaleToFill:
+            width = totalSize.width;
+            height = totalSize.height;
+            break;
+        case UIViewContentModeScaleAspectFit:
+        case UIViewContentModeScaleAspectFill:
+        {
+            
+            CGFloat s1 = targetSize.width / totalSize.width;
+            CGFloat s2 = targetSize.height / totalSize.height;
+            
+            if (s1 < s2) {
+                if (UIViewContentModeScaleAspectFit == mode) {
+                    width   = targetSize.width / s2;
+                    height  = totalSize.height;
+                }else {
+                    width   = totalSize.width;
+                    height  = targetSize.height / s1;
+                }
+            }else {
+                if (UIViewContentModeScaleAspectFit == mode) {
+                    width   = totalSize.width;
+                    height  = targetSize.height / s1;
+                }else {
+                    width   = targetSize.width / s2;
+                    height  = totalSize.height;
+                }
+            }
+            
+            x = CG_CGCenterOriginX(width, totalSize.width);
+            y = CG_CGCenterOriginY(height, totalSize.height);
+            break;
+        }
+        default:
+            break;
+    }
+    
+    frame = CGRectMake(x + CGRectGetMinX(totalRect), y + CGRectGetMinY(totalRect), width, height);
+    
+    return frame;
+}

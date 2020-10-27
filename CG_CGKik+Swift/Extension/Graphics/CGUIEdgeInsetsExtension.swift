@@ -14,6 +14,19 @@ extension UIEdgeInsets {
     init(value: CGFloat) {
         self.init(top: value, left: value, bottom: value, right: value)
     }
+    init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
+        self.init(top: top ?? 0,
+                  left: left ?? 0,
+                  bottom: bottom ?? 0,
+                  right: right ?? 0)
+    }
+    init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil, other: CGFloat) {
+        self.init(top: top ?? other,
+                  left: left ?? other,
+                  bottom: bottom ?? other,
+                  right: right ?? other)
+    }
+    
     init(value: CGFloat, type: GMLEdgeType) {
         switch type {
         case .top:

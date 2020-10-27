@@ -43,6 +43,35 @@ public extension UIView {
             self.frame = frame
         }
     }
+    
+    func ml_set(x: CGFloat? = nil, y: CGFloat? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
+        let oldFrame = self.frame
+        let frame = CGRect(x: x ?? oldFrame.minX,
+                              y: y ?? oldFrame.minY,
+                              width: width ?? oldFrame.width,
+                              height: height ?? oldFrame.height)
+        if oldFrame.equalTo(frame) {
+            return
+        }
+        self.frame = oldFrame
+    }
+    
+    /// 设置 frame，并插入到视图的指定索引
+    func ml_set(frame: CGRect, insertTo superview: UIView? = nil, at index: Int = 0, isHidden: Bool? = nil) {
+        if !frame.equalTo(self.frame) {
+            self.frame = frame
+        }
+        if isHidden != nil && self.isHidden != isHidden! {
+            self.isHidden = isHidden!
+        }
+        guard let view = superview else { return }
+        let subviewsCount = view.subviews.count
+        let targetIndex = max(0, min(index, subviewsCount - 1))
+        if subviewsCount > 0 && view.subviews[targetIndex] == self {
+            return
+        }
+        view.insertSubview(self, at: index)
+    }
 }
 
 //MARK:- 常量

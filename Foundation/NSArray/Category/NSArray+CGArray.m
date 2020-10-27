@@ -8,16 +8,13 @@
 
 #import "NSArray+CGArray.h"
 
+#define isAvailableAtIndex(index) (self.count > (index) && (index) >= 0)
+ 
 @implementation NSArray (CGArray)
-
-/** 是否越界 */
-- (BOOL)isAvailableAtIndex:(NSInteger)index {
-    return self.count > index && index >= 0;
-}
 
 - (id)cg_objectAtIndex:(NSUInteger)index
 {
-    if (![self isAvailableAtIndex:index]) {
+    if (!isAvailableAtIndex(index)) {
         return nil;
     }
     return [self objectAtIndex:index];
