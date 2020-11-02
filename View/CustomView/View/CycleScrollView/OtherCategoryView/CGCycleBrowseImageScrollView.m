@@ -15,7 +15,6 @@
 
 #import "UIImageView+CGCreate.h"
 #import "UIView+CG_CGAreaCalculate.h"
-#import "UIImageView+CGSetupImageURL.h"
 
 #import "NSArray+CGArray.h"
 
