@@ -17,6 +17,9 @@
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
+    if (self.text.length == 0 || self.attributedText.string.length == 0) {
+        return CGSizeZero;
+    }
     CGSize availableSize = CG_CGSizeWidthMaxSize(size, _textMarginEdgeInsets);
     CGSize textSize = [super sizeThatFits:availableSize];
     CGSize resultSize = CG_CGMaxSizeWidthSize(textSize, _textMarginEdgeInsets);
