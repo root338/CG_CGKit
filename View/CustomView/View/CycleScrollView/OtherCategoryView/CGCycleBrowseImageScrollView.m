@@ -7,19 +7,15 @@
 //
 
 #import "CGCycleBrowseImageScrollView.h"
-
 #import "CGImageView.h"
+#import "UIView+Constant.h"
 #import "CGCycleScrollView.h"
-
 #import "UIView+CGSetupFrame.h"
-
 #import "UIImageView+CGCreate.h"
+#import "UIImageView+WebCache.h"
 #import "UIView+CG_CGAreaCalculate.h"
 
 #import "NSArray+CGArray.h"
-
-#import "UIView+Constant.h"
-
 #import "CGPrintLogHeader.h"
 
 @interface CGCycleBrowseImageScrollView ()<CGCycleScrollViewDataSource, CGCycleScrollViewDelegate>
@@ -169,7 +165,7 @@
             }else if (![value isKindOfClass:NSURL.class]) {
                 value = nil;
             }
-            [cell.imageView setImageWithURL:value options:YYWebImageOptionUseNSURLCache];
+            [cell.imageView sd_setImageWithURL:value];
         }
     }
     
