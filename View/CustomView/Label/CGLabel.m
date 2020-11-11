@@ -12,7 +12,7 @@
 @implementation CGLabel
 
 - (CGSize)intrinsicContentSize {
-    CGFloat width = self.preferredMaxLayoutWidth;
+    CGFloat width = CGRectGetWidth(self.frame);
     if (width <= 1) {
         width = CGRectGetWidth(UIScreen.mainScreen.bounds);
     }
@@ -26,7 +26,7 @@
     }
     CGSize textSize = [super sizeThatFits:size];
     textSize = CG_CGMaxSizeWidthSize(textSize, _textMarginEdgeInsets);
-    textSize = CGSizeMake(MIN(ceil(textSize.width), size.width), MIN(ceil(textSize.height), size.height));
+    textSize = CGSizeMake(ceil(textSize.width), ceil(textSize.height));
     return textSize;
 }
 
@@ -59,7 +59,7 @@
 
 - (void)setBounds:(CGRect)bounds {
     [super setBounds:bounds];
-    CGFloat width = CGRectGetWidth(bounds);//CG_CGWidthWithMaxWidth(CGRectGetWidth(bounds), _textMarginEdgeInsets);
+    CGFloat width = CG_CGWidthWithMaxWidth(CGRectGetWidth(bounds), _textMarginEdgeInsets);
     if (self.preferredMaxLayoutWidth != width) {
         self.preferredMaxLayoutWidth = width;
     }
