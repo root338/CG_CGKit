@@ -20,7 +20,7 @@
 
 + (instancetype)cg_createDefaultButton
 {
-    return [self buttonWithType:UIButtonTypeSystem];
+    return [self buttonWithType:UIButtonTypeCustom];
 }
 
 + (instancetype)cg_createButtonWithButtonType:(UIButtonType)type title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font
