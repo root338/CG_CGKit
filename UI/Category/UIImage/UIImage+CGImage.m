@@ -177,6 +177,36 @@
     CGFloat height = self.size.height;
     
     switch (contentModel) {
+        case UIViewContentModeScaleAspectFill:
+        case UIViewContentModeScaleAspectFit: {
+            CGFloat s1 = imageSize.width / size.width;
+            CGFloat s2 = imageSize.height / size.height;
+            if (s1 < s2) {
+                if (UIViewContentModeScaleAspectFit == contentModel) {
+                    width   = imageSize.width / s2;
+                    height  = size.height;
+                }else {
+                    width   = size.width;
+                    height  = imageSize.height / s1;
+                }
+            }else {
+                if (UIViewContentModeScaleAspectFit == contentModel) {
+                    width   = size.width;
+                    height  = imageSize.height / s1;
+                }else {
+                    width   = imageSize.width / s2;
+                    height  = size.height;
+                }
+            }
+            
+            x = CG_CGCenterOriginX(width, size.width);
+            y = CG_CGCenterOriginY(height, size.height);
+            break;
+        }
+        case UIViewContentModeScaleToFill:
+            width = size.width;
+            height = size.height;
+            break;
         case UIViewContentModeTop:
             x = CG_CGCenterOriginX(imageSize.width, size.width);
             break;
@@ -205,39 +235,6 @@
             x = CG_CGCenterOriginX(imageSize.width, size.width);
             y = CG_CGCenterOriginY(imageSize.height, size.height);
             break;
-        case UIViewContentModeScaleToFill:
-            width = size.width;
-            height = size.height;
-            break;
-        case UIViewContentModeScaleAspectFit:
-        case UIViewContentModeScaleAspectFill:
-        {
-            
-            CGFloat s1 = imageSize.width / size.width;
-            CGFloat s2 = imageSize.height / size.height;
-            
-            if (s1 < s2) {
-                if (UIViewContentModeScaleAspectFit == contentModel) {
-                    width   = imageSize.width / s2;
-                    height  = size.height;
-                }else {
-                    width   = size.width;
-                    height  = imageSize.height / s1;
-                }
-            }else {
-                if (UIViewContentModeScaleAspectFit == contentModel) {
-                    width   = size.width;
-                    height  = imageSize.height / s1;
-                }else {
-                    width   = imageSize.width / s2;
-                    height  = size.height;
-                }
-            }
-            
-            x = CG_CGCenterOriginX(width, size.width);
-            y = CG_CGCenterOriginY(height, size.height);
-            break;
-        }
         default:
             break;
     }

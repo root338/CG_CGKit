@@ -238,38 +238,6 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectContentMode(CGRect totalRect, CGSize targetS
     CGFloat height = targetSize.height;
     
     switch (mode) {
-        case UIViewContentModeTop:
-            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
-            break;
-        case UIViewContentModeTopRight:
-            x = totalSize.width - targetSize.width;
-            break;
-        case UIViewContentModeRight:
-            x = totalSize.width - targetSize.width;
-            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
-            break;
-        case UIViewContentModeBottomRight:
-            x = totalSize.width - targetSize.width;
-            y = totalSize.height - targetSize.height;
-            break;
-        case UIViewContentModeBottom:
-            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
-            y = totalSize.height - targetSize.height;
-            break;
-        case UIViewContentModeBottomLeft:
-            y = totalSize.height - targetSize.height;
-            break;
-        case UIViewContentModeLeft:
-            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
-            break;
-        case UIViewContentModeCenter:
-            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
-            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
-            break;
-        case UIViewContentModeScaleToFill:
-            width = totalSize.width;
-            height = totalSize.height;
-            break;
         case UIViewContentModeScaleAspectFit:
         case UIViewContentModeScaleAspectFill:
         {
@@ -299,6 +267,38 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectContentMode(CGRect totalRect, CGSize targetS
             y = CG_CGCenterOriginY(height, totalSize.height);
             break;
         }
+        case UIViewContentModeScaleToFill:
+            width = totalSize.width;
+            height = totalSize.height;
+            break;
+        case UIViewContentModeTop:
+            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
+            break;
+        case UIViewContentModeTopRight:
+            x = totalSize.width - targetSize.width;
+            break;
+        case UIViewContentModeRight:
+            x = totalSize.width - targetSize.width;
+            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
+            break;
+        case UIViewContentModeBottomRight:
+            x = totalSize.width - targetSize.width;
+            y = totalSize.height - targetSize.height;
+            break;
+        case UIViewContentModeBottom:
+            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
+            y = totalSize.height - targetSize.height;
+            break;
+        case UIViewContentModeBottomLeft:
+            y = totalSize.height - targetSize.height;
+            break;
+        case UIViewContentModeLeft:
+            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
+            break;
+        case UIViewContentModeCenter:
+            x = CG_CGCenterOriginX(targetSize.width, totalSize.width);
+            y = CG_CGCenterOriginY(targetSize.height, totalSize.height);
+            break;
         default:
             break;
     }
