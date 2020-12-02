@@ -177,22 +177,39 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectWithExcludeTop(CGRect rect, UIEdgeInsets edg
     return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + offsetY, CG_CGWidthWithMaxWidth(CGRectGetWidth(rect), edgeInsets), rect.size.height - (offsetY + edgeInsets.bottom));
 }
 
-/** 忽略底部 计算 { { x + left, y + top }, { width - (left + right), height} } */
+/// 忽略底部 计算 { { x + left, y + top }, { width - (left + right), height} }
+/// @param height 高度，== -1，使用 宽度
 UIKIT_STATIC_INLINE CGRect CG_CGRectWithExcludeBottom(CGRect rect, UIEdgeInsets edgeInsets, CGFloat height)
 {
-    return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + edgeInsets.top, CG_CGWidthWithMaxWidth(CGRectGetWidth(rect), edgeInsets), height);
+    CGFloat width = CG_CGWidthWithMaxWidth(CGRectGetWidth(rect), edgeInsets);
+    if (height == -1) {
+        height = width;
+    }
+    return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + edgeInsets.top, width, height);
 }
 
-/** 忽略垂直 计算 { { x + left, y + offsetY }, { width - (left + right), height } } */
+/// 忽略垂直 计算 { { x + left, y + offsetY }, { width - (left + right), height } }
+/// @param height 高度，== -1，使用 宽度
 UIKIT_STATIC_INLINE CGRect CG_CGRectWithExcludeVertical(CGRect rect, UIEdgeInsets edgeInsets, CGFloat offsetY, CGFloat height)
 {
-    return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + offsetY, CG_CGWidthWithMaxWidth(CGRectGetWidth(rect), edgeInsets), height);
+    CGFloat width = CG_CGWidthWithMaxWidth(CGRectGetWidth(rect), edgeInsets);
+    if (height == -1) {
+        height = width;
+    }
+    return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + offsetY, width, height);
 }
 
-/** 忽略右边 计算 { {x + left, y + top }, { width , height - (top + bottom) } } */
+/// 忽略右边 计算 { {x + left, y + top }, { width , height - (top + bottom) } }
+/// @param rect 可用区域
+/// @param edgeInsets 外边距
+/// @param width 宽度，如果== -1，使用 高度
 UIKIT_STATIC_INLINE CGRect CG_CGRectWithExcludeRight(CGRect rect, UIEdgeInsets edgeInsets, CGFloat width)
 {
-    return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + edgeInsets.top, width, CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets));
+    CGFloat height = CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets);
+    if (width == -1) {
+        width = height;
+    }
+    return CGRectMake(CGRectGetMinX(rect) + edgeInsets.left, CGRectGetMinY(rect) + edgeInsets.top, width, height);
 }
 
 /** 忽略左边 计算 { { x + offsetX, y + top }, { width - (offsetX + right), height - (top + bottom) } }  */
@@ -200,10 +217,15 @@ UIKIT_STATIC_INLINE CGRect CG_CGRectWithExcludeLeft(CGRect rect, UIEdgeInsets ed
     return CGRectMake(CGRectGetMinX(rect) + offsetX, CGRectGetMinY(rect) + edgeInsets.top, CGRectGetWidth(rect) - (offsetX + edgeInsets.right), CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets));
 }
 
-/** 忽略水平 计算 { { x + offsetX, y + top }, { width , height - (top + bottom) } */
+/// 忽略水平 计算 { { x + offsetX, y + top }, { width , height - (top + bottom) }
+/// @param width 宽度，如果== -1，使用 高度
 UIKIT_STATIC_INLINE CGRect CG_CGRectWithExcludeHorizontal(CGRect rect, UIEdgeInsets edgeInsets, CGFloat offsetX, CGFloat width)
 {
-    return CGRectMake(CGRectGetMinX(rect) + offsetX, CGRectGetMinY(rect) + edgeInsets.top, width, CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets));
+    CGFloat height = CG_CGHeightWithMaxHeight(CGRectGetHeight(rect), edgeInsets);
+    if (width == -1) {
+        width = height;
+    }
+    return CGRectMake(CGRectGetMinX(rect) + offsetX, CGRectGetMinY(rect) + edgeInsets.top, width, height);
 }
 
 /** 计算 { position, size } */
