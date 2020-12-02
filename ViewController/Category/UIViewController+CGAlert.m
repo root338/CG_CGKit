@@ -8,7 +8,10 @@
 
 #import "UIViewController+CGAlert.h"
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
 #import "CGAlertView.h"
+#endif
+
 #import "CGAlertController.h"
 
 #import "CGVerifyIOSVersionHeader.h"
