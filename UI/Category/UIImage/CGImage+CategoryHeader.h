@@ -12,7 +12,6 @@
 //绘制矩形，并设置绘制颜色
 #import "UIImage+CGColor.h"
 //
-#import "UIImage+CGDrawImage.h"
 #import "UIImage+CGLoadImage.h"
 #import "UIImage+CGResizableImage.h"
 #import "UIImage+CGScaleImageSize.h"

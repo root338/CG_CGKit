@@ -10,21 +10,6 @@
 
 @implementation UIFont (CGCreateFont)
 
-+ (UIFont *)cg_defaultFontWithSize:(CGFloat)size
-{
-    return [UIFont systemFontOfSize:size];
-}
-
-+ (UIFont *)cg_defaultItalicFontWithSize:(CGFloat)size
-{
-    return [UIFont italicSystemFontOfSize:size];
-}
-
-+ (UIFont *)cg_defaultBoldFontWithSize:(CGFloat)size
-{
-    return [UIFont boldSystemFontOfSize:size];
-}
-
 #if __has_include(<CoreText/CoreText.h>)
 
 + (UIFont *)fontFromCTFontRef:(CTFontRef)fontRef
