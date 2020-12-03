@@ -18,6 +18,19 @@
 
 @implementation UIViewController (CGAlert)
 
++ (UIViewController *)anyVC {
+    if (@available(iOS 14.0, *)) {
+        __block UIViewController *vc = nil;
+        [UIApplication.sharedApplication.windows enumerateObjectsUsingBlock:^(__kindof UIWindow * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.isHidden && !obj.keyWindow) return;
+            vc = obj.rootViewController;
+        }];
+        return vc;
+    }else {
+        return UIApplication.sharedApplication.keyWindow.rootViewController;
+    }
+}
+
 - (UIAlertController *)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^)(UITextField * _Nonnull, NSInteger))setupTextField cancelTitle:(NSString *)cancelTitle otherTitles:(NSArray<NSString *> *)otherButtonTitles resultCallback:(void ( ^ _Nullable)(UIAlertAction * _Nonnull, NSArray<UITextField *> * _Nullable))resultCallback
 {
     CGAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message textInputsCount:textInputsCount setupTextField:setupTextField cancelTitle:cancelTitle otherTitles:otherButtonTitles resultCallback:resultCallback];
@@ -34,41 +47,28 @@
                          resultCallback:nil];
 }
 
-- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void ( ^)(BOOL))resultCallback
-{
-    
+- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message cancelTitle:(NSString *)cancelTitle otherTitle:(NSString *)otherButtonTitle resultCallback:(void ( ^)(BOOL))resultCallback {
     id targetView   = nil;
-    
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
- 
     if (_CG_IOS_8_0_BEFORE) {
-        
         targetView  = [CGAlertView showAlertViewWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
     }else {
-        
 #else
-    
     {
 #endif
-        
         UIAlertController *alertController = [CGAlertController createAlertControllerWithTitle:title message:message cancelTitle:cancelTitle otherTitle:otherButtonTitle resultCallback:resultCallback];
         [self presentViewController:alertController animated:YES completion:nil];
     }
-    
     return targetView;
 }
 
-- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void ( ^)(NSInteger))resultCallback
-{
+- (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void ( ^)(NSInteger))resultCallback {
     id targetView = nil;
-    
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
     if (_CG_IOS_8_0_BEFORE) {
         targetView  = [CGAlertView showAlertViewWithTitle:title message:message otherTitle1:otherTitle1 otherTitle2:otherTitle2 resultCallback:resultCallback];
     }else {
-
 #else
-        
     {
 #endif
         UIAlertController *alertController = [CGAlertController createAlertControllerWithPreferredStyle:UIAlertControllerStyleAlert title:title message:message cancelTitle:nil otherTitles:[NSArray arrayWithObjects:otherTitle1, otherTitle2, nil] resultCallback:^(UIAlertAction * _Nonnull alertAction) {
@@ -82,10 +82,8 @@
                 resultCallback(index);
             }
         }];
-        
         [self presentViewController:alertController animated:YES completion:nil];
     }
-    
     return targetView;
 }
 

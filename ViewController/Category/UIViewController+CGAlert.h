@@ -14,35 +14,18 @@ NS_ASSUME_NONNULL_BEGIN
 /** 显示提示视图 */
 @interface UIViewController (CGAlert)
 
+@property (nullable, nonatomic, class, readonly) UIViewController *anyVC;
+
 - (UIAlertController *)showAlertControllerWithTitle:(nullable NSString *)title message:(nullable NSString *)message textInputsCount:(NSInteger)textInputsCount setupTextField:(void (^ __nullable) (UITextField *textField, NSInteger textFieldIndex))setupTextField cancelTitle:(nullable NSString *)cancelTitle otherTitles:(nullable NSArray<NSString *> *)otherButtonTitles resultCallback:(void ( ^ _Nullable)(UIAlertAction * _Nonnull alertAction, NSArray<UITextField *> * _Nullable textFields))resultCallback NS_AVAILABLE_IOS(8_0);
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
-
-
 - (UIAlertController *)showAlertViewWithMessage:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle;
-
-/** 
- *  显示提示视图
- *  
- *  @return iOS 小于 8.0 返回CGAlertView ,大于等于8.0 返回CGAlertController
- */
 - (UIAlertController *)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void ( ^ _Nullable)(BOOL isCancel))resultCallback;
-
 - (UIAlertController *)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void ( ^)(NSInteger index))resultCallback;
-
-#else 
-
+#else
 - (id)showAlertViewWithMessage:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle;
-
-/**
- *  显示提示视图
- *
- *  @return iOS 小于 8.0 返回CGAlertView ,大于等于8.0 返回CGAlertController
- */
 - (id)showAlertViewWithTitle:(nullable NSString *)title message:(nullable NSString *)message cancelTitle:(nullable NSString *)cancelTitle otherTitle:(nullable NSString *)otherButtonTitle resultCallback:(void ( ^ _Nullable)(BOOL isCancel))resultCallback;
-
 - (id)showAlertViewWithTitle:(NSString *)title message:(NSString *)message otherTitle1:(NSString *)otherTitle1 otherTitle2:(NSString *)otherTitle2 resultCallback:(void ( ^)(NSInteger index))resultCallback;
-
 #endif
 @end
 
