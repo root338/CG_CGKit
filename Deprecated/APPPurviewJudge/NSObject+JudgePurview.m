@@ -7,17 +7,12 @@
 //
 
 #import "NSObject+JudgePurview.h"
-
-
-#import <AssetsLibrary/AssetsLibrary.h>
-
-#import <AVFoundation/AVCaptureDevice.h>
-#import <AVFoundation/AVMediaFormat.h>
-
+@import Photos;
 @implementation NSObject (JudgePurview)
 
 - (BOOL)cg_verifyIsAccessAssetsLibrary
 {
+    PHAuthorizationStatus status = PHPhotoLibrary.authorizationStatus;
     
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusDenied || status == ALAuthorizationStatusRestricted) {
