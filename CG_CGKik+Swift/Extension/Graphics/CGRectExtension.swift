@@ -14,6 +14,10 @@ extension CGRect {
         return CGRect(origin: .zero, size: self.size)
     }
     
+    init(x: CGFloat? = nil, y: CGFloat? = nil, width: CGFloat?, height: CGFloat?) {
+        self.init(x: x ?? 0, y: y ?? 0, width: width ?? 0, height: height ?? 0)
+    }
+    
     func ml_offset(point: CGPoint) -> CGRect {
         var rect = self
         rect.origin = CGPoint.init(x: self.minX + point.x, y: self.minY + point.y)
