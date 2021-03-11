@@ -21,6 +21,8 @@ typedef NS_ENUM(NSInteger, CGLabelTextVerticalAlignment) {
 
 /** 文本的外间距 */
 @property (nonatomic, assign) UIEdgeInsets textMarginEdgeInsets;
+/// 添加安全区域的间距 iOS 11 以后有效
+@property (nonatomic, assign) BOOL isAddSafeAreaInsets;
 
 /** label文字垂直对齐方式 */
 @property (nonatomic, assign) CGLabelTextVerticalAlignment textVerticalAlignment;

@@ -7,9 +7,21 @@
 //
 
 #import "CGLabel.h"
+#import "UIEdgeInsets+Category.h"
 #import "UIView+CG_CGAreaCalculate.h"
 
+@interface CGLabel () {
+    UIEdgeInsets _textTotalMarginInsets;
+}
+
+@end
+
 @implementation CGLabel
+
+- (void)safeAreaInsetsDidChange {
+    [super safeAreaInsetsDidChange];
+    [self _updateTextMarginInsets];
+}
 
 - (CGSize)intrinsicContentSize {
     CGFloat width = CGRectGetWidth(self.frame);
@@ -25,17 +37,17 @@
         return CGSizeZero;
     }
     CGSize textSize = [super sizeThatFits:size];
-    textSize = CG_CGMaxSizeWidthSize(textSize, _textMarginEdgeInsets);
+    textSize = CG_CGMaxSizeWidthSize(textSize, _textTotalMarginInsets);
     textSize = CGSizeMake(ceil(textSize.width), ceil(textSize.height));
     return textSize;
 }
 
 - (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines {
-    CGRect textAvailableFrame = CG_CGFrameWithMaxFrame(bounds, _textMarginEdgeInsets);
+    CGRect textAvailableFrame = CG_CGFrameWithMaxFrame(bounds, _textTotalMarginInsets);
     CGRect textBounds = textAvailableFrame;
     textBounds.origin.x = 0;
     CGRect textRect = [super textRectForBounds:textBounds limitedToNumberOfLines:numberOfLines];
-    textRect.origin.x += _textMarginEdgeInsets.left;
+    textRect.origin.x += _textTotalMarginInsets.left;
     switch (self.textVerticalAlignment) {
         case CGLabelTextVerticalAlignmentCenter:
             textRect.origin.y += (CGRectGetHeight(textAvailableFrame) - CGRectGetHeight(textRect)) / 2;
@@ -57,12 +69,36 @@
     [super drawTextInRect:textRect];
 }
 
+#pragma mark - Private
+- (void)_updateTextMarginInsets {
+    if (@available(iOS 11.0, *)) {
+        if (_isAddSafeAreaInsets) {
+            _textTotalMarginInsets = CG_CGUIEdgeInsetsAdd(_textMarginEdgeInsets, self.safeAreaInsets);
+        }else {
+            _textTotalMarginInsets = _textMarginEdgeInsets;
+        }
+    }else {
+        _textTotalMarginInsets = _textMarginEdgeInsets;
+    }
+    if (!self.translatesAutoresizingMaskIntoConstraints) {
+        [self invalidateIntrinsicContentSize];
+    }else {
+        [self setNeedsLayout];
+    }
+}
+
 - (void)setBounds:(CGRect)bounds {
     [super setBounds:bounds];
-    CGFloat width = CG_CGWidthWithMaxWidth(CGRectGetWidth(bounds), _textMarginEdgeInsets);
+    CGFloat width = CG_CGWidthWithMaxWidth(CGRectGetWidth(bounds), _textTotalMarginInsets);
     if (self.preferredMaxLayoutWidth != width) {
         self.preferredMaxLayoutWidth = width;
     }
+}
+
+- (void)setTextMarginEdgeInsets:(UIEdgeInsets)textMarginEdgeInsets {
+    if (UIEdgeInsetsEqualToEdgeInsets(_textMarginEdgeInsets, textMarginEdgeInsets)) return;
+    _textMarginEdgeInsets = textMarginEdgeInsets;
+    [self _updateTextMarginInsets];
 }
 
 @end
