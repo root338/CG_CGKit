@@ -7,7 +7,7 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "CGViewBorderStateProtocol.h"
+#import "CGBorderStateHeader.h"
 
 @class CGBorderObject;
 
