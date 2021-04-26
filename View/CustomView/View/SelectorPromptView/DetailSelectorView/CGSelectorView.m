@@ -75,7 +75,7 @@
 
 - (void)showContentView
 {
-    [self showContentViewWithAnimatied:YES];
+    [self showContentViewWithAnimatinType:self.contentViewAnimationType animatied:YES];
 }
 
 - (void)showContentViewWithAnimatied:(BOOL)animatied
@@ -85,7 +85,7 @@
 
 - (void)hideContentView
 {
-    [self hideContentViewWithAnimatied:YES];
+    [self hideContentViewWithAnimationType:self.contentViewAnimationType animatied:YES];
 }
 
 - (void)hideContentViewWithAnimatied:(BOOL)animatied
