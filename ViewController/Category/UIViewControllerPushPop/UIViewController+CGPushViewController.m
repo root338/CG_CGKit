@@ -68,9 +68,7 @@
 
 - (void)cgvc_pushRemoveLastVCWithNewViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (viewController != nil && self.navigationController.topViewController == self) {
-        [self.navigationController cg_pushRemoveLastVCWithNewViewController:viewController animated:animated];
-    }
+    !viewController?: [self.navigationController cg_pushRemoveLastVCWithNewViewController:viewController animated:animated];
 }
 
 #pragma mark - 设置属性
