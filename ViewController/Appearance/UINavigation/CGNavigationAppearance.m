@@ -18,41 +18,37 @@
         
         self.appearanceForNavigationBar = [UINavigationBar appearance];
         self.appearanceForBackItem = [UIBarButtonItem appearance];
+        
     }
     return self;
 }
 
-- (void)applyAppearance
-{
-    if (self.barTintColor) {
-        [self.appearanceForNavigationBar setBarTintColor:self.barTintColor];
-    }
-    
-    if (self.backgroundImageForNavigationBar) {
+- (void)applyAppearance {
+    if (@available(iOS 13.0, *)) {
+        
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+        [appearance configureWithOpaqueBackground];
+        appearance.backgroundColor = self.barTintColor;
+        appearance.backgroundImage = self.backgroundImageForNavigationBar;
+        appearance.shadowImage = self.shadowImageForNavigationBar;
+        appearance.titleTextAttributes = self.titleTextAttributes;
+        [appearance setBackIndicatorImage:self.backItemImage transitionMaskImage:self.backItemImage];
+        appearance.titlePositionAdjustment = UIOffsetMake(0, self.titleVerticalPositionAdjustment);
+        if (self.hideBackItemTitle) {
+            appearance.backButtonAppearance.normal.titlePositionAdjustment = UIOffsetMake(-1000, 0);
+        }
+        [self.appearanceForNavigationBar setStandardAppearance:appearance];
+        [self.appearanceForNavigationBar setScrollEdgeAppearance:appearance];
+    }else {
         [self.appearanceForNavigationBar setBackgroundImage:self.backgroundImageForNavigationBar forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-    }
-    
-    if (self.shadowImageForNavigationBar) {
+        [self.appearanceForNavigationBar setBarTintColor:self.barTintColor];
         [self.appearanceForNavigationBar setShadowImage:self.shadowImageForNavigationBar];
-    }
-    
-    if (self.titleTextAttributes) {
         [self.appearanceForNavigationBar setTitleTextAttributes:self.titleTextAttributes];
-    }
-    
-    if (self.backItemImage) {
         [self.appearanceForNavigationBar setBackIndicatorImage:self.backItemImage];
         [self.appearanceForNavigationBar setBackIndicatorTransitionMaskImage:self.backItemImage];
-    }
-    
-    if (self.titleVerticalPositionAdjustment) {
         [self.appearanceForNavigationBar setTitleVerticalPositionAdjustment:self.titleVerticalPositionAdjustment forBarMetrics:UIBarMetricsDefault];
+        UIOffset offset = self.hideBackItemTitle ? UIOffsetMake(-1000, 0) : UIOffsetZero;
+        [self.appearanceForBackItem setBackButtonTitlePositionAdjustment:offset forBarMetrics:UIBarMetricsDefault];
     }
-    
-    // iOS 11 下会出现问题，导航栏会根据设置的偏移量来设置视图布局，所以这样设置会导致按钮图片，标题，右边按钮都无法看到
-    // 所以现在隐藏导航栏视图，可以在加载的视图控制器页设置 navigationItem.backBarButtonItem 来手动设置返回标题为空
-    
-//    UIOffset offset = self.hideBackItemTitle ? UIOffsetMake(9999, 9999) : UIOffsetZero;
-//    [self.appearanceForBackItem setBackButtonTitlePositionAdjustment:offset forBarMetrics:UIBarMetricsDefault];
 }
 @end
